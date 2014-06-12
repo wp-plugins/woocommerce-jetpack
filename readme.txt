@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
 Requires at least: 3.9
 Tested up to: 3.9
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,6 +40,9 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 1. Plugin admin area.
 
 == Changelog ==
+
+= 1.0.1 =
+* Bug with Custom Price Labels, affecting Plus version, fixed
 
 = 1.0.0 =
 * Initial Release

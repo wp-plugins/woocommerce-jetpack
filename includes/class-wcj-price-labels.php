@@ -173,15 +173,15 @@ class WCJ_Price_Labels {
 				break;
 				
 			case '_before': 
-				$price = apply_filter( 'wcjpc_filter', $price, $custom_label . $price );
+				$price = apply_filters( 'wcjpc_filter', $price, $custom_label . $price );
 				break;
 				
 			case '_between': 
-				$price = apply_filter( 'wcjpc_filter', $price, str_replace( '</del> <ins>', '</del>' . $custom_label . '<ins>', $price ) );
+				$price = apply_filters( 'wcjpc_filter', $price, str_replace( '</del> <ins>', '</del>' . $custom_label . '<ins>', $price ) );
 				break;
 				
 			case '_after':
-				$price = apply_filter( 'wcjpc_filter', $price, $price . $custom_label );
+				$price = apply_filters( 'wcjpc_filter', $price, $price . $custom_label );
 				break;
 		}	
 	
