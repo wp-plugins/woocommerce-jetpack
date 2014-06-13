@@ -1,7 +1,7 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
 Requires at least: 3.9.1
 Tested up to: 3.9.1
 Stable tag: 1.0.2
