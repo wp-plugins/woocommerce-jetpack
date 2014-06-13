@@ -17,7 +17,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 **What features does it have?**
 
 * Custom Price Labels – Create any custom price label for any product.
-* Call for Price – Create any custom price label, like “Call for price”, for all products with empty price.
+* Call for Price – Create any custom price label, like "Call for price", for all products with empty price.
 * Currencies – Add all world currencies, change currency symbol.
 * More Sorting Options – Add more sorting options or remove sorting (including default) at all.
 * Old Slugs – Remove old product slugs.
@@ -27,7 +27,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Drop us a line at [www.woojetpack.com](http://woojetpack.com/contact-us/)
 
 = More =
-* Vist the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
+* Visit the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
 
 == Installation ==
 
@@ -47,13 +47,16 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
-= 1.0.1 =
-* Bug with Custom Price Labels, affecting Plus version, fixed
+= 1.0.2 - 14/06/2014 =
+* Feature - Added loading plugin textdomain.
 
-= 1.0.0 =
-* Initial Release
+= 1.0.1 - 13/06/2014 =
+* Fix - Error with Custom Price Labels feature, affecting Plus version.
+
+= 1.0.0 - 13/06/2014 =
+* Initial Release.
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-This version was created on 2014.06.01
+This is first release version of the plugin.
