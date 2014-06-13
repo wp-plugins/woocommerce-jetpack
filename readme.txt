@@ -2,8 +2,8 @@
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
-Requires at least: 3.9
-Tested up to: 3.9
+Requires at least: 3.9.1
+Tested up to: 3.9.1
 Stable tag: 1.0.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
