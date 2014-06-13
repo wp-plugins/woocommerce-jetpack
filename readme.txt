@@ -18,7 +18,7 @@ Features include: custom price labels, call for price, all currencies etc.
 
 = Feedback =
 * We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
-* Drop us a line at [www.algoritmika.com](http://woojetpack.com/contact-us/)
+* Drop us a line at [www.woojetpack.com](http://woojetpack.com/contact-us/)
 
 = More =
 * Vist the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
