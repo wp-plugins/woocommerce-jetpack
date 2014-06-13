@@ -5,11 +5,11 @@
  * The WooCommerce Jetpack currencies class stores currencies data.
  *
  * @class 		WCJ_Currencies
- * @version		1.0.0
- * @package		WooJetpack/Classes
+ * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
+ 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'WCJ_Currencies' ) ) :
@@ -386,8 +386,8 @@ class WCJ_Currencies {
 			if ( isset( $section['id'] ) && 'woocommerce_currency_pos' == $section['id'] ) {
 
 				$updated_settings[] = array(
-					'name'		=> __( 'Currency Symbol', 'woojetpack' ), //TODO name or title?????
-					'desc_tip'	=> __( 'This sets the currency symbol.', 'woojetpack' ),
+					'name'		=> __( 'Currency Symbol', 'woocommerce-jetpack' ), //TODO name or title?????
+					'desc_tip'	=> __( 'This sets the currency symbol.', 'woocommerce-jetpack' ),
 					'id'		=> 'wcj_currency_' . get_woocommerce_currency(),
 					'type'		=> 'text',
 					'default'	=> get_woocommerce_currency_symbol(),
@@ -407,12 +407,12 @@ class WCJ_Currencies {
 	
 		$settings = array(
 
-			array( 'title'	=> __( 'Currencies Options', 'woojetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_currency_options' ),
+			array( 'title'	=> __( 'Currencies Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_currency_options' ),
 
 			array(
-				'title' 	=> __( 'Currencies', 'woojetpack' ),
-				'desc' 		=> __( 'Enable the Currencies feature', 'woojetpack' ),
-				'desc_tip'	=> __( 'Add all world currencies, change currency symbol.', 'woojetpack' ),
+				'title' 	=> __( 'Currencies', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable the Currencies feature', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Add all world currencies, change currency symbol.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_currency_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox'
@@ -420,12 +420,12 @@ class WCJ_Currencies {
 		
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_currency_options' ),
 		
-			array( 'title' 	=> __( 'Currency Symbol Options', 'woojetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_all_currencies_list_options' ),
+			array( 'title' 	=> __( 'Currency Symbol Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_all_currencies_list_options' ),
 		);
 		
 		foreach ($this->currencies_list as $currency_id => $currency_name)
 			$settings[] = array(
-				'title' 	=> __( $currency_name, 'woocommerce' ),
+				'title' 	=> $currency_name,
 				'desc_tip' 	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_no_link' ),
 				'id' 		=> 'wcj_currency_' . $currency_id,
 				'default'	=> $this->currencies_symbols_list[ $currency_id ],
@@ -449,7 +449,7 @@ class WCJ_Currencies {
 	function add_all_currencies( $currencies ) {
 
 		foreach ($this->currencies_list as $currency_id => $currency_name)
-			$currencies[$currency_id] = __( $currency_name, 'woocommerce' );
+			$currencies[ $currency_id ] = $currency_name;
 	
 		asort ($currencies);
 	

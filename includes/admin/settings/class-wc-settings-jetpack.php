@@ -17,7 +17,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'jetpack';
-		$this->label = __( 'Jetpack', 'woojetpack' );
+		$this->label = __( 'Jetpack', 'woocommerce-jetpack' );
 
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
@@ -33,7 +33,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	public function get_sections() {
 	
 		return apply_filters( 'wcj_settings_sections', array(
-			''	=> __( 'Dashboard', 'woojetpack' ),
+			''	=> __( 'Dashboard', 'woocommerce-jetpack' ),
 		) );
 	}
 
@@ -75,7 +75,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 		}
 		else {
 
-			$settings[] = array( 'title' => __( 'Features', 'woojetpack' ), 'type' => 'title', 'desc' => $desc, 'id' => 'wcj_options' );
+			$settings[] = array( 'title' => __( 'Features', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => $desc, 'id' => 'wcj_options' );
 			
 			$settings = apply_filters( 'wcj_features_status', $settings );		
 			

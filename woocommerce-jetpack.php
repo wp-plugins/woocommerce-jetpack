@@ -3,13 +3,14 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.0.1
+Version: 1.0.2
 Author: Algoritmika Ltd.
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // Check if WooCommerce is active
@@ -34,13 +35,16 @@ final class WC_Jetpack {
 	 * Ensures only one instance of WC_Jetpack is loaded or can be loaded.
 	 *
 	 * @static
-	 * @see WJ()
+	 * @see WCJ()
 	 * @return WC_Jetpack - Main instance
 	 */
 	public static function instance() {
+	
 		if ( is_null( self::$_instance ) ) {
+		
 			self::$_instance = new self();
 		}
+		
 		return self::$_instance;
 	}
 
@@ -48,14 +52,14 @@ final class WC_Jetpack {
 	 * Cloning is forbidden.
 	 *
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-jetpack' ), '3.9.1' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce' ), '3.9.1' );
 	}
 
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 *
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-jetpack' ), '3.9.1' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce' ), '3.9.1' );
 	}	
 
 	/**
@@ -69,7 +73,7 @@ final class WC_Jetpack {
 		
 		// HOOKS
 		//register_activation_hook( __FILE__, array( $this, 'install' ) );
-//		add_action( 'admin_init', array( $this, 'install' ) );
+		//add_action( 'admin_init', array( $this, 'install' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
 		
 		add_filter( 'wcjpc_filter', array( $this, 'wcjpc' ), 100 );
@@ -85,7 +89,11 @@ final class WC_Jetpack {
 		do_action( 'wcj_loaded' );
 	}
 	
+	/**
+	 * wcjpc.
+	 */	
 	public function wcjpc( $value ) {
+	
 		return $value;
 	}
 	
@@ -94,12 +102,11 @@ final class WC_Jetpack {
 		switch ( $message_type ) {
 		
 			case 'global':
-				return
-			__( '<div class="updated">
-					<p class="main"><strong>Install WooCommerce Jetpack Plus to unlock all features</strong></p>
-					<span>Some settings fields are locked and you will need <a href="http://woojetpack.com/plus/">WooCommerce Jetpack Plus</a> to modify all locked fields.</span>					
-					<p><a href="http://woojetpack.com/plus/" target="_blank" class="button button-primary">Buy now just for $9</a> <a href="http://woojetpack.com" target="_blank" class="button">Visit woojetpack.com</a></p>
-				</div>' );
+				return	'<div class="updated">
+								<p class="main"><strong>' . __( 'Install WooCommerce Jetpack Plus to unlock all features', 'woocommerce-jetpack' ) . '</strong></p>
+								<span>' . sprintf( __('Some settings fields are locked and you will need %s to modify all locked fields.', 'woocommerce-jetpack'), '<a href="http://woojetpack.com/plus/">WooCommerce Jetpack Plus</a>' ) . '</span>					
+								<p><a href="http://woojetpack.com/plus/" target="_blank" class="button button-primary">' . sprintf( __( 'Buy now just for %s', 'woocommerce-jetpack' ), '$9' ). '</a> <a href="http://woojetpack.com" target="_blank" class="button">'. sprintf( __( 'Visit %s', 'woocommerce-jetpack' ), 'woojetpack.com' ) . '</a></p>
+						</div>';
 		
 			case 'desc':
 				return __( 'Get <a href="http://woojetpack.com/plus/" target="_blank">WooCommerce Jetpack Plus</a> to change value.', 'woocommerce-jetpack' );
@@ -108,7 +115,7 @@ final class WC_Jetpack {
 				return __( 'Get <a href="http://woojetpack.com/plus/" target="_blank">WooCommerce Jetpack Plus</a> to change values below.', 'woocommerce-jetpack' );				
 				
 			case 'desc_no_link':
-				return __( 'Get WooCommerce Jetpack Plus to change value.', 'woojetpack' );
+				return __( 'Get WooCommerce Jetpack Plus to change value.', 'woocommerce-jetpack' );
 
 			case 'readonly':
 				return array( 'readonly' => 'readonly' );
@@ -117,10 +124,10 @@ final class WC_Jetpack {
 				return array( 'disabled' => 'disabled' );
 				
 			case 'readonly_string':
-				return __( 'readonly', 'woojetpack' );
+				return 'readonly';
 				
 			case 'disabled_string':
-				return __( 'disabled', 'woojetpack' );			
+				return 'disabled';
 		}
 		
 		return $value;
@@ -195,7 +202,8 @@ final class WC_Jetpack {
 		
 		// Set up localisation
 		//$this->load_plugin_textdomain();
-		
+		load_plugin_textdomain( 'woocommerce-jetpack',  false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
+				
 		// Init action
 		do_action( 'wcj_init' );
 	}

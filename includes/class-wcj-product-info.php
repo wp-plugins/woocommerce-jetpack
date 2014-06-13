@@ -6,7 +6,7 @@
  *
  * @class 		WCJ_Product_Info
  * @version		1.0.0
- * @package		WooJetpack/Classes
+ * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -56,9 +56,9 @@ class WCJ_Product_Info {
 			array( 'title' 	=> __( 'Product Info Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_info_options' ),
 			
 			array(
-				'title' 	=> __( 'Product Info', 'woojetpack' ),
-				'desc' 		=> __( 'Enable the Product Info feature', 'woojetpack' ),
-				'desc_tip'	=> __( 'Display total product sales etc.', 'woojetpack' ),
+				'title' 	=> __( 'Product Info', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable the Product Info feature', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Display total product sales etc.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox'
@@ -70,9 +70,9 @@ class WCJ_Product_Info {
 			array( 'title' 	=> __( 'Total Sales Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_info_total_sales_options' ),
 		
 			array(
-				'title' 	=> __( 'Enable', 'woojetpack' ),
-				'desc' 		=> __( 'Enable Total Sales', 'woojetpack' ),
-				//'desc_tip'=> __( 'Display total product sales etc.', 'woojetpack' ),
+				'title' 	=> __( 'Enable', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable Total Sales', 'woocommerce-jetpack' ),
+				//'desc_tip'=> __( 'Display total product sales etc.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_total_sales_enabled',
 				'default'	=> 'no',
 				'type' 		=> 'checkbox'

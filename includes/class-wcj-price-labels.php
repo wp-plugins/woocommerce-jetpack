@@ -240,9 +240,9 @@ class WCJ_Price_Labels {
 			array(	'title' => __( 'Custom Price Labels Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_price_labels_options' ),
 			
 			array(
-				'title' 	=> __( 'Custom Price Labels', 'woojetpack' ),
-				'desc' 		=> __( 'Enable the Custom Price Labels feature', 'woojetpack' ),
-				'desc_tip'	=> __( 'Create any custom price label for any product.', 'woojetpack' ),
+				'title' 	=> __( 'Custom Price Labels', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable the Custom Price Labels feature', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Create any custom price label for any product.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_price_labels_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
