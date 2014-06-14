@@ -1,9 +1,9 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
-Requires at least: 3.9
-Tested up to: 3.9
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
+Requires at least: 3.9.1
+Tested up to: 3.9.1
 Stable tag: 1.0.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -16,15 +16,15 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 **What features does it have?**
 
-* Custom Price Labels – Create any custom price label for any product.
-* Call for Price – Create any custom price label, like "Call for price", for all products with empty price.
-* Currencies – Add all world currencies, change currency symbol.
-* More Sorting Options – Add more sorting options or remove sorting (including default) at all.
-* Old Slugs – Remove old product slugs.
+* Custom Price Labels - Create any custom price label for any product.
+* Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
+* Currencies - Add all world currencies, change currency symbol.
+* More Sorting Options - Add more sorting options or remove sorting (including default) at all.
+* Old Slugs - Remove old product slugs.
 
 = Feedback =
 * We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
-* Drop us a line at [www.woojetpack.com](http://woojetpack.com/contact-us/)
+* Drop us a line at [www.woojetpack.com/contact-us/](http://woojetpack.com/contact-us/)
 
 = More =
 * Visit the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
@@ -48,7 +48,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 == Changelog ==
 
 = 1.0.2 - 14/06/2014 =
-* Feature - Added loading plugin textdomain.
+* Dev - Added loading plugin textdomain.
 
 = 1.0.1 - 13/06/2014 =
 * Fix - Error with Custom Price Labels feature, affecting Plus version.
