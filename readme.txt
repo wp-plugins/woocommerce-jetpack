@@ -24,7 +24,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 = Feedback =
 * We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
-* Drop us a line at [www.woojetpack.com](http://woojetpack.com/contact-us/)
+* Drop us a line at [www.woojetpack.com/contact-us/](http://woojetpack.com/contact-us/)
 
 = More =
 * Visit the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
@@ -48,7 +48,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 == Changelog ==
 
 = 1.0.2 - 14/06/2014 =
-* Feature - Added loading plugin textdomain.
+* Dev - Added loading plugin textdomain.
 
 = 1.0.1 - 13/06/2014 =
 * Fix - Error with Custom Price Labels feature, affecting Plus version.
