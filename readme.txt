@@ -16,11 +16,11 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 **What features does it have?**
 
-* Custom Price Labels – Create any custom price label for any product.
-* Call for Price – Create any custom price label, like "Call for price", for all products with empty price.
-* Currencies – Add all world currencies, change currency symbol.
-* More Sorting Options – Add more sorting options or remove sorting (including default) at all.
-* Old Slugs – Remove old product slugs.
+* Custom Price Labels - Create any custom price label for any product.
+* Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
+* Currencies - Add all world currencies, change currency symbol.
+* More Sorting Options - Add more sorting options or remove sorting (including default) at all.
+* Old Slugs - Remove old product slugs.
 
 = Feedback =
 * We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
