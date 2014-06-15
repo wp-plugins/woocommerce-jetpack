@@ -80,7 +80,7 @@ class WCJ_Call_For_Price {
 
 		$settings = array(
 
-			array(	'title' => __( 'Call for Price Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'Leave price empty when adding or editing products. Then set the options here.', 'id' => 'wcj_call_for_price_options' ),
+			array(	'title' => __( 'Call for Price Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'Leave price empty when adding or editing products. Then set the options here.', 'woocommerce-jetpack' ), 'id' => 'wcj_call_for_price_options' ),
 			
 			array(
 				'title' 	=> __( 'Call for Price', 'woocommerce-jetpack' ),
