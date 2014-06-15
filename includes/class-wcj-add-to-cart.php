@@ -22,9 +22,8 @@ class WCJ_Add_to_cart {
         // Main hooks
         if ( get_option( 'wcj_add_to_cart_enabled' ) == 'yes' ) {
         
-			add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text_single' ), 100 );
-			add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text_archives' ), 100 );
-			//add_filter( 'woocommerce_order_button_text', array( $this, 'custom_add_to_cart_button_text_single' ), 9999 );					
+			add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
+			add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
 			
         }        
     
@@ -46,9 +45,9 @@ class WCJ_Add_to_cart {
     }
     
     /**
-     * custom_add_to_cart_button_text_single.
+     * custom_add_to_cart_button_text.
      */
-    public function custom_add_to_cart_button_text_single( $add_to_cart_text) {
+    public function custom_add_to_cart_button_text( $add_to_cart_text) {
 	
 		global $product;
 		
@@ -71,21 +70,6 @@ class WCJ_Add_to_cart {
 		// Default
 		return $add_to_cart_text;
     }
-	
-    /**
-     * custom_add_to_cart_button_text_archives.
-     */
-    public function custom_add_to_cart_button_text_archives( $add_to_cart_text) {
-	
-		global $product;
-		
-		$product_type = $product->product_type;
-		
-		if ( ! in_array( $product_type, array( 'external', 'grouped', 'simple', 'variable' ) ) )
-			$product_type = 'other';
-			
-
-    }	
     
     /**
      * get_settings.

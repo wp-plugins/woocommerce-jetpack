@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
 Requires at least: 3.9.1
 Tested up to: 3.9.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,9 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 1. Plugin admin area.
 
 == Changelog ==
+
+= 1.0.4 - 15/06/2014 =
+* Fix - Add to cart text - on archives now calling the right function.
 
 = 1.0.3 - 15/06/2014 =
 * Feature - Add to cart text by product type.
