@@ -1,7 +1,7 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering
 Requires at least: 3.9.1
 Tested up to: 3.9.1
 Stable tag: 1.0.5
@@ -19,6 +19,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Custom Price Labels - Create any custom price label for any product.
 * Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
 * Currencies - Add all world currencies, change currency symbol.
+* Order Numbers - Sequential order numbering, custom order number prefix and number width.
 * More Sorting Options - Add more sorting options or remove sorting (including default) at all.
 * Add to Cart - Change text for add to cart buttons for each product type.
 * Old Slugs - Remove old product slugs.
