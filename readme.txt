@@ -1,10 +1,10 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text
 Requires at least: 3.9.1
 Tested up to: 3.9.1
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,12 +20,13 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
 * Currencies - Add all world currencies, change currency symbol.
 * More Sorting Options - Add more sorting options or remove sorting (including default) at all.
-* Buttons - Change text for add to cart buttons for each product type.
+* Add to Cart - Change text for add to cart buttons for each product type.
 * Old Slugs - Remove old product slugs.
 
 = Feedback =
-* We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
-* Drop us a line at [www.woojetpack.com/contact-us/](http://woojetpack.com/contact-us/)
+* We are open to your suggestions and feedback - thank you for using or trying out one of our plugins!
+* If you have any ideas how to upgrade the plugin to make it better, or if you have ideas about the features that are missing from our plugin, please [fill the form](http://woojetpack.com/submit-idea/).
+* For support visit the [contact page](http://woojetpack.com/contact-us/).
 
 = More =
 * Visit the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
@@ -48,6 +49,9 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 1.0.5 - 18/06/2014 =
+* Feature - Order Numbers.
+
 = 1.0.4 - 15/06/2014 =
 * Fix - Add to cart text - on archives now calling the right function.
 
@@ -66,4 +70,4 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 == Upgrade Notice ==
 
 = 1.0.0 =
-This is first release version of the plugin.
+This is the first release of the plugin.

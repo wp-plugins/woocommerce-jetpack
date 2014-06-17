@@ -21,9 +21,11 @@ class WCJ_Old_Slugs {
 		// HOOKS
 		
 		// Main hooks
-		if ( get_option( 'wcj_old_slugs_enabled' ) == 'yes' )  {
+		if ( get_option( 'wcj_old_slugs_enabled' ) == 'yes' ) {
+		
 			if ( is_admin() ) {
-				add_action('admin_menu', array($this, 'add_old_slugs_tool'), 999);
+			
+				add_action( 'admin_menu', array($this, 'add_old_slugs_tool'), 999 ); // Add Remove Old Slugs tool to WooCommerce menu
 			}
 		}
 		

@@ -27,7 +27,11 @@ class WCJ_Price_Labels {
 		// Custom Price Labels - cart item price hooks
 		//add_filter( 'woocommerce_cart_item_price_html', array( $this, 'custom_price' ), 999, 2 ); // depreciated?
 		//add_filter( 'woocommerce_cart_item_price', array( $this, 'custom_price' ), 999, 2 );		
+		
 		// Custom Price Labels - price hooks
+
+		//add_filter( 'woocommerce_get_price_html', array( $this, 'custom_price' ), 100, 2 );
+		
 		add_filter( 'woocommerce_empty_price_html', array( $this, 'custom_price' ), 100, 2 );		
 		add_filter( 'woocommerce_free_price_html', array( $this, 'custom_price' ), 100, 2 );		
 		add_filter( 'woocommerce_free_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
@@ -40,7 +44,7 @@ class WCJ_Price_Labels {
 		add_filter( 'woocommerce_variable_free_price_html', array( $this, 'custom_price' ), 100, 2 );		
 		add_filter( 'woocommerce_variable_free_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
 		add_filter( 'woocommerce_variable_price_html', array( $this, 'custom_price' ), 100, 2 );		
-		add_filter( 'woocommerce_variable_sale_price_html', array( $this, 'custom_price' ), 100, 2 );	
+		add_filter( 'woocommerce_variable_sale_price_html', array( $this, 'custom_price' ), 100, 2 );			
 		// Custom Price Labels - price hooks
 		add_filter( 'woocommerce_variation_empty_price_html', array( $this, 'custom_price' ), 100, 2 );		
 		add_filter( 'woocommerce_variation_free_price_html', array( $this, 'custom_price' ), 100, 2 );
@@ -73,6 +77,11 @@ class WCJ_Price_Labels {
 			'_single'	 => 'Hide on single',
 		);
 	}
+	
+	/*public function custom_price1( $price, $product ) {	
+		echo '[' . $price . ']';
+		return $price;
+	}*/
 	
 	/**
 	 * add_enabled_option.

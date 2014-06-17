@@ -180,7 +180,7 @@ class WCJ_Add_to_cart {
      */
     function settings_section( $sections ) {
     
-        $sections['add_to_cart'] = 'Add to cart';
+        $sections['add_to_cart'] = 'Add to Cart';
         
         return $sections;
     }    
