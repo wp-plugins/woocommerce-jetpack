@@ -80,7 +80,7 @@ class WCJ_Order_Numbers {
     public function display_order_number( $order_number, $order ) {
     
 		$order_number_meta = get_post_meta( $order->id, '_wcj_order_number', true );
-		if ( $order_number_meta != '' ) 
+		if ( $order_number_meta !== '' ) 
 			$order_number = '#' . $order_number_meta;
 		
 		return $order_number;
