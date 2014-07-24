@@ -104,27 +104,31 @@ class WCJ_Call_For_Price {
 			),
 			
 			array(
-				'title' 	=> __( 'Show on Single Product', 'woocommerce-jetpack' ),
+				'title' 	=> __( 'Visibility', 'woocommerce-jetpack' ),
+				//'title' 	=> __( 'Show on Single Product', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Check to show on single products page', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_call_for_price_show_on_single',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
+				'checkboxgroup'   => 'start',
 			),
 
 			array(
-				'title' 	=> __( 'Show on Products Archive', 'woocommerce-jetpack' ),
+				//'title' 	=> __( 'Show on Products Archive', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Check to show on products archive page', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_call_for_price_show_on_archive',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
+				'checkboxgroup'		=> '',
 			),
 
 			array(
-				'title' 	=> __( 'Show on Home Page', 'woocommerce-jetpack' ),
+				//'title' 	=> __( 'Show on Home Page', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Check to show on home page', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_call_for_price_show_on_home',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
+				'checkboxgroup'   => 'end',
 			),
 
 			array(

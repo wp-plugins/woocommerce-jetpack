@@ -3,14 +3,13 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.0.6
-Author: Algoritmika Ltd.
+Version: 1.1.0
+Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // Check if WooCommerce is active
@@ -105,7 +104,7 @@ final class WC_Jetpack {
 				return	'<div class="updated">
 								<p class="main"><strong>' . __( 'Install WooCommerce Jetpack Plus to unlock all features', 'woocommerce-jetpack' ) . '</strong></p>
 								<span>' . sprintf( __('Some settings fields are locked and you will need %s to modify all locked fields.', 'woocommerce-jetpack'), '<a href="http://woojetpack.com/plus/">WooCommerce Jetpack Plus</a>' ) . '</span>					
-								<p><a href="http://woojetpack.com/plus/" target="_blank" class="button button-primary">' . sprintf( __( 'Buy now just for %s', 'woocommerce-jetpack' ), '$9' ). '</a> <a href="http://woojetpack.com" target="_blank" class="button">'. sprintf( __( 'Visit %s', 'woocommerce-jetpack' ), 'woojetpack.com' ) . '</a></p>
+								<p><a href="http://woojetpack.com/plus/" target="_blank" class="button button-primary">' . __( 'Buy now', 'woocommerce-jetpack' ) . '</a> <a href="http://woojetpack.com" target="_blank" class="button">'. sprintf( __( 'Visit %s', 'woocommerce-jetpack' ), 'WooJetpack.com' ) . '</a></p>
 						</div>';
 		
 			case 'desc':
@@ -162,14 +161,20 @@ final class WC_Jetpack {
 		$settings = array();
 	
 		$settings[] = include_once( 'includes/class-wcj-price-labels.php' );
-		$settings[] = include_once( 'includes/class-wcj-call-for-price.php' );
+		$settings[] = include_once( 'includes/class-wcj-call-for-price.php' );		
 		$settings[] = include_once( 'includes/class-wcj-currencies.php' );		
 		$settings[] = include_once( 'includes/class-wcj-sorting.php' );
-		$settings[] = include_once( 'includes/class-wcj-old-slugs.php' );
+		$settings[] = include_once( 'includes/class-wcj-product-info.php' );
+		
 		$settings[] = include_once( 'includes/class-wcj-add-to-cart.php' );
-		$settings[] = include_once( 'includes/class-wcj-order-numbers.php' );
-		$settings[] = include_once( 'includes/class-wcj-pdf-invoices.php' );
-		//$settings[] = include_once( 'includes/class-wcj-product-info.php' );
+		$settings[] = include_once( 'includes/class-wcj-cart.php' );
+		$settings[] = include_once( 'includes/class-wcj-shipping.php' );
+		$settings[] = include_once( 'includes/class-wcj-checkout.php' );
+		
+		$settings[] = include_once( 'includes/class-wcj-orders.php' );
+		$settings[] = include_once( 'includes/class-wcj-emails.php' );
+		$settings[] = include_once( 'includes/class-wcj-pdf-invoices.php' );		
+		$settings[] = include_once( 'includes/class-wcj-old-slugs.php' );
 		
 		// Add options
 		if ( is_admin() ) {

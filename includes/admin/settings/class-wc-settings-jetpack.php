@@ -75,7 +75,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 		}
 		else {
 
-			$settings[] = array( 'title' => __( 'Features', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => $desc, 'id' => 'wcj_options' );
+			$settings[] = array( 'title' => __( 'WooCommerce Jetpack Dashboard', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This dashboard lets you enable/disable any Jetpack feature. Each checkbox comes with short feature\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'id' => 'wcj_options' );
 			
 			$settings = apply_filters( 'wcj_features_status', $settings );		
 			
@@ -90,8 +90,41 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 				$settings[] = $section->get_statuses()[1];*/
 			
 			$settings[] = array( 'type' => 'sectionend', 'id' => 'wcj_options' );
+			
+			$updated_settings = array();
+			$i = 0;
+			$s = count( $settings );
+			foreach ( $settings as $single_item ) {
 				
-			return $settings;//apply_filters('wcj_general_settings', $settings );
+				if ( ( 'checkbox' == $single_item['type'] ) && ( $i > 0 ) ) {
+				
+					if ( 1 == $i ) {
+						$single_item['checkboxgroup'] = 'start';
+						$single_item['title'] = 'The Features';
+					}
+					else { 
+						if ( ( $s - 2 ) == $i )
+							$single_item['checkboxgroup'] = 'end';
+						else
+							$single_item['checkboxgroup'] = '';
+							
+						$single_item['title'] = '';
+					}
+					
+					// Temporary solution - 2014.07.21
+					$single_item['desc'] = str_replace( 'Enable the ', 'Enable the <strong>', $single_item['desc'] );
+					$single_item['desc'] = str_replace( ' feature', '</strong> feature', $single_item['desc'] );
+					
+					$single_item['desc'] .= ': <em>' . $single_item['desc_tip'] . '</em>';
+					$single_item['desc_tip'] = '';
+				}
+				
+				$updated_settings[] = $single_item;
+				
+				$i++;
+			}
+				
+			return $updated_settings;//apply_filters('wcj_general_settings', $settings );
 		}
 	}
 }

@@ -120,7 +120,7 @@ class WCJ_Price_Labels {
 
 	public function add_price_label_meta_box() {
 	
-		add_meta_box( 'wc-jetpack-price-labels', 'Custom Price Labels', array($this, 'wcj_price_label'), 'product', 'normal', 'high' );
+		add_meta_box( 'wc-jetpack-price-labels', 'WooCommerce Jetpack: Custom Price Labels', array($this, 'wcj_price_label'), 'product', 'normal', 'high' );
 	}	
 	
 	/*

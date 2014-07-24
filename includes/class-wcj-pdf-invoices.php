@@ -24,6 +24,8 @@ class WCJ_PDF_Invoices {
 			
 			add_action( 'init', array( $this, 'generate_pdf' ), 10 );
 			//wp_ajax_
+			
+			add_action( 'admin_head', array( $this, 'add_custom_css' ) );
         }
 		
 		//$this->generate_pdf();
@@ -33,6 +35,15 @@ class WCJ_PDF_Invoices {
         add_filter( 'wcj_settings_pdf_invoices', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
+	
+    /**
+     * add_custom_css.
+     */
+	function add_custom_css() {
+	
+		echo '<style> a.button.tips.view.pdf_invoice:after { content: "\e011" !important; } </style>';
+		echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e011" !important; } </style>';
+	}
 	
     /**
      * generate_pdf.
@@ -217,13 +228,13 @@ class WCJ_PDF_Invoices {
 		$actions['pdf_invoice'] = array(
 			'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id,
 			'name' 		=> __( 'PDF', 'woocommerce-jetpack' ),
-			'action' 	=> "pdf_invoice"
+			'action' 	=> "view pdf_invoice"
 		);
 		
 		$actions['save_pdf_invoice'] = array(
 			'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id . '&save_pdf_invoice=1',
 			'name' 		=> __( 'Save PDF', 'woocommerce-jetpack' ),
-			'action' 	=> "save_pdf_invoice"
+			'action' 	=> "view save_pdf_invoice"
 		);
    
         return $actions;
@@ -252,7 +263,7 @@ class WCJ_PDF_Invoices {
             array(
                 'title'    => __( 'PDF Invoices', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Enable the PDF Invoices feature', 'woocommerce-jetpack' ),
-                'desc_tip' => __( 'PDF Invoices.', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Add PDF invoices for the store owners and for the customers.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_enabled',
                 'default'  => 'yes',
                 'type'     => 'checkbox',

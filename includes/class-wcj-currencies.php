@@ -393,7 +393,8 @@ class WCJ_Currencies {
 					'default'	=> get_woocommerce_currency_symbol(),
 					'desc'		=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 					'css'		=> 'width: 50px;',
-					'custom_attributes'	=> array( 'readonly' => 'readonly' ),
+					'custom_attributes'	
+								=> apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
 				);
 			}
 			
