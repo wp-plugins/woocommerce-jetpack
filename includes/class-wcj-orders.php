@@ -53,7 +53,7 @@ class WCJ_Orders {
 				if ( 'yes' === get_option( 'wcj_order_minimum_amount_cart_notice_enabled' ) ) {
 
 					wc_print_notice( 
-						sprintf( apply_filters( 'wcjpc_filter', 'You must have an order with a minimum of %s to place your order, your current order total is %s.', get_option( 'wcj_order_minimum_amount_cart_notice_message' ) ), 
+						sprintf( apply_filters( 'wcj_get_option_filter', 'You must have an order with a minimum of %s to place your order, your current order total is %s.', get_option( 'wcj_order_minimum_amount_cart_notice_message' ) ), 
 							woocommerce_price( $minimum ), 
 							woocommerce_price( WC()->cart->total )
 						), 'notice' 
@@ -63,7 +63,7 @@ class WCJ_Orders {
 			} else {
 
 				wc_add_notice( 
-					sprintf( apply_filters( 'wcjpc_filter', 'You must have an order with a minimum of %s to place your order, your current order total is %s.', get_option( 'wcj_order_minimum_amount_error_message' ) ), 
+					sprintf( apply_filters( 'wcj_get_option_filter', 'You must have an order with a minimum of %s to place your order, your current order total is %s.', get_option( 'wcj_order_minimum_amount_error_message' ) ), 
 						woocommerce_price( $minimum ), 
 						woocommerce_price( WC()->cart->total )
 					), 'error' 
@@ -114,7 +114,7 @@ class WCJ_Orders {
 	
     /**
      * Display order number.
-     */
+     *
     public function display_order_number( $order_number, $order ) {
     
 		$order_number_meta = get_post_meta( $order->id, '_wcj_order_number', true );
@@ -123,6 +123,18 @@ class WCJ_Orders {
 		
 		return $order_number;
     }
+	
+    /**
+     * Display order number.
+     */
+    public function display_order_number( $order_number, $order ) {
+    
+		$order_number_meta = get_post_meta( $order->id, '_wcj_order_number', true );
+		if ( $order_number_meta !== '' )
+			$order_number = apply_filters( 'wcj_get_option_filter', '#' . $order_number_meta, sprintf( '%s%0' . get_option( 'wcj_order_number_min_width', 0 ) . 'd', get_option( 'wcj_order_number_prefix', '' ), $order_number_meta ) );
+		
+		return $order_number;
+    }		
 	
     /**
      * Renumerate orders function.

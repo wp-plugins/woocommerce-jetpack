@@ -137,7 +137,7 @@ class WCJ_Checkout {
                 'desc'     => __( 'Enable the Checkout feature', 'woocommerce-jetpack' ),
                 'desc_tip' => __( 'Customize checkout fields. Disable/enable fields, set required, change labels and/or placeholders.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_checkout_enabled',
-                'default'  => 'yes',
+                'default'  => 'no',
                 'type'     => 'checkbox',
             ),
         
@@ -201,7 +201,8 @@ class WCJ_Checkout {
 				
 				//$field_parts = explode( "_", $field, 2 );
 				
-				$default_value = $default_values[$item_type];//'';
+				$default_value = $default_values[$item_key];//'';
+				//echo '<pre>' . $item_key . ':' . $item_type . ':' . $default_value . '</pre>';
 				//if ( $item_type == 'checkbox' ) $default_value = 'yes';
 				
 				$item_title = $field;// . ' ' . $item_key;
@@ -215,7 +216,7 @@ class WCJ_Checkout {
 					//'title'    => $item_title,
 					//'desc'     => $item_id,//__( 'Enable the Checkout feature', 'woocommerce-jetpack' ),
 					'desc'	   => $item_key,
-					'desc_tip' => $item_desc_tip,
+					'desc_tip' => $item_desc_tip,// . __( 'Default: ', 'woocommerce-jetpack' ) . $default_value,
 					'id'       => $item_id,
 					'default'  => $default_value,
 					'type'     => $item_type,
@@ -228,6 +229,10 @@ class WCJ_Checkout {
 					$settings_to_add['checkboxgroup'] = 'start';
 				}					
 				else if ( 'required' == $item_key ) $settings_to_add['checkboxgroup'] = 'end';
+				
+				//echo '<pre>';
+				//print_r( $settings_to_add );
+				//echo '</pre>';
 				
 				$settings[] = $settings_to_add;
 			}

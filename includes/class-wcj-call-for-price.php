@@ -51,7 +51,7 @@ class WCJ_Call_For_Price {
 	 */
 	public function hide_sales_flash( $post, $product )	{
 	
-		if ( get_option('wcj_call_for_price_hide_sale_sign') === true ) {
+		if ( get_option('wcj_call_for_price_hide_sale_sign') === 'yes' ) {
 		
 			$current_product = get_product( $product->ID );
 			if ( $current_product->get_price() == '' ) return false;
@@ -62,7 +62,7 @@ class WCJ_Call_For_Price {
 	
 	/**
 	 * on_empty_price.
-	 */	
+	 *	
 	public function on_empty_price( $price ) {
 
 		if ( ( get_option('wcj_call_for_price_show_on_single') == 'yes' ) && is_single() ) return $this->default_empty_price_text;
@@ -72,6 +72,21 @@ class WCJ_Call_For_Price {
 		// No changes
 		return $price;
 	}
+	
+	/**
+	 * On empty price.
+	 */	
+	public function on_empty_price( $price ) {
+	
+		$updated_price = get_option('wcj_call_for_price_text');
+		
+		if ( ( get_option('wcj_call_for_price_show_on_single') == 'yes' ) && is_single() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
+		if ( ( get_option('wcj_call_for_price_show_on_archive') == 'yes' ) && is_archive() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
+		if ( ( get_option('wcj_call_for_price_show_on_home') == 'yes' ) && is_front_page() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
+		
+		// No changes
+		return $price;
+	}	
 	
 	/**
 	 * get_settings.

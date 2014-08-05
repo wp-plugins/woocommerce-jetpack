@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.1.0
+Version: 1.1.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
@@ -75,7 +75,7 @@ final class WC_Jetpack {
 		//add_action( 'admin_init', array( $this, 'install' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
 		
-		add_filter( 'wcjpc_filter', array( $this, 'wcjpc' ), 100 );
+		//add_filter( 'wcj_get_option_filter', array( $this, 'wcj_get_option' ), 100 );
 		
 		// Settings	
 		if ( is_admin() ) { 		
@@ -89,13 +89,16 @@ final class WC_Jetpack {
 	}
 	
 	/**
-	 * wcjpc.
-	 */	
-	public function wcjpc( $value ) {
+	 * wcj_get_option.
+	 *	
+	public function wcj_get_option( $value ) {
 	
 		return $value;
 	}
 	
+	/**
+	 * display_get_wcj_plus_message.
+	 */
 	public function display_get_wcj_plus_message( $value, $message_type ) {
 	
 		switch ( $message_type ) {
@@ -133,27 +136,6 @@ final class WC_Jetpack {
 	}
 	
 	/**
-	 * Add options.
-	 *
-	function install() {
-	
-		$settings = array();
-		$settings[] = include( 'includes/class-wcj-currencies.php' );
-		$settings[] = include( 'includes/class-wcj-price-labels.php' );		
-		$settings[] = include( 'includes/class-wcj-sorting.php' );
-		$settings[] = include( 'includes/class-wcj-product-info.php' );		
-		
-		foreach ( $settings as $section ) {
-			foreach ( $section->get_settings() as $value ) {
-				if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
-					$autoload = isset( $value['autoload'] ) ? (bool) $value['autoload'] : true;
-					add_option( $value['id'], $value['default'], '', ( $autoload ? 'yes' : 'no' ) );
-				}
-			}
-		}
-	}
-
-	/**
 	 * Include required core files used in admin and on the frontend.
 	 */
 	private function includes() {
@@ -175,6 +157,8 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-emails.php' );
 		$settings[] = include_once( 'includes/class-wcj-pdf-invoices.php' );		
 		$settings[] = include_once( 'includes/class-wcj-old-slugs.php' );
+		
+		include_once( 'includes/class-wc-gateway-wcj-custom.php' );
 		
 		// Add options
 		if ( is_admin() ) {

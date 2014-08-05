@@ -17,16 +17,18 @@ class WCJ_Add_to_cart {
      */
     public function __construct() {
     
-        // HOOKS
- 
         // Main hooks
         if ( get_option( 'wcj_add_to_cart_enabled' ) == 'yes' ) {
         
-			add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
-			add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
+			if ( get_option( 'wcj_add_to_cart_text_enabled' ) == 'yes' ) {
+				add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
+				add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
+			}
 			
 			if ( get_option( 'wcj_add_to_cart_redirect_enabled' ) == 'yes' )
 				add_action( 'add_to_cart_redirect', array( $this, 'redirect_to_url' ), 100 );
+				
+			//add_action( 'admin_head', array( $this, 'hook_javascript' ) );
         }        
     
         // Settings hooks
@@ -34,6 +36,34 @@ class WCJ_Add_to_cart {
         add_filter( 'wcj_settings_add_to_cart', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
+	
+    /**
+     * hook_javascript.
+     *	
+	function hook_javascript() {
+
+		//$output='<script> alert("Page is loading..."); </script>';
+
+		//echo $output;
+
+		?><script type="text/javascript">
+			function toggle_visibility( class_name, start_element ) {
+				
+				var elements = document.getElementsByClassName( class_name );
+			   
+				for ( var i = start_element; i < elements.length; i++ ) {
+				
+					var e = elements[i];			
+			   
+					if ( ( e.style.display == '' ) || ( e.style.display == 'table' ) )
+						e.style.display = 'none';
+					else
+						e.style.display = 'table';
+				}
+		   }
+		</script><?php
+
+	}	
     
     /**
      * add_enabled_option.
@@ -113,13 +143,15 @@ class WCJ_Add_to_cart {
 					'id'       => 'wcj_add_to_cart_enabled',
 					'default'  => 'yes',
 					'type'     => 'checkbox',
+					/*'custom_attributes'	=> 
+								  array( 'onclick' => "toggle_visibility('form-table',1);", ),*/
 				),
 				
 				array( 'type' => 'sectionend', 'id' => 'wcj_add_to_cart_options' ),
 		);
 		
 		//ADD TO CART REDIRECT
-        $settings[] = array( 'title' => __( 'Add to Cart Redirect Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you set any url to redirect to after successfully adding product to cart. Leave empty to redirect to checkout page.', 'woocommerce-jetpack' ), 'id' => 'wcj_add_to_cart_redirect_options' );
+        $settings[] = array( 'title' => __( 'Add to Cart Redirect Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you set any url to redirect to after successfully adding product to cart. Leave empty to redirect to checkout page (skipping the cart page).', 'woocommerce-jetpack' ), 'id' => 'wcj_add_to_cart_redirect_options' );
             
 		$settings[] = array(
 				'title'    => __( 'Redirect', 'woocommerce-jetpack' ),
@@ -140,8 +172,16 @@ class WCJ_Add_to_cart {
         
         $settings[] = array( 'type'  => 'sectionend', 'id' => 'wcj_add_to_cart_redirect_options' );		
 		
-		//ADD TO CART TEXT
+		//ADD TO CART TEXT		
 		$settings[] = array( 'title' => __( 'Add to Cart Button Text Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This sections lets you set text for add to cart button for various products types and various conditions.', 'id' => 'wcj_add_to_cart_text_options' );
+		
+		$settings[] = array(
+				'title'    => __( 'Add to cart text', 'woocommerce-jetpack' ),
+				'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_add_to_cart_text_enabled',
+				'default'  => 'no',
+				'type'     => 'checkbox',
+			);
 		
 		$groups_by_product_type = array(
 		

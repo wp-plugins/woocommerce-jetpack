@@ -75,17 +75,17 @@ class WCJ_Product_Info {
 		
 		// Priority and Title
 		if ( isset( $tabs['description'] ) ) { 
-			$tabs['description']['priority'] = apply_filters( 'wcjpc_filter', 10, get_option( 'wcj_product_info_product_tabs_description_priority' ) );
+			$tabs['description']['priority'] = apply_filters( 'wcj_get_option_filter', 10, get_option( 'wcj_product_info_product_tabs_description_priority' ) );
 			if ( get_option( 'wcj_product_info_product_tabs_description_title' ) !== '' ) 
 				$tabs['description']['title'] = get_option( 'wcj_product_info_product_tabs_description_title' );
 		}
 		if ( isset( $tabs['reviews'] ) ) { 
-			$tabs['reviews']['priority'] = apply_filters( 'wcjpc_filter', 20, get_option( 'wcj_product_info_product_tabs_reviews_priority' ) );
+			$tabs['reviews']['priority'] = apply_filters( 'wcj_get_option_filter', 20, get_option( 'wcj_product_info_product_tabs_reviews_priority' ) );
 			if ( get_option( 'wcj_product_info_product_tabs_reviews_title' ) !== '' )
 				$tabs['reviews']['title'] = get_option( 'wcj_product_info_product_tabs_reviews_title' );
 		}
 		if ( isset( $tabs['additional_information'] ) ) {
-			$tabs['additional_information']['priority'] = apply_filters( 'wcjpc_filter', 30, get_option( 'wcj_product_info_product_tabs_additional_information_priority' ) );
+			$tabs['additional_information']['priority'] = apply_filters( 'wcj_get_option_filter', 30, get_option( 'wcj_product_info_product_tabs_additional_information_priority' ) );
 			if ( get_option( 'wcj_product_info_product_tabs_additional_information_title' ) !== '' )
 				$tabs['additional_information']['title'] = get_option( 'wcj_product_info_product_tabs_additional_information_title' );
 		}

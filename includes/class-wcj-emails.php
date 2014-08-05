@@ -165,7 +165,7 @@ class WCJ_Emails {
      */
     function settings_section( $sections ) {
     
-        $sections['emails'] = 'Emails';
+        $sections['emails'] = __( 'Emails', 'woocommerce-jetpack' );
         
         return $sections;
     }    

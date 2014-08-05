@@ -29,7 +29,7 @@ class WCJ_Sorting {
 			add_filter( 'woocommerce_get_catalog_ordering_args', array( $this, 'custom_woocommerce_get_catalog_ordering_args' ), 100 ); // Sorting
 			add_filter( 'woocommerce_catalog_orderby', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Front end
 			add_filter( 'woocommerce_default_catalog_orderby_options', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Back end (default sorting)
-			add_action( 'init', array( $this, 'custom_init' ), 100 ); // Remove sorting
+			//add_action( 'init', array( $this, 'custom_init' ), 100 ); // Remove sorting
 		}
 		
 		// Settings hooks
@@ -81,7 +81,7 @@ class WCJ_Sorting {
 	
 	/*
 	 * Custom Init - remove all sorting action
-	 */	
+	 *	
 	function custom_init() {
 	
 		if ( get_option( 'wcj_sorting_remove_all_enabled' ) ) 

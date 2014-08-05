@@ -78,7 +78,7 @@ class WCJ_Cart {
      */
     public function add_empty_cart_link() {
 	
-		echo '<div style="' . apply_filters( 'wcjpc_filter', 'float: right;', get_option( 'wcj_empty_cart_div_style' ) ) . '"><form action="" method="post"><input type="submit" class="button" name="empty_cart" value="' . apply_filters( 'wcjpc_filter', 'Empty Cart', get_option( 'wcj_empty_cart_text' ) ) . '"></form></div>';
+		echo '<div style="' . apply_filters( 'wcj_get_option_filter', 'float: right;', get_option( 'wcj_empty_cart_div_style' ) ) . '"><form action="" method="post"><input type="submit" class="button" name="empty_cart" value="' . apply_filters( 'wcj_get_option_filter', 'Empty Cart', get_option( 'wcj_empty_cart_text' ) ) . '"></form></div>';
 	}	
 	
     /**
@@ -116,7 +116,7 @@ class WCJ_Cart {
 			array(
 				'title'    => __( 'Cart', 'woocommerce-jetpack' ),
 				'desc'     => __( 'Enable the Cart feature', 'woocommerce-jetpack' ),
-				'desc_tip' => __( 'Add empty cart button, change add to cart redirect, automatically add to cart on product visit.', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Add empty cart button, automatically add to cart on product visit.', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_cart_enabled',
 				'default'  => 'yes',
 				'type'     => 'checkbox',
