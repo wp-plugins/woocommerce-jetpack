@@ -116,6 +116,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 					$single_item['desc'] = str_replace( ' feature', '</strong> feature', $single_item['desc'] );
 					
 					$single_item['desc'] .= ': <em>' . $single_item['desc_tip'] . '</em>';
+					//$single_item['desc'] .= ': <em>' . $single_item['desc_tip'] . __( ' Default: ', 'woocommerce-jetpack' ) . $single_item['default'] . '</em>';
 					$single_item['desc_tip'] = '';
 				}
 				

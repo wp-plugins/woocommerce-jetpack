@@ -26,6 +26,10 @@ class WCJ_PDF_Invoices {
 			//wp_ajax_
 			
 			add_action( 'admin_head', array( $this, 'add_custom_css' ) );
+			
+			if ( get_option( 'wcj_pdf_invoices_enabled_for_customers' ) == 'yes' )
+				add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'add_pdf_invoices_link_to_my_account' ), 100, 2 );
+				//add_filter( apply_filters( 'wcj_get_option_filter', 'wcj_empty_filter', 'woocommerce_my_account_my_orders_actions' ), array( $this, 'add_pdf_invoices_link_to_my_account' ), 100, 2 );
         }
 		
 		//$this->generate_pdf();
@@ -37,12 +41,25 @@ class WCJ_PDF_Invoices {
     }
 	
     /**
+     * Unlocks - PDF Invoices - add_pdf_invoices_link_to_my_account.
+     */
+    public function add_pdf_invoices_link_to_my_account( $actions, $the_order ) {
+
+		$actions['pdf_invoice'] = array(
+			'url'  => $_SERVER['REQUEST_URI'] . '?pdf_invoice=' . $the_order->id,
+			'name' => __( 'Invoice', 'woocommerce-jetpack' ),
+		);
+
+        return $actions;
+    }	
+	
+    /**
      * add_custom_css.
      */
 	function add_custom_css() {
 	
-		echo '<style> a.button.tips.view.pdf_invoice:after { content: "\e011" !important; } </style>';
-		echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e011" !important; } </style>';
+		echo '<style> a.button.tips.view.pdf_invoice:after { content: "\e028" !important; } </style>';
+		echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e028" !important; } </style>';
 	}
 	
     /**
@@ -408,7 +425,7 @@ class WCJ_PDF_Invoices {
      */
     function settings_section( $sections ) {
     
-        $sections['pdf_invoices'] = 'PDF Invoices';
+        $sections['pdf_invoices'] = __( 'PDF Invoices', 'woocommerce-jetpack' );
         
         return $sections;
     }    

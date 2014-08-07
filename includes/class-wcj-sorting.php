@@ -29,14 +29,16 @@ class WCJ_Sorting {
 			add_filter( 'woocommerce_get_catalog_ordering_args', array( $this, 'custom_woocommerce_get_catalog_ordering_args' ), 100 ); // Sorting
 			add_filter( 'woocommerce_catalog_orderby', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Front end
 			add_filter( 'woocommerce_default_catalog_orderby_options', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Back end (default sorting)
-			//add_action( 'init', array( $this, 'custom_init' ), 100 ); // Remove sorting
+			if ( get_option( 'wcj_sorting_remove_all_enabled' ) )
+				add_action( apply_filters( 'wcj_get_option_filter', 'wcj_empty_action', 'init' ), array( $this, 'remove_sorting' ), 100 ); // Remove sorting
+			
+			// Settings
+			add_filter( 'woocommerce_product_settings', array( $this, 'add_remove_sorting_checkbox' ), 100 ); // Add 'Remove All Sorting' checkbox to WooCommerce > Settings > Products
 		}
 		
 		// Settings hooks
 		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) ); // Add section to WooCommerce > Settings > Jetpack
 		add_filter( 'wcj_settings_sorting', array( $this, 'get_settings' ), 100 ); // Add the settings
-		if ( get_option( 'wcj_sorting_enabled' ) == 'yes' ) 
-			add_filter( 'woocommerce_product_settings', array( $this, 'add_remove_sorting_checkbox' ), 100 ); // Add 'Remove All Sorting' checkbox to WooCommerce > Settings > Products
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard
 	}
 
@@ -49,6 +51,13 @@ class WCJ_Sorting {
 		$settings[] = $all_settings[1];
 		
 		return $settings;
+	}	
+	
+    /**
+     * Unlocks - Sorting - remove_sorting.
+     */
+	public function remove_sorting() {
+		remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 	}	
 	
 	/*

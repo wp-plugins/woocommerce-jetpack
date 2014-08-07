@@ -17,9 +17,13 @@ class WCJ_Shipping {
      */
     public function __construct() {
  
-        // Main hooks
+        
         if ( get_option( 'wcj_shipping_enabled' ) == 'yes' ) {
+			// Include custom shipping method
+			//include_once( 'class-wc-shipping-wcj-custom.php' );  		
 			
+			
+			// Main hooks
 			//add_filter( 'woocommerce_available_shipping_methods', array( $this, 'hide_all_shipping_when_free_is_available' ), 10, 1 );
 			add_filter( 'woocommerce_package_rates', array( $this, 'hide_shipping_when_free_is_available' ), 10, 2 );
 			

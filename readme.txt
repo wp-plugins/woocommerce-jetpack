@@ -3,8 +3,8 @@ Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway
 Requires at least: 3.9.1
-Tested up to: 3.9.1
-Stable tag: 1.1.1
+Tested up to: 3.9.2
+Stable tag: 1.1.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -58,9 +58,16 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 1.1.2 - 08/08/2014 =
+* Dev - PDF Invoices - Icons at orders list changed.
+* Feature Upgraded - Payment Gateways - Icons for default WooCommerce gateways (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal). Accessible also via WooCommerce > Settings > Checkout Options.
+* Feature Upgraded - Payment Gateways - Custom Payment Gateway upgraded: Shipping methods, Virtual product, Min cart total option, Icon option.
+* Dev - Feature "Custom Payment Gateway" renamed to "Payment Gateways"
+* Dev - Move needed functions from Plus to standard version.
+
 = 1.1.1 - 06/08/2014 =
-* Feature Upgraded - Custom Price Labels - more visibility options added: hide for main variable product price or for each variation.
-* Feature - Custom Payment Gateway (offline).
+* Feature Upgraded - Custom Price Labels - More visibility options added: hide for main variable product price or for each variation.
+* Feature - Custom Payment Gateway - Simple custom offline payment gateway.
 * Dev - Move needed functions from Plus to standard version.
 * Fix - Custom Price Labels - Bug with main enable/disable checkbox, fixed.
 * Fix - Checkout - Bug with default values, fixed.
