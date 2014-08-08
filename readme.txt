@@ -1,7 +1,7 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon
 Requires at least: 3.9.1
 Tested up to: 3.9.2
 Stable tag: 1.1.2
@@ -16,7 +16,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 = Features =
 
-* Custom Payment Gateway - Add and customize simple custom offline payment gateway.
+* Payment Gateways - Add and customize simple custom offline payment gateway. Change icons (images) for all default WooCommerce payment gateways. 
 * Orders - Set minimum order amount.
 * Checkout - Customize checkout fields: disable/enable fields, set required, change labels and/or placeholders.
 * Shipping - Hide shipping when free is available.
