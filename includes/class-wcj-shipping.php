@@ -20,7 +20,7 @@ class WCJ_Shipping {
         
         if ( get_option( 'wcj_shipping_enabled' ) == 'yes' ) {
 			// Include custom shipping method
-			//include_once( 'class-wc-shipping-wcj-custom.php' );  		
+			//include_once( 'shipping/class-wc-shipping-wcj-custom.php' );  		
 			
 			
 			// Main hooks

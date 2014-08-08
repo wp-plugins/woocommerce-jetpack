@@ -78,11 +78,15 @@ class WCJ_Call_For_Price {
 	 */	
 	public function on_empty_price( $price ) {
 	
-		$updated_price = get_option('wcj_call_for_price_text');
+		/*$updated_price = get_option( 'wcj_call_for_price_text' );
 		
 		if ( ( get_option('wcj_call_for_price_show_on_single') == 'yes' ) && is_single() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
 		if ( ( get_option('wcj_call_for_price_show_on_archive') == 'yes' ) && is_archive() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
-		if ( ( get_option('wcj_call_for_price_show_on_home') == 'yes' ) && is_front_page() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
+		if ( ( get_option('wcj_call_for_price_show_on_home') == 'yes' ) && is_front_page() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );*/
+		
+		if ( ( get_option('wcj_call_for_price_text') !== '' ) && is_single() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text') );
+		if ( ( get_option('wcj_call_for_price_text_on_archive') !== '' ) && is_archive() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_archive') );
+		if ( ( get_option('wcj_call_for_price_text_on_home') !== '' ) && is_front_page() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_home') );		
 		
 		// No changes
 		return $price;
@@ -107,8 +111,8 @@ class WCJ_Call_For_Price {
 			),
 		
 			array(
-				'title' 	=> __( 'Text to Show', 'woocommerce-jetpack' ),
-				'desc_tip' 	=> __( 'This sets the html to output on empty price.', 'woocommerce-jetpack' ),
+				'title' 	=> __( 'Label to Show on Single', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'This sets the html to output on empty price. Leave blank to disable.', 'woocommerce-jetpack' ),
 				'desc'     	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'id' 		=> 'wcj_call_for_price_text',
 				'default'	=> $this->default_empty_price_text,
@@ -119,6 +123,30 @@ class WCJ_Call_For_Price {
 			),
 			
 			array(
+				'title' 	=> __( 'Label to Show on Archives', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'This sets the html to output on empty price. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'desc'     	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'id' 		=> 'wcj_call_for_price_text_on_archive',
+				'default'	=> $this->default_empty_price_text,
+				'type' 		=> 'textarea',
+				'css'		=> 'width:50%;min-width:300px;',
+				'custom_attributes'	
+							=> apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+			),
+
+			array(
+				'title' 	=> __( 'Label to Show on Homepage', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'This sets the html to output on empty price. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'desc'     	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'id' 		=> 'wcj_call_for_price_text_on_home',
+				'default'	=> $this->default_empty_price_text,
+				'type' 		=> 'textarea',
+				'css'		=> 'width:50%;min-width:300px;',
+				'custom_attributes'	
+							=> apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+			),			
+			
+			/*array(
 				'title' 	=> __( 'Visibility', 'woocommerce-jetpack' ),
 				//'title' 	=> __( 'Show on Single Product', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Check to show on single products page', 'woocommerce-jetpack' ),
@@ -144,7 +172,7 @@ class WCJ_Call_For_Price {
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
 				'checkboxgroup'   => 'end',
-			),
+			),*/
 
 			array(
 				'title' => __( 'Hide Sale! Tag', 'woocommerce-jetpack' ),
@@ -165,7 +193,7 @@ class WCJ_Call_For_Price {
 	 */		
 	function settings_section( $sections ) {
 	
-		$sections['call_for_price'] = 'Call for Price';
+		$sections['call_for_price'] = __( 'Call for Price', 'woocommerce-jetpack' );
 		
 		return $sections;
 	}	

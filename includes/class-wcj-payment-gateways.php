@@ -12,7 +12,14 @@ if ( ! class_exists( 'WCJ_Payment_Gateways' ) ) :
  
 class WCJ_Payment_Gateways {
 
-	public $woocommerce_icon_filters;
+	public $woocommerce_icon_filters = array(
+		'woocommerce_cod_icon' 				=> 'COD',
+		'woocommerce_cheque_icon' 			=> 'Cheque',
+		'woocommerce_bacs_icon' 			=> 'BACS',
+		'woocommerce_mijireh_checkout_icon' => 'Mijireh Checkout',
+		'woocommerce_paypal_icon' 			=> 'PayPal',
+		//'woocommerce_wcj_custom_icon' 		=> 'WooJetpack Custom',
+	);
     
     /**
      * Constructor.
@@ -20,18 +27,18 @@ class WCJ_Payment_Gateways {
     public function __construct() {       
         if ( get_option( 'wcj_payment_gateways_enabled' ) == 'yes' ) {
 			// Include custom payment gateway 
-			include_once( 'class-wc-gateway-wcj-custom.php' );  
+			include_once( 'gateways/class-wc-gateway-wcj-custom.php' );  
 			
 			// Main hooks
 			// Icons for default WooCommerce methods hooks
-			$this->woocommerce_icon_filters = array (
+			/*$this->woocommerce_icon_filters = array (
 				'woocommerce_cod_icon' 				=> __( 'COD', 'woocommerce-jetpack' ),
 				'woocommerce_cheque_icon' 			=> __( 'Cheque', 'woocommerce-jetpack' ),
 				'woocommerce_bacs_icon' 			=> __( 'BACS', 'woocommerce-jetpack' ),
 				'woocommerce_mijireh_checkout_icon' => __( 'Mijireh Checkout', 'woocommerce-jetpack' ),
 				'woocommerce_paypal_icon' 			=> __( 'PayPal', 'woocommerce-jetpack' ),
 				//'woocommerce_wcj_custom_icon' 		=> __( 'WooJetpack Custom', 'woocommerce-jetpack' ),
-			);
+			);*/
 			foreach ( $this->woocommerce_icon_filters as $filter_name => $filter_title )
 				add_filter( $filter_name, array( $this, 'set_icon' ) );
 				
