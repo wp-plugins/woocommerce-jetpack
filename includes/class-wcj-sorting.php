@@ -29,7 +29,7 @@ class WCJ_Sorting {
 			add_filter( 'woocommerce_get_catalog_ordering_args', array( $this, 'custom_woocommerce_get_catalog_ordering_args' ), 100 ); // Sorting
 			add_filter( 'woocommerce_catalog_orderby', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Front end
 			add_filter( 'woocommerce_default_catalog_orderby_options', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Back end (default sorting)
-			if ( get_option( 'wcj_sorting_remove_all_enabled' ) )
+			if ( get_option( 'wcj_sorting_remove_all_enabled' ) == 'yes' )
 				add_action( apply_filters( 'wcj_get_option_filter', 'wcj_empty_action', 'init' ), array( $this, 'remove_sorting' ), 100 ); // Remove sorting
 			
 			// Settings
@@ -202,9 +202,9 @@ class WCJ_Sorting {
 			),
 			
 			array(
-				'title' 	=> __( 'Sort by Name - Asc', 'woocommerce-jetpack' ),
+				'title' 	=> __( '', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),
+				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_sorting_by_name_asc_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
@@ -220,9 +220,9 @@ class WCJ_Sorting {
 			),
 			
 			array(
-				'title' 	=> __( 'Sort by Name - Desc', 'woocommerce-jetpack' ),
+				'title' 	=> __( '', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
+				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
 				'id' 		=> 'wcj_sorting_by_name_desc_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
@@ -238,9 +238,9 @@ class WCJ_Sorting {
 			),
 			
 			array(
-				'title' 	=> __( 'Sort by SKU - Asc', 'woocommerce-jetpack' ),
+				'title' 	=> __( '', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
+				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
 				'id' 		=> 'wcj_sorting_by_sku_asc_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
@@ -256,9 +256,9 @@ class WCJ_Sorting {
 			),
 			
 			array(
-				'title' 	=> __( 'Sort by SKU - Desc', 'woocommerce-jetpack' ),
+				'title' 	=> __( '', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
+				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
 				'id' 		=> 'wcj_sorting_by_sku_desc_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',

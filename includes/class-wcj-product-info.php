@@ -24,8 +24,12 @@ class WCJ_Product_Info {
 		// Main hooks
 		if ( 'yes' == get_option( 'wcj_product_info_enabled' ) ) {
 		
-			add_filter( 'woocommerce_product_tabs', array( $this, 'customize_product_tabs' ), 98 );			
-			add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), 100 );
+			add_filter( 'woocommerce_product_tabs', array( $this, 'customize_product_tabs' ), 98 );	
+			
+			if ( get_option( 'wcj_product_info_related_products_enable' ) == 'yes' ) {
+				add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), 100 );
+				add_filter( 'woocommerce_output_related_products_args', array( $this, 'related_products_limit_args' ), 100 );
+			}
 		}
 		
 		// Settings hooks
@@ -48,15 +52,24 @@ class WCJ_Product_Info {
 	/**
 	 * Change number of related products on product page.
 	 */ 
-	function related_products_limit( $args ) {
+	function related_products_limit_args( $args ) {
+			
+		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
+		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
+		$args['columns'] = get_option( 'wcj_product_info_related_products_columns' );
+				
+		return $args;
+	}	
 	
-		if ( get_option( 'wcj_product_info_related_products_enable' ) == 'yes' ) {
-		
-			$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
-			$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-			if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) $args['order'] = get_option( 'wcj_product_info_related_products_order' );
-		}
-		
+	/**
+	 * Change number of related products on product page.
+	 */ 
+	function related_products_limit( $args ) {
+			
+		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
+		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
+		if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) $args['order'] = get_option( 'wcj_product_info_related_products_order' );
+				
 		return $args;
 	}
 
@@ -213,6 +226,13 @@ class WCJ_Product_Info {
 				'default'  => 3,
 				'type'     => 'number',
 			),
+			
+			array(
+				'title'    => __( 'Related Products Columns', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_related_products_columns',
+				'default'  => 3,
+				'type'     => 'number',
+			),			
 			
 			array(
 				'title'    => __( 'Order by', 'woocommerce-jetpack' ),

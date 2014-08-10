@@ -15,22 +15,16 @@ class WCJ_Shipping {
     /**
      * Constructor.
      */
-    public function __construct() {
- 
-        
+    public function __construct() {	
         if ( get_option( 'wcj_shipping_enabled' ) == 'yes' ) {
 			// Include custom shipping method
-			//include_once( 'shipping/class-wc-shipping-wcj-custom.php' );  		
-			
-			
+			//include_once( 'shipping/class-wc-shipping-wcj-custom.php' );			
 			// Main hooks
 			//add_filter( 'woocommerce_available_shipping_methods', array( $this, 'hide_all_shipping_when_free_is_available' ), 10, 1 );
-			add_filter( 'woocommerce_package_rates', array( $this, 'hide_shipping_when_free_is_available' ), 10, 2 );
-			
+			add_filter( 'woocommerce_package_rates', array( $this, 'hide_shipping_when_free_is_available' ), 10, 2 );			
 			// Settings
 			add_filter( 'woocommerce_shipping_settings', array( $this, 'add_hide_shipping_if_free_available_fields' ), 100 );				
-        }        
-    
+        }    
         // Settings hooks
         add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_shipping', array( $this, 'get_settings' ), 100 );
@@ -199,7 +193,7 @@ class WCJ_Shipping {
      */
     function settings_section( $sections ) {
     
-        $sections['shipping'] = 'Shipping';
+        $sections['shipping'] = __( 'Shipping', 'woocommerce-jetpack' );
         
         return $sections;
     }    
