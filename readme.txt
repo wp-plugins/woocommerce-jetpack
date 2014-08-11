@@ -58,8 +58,8 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 == Changelog ==
 
 = 1.1.5 - 11/08/2014 =
-Dev - PDF Invoices - "Save as..." disabled.
-Feature Upgraded - PDF Invoices - New fields added: line total excluding tax, subtotal, shipping, discount, taxes.
+* Dev - PDF Invoices - "Save as..." disabled.
+* Feature Upgraded - PDF Invoices - New fields added: line total excluding tax, subtotal, shipping, discount, taxes.
 
 = 1.1.4 - 10/08/2014 =
 * Fix - Sorting - "Remove all sorting" bug (always enabled), fixed (second time).
