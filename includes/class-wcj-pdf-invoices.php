@@ -59,7 +59,7 @@ class WCJ_PDF_Invoices {
 	function add_custom_css() {
 	
 		echo '<style> a.button.tips.view.pdf_invoice:after { content: "\e028" !important; } </style>';
-		echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e028" !important; } </style>';
+		//echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e028" !important; } </style>';
 	}
 	
     /**
@@ -242,7 +242,7 @@ class WCJ_PDF_Invoices {
 		
 		// SUBTOTAL
 		//$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' . $the_order->get_subtotal_to_display( false, 'excl' ) . '</td></tr>';
-		$subtotal = wc_price( ( $the_order->get_total() - $the_order->get_total_shipping() - $the_order->get_total_tax() ), array( 'currency' => $the_order->get_order_currency() ) );   //$the_order->get_total_discount() $the_order->get_total_shipping()
+		$subtotal = wc_price( ( $the_order->get_total() - $the_order->get_total_tax() - $the_order->get_total_shipping() - $the_order->get_total_discount() ), array( 'currency' => $the_order->get_order_currency() ) );   //$the_order->get_total_discount() $the_order->get_total_shipping()
 		$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' . $subtotal . '</td></tr>';
 				
 		// SHIPPING
@@ -454,7 +454,7 @@ class WCJ_PDF_Invoices {
 
 			array(
                 'title'    => __( 'Order Subtotal Text', 'woocommerce-jetpack' ),
-                'desc_tip' => __( 'Order Subtotal text', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Order Subtotal = Total - Taxes - Shipping - Discounts', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_order_subtotal_text',
                 'default'  => __( 'Order Subtotal', 'woocommerce-jetpack' ),
                 'type'     => 'text',
