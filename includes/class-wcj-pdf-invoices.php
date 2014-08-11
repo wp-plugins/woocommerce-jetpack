@@ -95,8 +95,8 @@ class WCJ_PDF_Invoices {
 		//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
 		//$pdf->SetHeaderData( get_option( 'wcj_pdf_invoices_seller_logo_url' ), 30, get_option( 'wcj_pdf_invoices_header_title' ), get_option( 'wcj_pdf_invoices_header_string' ), array(0,64,255), array(0,64,128));
 		$pdf->SetPrintHeader(false);
-		//$pdf->setFooterData(array(0,64,0), array(0,64,128));
-		$pdf->SetPrintFooter(false);
+		$pdf->setFooterData(array(0,64,0), array(0,64,128));
+		//$pdf->SetPrintFooter(false);
 
 		// set header and footer fonts
 		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -133,7 +133,7 @@ class WCJ_PDF_Invoices {
 		// dejavusans is a UTF-8 Unicode font, if you only need to
 		// print standard ASCII chars, you can use core fonts like
 		// helvetica or times to reduce file size.
-		$pdf->SetFont('dejavusans', '', 14, '', true);
+		$pdf->SetFont('dejavusans', '', 12, '', true);
 
 		// Add a page
 		// This method has several options, check the source code documentation for more information.
@@ -150,6 +150,7 @@ class WCJ_PDF_Invoices {
 		
 		//$html .= print_r( $the_order , true );
 		
+		// HEADER TEXT (AND IF SET - LOGO) //
 		if ( get_option( 'wcj_pdf_invoices_seller_logo_url' ) !== '' ) 
 			//$html .= get_option( 'wcj_pdf_invoices_seller_logo_url' );
 			$html .= '<p><img src="' . get_option( 'wcj_pdf_invoices_seller_logo_url' ) . '"><div style="text-align:right;color:gray;font-weight:bold;">' . get_option( 'wcj_pdf_invoices_header_text' ) . '</div></p>';
@@ -158,11 +159,13 @@ class WCJ_PDF_Invoices {
 		
 		$order_number = $the_order->get_order_number();
 		
+		// NUMBER AND DATE //
 		$html .= '<table><tbody>';
 		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_number_text' ) . '</td><td>' . $order_number . '</td></tr>';
 		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_date_text' ) . '</td><td>' . date( get_option('date_format') , strtotime( $the_order->order_date ) ) . '</td></tr>';
 		$html .= '</tbody></table>';		
 		
+		// SELLER AND BUYER INFO //
 		$html .= '<p><table><tbody>';
 		$html .= '<tr><td>';
 		$html .= '<h2>' . get_option( 'wcj_pdf_invoices_seller_text' ) . '</h2>';
@@ -172,21 +175,34 @@ class WCJ_PDF_Invoices {
 		$html .= $the_order->get_formatted_billing_address();
 		$html .= '</td></tr></tbody></table></p>';				
 				
+		// ITEMS //
 		$html .= '<h2>' . get_option( 'wcj_pdf_invoices_items_text' ) . '</h2>';
 		$html .= '<table class="custom_table"><tbody>';
-		$html .= '<tr>
-			<th style="width:10%;">' . get_option( 'wcj_pdf_invoices_column_nr_text' ) . '</th>
-			<th style="width:55%;">' . get_option( 'wcj_pdf_invoices_column_item_name_text' ) . '</th>
-			<th style="width:15%;">' . get_option( 'wcj_pdf_invoices_column_qty_text' ) . '</th>
-			<th style="width:20%;">' . get_option( 'wcj_pdf_invoices_column_price_text' ) . '</th>
-		</tr>';
+		$html .= '<tr>';
+		$html .= '<th style="width:10%;">' . get_option( 'wcj_pdf_invoices_column_nr_text' ) . '</th>';
+		//if ( 0 != $the_order->get_line_tax( $item ) )
+		if ( $the_order->get_total_tax() != 0 )
+			$html .= '<th style="width:50%;">' . get_option( 'wcj_pdf_invoices_column_item_name_text' ) . '</th>';
+		else
+			$html .= '<th style="width:65%;">' . get_option( 'wcj_pdf_invoices_column_item_name_text' ) . '</th>';
+		$html .= '<th style="width:10%;">' . get_option( 'wcj_pdf_invoices_column_qty_text' ) . '</th>';
+		//if ( 0 !== $the_order->get_line_tax( $item ) )
+		//if ( $the_order->get_line_tax( $item ) != 0 )
+		if ( $the_order->get_total_tax() != 0 )
+			$html .= '<th style="width:15%;">' . get_option( 'wcj_pdf_invoices_column_price_tax_excl_text' ) . '</th>';
+		$html .= '<th style="width:15%;">' . get_option( 'wcj_pdf_invoices_column_price_text' ) . '</th>';
+		$html .= '</tr>';
 		$item_counter = 0;
 		foreach ( $the_items as $item ) {
+		
+			
 			
 			$item_counter++;
 			
 			//$html .= '<li>';
 			$html .= '<tr>';
+			
+			//$html .= '<td>' . $the_order->get_line_tax( $item ) . '</td>';
 			
 			$html .= '<td>' . $item_counter . '</td>';
 		
@@ -209,15 +225,47 @@ class WCJ_PDF_Invoices {
 			$html .= '</td>';
 			
 			$html .= '<td>' . $item['qty'] . '</td>';
-			$html .= '<td>' . $the_order->get_formatted_line_subtotal( $item ) . '</td>';
+			//if ( '' !== $the_order->get_formatted_line_subtotal( $item, 'excl' ) ) $html .= '<td>' . $the_order->get_formatted_line_subtotal( $item, 'excl' ) . '</td>';
+			if ( $the_order->get_line_tax( $item ) != 0 )
+				$html .= '<td>' . wc_price( $the_order->get_line_subtotal( $item ), array( 'currency' => $the_order->get_order_currency() ) ) . '</td>';
+			$html .= '<td>' . $the_order->get_formatted_line_subtotal( $item, 'incl' ) . '</td>';
 			//$html .= '</li>';
 			$html .= '</tr>';
 		}
 		//$html .= '</ol>';
 		$html .= '</tbody></table>';
 			
+			
+		// ORDER TOTALS //
 		//$html .= '<h3>Order total: ' . $the_order->get_formatted_order_total() . '</h3>';		
-		$html .= '<p><table style="font-size: smaller; padding: 10px; width: 100%;"><tbody><tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_total_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' . $the_order->get_formatted_order_total() . '</td></tr></tbody></table></p>';
+		$html .= '<p><table style="font-size: smaller; padding: 10px; width: 100%;"><tbody>';
+		
+		// SUBTOTAL
+		//$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' . $the_order->get_subtotal_to_display( false, 'excl' ) . '</td></tr>';
+		$subtotal = wc_price( ( $the_order->get_total() - $the_order->get_total_shipping() - $the_order->get_total_tax() ), array( 'currency' => $the_order->get_order_currency() ) );   //$the_order->get_total_discount() $the_order->get_total_shipping()
+		$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' . $subtotal . '</td></tr>';
+				
+		// SHIPPING
+		if ( $the_order->get_total_shipping() != 0 )
+			$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_shipping_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' .  wc_price( $the_order->get_total_shipping(), array( 'currency' => $the_order->get_order_currency() ) ) . '</td></tr>';		
+	
+		// DISCOUNT
+		if ( $the_order->get_total_discount() != 0 )
+			$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_discount_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' .  wc_price( $the_order->get_total_discount(), array( 'currency' => $the_order->get_order_currency() ) ) . '</td></tr>';				
+		//
+		
+		// TAXES
+		foreach ( $the_order->get_tax_totals() as $tax_object )
+			$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . $tax_object->label . '</td><td style="border: 1px solid #F0F0F0;">' . $tax_object->formatted_amount . '</td></tr>';
+			
+		// TOTAL
+		$html .= '<tr><td colspan="3"></td><td style="border: 1px solid #F0F0F0;">' . get_option( 'wcj_pdf_invoices_order_total_text' ) . '</td><td style="border: 1px solid #F0F0F0;">' . $the_order->get_formatted_order_total() . '</td></tr>';
+		
+		$html .= '</tbody></table></p>';
+		
+//		$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_text' ) . ': ' . $the_order->get_shipping_to_display( 'incl' ) . '</p>';
+		
+//		$html .= '<p>' . wc_price( $the_order->get_total_shipping(), array( 'currency' => $the_order->get_order_currency() ) ) . '</p>';
 		
 		//$html .= print_r($the_order , true );
 		
@@ -248,11 +296,11 @@ class WCJ_PDF_Invoices {
 			'action' 	=> "view pdf_invoice"
 		);
 		
-		$actions['save_pdf_invoice'] = array(
+		/*$actions['save_pdf_invoice'] = array(
 			'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id . '&save_pdf_invoice=1',
 			'name' 		=> __( 'Save PDF', 'woocommerce-jetpack' ),
 			'action' 	=> "view save_pdf_invoice"
-		);
+		);*/
    
         return $actions;
     }
@@ -387,13 +435,49 @@ class WCJ_PDF_Invoices {
             ),
 			
 			array(
-                'title'    => __( 'Column - Price Text', 'woocommerce-jetpack' ),
+                'title'    => __( 'Column - Sum (TAX excl.) Text', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Price text', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_column_price_tax_excl_text',
+                'default'  => __( 'Price (TAX excl.)', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),			
+			
+			array(
+                'title'    => __( 'Column - Sum (TAX incl.) Text', 'woocommerce-jetpack' ),
                 'desc_tip' => __( 'Price text', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_column_price_text',
-                'default'  => __( 'Price', 'woocommerce-jetpack' ),
+                'default'  => __( 'Price (TAX incl.)', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),	
+
+			array(
+                'title'    => __( 'Order Subtotal Text', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Order Subtotal text', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_order_subtotal_text',
+                'default'  => __( 'Order Subtotal', 'woocommerce-jetpack' ),
                 'type'     => 'text',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
+			
+			array(
+                'title'    => __( 'Order Shipping Text', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Order Shipping text', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_order_shipping_text',
+                'default'  => __( 'Shipping', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),			
+			
+			array(
+                'title'    => __( 'Total Discount Text', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Total Discount text', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_order_discount_text',
+                'default'  => __( 'Discount', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),				
 			
 			array(
                 'title'    => __( 'Order Total Text', 'woocommerce-jetpack' ),
