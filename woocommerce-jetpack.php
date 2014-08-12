@@ -3,16 +3,17 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.1.6
+Version: 1.1.7
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // Check if WooCommerce is active
+if ( ! defined( 'ABSPATH' ) ) exit; // exit if accessed directly
+
+if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // check if WooCommerce is active
 
 if ( ! class_exists( 'WC_Jetpack' ) ) :
 

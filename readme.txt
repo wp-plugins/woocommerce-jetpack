@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon
 Requires at least: 3.9.1
 Tested up to: 3.9.2
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -57,11 +57,17 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 1.1.7 - 12/08/2014 =
+* Dev - Call for Price - "Hide sale tag" code fixed.
+* Feature Upgraded - Call for Price - Separate label to show for related products.
+* Dev - PDF Invoices - Text align to right on cells with prices.
+* Dev - PDF Invoices - "PDF" renamed to "PDF Invoice" (in orders list).
+
 = 1.1.6 - 11/08/2014 =
 * Fix - PDF Invoices - Bug with subtotal calculation (discounts were not included), fixed.
 
 = 1.1.5 - 11/08/2014 =
-* Dev - PDF Invoices - "Save as..." disabled.
+* Dev - PDF Invoices - "Save as..." disabled (in orders list).
 * Feature Upgraded - PDF Invoices - New fields added: line total excluding tax, subtotal, shipping, discount, taxes.
 
 = 1.1.4 - 10/08/2014 =

@@ -9,24 +9,24 @@
  * @author		Algoritmika Ltd.
  */
  
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; // exit if accessed directly
 
 if ( ! class_exists( 'WCJ_Call_For_Price' ) ) :
 
 class WCJ_Call_For_Price {
 	
+	/**
+	 * Constructor.
+	 */	
 	public function __construct() {
 	
 		// Defaults
 		$this->default_empty_price_text = '<strong>Call for price</strong>';
 		
-		// HOOKS
-		// Main hooks
 		// Empty Price hooks
-		if ( get_option( 'wcj_call_for_price_enabled' ) == 'yes' ) {
-		
+		if ( get_option( 'wcj_call_for_price_enabled' ) == 'yes' ) {		
 			add_filter( 'woocommerce_empty_price_html', array( $this, 'on_empty_price' ), 100 );
-			add_filter( 'woocommerce_sale_flash', array( $this, 'hide_sales_flash' ), 100, 2 );
+			add_filter( 'woocommerce_sale_flash', array( $this, 'hide_sales_flash' ), 100, 3 );
 		}		
 	
 		// Settings hooks
@@ -36,64 +36,34 @@ class WCJ_Call_For_Price {
 	}
 	
 	/**
-	 * add_enabled_option.
+	 * Hide "sales" icon for empty price products.
 	 */
-	public function add_enabled_option( $settings ) {
-	
-		$all_settings = $this->get_settings();
-		$settings[] = $all_settings[1];
-		
-		return $settings;
+	public function hide_sales_flash( $onsale_html, $post, $product )	{	
+		if ( get_option('wcj_call_for_price_hide_sale_sign') === 'yes' )		
+			if ( $product->get_price() === '' )
+				return '';
+		return $onsale_html;
 	}
 	
 	/**
-	 * hide_sales_flash.
-	 */
-	public function hide_sales_flash( $post, $product )	{
-	
-		if ( get_option('wcj_call_for_price_hide_sale_sign') === 'yes' ) {
-		
-			$current_product = get_product( $product->ID );
-			if ( $current_product->get_price() == '' ) return false;
-		}
-		
-		return '<span class="onsale">' . __( 'Sale!', 'woocommerce' ) . '</span>';
-	}
-	
-	/**
-	 * on_empty_price.
-	 *	
-	public function on_empty_price( $price ) {
-
-		if ( ( get_option('wcj_call_for_price_show_on_single') == 'yes' ) && is_single() ) return $this->default_empty_price_text;
-		if ( ( get_option('wcj_call_for_price_show_on_archive') == 'yes' ) && is_archive() ) return $this->default_empty_price_text;
-		if ( ( get_option('wcj_call_for_price_show_on_home') == 'yes' ) && is_front_page() ) return $this->default_empty_price_text;
-		
-		// No changes
-		return $price;
-	}
-	
-	/**
-	 * On empty price.
+	 * On empty price filter - return the label.
 	 */	
-	public function on_empty_price( $price ) {
-	
-		/*$updated_price = get_option( 'wcj_call_for_price_text' );
-		
-		if ( ( get_option('wcj_call_for_price_show_on_single') == 'yes' ) && is_single() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
-		if ( ( get_option('wcj_call_for_price_show_on_archive') == 'yes' ) && is_archive() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );
-		if ( ( get_option('wcj_call_for_price_show_on_home') == 'yes' ) && is_front_page() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, $updated_price );*/
-		
-		if ( ( get_option('wcj_call_for_price_text') !== '' ) && is_single() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text') );
-		if ( ( get_option('wcj_call_for_price_text_on_archive') !== '' ) && is_archive() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_archive') );
-		if ( ( get_option('wcj_call_for_price_text_on_home') !== '' ) && is_front_page() ) return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_home') );		
+	public function on_empty_price( $price ) {	
+		if ( ( get_option('wcj_call_for_price_text') !== '' ) && is_single( get_the_ID() ) ) 
+			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text') );
+		if ( ( get_option('wcj_call_for_price_text_on_related') !== '' ) && ( is_single() ) && ( ! is_single( get_the_ID() ) ) ) 
+			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_related') );
+		if ( ( get_option('wcj_call_for_price_text_on_archive') !== '' ) && is_archive() ) 
+			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_archive') );
+		if ( ( get_option('wcj_call_for_price_text_on_home') !== '' ) && is_front_page() ) 
+			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_home') );		
 		
 		// No changes
 		return $price;
 	}	
 	
 	/**
-	 * get_settings.
+	 * Get settings array.
 	 */		
 	function get_settings() {
 
@@ -144,38 +114,22 @@ class WCJ_Call_For_Price {
 				'css'		=> 'width:50%;min-width:300px;',
 				'custom_attributes'	
 							=> apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+			),
+
+			array(
+				'title' 	=> __( 'Label to Show on Related', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'This sets the html to output on empty price. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'desc'     	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'id' 		=> 'wcj_call_for_price_text_on_related',
+				'default'	=> $this->default_empty_price_text,
+				'type' 		=> 'textarea',
+				'css'		=> 'width:50%;min-width:300px;',
+				'custom_attributes'	
+							=> apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
 			),			
 			
-			/*array(
-				'title' 	=> __( 'Visibility', 'woocommerce-jetpack' ),
-				//'title' 	=> __( 'Show on Single Product', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Check to show on single products page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_call_for_price_show_on_single',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
-				'checkboxgroup'   => 'start',
-			),
-
 			array(
-				//'title' 	=> __( 'Show on Products Archive', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Check to show on products archive page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_call_for_price_show_on_archive',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
-				'checkboxgroup'		=> '',
-			),
-
-			array(
-				//'title' 	=> __( 'Show on Home Page', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Check to show on home page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_call_for_price_show_on_home',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
-				'checkboxgroup'   => 'end',
-			),*/
-
-			array(
-				'title' => __( 'Hide Sale! Tag', 'woocommerce-jetpack' ),
+				'title' 	=> __( 'Hide Sale! Tag', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Hide the tag', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_call_for_price_hide_sale_sign',
 				'default'	=> 'yes',
@@ -189,12 +143,19 @@ class WCJ_Call_For_Price {
 	}
 	
 	/**
-	 * settings_section.
-	 */		
-	function settings_section( $sections ) {
+	 * Get "enabled" setting from settings array.
+	 */
+	public function add_enabled_option( $settings ) {	
+		$all_settings = $this->get_settings();
+		$settings[] = $all_settings[1];		
+		return $settings;
+	}	
 	
-		$sections['call_for_price'] = __( 'Call for Price', 'woocommerce-jetpack' );
-		
+	/**
+	 * Add section to WooCommerce > Settings > Jetpack.
+	 */		
+	function settings_section( $sections ) {	
+		$sections['call_for_price'] = __( 'Call for Price', 'woocommerce-jetpack' );		
 		return $sections;
 	}	
 }
