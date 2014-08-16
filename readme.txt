@@ -139,4 +139,4 @@ This is the first release of the plugin.
 
 == TODO List ==
 
-* TODO - Feature Upgrade - Custom Price Labels - Add compatibility with bookable products.
+* Feature Upgrade - Custom Price Labels - Add compatibility with bookable products.
