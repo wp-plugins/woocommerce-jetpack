@@ -57,6 +57,9 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == TODO List ==
 
+= 1.1.9 - 1X/08/2014 =
+* Feature Upgrade - Custom Price Labels - Global labels.
+
 = 1.1.8 - 16/08/2014 =
 * Feature Upgrade - Custom Price Labels - Add compatibility with bookable products.
 
