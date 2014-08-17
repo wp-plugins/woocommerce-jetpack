@@ -1,7 +1,7 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 3.9.2
 Stable tag: 1.2.0
@@ -70,7 +70,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 1. New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
 1. Upgrade Feature - Custom Price Labels - Add "local remove".
 1. Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
-1. Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use.
+1. Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
 1. Dev - Recheck, comment the code.
 1. Upgrade Feature - Cart - Cart discount.
 
