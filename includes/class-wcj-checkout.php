@@ -65,13 +65,28 @@ class WCJ_Checkout {
 			//if ( is_super_admin() )
 			//global $woocommerce;
 			//	print_r( $woocommerce );
+			
+			add_filter( 'woocommerce_order_button_text', array( $this, 'set_order_button_text' ) );
         }        
     
         // Settings hooks
         add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_checkout', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
+		
+		
+			
     }
+	
+    /**
+     * set_order_button_text.
+     */
+    public function set_order_button_text( $current_text ) {
+		$new_text = get_option( 'wcj_checkout_place_order_button_text' );
+		if ( $new_text != '' )
+			return $new_text;
+		return $current_text;
+    }	
     
     /**
      * add_enabled_option.
@@ -144,6 +159,21 @@ class WCJ_Checkout {
             array( 'type'  => 'sectionend', 'id' => 'wcj_checkout_options' ),
         );
 		
+		// Place order (Order now) Button
+		$settings[] = array( 'title' => __( 'Place order (Order now) Button', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( '', 'woocommerce-jetpack' ), 'id' => 'wcj_checkout_place_order_button_options' );
+		
+		$settings[] = array(
+			'title'    => __( 'Text', 'woocommerce-jetpack' ),
+			'desc'     => __( 'leave blank for WooCommerce default', 'woocommerce-jetpack' ),
+			'desc_tip' => __( 'Button on the checkout page.', 'woocommerce-jetpack' ),
+			'id'       => 'wcj_checkout_place_order_button_text',
+			'default'  => '',
+			'type'     => 'text',
+		);
+		
+		$settings[] = array( 'type'  => 'sectionend', 'id' => 'wcj_checkout_place_order_button_options' );		
+		
+		// Checkout fields
 		$settings[] = array( 'title' => __( 'Checkout Fields Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you customize the checkout fields: change label, placeholder, set required, or remove any field.', 'woocommerce-jetpack' ), 'id' => 'wcj_checkout_fields_options' );
 		
 		/*$items = array(

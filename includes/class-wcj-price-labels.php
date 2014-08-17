@@ -5,6 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class 		WCJ_Price_Labels
+ * @version		1.0.0 
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -54,7 +55,7 @@ class WCJ_Price_Labels {
 			//add_filter( 'woocommerce_cart_item_price_html', array( $this, 'custom_price' ), 999, 2 ); // depreciated?
 			//add_filter( 'woocommerce_cart_item_price', array( $this, 'custom_price' ), 999, 2 );						
 
-			//add_filter( 'woocommerce_get_price_html', array( $this, 'custom_price' ), 100, 2 );
+			add_filter( 'woocommerce_get_price_html', array( $this, 'custom_price' ), 100, 2 );
 			
 			//if ( $labels_array[ 'variation_simple' ] == 'off' ) {	
 
@@ -222,13 +223,18 @@ class WCJ_Price_Labels {
 				break;
 		}	
 	
-		return $price;
+		return str_replace( 'From: ', '', $price );
 	}
 	
 	/*
 	 * front end
 	 */	
 	public function custom_price( $price, $product ) {	
+	
+		$current_filter_name = current_filter();
+		
+		if ( ( 'woocommerce_get_price_html' === $current_filter_name ) && ( 'booking' !== $product->product_type ) )
+			return $price;
 	
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
 		
@@ -252,7 +258,12 @@ class WCJ_Price_Labels {
 				}*/
 				
 				//$price .= print_r( $labels_array );
-			}			
+			}
+
+			// Global price labels - Remove text from price
+			$text_to_remove = get_option( 'wcj_global_price_labels_remove_text' );
+			if ( '' != $text_to_remove )
+				$price = str_replace( $text_to_remove, '', $price );
 			
 			if ( $labels_array[ 'variation_enabled' ] == 'on' ) {
 			
@@ -262,7 +273,7 @@ class WCJ_Price_Labels {
 					( ( $labels_array['variation_single'] 	 == 'off' ) && ( is_single() ) )
 				   ) 
 					{	
-						$current_filter_name = current_filter();
+						//$current_filter_name = current_filter();
 
 						$variable_filters_array = array(
 							'woocommerce_variable_empty_price_html', 		
@@ -311,6 +322,24 @@ class WCJ_Price_Labels {
 			),
 		
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_price_labels_options' ),
+			
+			array(	'title' => __( 'Global Custom Price Labels', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you set price labels for all products globally.', 'woocommerce-jetpack' ), 'id' => 'wcj_global_price_labels_options' ),
+			
+			array(
+				'title' 	=> __( 'Remove from price', 'woocommerce-jetpack' ),
+				//'desc' 		=> __( 'Enable the Custom Price Labels feature', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Enter text to remove from all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_global_price_labels_remove_text',
+				'default'	=> '',
+				'type' 		=> 'text',
+				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'	
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'	   => 'width:30%;min-width:300px;',				
+			),
+		
+			array( 'type' 	=> 'sectionend', 'id' => 'wcj_global_price_labels_options' ),
+			
 		);
 		
 		return $settings;

@@ -25,7 +25,7 @@ class WCJ_Old_Slugs {
 		
 			if ( is_admin() ) {
 			
-				add_action( 'admin_menu', array($this, 'add_old_slugs_tool'), 999 ); // Add Remove Old Slugs tool to WooCommerce menu
+				add_action( 'admin_menu', array($this, 'add_old_slugs_tool'), 100 ); // Add Remove Old Slugs tool to WooCommerce menu
 			}
 		}
 		
@@ -130,8 +130,8 @@ class WCJ_Old_Slugs {
 		}	
 		?>
 		<div>
-			<h2>WooCommerce Jetpack - Remove Old Product Slugs</h2>
-			<p>Tool removes old slugs/permalinks from database.</p>
+			<h2><?php _e( 'WooCommerce Jetpack - Remove Old Product Slugs', 'woocommerce-jetpack' ); ?></h2>
+			<p><?php _e( 'Tool removes old slugs/permalinks from database.', 'woocommerce-jetpack' ); ?></p>
 			<?php echo $remove_result_html; ?>			
 			<?php 
 			$num_old_slugs_products = count( $posts_ids['products'] );

@@ -3,14 +3,13 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.1.7
+Version: 1.2.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
-
 if ( ! defined( 'ABSPATH' ) ) exit; // exit if accessed directly
 
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // check if WooCommerce is active
@@ -38,13 +37,9 @@ final class WC_Jetpack {
 	 * @see WCJ()
 	 * @return WC_Jetpack - Main instance
 	 */
-	public static function instance() {
-	
-		if ( is_null( self::$_instance ) ) {
-		
+	public static function instance() {	
+		if ( is_null( self::$_instance ) )		
 			self::$_instance = new self();
-		}
-		
 		return self::$_instance;
 	}
 
@@ -83,11 +78,35 @@ final class WC_Jetpack {
 		
 			add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_wcj_settings_tab' ) );
 			add_filter( 'get_wc_jetpack_plus_message', array( $this, 'display_get_wcj_plus_message' ), 100, 2 );
+			
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
+			add_action( 'admin_menu', array( $this, 'jetpack_menu' ), 100 );
 		}
 		
 		// Loaded action
 		do_action( 'wcj_loaded' );
 	}
+	
+	/**
+	 * Addons menu item
+	 */
+	public function jetpack_menu() {
+		add_submenu_page( 'woocommerce', __( 'WooCommerce Jetpack', 'woocommerce' ),  __( 'Jetpack Settings', 'woocommerce' ) , 'manage_woocommerce', 'admin.php?page=wc-settings&tab=jetpack' );
+	}	
+	
+	/**
+	 * Show action links on the plugin screen
+	 *
+	 * @param mixed $links
+	 * @return array
+	 */
+	public function action_links( $links ) {
+		return array_merge( array(
+			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=jetpack' ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>',
+			'<a href="' . esc_url( apply_filters( 'woocommerce_docs_url', 'http://woojetpack.com/', 'woocommerce' ) ) . '">' . __( 'Docs', 'woocommerce' ) . '</a>',
+			'<a href="' . esc_url( apply_filters( 'woocommerce_support_url', 'http://woojetpack.com/plus/' ) ) . '">' . __( 'Unlock all', 'woocommerce' ) . '</a>',
+		), $links );
+	}	
 	
 	/**
 	 * wcj_get_option.

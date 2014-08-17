@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon
 Requires at least: 3.9.1
 Tested up to: 3.9.2
-Stable tag: 1.1.7
+Stable tag: 1.2.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,7 +16,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 = Features =
 
-* Payment Gateways - Add and customize simple custom offline payment gateway. Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways. 
+* Payment Gateways - Add and customize simple custom offline payment gateway. Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways.
 * Orders - Sequential order numbering, custom order number prefix and number width. Set minimum order amount.
 * Checkout - Customize checkout fields: disable/enable fields, set required, change labels and/or placeholders.
 * Shipping - Hide shipping when free is available.
@@ -55,7 +55,34 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 1. Plugin admin area.
 
+== TODO List ==
+
+Please note that this list is only preliminary and may be corrected at any time.
+
+Please let us know if you want anything added to list by <a href="http://woojetpack.com/submit-idea/">filling the form</a>.
+
+If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
+
+1. Upgrade Feature - Custom Price Labels - Add "global labels".
+1. Upgrade Feature - Shipping - Add "Custom Shipping Method".
+1. Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
+1. Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and colour.
+1. New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
+1. Upgrade Feature - Custom Price Labels - Add "local remove".
+1. Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
+1. Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use.
+1. Dev - Recheck, comment the code.
+1. Upgrade Feature - Cart - Cart discount.
+
 == Changelog ==
+
+= 1.2.0 - 17/08/2014 =
+* Feature Upgraded - Orders - Auto-complete all orders option added.
+* Feature Upgraded - Orders - Custom Order Statuses added.
+* Feature Upgraded - Custom Price Labels - Added global remove text from price option.
+* Feature Upgraded - Custom Price Labels - Added compatibility with bookable products.
+* Dev - Links to Jetpack settings added to plugins page and to WooCommerce back end menu.
+* Feature Upgraded - Checkout - Customizable "Place order" ("Order now") button text.
 
 = 1.1.7 - 12/08/2014 =
 * Dev - Call for Price - "Hide sale tag" code fixed.
@@ -75,8 +102,8 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Dev - Product Info - Related products: "columns" option added.
 
 = 1.1.3 - 09/08/2014 =
-* Fix - "Warning: Invalid argument supplied for foreach() in..." bug fixed ("Payment Gateways" feature).
-* Feature Upgraded - Call for Price - different labels for single/archive/home.
+* Fix - Payment Gateways - "Warning: Invalid argument supplied for foreach() in..." bug fixed.
+* Feature Upgraded - Call for Price - Different labels for single/archive/home.
 
 = 1.1.2 - 08/08/2014 =
 * Dev - PDF Invoices - Icons at orders list changed.
