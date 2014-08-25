@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 3.9.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,7 +66,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 1. Upgrade Feature - Custom Price Labels - Add "global labels".
 1. Upgrade Feature - Shipping - Add "Custom Shipping Method".
 1. Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
-1. Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and colour.
+1. Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
 1. New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
 1. Upgrade Feature - Custom Price Labels - Add "local remove".
 1. Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
@@ -75,6 +75,9 @@ If you wish that some task would go up the queue to make it faster, please conta
 1. Upgrade Feature - Cart - Cart discount.
 
 == Changelog ==
+
+= 1.3.0 - 25/08/2014 =
+* Feature Upgraded - PDF Invoices - Major upgrade: single item price, item and line taxes, payment and shipping methods, additional footer, font size, custom css added.
 
 = 1.2.0 - 17/08/2014 =
 * Feature Upgraded - Orders - Auto-complete all orders option added.
