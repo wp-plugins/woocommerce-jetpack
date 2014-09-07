@@ -92,10 +92,10 @@ If you wish that some task would go up the queue to make it faster, please conta
 == Changelog ==
 
 = 1.4.0 - 07/09/2014 =
-* Dev - Custom Price Labels - Support for price labels showing on Pages, added.
-* Fix - PDF Invoices - Bug with some item table columns not showing, fixed.
+* Dev - Custom Price Labels - Support for price labels showing on Pages, added. Suggested by Axel.
+* Fix - PDF Invoices - Bug with some item table columns not showing, fixed. Suggested by Tomas.
 * Dev - PDF Invoices - Discount as separate item option added.
-* Dev - PDF Invoices - Shipping as separate item option added.
+* Dev - PDF Invoices - Shipping as separate item option added. Suggested by Tomas.
 * Dev - All tools (i.e. Old Slugs and Custom Order Statuses) moved to WooCommerce > Jetpack Tools.
 
 = 1.3.0 - 25/08/2014 =
@@ -105,7 +105,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Feature Upgraded - Orders - Auto-complete all orders option added.
 * Feature Upgraded - Orders - Custom Order Statuses added.
 * Feature Upgraded - Custom Price Labels - Added global remove text from price option.
-* Feature Upgraded - Custom Price Labels - Added compatibility with bookable products.
+* Feature Upgraded - Custom Price Labels - Added compatibility with bookable products. Suggested by Axel.
 * Dev - Links to Jetpack settings added to plugins page and to WooCommerce back end menu.
 * Feature Upgraded - Checkout - Customizable "Place order" ("Order now") button text.
 
