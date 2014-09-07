@@ -1,15 +1,16 @@
 <?php
 /**
- * WooCommerce Jetpack Old Product Slugs
+ * WooCommerce Jetpack Old Slugs
  *
- * The WooCommerce Jetpack Old Product Slugs class.
+ * The WooCommerce Jetpack Old Slugs class.
  *
  * @class 		WCJ_Old_Slugs
- * @version		1.0.0
+ * @version		1.1.0
  * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
+ 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'WCJ_Old_Slugs' ) ) :
@@ -25,15 +26,41 @@ class WCJ_Old_Slugs {
 		
 			if ( is_admin() ) {
 			
-				add_action( 'admin_menu', array($this, 'add_old_slugs_tool'), 100 ); // Add Remove Old Slugs tool to WooCommerce menu
+				//add_action( 'admin_menu', array($this, 'add_old_slugs_tool'), 100 ); 	// Add Remove Old Slugs tool to WooCommerce menu
+				
+				add_filter( 'wcj_tools_tabs', array( $this, 'add_old_slugs_tool_tab' ), 100 );
+				add_action( 'wcj_tools_old_slugs', array( $this, 'create_old_slugs_tool' ), 100 );				
 			}
 		}
+		add_action( 'wcj_tools_dashboard', array( $this, 'add_old_slugs_tool_info_to_tools_dashboard' ), 100 );
 		
 		// Settings hooks	
-		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) ); // Add section to WooCommerce > Settings > Jetpack
-		add_filter( 'wcj_settings_old_slugs', array( $this, 'get_settings' ), 100 ); // Add the settings		
+		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) ); 		// Add section to WooCommerce > Settings > Jetpack
+		add_filter( 'wcj_settings_old_slugs', array( $this, 'get_settings' ), 100 ); 	// Add the settings		
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard
 	}
+	
+	/**
+	 * add_old_slugs_tool_info_to_tools_dashboard.
+	 */
+	public function add_old_slugs_tool_info_to_tools_dashboard() {
+		if ( 'yes' === get_option( 'wcj_old_slugs_enabled' ) )
+			echo '<h3>Remove Old Slugs tool is enabled.</h3>';
+		else
+			echo '<h3>Remove Old Slugs tool is disabled.</h3>';
+		echo '<p>Tool removes old slugs/permalinks from database.</p>';
+	}	
+	
+	/**
+	 * add_old_slugs_tool_tab.
+	 */
+	public function add_old_slugs_tool_tab( $tabs ) {
+		$tabs[] = array(
+			'id'		=> 'old_slugs',
+			'title'		=> __( 'Remove Old Slugs', 'woocommerce-jetpack' ),		
+		);
+		return $tabs;
+	}	
 	
 	/**
 	 * add_enabled_option.
@@ -57,7 +84,8 @@ class WCJ_Old_Slugs {
 			array(
 				'title' 	=> __( 'Old Slugs', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable the Remove Old Product Slugs feature', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Remove old product slugs. Tool is accessible through <a href="/wp-admin/admin.php?page=woocommerce-jetpack-old-slugs">WooCommerce > Remove Old Slugs</a>.', 'woocommerce-jetpack' ),
+				//'desc_tip'	=> __( 'Remove old product slugs. Tool is accessible through <a href="/wp-admin/admin.php?page=woocommerce-jetpack-old-slugs">WooCommerce > Remove Old Slugs</a>.', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Remove old product slugs.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_old_slugs_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox'
@@ -74,15 +102,15 @@ class WCJ_Old_Slugs {
 	 */	
 	function settings_section( $sections ) {
 	
-		$sections['old_slugs'] = 'Old Slugs';
+		$sections['old_slugs'] = __( 'Old Slugs', 'woocommerce-jetpack' );
 		
 		return $sections;
 	}	
 	
-	public function add_old_slugs_tool() {
+	/*public function add_old_slugs_tool() {
 	
 		add_submenu_page( 'woocommerce', 'Jetpack - Remove Old Slugs', 'Remove Old Slugs', 'manage_options', 'woocommerce-jetpack-old-slugs', array( $this, 'create_old_slugs_tool' ) );
-	}
+	}*/
 	
 	public function create_old_slugs_tool() {
 			
@@ -128,15 +156,14 @@ class WCJ_Old_Slugs {
 				$remove_result_html = '<div class="updated"><p><strong>Removing old slugs from database finished! ' . ($num_old_slugs-$recheck_result_count) . ' old slug(s) deleted. Please <a href="">refresh</a> the page.</strong></p></div>';
 			}
 		}	
-		?>
-		<div>
+		?><div>
 			<h2><?php _e( 'WooCommerce Jetpack - Remove Old Product Slugs', 'woocommerce-jetpack' ); ?></h2>
 			<p><?php _e( 'Tool removes old slugs/permalinks from database.', 'woocommerce-jetpack' ); ?></p>
 			<?php echo $remove_result_html; ?>			
 			<?php 
 			$num_old_slugs_products = count( $posts_ids['products'] );
 			if ( $num_old_slugs_products > 0 ) { ?>
-				<h3>Old products slugs found: <?php echo $num_old_slugs_products; ?></h3>
+				<h3><?php _e( 'Old products slugs found:', 'woocommerce-jetpack' ); ?> <?php echo $num_old_slugs_products; ?></h3>
 				<p><?php echo $old_slugs_list_products; ?></p>
 				<form method="post" action="">
 					<input type="submit" name="remove_old_products_slugs" value="Remove All Old Product Slugs"/>
@@ -144,17 +171,16 @@ class WCJ_Old_Slugs {
 			<?php }
 			$num_old_slugs_none_products = count( $posts_ids['none_products'] );
 			if ( $num_old_slugs_none_products > 0 ) { ?>
-				<h3>None-products slugs found: <?php echo $num_old_slugs_none_products; ?></h3>
+				<h3><?php _e( 'None-products slugs found:', 'woocommerce-jetpack' ); ?> <?php echo $num_old_slugs_none_products; ?></h3>
 				<p><?php echo $old_slugs_list; ?></p>
 				<form method="post" action="">
 					<input type="submit" name="remove_old_none_products_slugs" value="Remove All Old None-Product Slugs"/>
 				</form>				
 			<?php } 
 			if ( $num_old_slugs == 0 ) { ?>
-				<div class="updated"><p><strong>No old slugs found.</strong></p></div>
+				<div class="updated"><p><strong><?php _e( 'No old slugs found.', 'woocommerce-jetpack' ); ?></strong></p></div>
 			<?php } ?>			
-		</div>
-		<?php
+		</div><?php
 	}
 }
 

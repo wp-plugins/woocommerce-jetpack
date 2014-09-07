@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.3.0
+Version: 1.4.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
@@ -75,11 +75,9 @@ final class WC_Jetpack {
 		
 		// Settings	
 		if ( is_admin() ) { 		
-		
 			add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_wcj_settings_tab' ) );
-			add_filter( 'get_wc_jetpack_plus_message', array( $this, 'display_get_wcj_plus_message' ), 100, 2 );
-			
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
+			add_filter( 'get_wc_jetpack_plus_message', array( $this, 'get_wcj_plus_message' ), 100, 2 );			
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );				
 			add_action( 'admin_menu', array( $this, 'jetpack_menu' ), 100 );
 		}
 		
@@ -88,10 +86,10 @@ final class WC_Jetpack {
 	}
 	
 	/**
-	 * Addons menu item
+	 * Add menu item
 	 */
 	public function jetpack_menu() {
-		add_submenu_page( 'woocommerce', __( 'WooCommerce Jetpack', 'woocommerce' ),  __( 'Jetpack Settings', 'woocommerce' ) , 'manage_woocommerce', 'admin.php?page=wc-settings&tab=jetpack' );
+		add_submenu_page( 'woocommerce', __( 'WooCommerce Jetpack', 'woocommerce' ),  __( 'Jetpack Settings', 'woocommerce' ) , 'manage_woocommerce', 'admin.php?page=wc-settings&tab=jetpack' );		
 	}	
 	
 	/**
@@ -117,9 +115,9 @@ final class WC_Jetpack {
 	}
 	
 	/**
-	 * display_get_wcj_plus_message.
+	 * get_wcj_plus_message.
 	 */
-	public function display_get_wcj_plus_message( $value, $message_type ) {
+	public function get_wcj_plus_message( $value, $message_type ) {
 	
 		switch ( $message_type ) {
 		
@@ -160,6 +158,8 @@ final class WC_Jetpack {
 	 */
 	private function includes() {
 	
+		include_once( 'includes/admin/tools/class-wcj-tools.php' );
+	
 		$settings = array();
 	
 		$settings[] = include_once( 'includes/class-wcj-price-labels.php' );
@@ -177,9 +177,8 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-orders.php' );
 		$settings[] = include_once( 'includes/class-wcj-emails.php' );
 		$settings[] = include_once( 'includes/class-wcj-pdf-invoices.php' );		
+		//$settings[] = include_once( 'includes/class-wcj-reports.php' );
 		$settings[] = include_once( 'includes/class-wcj-old-slugs.php' );
-		
-		//include_once( 'includes/class-wc-gateway-wcj-custom.php' );
 		
 		// Add options
 		if ( is_admin() ) {

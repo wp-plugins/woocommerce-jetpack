@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.1.0
+ * @version		1.2.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -178,12 +178,34 @@ class WCJ_PDF_Invoices {
 		$order_number = $the_order->get_order_number();
 		$order_currency_array = array( 'currency' => $the_order->get_order_currency() );
 		// Getting Totals
-		$order_total 			= $the_order->get_total();
-		$order_total_tax		= $the_order->get_total_tax();
-		$order_total_shipping	= $the_order->get_total_shipping();
-		$order_total_discount	= $the_order->get_total_discount();
-		$order_subtotal 		= $order_total - $order_total_tax - $order_total_shipping + $order_total_discount;
+		$order_total 				= $the_order->get_total();
+		$order_total_tax			= $the_order->get_total_tax();
+		$order_total_shipping		= $the_order->get_total_shipping();
+		$order_total_shipping_tax	= $the_order->get_shipping_tax();
+		$order_total_discount		= $the_order->get_total_discount();
+		
+					
+		
+		$order_tax_percent = 0;
+		$order_total_before_discount = $order_total + $order_total_discount;
+		if ( 0 != $order_total_before_discount )
+			$order_tax_percent = $order_total_tax / $order_total_before_discount;
+		if ( 0 != $order_total_discount ) {
+			$order_total_discount_tax = -1 * ( $order_total_discount * $order_tax_percent );
+			$order_total_discount_excl_tax = -1 * ( $order_total_discount + $order_total_discount_tax );
 
+			$order_total_tax = $order_total_tax + $order_total_discount_tax;
+		}		
+		
+		$order_subtotal 			= $order_total - $order_total_tax;
+		$order_total_excl_tax 		= $order_subtotal;
+		if ( '' === get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' ) )
+			$order_subtotal 		= $order_subtotal - $order_total_shipping;
+		if ( '' === get_option( 'wcj_pdf_invoices_display_discount_as_item_text' ) )
+			$order_subtotal 		= $order_subtotal + $order_total_discount + $order_total_discount_tax;
+		
+		
+		
 		$billing_address_formatted = $the_order->get_formatted_billing_address();
 
 		// Count optional columns number for column width calculation
@@ -297,7 +319,7 @@ class WCJ_PDF_Invoices {
 				'title'		=> get_option( 'wcj_pdf_invoices_column_price_tax_text' ),
 				'css'		=> 'width:' . $price_column_width . '%;',
 				'required'	=> false,
-				'value_var'	=> 'line_total_tax',
+				'value_var'	=> 'line_total_tax_formatted',
 				'td_css'	=> 'text-align:right;',
 			),
 			array(
@@ -315,6 +337,67 @@ class WCJ_PDF_Invoices {
 				$html .= '<th style="' . $column['css'] . '">' . $column['title'] . '</th>';
 		$html .= '</tr>';
 
+		// Shipping as item
+		//$display_shipping_as_item = true;
+		//if ( ( true === $display_shipping_as_item ) &&
+		if ( ( '' != get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' ) ) &&
+			 ( $order_total_shipping > 0 ) ) {
+			$the_items[] = array(
+				'name'				=> get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' ),
+				'type' 				=> 'line_item',				
+				'qty' 				=> 1,
+				//'tax_class' 		=> ,
+				//'product_id' 		=> 123,
+				//'variation_id'	=> ,
+				'line_subtotal' 	=> $order_total_shipping,
+				'line_total' 		=> $order_total_shipping,
+				'line_tax' 			=> $order_total_shipping_tax,
+				'line_subtotal_tax' => $order_total_shipping_tax,
+				'item_meta'			=> array(
+					'_qty' 					=> array( 1 ),
+					//'_tax_class' 			=> array(),
+					//'_product_id' 		=> array( 123 ),
+					//'_variation_id' 		=> array(),
+					'_line_subtotal' 		=> array( $order_total_shipping ),
+					'_line_total' 			=> array( $order_total_shipping ),
+					'_line_tax' 			=> array( $order_total_shipping_tax ),
+					'_line_subtotal_tax' 	=> array( $order_total_shipping_tax ),					
+				),				
+			);
+		}
+		
+		// Discount as item
+
+		
+		//$display_discount_as_item = true;
+		//if ( ( true === $display_discount_as_item ) &&
+		if ( ( '' != get_option( 'wcj_pdf_invoices_display_discount_as_item_text' ) ) &&
+			 ( 0 != $order_total_discount ) ) {
+			 
+			$the_items[] = array(
+				'name'				=> get_option( 'wcj_pdf_invoices_display_discount_as_item_text' ),
+				'type' 				=> 'line_item',				
+				'qty' 				=> 1,
+				//'tax_class' 		=> ,
+				//'product_id' 		=> 123,
+				//'variation_id'	=> ,
+				'line_subtotal' 	=> $order_total_discount_excl_tax,
+				'line_total' 		=> $order_total_discount_excl_tax,
+				'line_tax' 			=> $order_total_discount_tax,
+				'line_subtotal_tax' => $order_total_discount_tax,
+				'item_meta'			=> array(
+					'_qty' 					=> array( 1 ),
+					//'_tax_class' 			=> array(),
+					//'_product_id' 		=> array( 123 ),
+					//'_variation_id' 		=> array(),
+					'_line_subtotal' 		=> array( $order_total_discount_excl_tax ),
+					'_line_total' 			=> array( $order_total_discount_excl_tax ),
+					'_line_tax' 			=> array( $order_total_discount_tax ),
+					'_line_subtotal_tax' 	=> array( $order_total_discount_tax ),					
+				),				
+			);
+		}	
+		
 		// ITEMS LOOP //
 		$item_counter = 0;
 		foreach ( $the_items as $item ) {
@@ -325,15 +408,15 @@ class WCJ_PDF_Invoices {
 			$item_tax 				= $the_order->get_item_tax( $item, true );
 			$item_total_incl_tax 	= $the_order->get_item_total( $item, true, true );
 			$item_total_excl_tax_formatted =  wc_price( $item_total_excl_tax, $order_currency_array );
-			$item_tax_formatted =  wc_price( $item_tax, $order_currency_array );
+			$item_total_tax_formatted 	=  wc_price( $item_tax, $order_currency_array );
 			$item_total_incl_tax_formatted =  wc_price( $item_total_incl_tax, $order_currency_array );
 			// Line Prices
 			$line_total_excl_tax 	= $the_order->get_line_total( $item, false );//$the_order->get_line_subtotal( $item, false, true );//$item['line_subtotal'];//$item['line_total'];
 			$line_tax 				= $the_order->get_line_tax( $item );//$item['line_tax'];
-			$line_tax_percent 		= round( ( $item['line_tax'] / $item['line_subtotal'] * 100 ), 2 );
+			$line_total_tax_percent 		= round( ( $item['line_tax'] / $item['line_subtotal'] * 100 ), 2 );
 			$line_total_incl_tax 	= $the_order->get_line_total( $item, true );//$line_total_excl_tax + $line_tax;
 			$line_total_excl_tax_formatted =  wc_price( $line_total_excl_tax, $order_currency_array );
-			$line_tax_formatted =  wc_price( $line_tax, $order_currency_array );
+			$line_total_tax_formatted =  wc_price( $line_tax, $order_currency_array );
 			$line_total_incl_tax_formatted =  wc_price( $line_total_incl_tax, $order_currency_array );
 			// Item Quantity
 			$item_quantity			= $item['qty'];
@@ -361,20 +444,29 @@ class WCJ_PDF_Invoices {
 		}
 		$html .= '</tbody></table>';
 
-
+		
 		// ORDER TOTALS //
 		$html .= '<p><table class="pdf_invoice_totals_table_wcj"><tbody>';
 			// SUBTOTAL
+			//$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</th><td>' . wc_price( ( $order_subtotal + $order_total_discount_excl_tax ), $order_currency_array ) . '</td></tr>';
 			$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</th><td>' . wc_price( $order_subtotal, $order_currency_array ) . '</td></tr>';
-			// TAXES
-			if ( $order_total_tax != 0 )
-				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_total_tax_text' ) . '</th><td>' .  wc_price( $order_total_tax, $order_currency_array ) . '</td></tr>';
 			// SHIPPING
-			if ( $order_total_shipping != 0 )
-				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_shipping_text' ) . '</th><td>' .  wc_price( $order_total_shipping, $order_currency_array ) . '</td></tr>';
+			if ( ( '' === get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' ) ) &&
+				 ( $order_total_shipping > 0 ) )
+				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_shipping_text' ) . '</th><td>' .  wc_price( $order_total_shipping, $order_currency_array ) . '</td></tr>';				
 			// DISCOUNT
+			if ( ( '' === get_option( 'wcj_pdf_invoices_display_discount_as_item_text' ) ) &&			
+				 ( 0 != $order_total_discount ) )
+				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_discount_text' ) . '</th><td>-' .  wc_price( ( $order_total_discount + $order_total_discount_tax ), $order_currency_array ) . '</td></tr>';	
+			// SUBTOTAL2 - with discount and shipping
+			if ( $order_total_excl_tax != $order_subtotal )
+				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_total_excl_tax_text' ) . '</th><td>' . wc_price( $order_total_excl_tax, $order_currency_array ) . '</td></tr>';				
+			// TAXES
+			if ( 0 != $order_total_tax )
+				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_total_tax_text' ) . '</th><td>' .  wc_price( $order_total_tax, $order_currency_array ) . '</td></tr>';
+			/*// DISCOUNT
 			if ( $order_total_discount != 0 )
-				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_discount_text' ) . '</th><td>-' .  wc_price( $order_total_discount, $order_currency_array ) . '</td></tr>';
+				$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_discount_text' ) . '</th><td>-' .  wc_price( $order_total_discount, $order_currency_array ) . '</td></tr>';*/
 			// TOTAL
 			$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_total_text' ) . '</th><td>' . $the_order->get_formatted_order_total() . '</td></tr>';
 		$html .= '</tbody></table></p>';
@@ -577,13 +669,35 @@ class WCJ_PDF_Invoices {
 			array( 'title' => __( 'Items', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( '', 'woocommerce-jetpack' ), 'id' => 'wcj_pdf_invoices_items_options' ),
 
             array(
-                'title'    => __( 'Items', 'woocommerce-jetpack' ),
+                'title'    => __( 'Items Table Heading Text', 'woocommerce-jetpack' ),
                 //'desc_tip' => __( 'Items text', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_items_text',
                 'default'  => __( 'Items', 'woocommerce-jetpack' ),
                 'type'     => 'text',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
+
+            array(
+                'title'    => __( 'Shipping as Item', 'woocommerce-jetpack' ),
+				'desc_tip'     => __( 'Leave blank to disable', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Display shipping as item', 'woocommerce-jetpack' ),
+				//'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'id'       => 'wcj_pdf_invoices_display_shipping_as_item_text',
+                'default'  => '',
+                'type'     => 'text',
+				//'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+            ),			
+
+			array(
+                'title'    => __( 'Discount as Item', 'woocommerce-jetpack' ),
+				'desc_tip'     => __( 'Leave blank to disable', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Display discount as item', 'woocommerce-jetpack' ),
+				//'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'id'       => 'wcj_pdf_invoices_display_discount_as_item_text',
+                'default'  => '',
+                'type'     => 'text',
+				//'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+            ),	
 
 			array( 'type'  => 'sectionend', 'id' => 'wcj_pdf_invoices_items_options' ),
 
@@ -691,12 +805,12 @@ class WCJ_PDF_Invoices {
 					'type'     => 'text',
 					'css'	   => 'width:33%;min-width:300px;',
 				),
-
+				
 				array(
-					'title'    => __( 'Order Total Taxes', 'woocommerce-jetpack' ),
-					//'desc_tip' => __( 'Order Subtotal = Total - Taxes - Shipping - Discounts', 'woocommerce-jetpack' ),
-					'id'       => 'wcj_pdf_invoices_order_total_tax_text',
-					'default'  => __( 'Taxes', 'woocommerce-jetpack' ),
+					'title'    => __( 'Total Discount', 'woocommerce-jetpack' ),
+					//'desc_tip' => __( 'Total Discount text', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_pdf_invoices_order_discount_text',
+					'default'  => __( 'Discount', 'woocommerce-jetpack' ),
 					'type'     => 'text',
 					'css'	   => 'width:33%;min-width:300px;',
 				),
@@ -709,12 +823,21 @@ class WCJ_PDF_Invoices {
 					'type'     => 'text',
 					'css'	   => 'width:33%;min-width:300px;',
 				),
+				
+				array(
+					'title'    => __( 'Order Total (TAX excl.)', 'woocommerce-jetpack' ),
+					'desc_tip' => __( 'Order Total (TAX excl.) = Total - Taxes. Shown only if discount or shipping is not equal to zero. In other words: if "Order Total (TAX excl.)" not equal to "Order Subtotal"', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_pdf_invoices_order_total_excl_tax_text',
+					'default'  => __( 'Order Total (TAX excl.)', 'woocommerce-jetpack' ),
+					'type'     => 'text',
+					'css'	   => 'width:33%;min-width:300px;',
+				),				
 
 				array(
-					'title'    => __( 'Total Discount', 'woocommerce-jetpack' ),
-					//'desc_tip' => __( 'Total Discount text', 'woocommerce-jetpack' ),
-					'id'       => 'wcj_pdf_invoices_order_discount_text',
-					'default'  => __( 'Discount', 'woocommerce-jetpack' ),
+					'title'    => __( 'Order Total Taxes', 'woocommerce-jetpack' ),
+					//'desc_tip' => __( 'Order Subtotal = Total - Taxes - Shipping - Discounts', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_pdf_invoices_order_total_tax_text',
+					'default'  => __( 'Taxes', 'woocommerce-jetpack' ),
 					'type'     => 'text',
 					'css'	   => 'width:33%;min-width:300px;',
 				),

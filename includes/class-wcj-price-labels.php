@@ -4,10 +4,10 @@
  *
  * The WooCommerce Jetpack Price Labels class.
  *
- * @class 		WCJ_Price_Labels
- * @version		1.0.0 
+ * @class		WCJ_Price_Labels
+ * @version		1.0.1
  * @category	Class
- * @author 		Algoritmika Ltd.
+ * @author		Algoritmika Ltd.
  */
  
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -25,13 +25,14 @@ class WCJ_Price_Labels {
 		'_between'	=> 'Between the regular and sale price', 
 		'_after'	=> 'After the price', 
 	);
-	public $custom_tab_section_variations = array ( '_text', '_enabled', '_home', '_products', '_single', /*'_simple',*/ '_variable', '_variation', /*'_grouped',*/ );
+	public $custom_tab_section_variations = array ( '_text', '_enabled', '_home', '_products', '_single', '_page', /*'_simple',*/ '_variable', '_variation', /*'_grouped',*/ );
 	public $custom_tab_section_variations_titles = array ( 
 		'_text'		 => 'The label', 
 		'_enabled'	 => 'Enable',// for compatibility with Custom Price Label Pro plugin should use ''	  
 		'_home'		 => 'Hide on home page', 
 		'_products'	 => 'Hide on products page', 
 		'_single'	 => 'Hide on single',
+		'_page'	 	 => 'Hide on pages',
 		//'_simple'	 => 'Hide for simple product',
 		'_variable'	 => 'Hide for variable product (main price) - ignored if product type is not variable',
 		'_variation' => 'Hide for each variation of variable product - ignored if product type is not variable',
@@ -270,7 +271,8 @@ class WCJ_Price_Labels {
 				if ( 
 					( ( $labels_array['variation_home'] 	 == 'off' ) && ( is_front_page() ) ) ||
 					( ( $labels_array['variation_products']  == 'off' ) && ( is_archive() ) ) ||
-					( ( $labels_array['variation_single'] 	 == 'off' ) && ( is_single() ) )
+					( ( $labels_array['variation_single'] 	 == 'off' ) && ( is_single() ) ) ||
+					( ( $labels_array['variation_page'] 	 == 'off' ) && ( is_page() ) )					
 				   ) 
 					{	
 						//$current_filter_name = current_filter();

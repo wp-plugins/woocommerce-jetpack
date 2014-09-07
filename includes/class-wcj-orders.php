@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.0.0 
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd. 
  */
@@ -38,9 +38,12 @@ class WCJ_Orders {
 			}
 			
 			if ( 'yes' === get_option( 'wcj_orders_custom_statuses_enabled' ) ) {
-				add_action( 'admin_menu', array( $this, 'add_custom_statuses_tool' ), 100 );
-				add_action( 'admin_head', array( $this, 'hook_statuses_icons_css' ) );
+				//add_action( 'admin_menu', array( $this, 'add_custom_statuses_tool' ), 100 );
+				add_action( 'admin_head', array( $this, 'hook_statuses_icons_css' ) );				
+				add_filter( 'wcj_tools_tabs', array( $this, 'add_custom_statuses_tool_tab' ), 100 );
+				add_action( 'wcj_tools_custom_statuses', array( $this, 'create_custom_statuses_tool' ), 100 );								
 			}
+			add_action( 'wcj_tools_dashboard', array( $this, 'add_custom_statuses_tool_info_to_tools_dashboard' ), 100 );
 			
 			if ( 'yes' === get_option( 'wcj_order_auto_complete_enabled' ) )
 				add_action( 'woocommerce_thankyou', array( $this, 'auto_complete_order' ) );			
@@ -54,6 +57,28 @@ class WCJ_Orders {
         add_filter( 'wcj_settings_orders', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
+	
+	/**
+	 * add_custom_statuses_tool_info_to_tools_dashboard.
+	 */
+	public function add_custom_statuses_tool_info_to_tools_dashboard() {
+		if ( 'yes' === get_option( 'wcj_orders_custom_statuses_enabled' ) )
+			echo '<h3>Custom Statuses tool is enabled.</h3>';
+		else
+			echo '<h3>Custom Statuses tool is disabled.</h3>';
+		echo '<p>The tool lets you add or delete any custom status for WooCommerce orders.</p>';
+	}		
+	
+	/**
+	 * add_custom_statuses_tool_tab.
+	 */
+	public function add_custom_statuses_tool_tab( $tabs ) {
+		$tabs[] = array(
+			'id'		=> 'custom_statuses',
+			'title'		=> __( 'Custom Statuses', 'woocommerce-jetpack' ),		
+		);
+		return $tabs;
+	}		
 	
 	/**
 	* Auto Complete all WooCommerce orders.
@@ -98,7 +123,7 @@ class WCJ_Orders {
 	
     /**
      * add_custom_statuses_tool to WooCommerce menu (menu link).
-     */	
+     *	
 	public function add_custom_statuses_tool() {
 	
 		add_submenu_page( 'woocommerce', 'Jetpack - Custom Statuses', 'Custom Statuses', 'manage_options', 'woocommerce-jetpack-custom-statuses', array( $this, 'create_custom_statuses_tool' ) );

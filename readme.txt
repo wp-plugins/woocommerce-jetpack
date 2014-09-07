@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,18 +16,18 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 = Features =
 
-* Payment Gateways - Add and customize simple custom offline payment gateway. Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways.
+* Custom Price Labels - Create any custom price label for any product.
+* Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
+* Currencies - Add all world currencies, change currency symbol.
+* PDF Invoices - Add PDF invoices for store owners and for customers.
 * Orders - Sequential order numbering, custom order number prefix and number width. Set minimum order amount.
+* More Sorting Options - Add more sorting options or remove sorting at all (including WooCommerce default).
+* Payment Gateways - Add and customize simple custom offline payment gateway. Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways.
 * Checkout - Customize checkout fields: disable/enable fields, set required, change labels and/or placeholders.
 * Shipping - Hide shipping when free is available.
 * Emails - Add another email recipient(s) to all WooCommerce emails.
 * Product Info - Customize single product tabs. Change related products number.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
-* Custom Price Labels - Create any custom price label for any product.
-* Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
-* Currencies - Add all world currencies, change currency symbol.
-* PDF Invoices - Add PDF invoices for store owners and for customers.
-* More Sorting Options - Add more sorting options or remove sorting at all (including WooCommerce default).
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
 
@@ -63,6 +63,9 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
+1. Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection).
+1. Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices.
+1. New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 1. Upgrade Feature - Custom Price Labels - Add "global labels".
 1. Upgrade Feature - Shipping - Add "Custom Shipping Method".
 1. Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
@@ -75,6 +78,13 @@ If you wish that some task would go up the queue to make it faster, please conta
 1. Upgrade Feature - Cart - Cart discount.
 
 == Changelog ==
+
+= 1.4.0 - 07/09/2014 =
+* Dev - Custom Price Labels - Support for price labels showing on Pages, added.
+* Fix - PDF Invoices - Bug with some item table columns not showing, fixed. 
+* Dev - PDF Invoices - Discount as separate item option added.
+* Dev - PDF Invoices - Shipping as separate item option added.
+* Dev - All tools (i.e. Old Slugs and Custom Order Statuses) moved to WooCommerce > Jetpack Tools.
 
 = 1.3.0 - 25/08/2014 =
 * Feature Upgraded - PDF Invoices - Major upgrade: single item price, item and line taxes, payment and shipping methods, additional footer, font size, custom css added.
