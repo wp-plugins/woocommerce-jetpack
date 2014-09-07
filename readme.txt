@@ -63,8 +63,9 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-1. Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection).
-1. Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices.
+1. Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
+1. Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection). Idea by Jen.
+1. Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. [Idea by LQTOYS]
 1. New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 1. Upgrade Feature - Custom Price Labels - Add "global labels".
 1. Upgrade Feature - Shipping - Add "Custom Shipping Method".
