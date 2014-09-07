@@ -63,31 +63,37 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.4.1 - 11/09/2014 =
+= 1.5.0 - 11/09/2014 =
 1. Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
 1. Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection). Idea by Jen.
 1. Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
 
-= 1.5.0 - XX/09/2014 =
+= 1.6.0 - 18/09/2014 =
 1. New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 
-= Later =
+= 1.7.0 - 01/10/2014 =
 1. Upgrade Feature - Custom Price Labels - Add "global labels".
 1. Upgrade Feature - Shipping - Add "Custom Shipping Method".
 1. Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
 1. Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
+
+= 1.8.0 - 07/10/2014 =
 1. New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
+
+= 1.9.0 - 21/10/2014 =
 1. Upgrade Feature - Custom Price Labels - Add "local remove".
 1. Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
 1. Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
-1. Dev - Recheck, comment the code.
 1. Upgrade Feature - Cart - Cart discount.
+
+= 2.0.0 - 01/11/2014 =
+1. Dev - Major source code, documentation, locking mechanism etc. recheck.
 
 == Changelog ==
 
 = 1.4.0 - 07/09/2014 =
 * Dev - Custom Price Labels - Support for price labels showing on Pages, added.
-* Fix - PDF Invoices - Bug with some item table columns not showing, fixed. 
+* Fix - PDF Invoices - Bug with some item table columns not showing, fixed.
 * Dev - PDF Invoices - Discount as separate item option added.
 * Dev - PDF Invoices - Shipping as separate item option added.
 * Dev - All tools (i.e. Old Slugs and Custom Order Statuses) moved to WooCommerce > Jetpack Tools.
