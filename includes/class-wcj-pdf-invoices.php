@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.2.0
+ * @version		1.3.2
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -55,22 +55,28 @@ class WCJ_PDF_Invoices {
      * Unlocks - PDF Invoices - add_pdf_invoices_link_to_my_account.
      */
     public function add_pdf_invoices_link_to_my_account( $actions, $the_order ) {
-
-		$actions['pdf_invoice'] = array(
-			'url'  => $_SERVER['REQUEST_URI'] . '?pdf_invoice=' . $the_order->id,
-			'name' => __( 'Invoice', 'woocommerce-jetpack' ),
-		);
-
-        return $actions;
+		
+		if ( 'no' === get_option( 'wcj_pdf_invoices_save_as_enabled' ) )		
+			$actions['pdf_invoice'] = array(
+				'url'  => $_SERVER['REQUEST_URI'] . '?pdf_invoice=' . $the_order->id,
+				'name' => __( 'Invoice', 'woocommerce-jetpack' ),
+			);
+		else
+			$actions['save_pdf_invoice'] = array(
+				'url'  => $_SERVER['REQUEST_URI'] . '?pdf_invoice=' . $the_order->id . '&save_pdf_invoice=1',
+				'name' => __( 'Invoice', 'woocommerce-jetpack' ),
+			);		
+		
+		return $actions;
     }
 
     /**
      * add_pdf_invoice_icon_css.
      */
 	function add_pdf_invoice_icon_css() {
-
+	
 		echo '<style> a.button.tips.view.pdf_invoice:after { content: "\e028" !important; } </style>';
-		//echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e028" !important; } </style>';
+		echo '<style> a.button.tips.view.save_pdf_invoice:after { content: "\e028" !important; } </style>';
 	}
 
     /**
@@ -160,6 +166,8 @@ class WCJ_PDF_Invoices {
 
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
+		$the_order = new WC_Order( $order_id );
+		$order_number = $the_order->get_order_number();
 		if ( isset( $_GET['save_pdf_invoice'] ) && ( $_GET['save_pdf_invoice'] == '1' ) )
 			$pdf->Output('invoice-' . $order_number . '.pdf', 'D');
 		else
@@ -487,18 +495,18 @@ class WCJ_PDF_Invoices {
      * add_pdf_invoices_link_to_order_list.
      */
     public function add_pdf_invoices_link_to_order_list( $actions, $the_order ) {
-
-		$actions['pdf_invoice'] = array(
-			'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id,
-			'name' 		=> __( 'PDF Invoice', 'woocommerce-jetpack' ),
-			'action' 	=> "view pdf_invoice"
-		);
-
-		/*$actions['save_pdf_invoice'] = array(
-			'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id . '&save_pdf_invoice=1',
-			'name' 		=> __( 'Save PDF', 'woocommerce-jetpack' ),
-			'action' 	=> "view save_pdf_invoice"
-		);*/
+		if ( 'no' === get_option( 'wcj_pdf_invoices_save_as_enabled' ) )		
+			$actions['pdf_invoice'] = array(
+				'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id,
+				'name' 		=> __( 'PDF Invoice', 'woocommerce-jetpack' ),
+				'action' 	=> "view pdf_invoice"
+			);
+		else
+			$actions['save_pdf_invoice'] = array(
+				'url' 		=> basename( $_SERVER['REQUEST_URI'] ) . '&pdf_invoice=' . $the_order->id . '&save_pdf_invoice=1',
+				'name' 		=> __( 'PDF Invoice', 'woocommerce-jetpack' ),
+				'action' 	=> "view save_pdf_invoice"
+			);
 
         return $actions;
     }
@@ -807,6 +815,15 @@ class WCJ_PDF_Invoices {
 				),
 				
 				array(
+					'title'    => __( 'Order Shipping Price', 'woocommerce-jetpack' ),
+					//'desc_tip' => __( 'Order Shipping text', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_pdf_invoices_order_shipping_text',
+					'default'  => __( 'Shipping', 'woocommerce-jetpack' ),
+					'type'     => 'text',
+					'css'	   => 'width:33%;min-width:300px;',
+				),				
+				
+				array(
 					'title'    => __( 'Total Discount', 'woocommerce-jetpack' ),
 					//'desc_tip' => __( 'Total Discount text', 'woocommerce-jetpack' ),
 					'id'       => 'wcj_pdf_invoices_order_discount_text',
@@ -815,15 +832,6 @@ class WCJ_PDF_Invoices {
 					'css'	   => 'width:33%;min-width:300px;',
 				),
 
-				array(
-					'title'    => __( 'Order Shipping Price', 'woocommerce-jetpack' ),
-					//'desc_tip' => __( 'Order Shipping text', 'woocommerce-jetpack' ),
-					'id'       => 'wcj_pdf_invoices_order_shipping_text',
-					'default'  => __( 'Shipping', 'woocommerce-jetpack' ),
-					'type'     => 'text',
-					'css'	   => 'width:33%;min-width:300px;',
-				),
-				
 				array(
 					'title'    => __( 'Order Total (TAX excl.)', 'woocommerce-jetpack' ),
 					'desc_tip' => __( 'Order Total (TAX excl.) = Total - Taxes. Shown only if discount or shipping is not equal to zero. In other words: if "Order Total (TAX excl.)" not equal to "Order Subtotal"', 'woocommerce-jetpack' ),
@@ -919,6 +927,16 @@ class WCJ_PDF_Invoices {
                 'type'     => 'checkbox',
 				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
             ),
+			
+            array(
+                'title'    => __( 'Enable Save as', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Enable save as pdf instead of view pdf', 'woocommerce-jetpack' ),
+				//'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'id'       => 'wcj_pdf_invoices_save_as_enabled',
+                'default'  => 'no',
+                'type'     => 'checkbox',
+				//'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+            ),			
 
             //array( 'type'  => 'sectionend', 'id' => 'wcj_pdf_invoices_more_options' ),
 			array( 'type'  => 'sectionend', 'id' => 'wcj_pdf_invoices_general_options' ),

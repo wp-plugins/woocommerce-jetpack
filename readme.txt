@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,40 +63,47 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.5.0 - 11/09/2014 =
-1. Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
-1. Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection). Idea by Jen.
-1. Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
-
-= 1.6.0 - 18/09/2014 =
-1. New Feature - Smart Reports - Various reports based on products prices, sales, stock.
+= 1.6.0 - 21/09/2014 =
+* Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
+* Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection). Idea by Jen.
+* Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
+* New Feature - Add second currency to the price.
+* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
+* Dev - PDF Invoices - If displaying shipping as item, add shipping method text. Suggested by Tomas.
 
 = 1.7.0 - 01/10/2014 =
-1. Upgrade Feature - Custom Price Labels - Add "global labels".
-1. Upgrade Feature - Shipping - Add "Custom Shipping Method".
-1. Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
-1. Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
+* Upgrade Feature - Custom Price Labels - Add "global labels".
+* Upgrade Feature - Shipping - Add "Custom Shipping Method".
+* Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
+* Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
 
 = 1.8.0 - 07/10/2014 =
-1. New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
+* New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
 
 = 1.9.0 - 21/10/2014 =
-1. Upgrade Feature - Custom Price Labels - Add "local remove".
-1. Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
-1. Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
-1. Upgrade Feature - Cart - Cart discount.
+* Upgrade Feature - Custom Price Labels - Add "local remove".
+* Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
+* Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
+* Upgrade Feature - Cart - Cart discount.
 
 = 2.0.0 - 01/11/2014 =
-1. Dev - Major source code, documentation, locking mechanism etc. recheck.
+* Dev - Major source code, documentation, locking mechanism etc. recheck.
 
 == Changelog ==
+
+= 1.5.0 - 13/09/2014 =
+* Dev - Orders - Renumerate orders tool compatibility with WooCommerce 2.2.x.
+* Dev - Orders - Custom Order Statuses compatibility with WooCommerce 2.2.x.
+* Dev - Orders - Renumerate orders tool moved to WooCommerce > Jetpack Tools.
+* Fix - PDF Invoices - `Order Shipping Price` position in `Totals` on admin settings page, fixed.
+* Dev - PDF Invoices - Save as pdf option added.
 
 = 1.4.0 - 07/09/2014 =
 * Dev - Custom Price Labels - Support for price labels showing on Pages, added. Suggested by Axel.
 * Fix - PDF Invoices - Bug with some item table columns not showing, fixed. Suggested by Tomas.
 * Dev - PDF Invoices - Discount as separate item option added.
 * Dev - PDF Invoices - Shipping as separate item option added. Suggested by Tomas.
-* Dev - All tools (i.e. Old Slugs and Custom Order Statuses) moved to WooCommerce > Jetpack Tools.
+* Dev - Old Slugs and Custom Order Statuses tools moved to WooCommerce > Jetpack Tools.
 
 = 1.3.0 - 25/08/2014 =
 * Feature Upgraded - PDF Invoices - Major upgrade: single item price, item and line taxes, payment and shipping methods, additional footer, font size, custom css added.
