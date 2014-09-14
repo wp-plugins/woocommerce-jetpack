@@ -78,6 +78,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * Dev - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
 * Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
+* Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
 
 = 1.8.0 - 07/10/2014 =
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
