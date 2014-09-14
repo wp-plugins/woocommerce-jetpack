@@ -1,7 +1,7 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 4.0
 Stable tag: 1.5.1
@@ -19,7 +19,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Custom Price Labels - Create any custom price label for any product.
 * Call for Price - Create any custom price label, like "Call for price", for all products with empty price.
 * Currencies - Add all world currencies, change currency symbol.
-* PDF Invoices - Add PDF invoices for store owners and for customers.
+* PDF Invoices - Add PDF invoices for store owners and for customers. Automatically email PDF invoices to customers.
 * Orders - Sequential order numbering, custom order number prefix and number width. Set minimum order amount.
 * More Sorting Options - Add more sorting options or remove sorting at all (including WooCommerce default).
 * Payment Gateways - Add and customize simple custom offline payment gateway. Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways.
