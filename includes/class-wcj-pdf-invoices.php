@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.3.2
+ * @version		1.4.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -40,9 +40,11 @@ class WCJ_PDF_Invoices {
 
 			add_action( 'admin_head', array( $this, 'add_pdf_invoice_icon_css' ) );
 
-			if ( 'yes' === get_option( 'wcj_pdf_invoices_enabled_for_customers' ) )
+			if ( 'yes' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_pdf_invoices_enabled_for_customers' ) ) )
 				add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'add_pdf_invoices_link_to_my_account' ), 100, 2 );
-				//add_filter( apply_filters( 'wcj_get_option_filter', 'wcj_empty_filter', 'woocommerce_my_account_my_orders_actions' ), array( $this, 'add_pdf_invoices_link_to_my_account' ), 100, 2 );
+			
+			if ( 'yes' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_pdf_invoices_attach_to_email_enabled' ) ) )
+				add_filter( 'woocommerce_email_attachments', array( $this, 'add_pdf_invoice_email_attachment' ), 100, 3 );
         }
 
         // Settings hooks
@@ -50,6 +52,18 @@ class WCJ_PDF_Invoices {
         add_filter( 'wcj_settings_pdf_invoices', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
+	
+    /**
+     * add_pdf_invoice_email_attachment.
+     */
+    public function add_pdf_invoice_email_attachment( $attachments, $status, $order ) {
+		if ( ( isset( $status ) && 'customer_completed_order' === $status ) && isset( $order ) ) {			
+			$file_name = sys_get_temp_dir() . '/invoice-' .  $order->id . '.pdf';
+			$result = file_put_contents( $file_name, $this->generate_pdf( $order->id ) );
+			$attachments[] = $file_name;
+		}
+		return $attachments;
+	}		
 
     /**
      * Unlocks - PDF Invoices - add_pdf_invoices_link_to_my_account.
@@ -82,15 +96,18 @@ class WCJ_PDF_Invoices {
     /**
      * generate_pdf.
      */
-    public function generate_pdf() {
+    public function generate_pdf( $get_by_order_id = 0 ) {
 
-		if ( ! isset( $_GET['pdf_invoice'] ) ) return;
+		if ( ! isset( $_GET['pdf_invoice'] ) && 0 == $get_by_order_id ) return;
 
-		if ( ! is_user_logged_in() ) return;
-
-		$order_id = $_GET['pdf_invoice'];
-
-		if ( ( ! current_user_can( 'administrator' ) ) && ( get_current_user_id() != intval( get_post_meta( $order_id, '_customer_user', true ) ) ) ) return;
+		if ( ! is_user_logged_in() && 0 == $get_by_order_id ) return;
+		
+		if ( ( ! current_user_can( 'administrator' ) ) && ( get_current_user_id() != intval( get_post_meta( $order_id, '_customer_user', true ) ) ) && ( 0 == $get_by_order_id ) ) return;
+		
+		if ( 0 == $get_by_order_id )
+			$order_id = $_GET['pdf_invoice'];
+		else
+			$order_id = $get_by_order_id;		
 
 		// Include the main TCPDF library (search for installation path).
 		//require_once('tcpdf_include.php');
@@ -166,12 +183,15 @@ class WCJ_PDF_Invoices {
 
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
-		$the_order = new WC_Order( $order_id );
-		$order_number = $the_order->get_order_number();
-		if ( isset( $_GET['save_pdf_invoice'] ) && ( $_GET['save_pdf_invoice'] == '1' ) )
-			$pdf->Output('invoice-' . $order_number . '.pdf', 'D');
+//		$the_order = new WC_Order( $order_id );
+//		$order_number = $the_order->get_order_number();
+		
+		if ( $get_by_order_id > 0 ) 
+			return $pdf->Output('invoice-' . $order_id . '.pdf', 'S');
+		if ( isset( $_GET['save_pdf_invoice'] ) && '1' == $_GET['save_pdf_invoice'] )
+			$pdf->Output('invoice-' . $order_id . '.pdf', 'D');
 		else
-			$pdf->Output('invoice-' . $order_number . '.pdf', 'I');
+			$pdf->Output('invoice-' . $order_id . '.pdf', 'I');
 	}
 
     /**
@@ -350,8 +370,18 @@ class WCJ_PDF_Invoices {
 		//if ( ( true === $display_shipping_as_item ) &&
 		if ( ( '' != get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' ) ) &&
 			 ( $order_total_shipping > 0 ) ) {
+			 
+			$shipping_item_name = get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' );
+			
+			// Add shipping method text			
+			if ( 'yes' === get_option( 'wcj_pdf_invoices_display_shipping_as_item_shipping_method' ) )
+				$shipping_item_name .= '<div style="font-size:x-small;">' . $the_order->get_shipping_method() . '</div>';	
+			else if ( 'replace' === get_option( 'wcj_pdf_invoices_display_shipping_as_item_shipping_method' ) )
+				$shipping_item_name = $the_order->get_shipping_method();					
+			
+			// Create item
 			$the_items[] = array(
-				'name'				=> get_option( 'wcj_pdf_invoices_display_shipping_as_item_text' ),
+				'name'				=> $shipping_item_name,
 				'type' 				=> 'line_item',				
 				'qty' 				=> 1,
 				//'tax_class' 		=> ,
@@ -374,9 +404,7 @@ class WCJ_PDF_Invoices {
 			);
 		}
 		
-		// Discount as item
-
-		
+		// Discount as item		
 		//$display_discount_as_item = true;
 		//if ( ( true === $display_discount_as_item ) &&
 		if ( ( '' != get_option( 'wcj_pdf_invoices_display_discount_as_item_text' ) ) &&
@@ -430,6 +458,7 @@ class WCJ_PDF_Invoices {
 			$item_quantity			= $item['qty'];
 			// Item Name
 			$item_name				= $item['name'];
+			
 			$product = $the_order->get_product_from_item( $item ); // variation (if needed)
 			if ( isset ( $product->variation_data ) ) {
 				foreach ( $product->variation_data as $key => $value ) {
@@ -487,7 +516,7 @@ class WCJ_PDF_Invoices {
 			$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_method_text' ). ': ' . $the_order->get_shipping_method() . '</p>';
 		// ADDITIONAL FOOTER
 		$html .= '<p>' . str_replace( PHP_EOL, '<br>', get_option( 'wcj_pdf_invoices_footer_text' ) ) . '</p>';
-
+		
 		return $html;
 	}
 
@@ -694,7 +723,31 @@ class WCJ_PDF_Invoices {
                 'default'  => '',
                 'type'     => 'text',
 				//'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
-            ),			
+            ),
+			
+            /*array(
+                'title'    => '',
+                'desc'     => __( 'Add shipping method info', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_display_shipping_as_item_method_enabled',
+                'default'  => 'yes',
+                'type'     => 'checkbox',
+            ),*/
+
+			array(
+				'title'    => '',
+				'desc'     => __( 'Add shipping method info', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_pdf_invoices_display_shipping_as_item_shipping_method',
+				'css'      => 'min-width:350px;',
+				'class'    => 'chosen_select',
+				'default'  => 'no',
+				'type'     => 'select',
+				'options'  => array(
+					'no'        => __( 'Do not add shipping method info', 'woocommerce-jetpack' ),
+					'yes'       => __( 'Add shipping method info', 'woocommerce-jetpack' ),
+					'replace'  	=> __( 'Replace with shipping method info', 'woocommerce-jetpack' ),
+				),
+				'desc_tip' =>  true,
+			),			
 
 			array(
                 'title'    => __( 'Discount as Item', 'woocommerce-jetpack' ),
@@ -919,7 +972,7 @@ class WCJ_PDF_Invoices {
 			//array( 'title' => __( 'More Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( '', 'woocommerce-jetpack' ), 'id' => 'wcj_pdf_invoices_more_options' ),
 
             array(
-                'title'    => __( 'PDF Invoices for Customers', 'woocommerce-jetpack' ),
+                'title'    => __( 'PDF Invoices for Customers (in My Account)', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Enable the PDF Invoices in customers account', 'woocommerce-jetpack' ),
 				'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
                 'id'       => 'wcj_pdf_invoices_enabled_for_customers',
@@ -927,6 +980,16 @@ class WCJ_PDF_Invoices {
                 'type'     => 'checkbox',
 				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
             ),
+			
+            array(
+                'title'    => __( 'PDF Invoices for Customers (Email attachment)', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Enable the PDF Invoices attachment files in customers email on order completed', 'woocommerce-jetpack' ),
+				'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'id'       => 'wcj_pdf_invoices_attach_to_email_enabled',
+                'default'  => 'no',
+                'type'     => 'checkbox',
+				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+            ),			
 			
             array(
                 'title'    => __( 'Enable Save as', 'woocommerce-jetpack' ),

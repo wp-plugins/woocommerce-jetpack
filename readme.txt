@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -65,17 +65,19 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.6.0 - 21/09/2014 =
 * Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
-* Upgrade Feature - PDF Invoices - Send PDF invoice or link to invoice to the customer. Make this option available for certain payment methods only (user selection). Idea by Jen.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
-* New Feature - Add second currency to the price.
-* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
-* Dev - PDF Invoices - If displaying shipping as item, add shipping method text. Suggested by Tomas.
+* Dev - Custom Price Labels - Rearrange settings in product edit (something like `postbox`es).
+* Upgrade Feature - Custom Price Labels - Add price countdown.
 
 = 1.7.0 - 01/10/2014 =
 * Upgrade Feature - Custom Price Labels - Add "global labels".
 * Upgrade Feature - Shipping - Add "Custom Shipping Method".
 * Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
 * Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
+* New Feature - Add second currency to the price.
+* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
+* Dev - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
+* Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
 
 = 1.8.0 - 07/10/2014 =
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
@@ -91,12 +93,19 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 == Changelog ==
 
+= 1.5.1 - 14/09/2014 =
+* Dev - Custom Price Labels - `textarea` instead of `<input type="text">`.
+* Dev - Orders - Custom Order Statuses - `postbox` added instead of simple form.
+* Upgrade Feature - PDF Invoices - PDF invoice as attachment file in customer's email (order completed). Idea by Jen.
+* Dev - PDF Invoices - If displaying shipping as item, option for adding shipping method text, added. Suggested by Tomas.
+
 = 1.5.0 - 13/09/2014 =
 * Dev - Orders - Renumerate orders tool compatibility with WooCommerce 2.2.x.
 * Dev - Orders - Custom Order Statuses compatibility with WooCommerce 2.2.x.
 * Dev - Orders - Renumerate orders tool moved to WooCommerce > Jetpack Tools.
 * Fix - PDF Invoices - `Order Shipping Price` position in `Totals` on admin settings page, fixed.
 * Dev - PDF Invoices - Save as pdf option added.
+* Fix - PDF Invoices - Bug with invoice PDF file name, fixed.
 
 = 1.4.0 - 07/09/2014 =
 * Dev - Custom Price Labels - Support for price labels showing on Pages, added. Suggested by Axel.

@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.3.1
+ * @version		1.3.2
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -203,11 +203,21 @@ class WCJ_Orders {
 					echo '</tr>';
 				}
 			?></table>
-			<p><form method="post" action="<?php echo remove_query_arg( 'delete' ); ?>">
-				Slug: wc-<input type="text" name="new_status">
-				Label: <input type="text" name="new_status_label">
-				<input class="button-primary" type="submit" name="add_custom_status" value="Add new custom status">
-			</form></p>
+			<p></p>
+		</div><?php
+		?><div class="metabox-holder" style="width:300px;">
+				<div class="postbox">
+					<h3 class="hndle"><span>Add</span></h3>
+					<div class="inside">
+						<form method="post" action="<?php echo remove_query_arg( 'delete' ); ?>">
+							<ul>
+								<li><?php _e( 'Slug (without wc- prefix)', 'woocommerce-jetpack' ); ?><input type="text" name="new_status" style="width:100%;"></li>
+								<li><?php _e( 'Label', 'woocommerce-jetpack' ); ?><input type="text" name="new_status_label" style="width:100%;"></li>
+							</ul>
+							<input class="button-primary" type="submit" name="add_custom_status" value="Add new custom status">
+						</form>
+					</div>
+				</div>
 		</div><?php
 	}
 

@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class		WCJ_Price_Labels
- * @version		1.0.1
+ * @version		1.0.3
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -162,7 +162,7 @@ class WCJ_Price_Labels {
 			if ( $custom_tab_section == '_before' ) $disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_below' );
 			else $disabled_if_no_plus = '';
 		
-			echo '<p>' . $disabled_if_no_plus . '<ul><strong>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</strong>';
+			echo '<p>' . $disabled_if_no_plus . '<ul><h4>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</h4>';
 		
 			foreach ( $this->custom_tab_section_variations as $custom_tab_section_variation ) {
 			
@@ -180,7 +180,8 @@ class WCJ_Price_Labels {
 					$label_text = get_post_meta($current_post_id, '_' . $option_name, true );
 					$label_text = str_replace ( '"', '&quot;', $label_text );					
 					
-					echo '<li>' . $this->custom_tab_section_variations_titles[ $custom_tab_section_variation ] . ' <input style="width:50%;min-width:300px;" type="text" ' . $disabled_if_no_plus . ' name="' . $option_name . '" id="' . $option_name . '" value="' . $label_text . '" /></li>';
+					//echo '<li>' . $this->custom_tab_section_variations_titles[ $custom_tab_section_variation ] . ' <input style="width:50%;min-width:300px;" type="text" ' . $disabled_if_no_plus . ' name="' . $option_name . '" id="' . $option_name . '" value="' . $label_text . '" /></li>';
+					echo '<li>' . $this->custom_tab_section_variations_titles[ $custom_tab_section_variation ] . '<br><textarea style="width:50%;min-width:300px;height:100px;" ' . $disabled_if_no_plus . ' name="' . $option_name . '">' . $label_text . '</textarea></li>';
 					
 				}
 				else { 
