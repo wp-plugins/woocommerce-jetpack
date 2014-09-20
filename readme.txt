@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,9 +41,9 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 == Installation ==
 
-1. Upload the entire 'woocommerce-jetpack' folder to the '/wp-content/plugins/' directory
+1. Upload the entire `woocommerce-jetpack` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to WooCommerce > Settings > Jetpack.
+3. Go to WooCommerce > Settings > Jetpack
 
 == Frequently Asked Questions ==
 
@@ -63,36 +63,54 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.6.0 - 21/09/2014 =
+= 1.6.0 - 22/09/2014 =
+* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
 * Dev - Custom Price Labels - Rearrange settings in product edit (something like `postbox`es).
 * Upgrade Feature - Custom Price Labels - Add price countdown.
+* Upgrade Feature - Custom Price Labels - Add labels to `cart` and `checkout` pages. Idea by Stephanie.
+* Upgrade Feature - Orders - Minimum order amount - Stop customer from seeing the checkout page if below minimum order amount. Idea by Augen.
+* Dev - Custom CSS - Need to add custom CSS option (problem with color of price matching the background in mimum order amount message; suggested by Augen).
 
 = 1.7.0 - 01/10/2014 =
 * Upgrade Feature - Custom Price Labels - Add "global labels".
 * Upgrade Feature - Shipping - Add "Custom Shipping Method".
 * Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
+* Upgrade Feature - Product Info - Add widget.
 * Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
 * New Feature - Add second currency to the price.
-* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * Dev - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
 * Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
 * Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
 
 = 1.8.0 - 07/10/2014 =
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
+* Upgrade Feature - Smart Reports - Export to CSV file.
+* Upgrade Feature - Product Info - Today's deal.
+* Upgrade Feature - Product Info - Images for variations.
 
 = 1.9.0 - 21/10/2014 =
 * Upgrade Feature - Custom Price Labels - Add "local remove".
-* Upgrade Feature - Orders - Bulk orders (start from global discount for all products; later - discounts for individual products).
+* Upgrade Feature - Orders - Bulk orders i.e. "Buy More - Pay Less". Start from global discount for all products, i.e. cart discount; later - discounts for individual products.
 * Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
-* Upgrade Feature - Cart - Cart discount.
+* Upgrade Feature - Custom Price Labels - Custom free price.
+* Upgrade Feature - Checkout - Custom checkout fields.
+* Upgrade Feature - Product Info - Custom product tabs.
+* Upgrade Feature - Checkout - Skrill.
+* Upgrade Feature - Checkout - Amazon Payments.
+* Upgrade Feature - Orders - Maximum weight - "Contact us" to place order with products total weight over some amount.
+* Upgrade Feature - Sorting - Add sorting by popularity in e.g. 90 days (not by `total_sales` as it is by default in WooCommerce).
 
 = 2.0.0 - 01/11/2014 =
+* Dev - Move all to `WooCommerce > Jetpack` menu.
 * Dev - Major source code, documentation, locking mechanism etc. recheck.
 
 == Changelog ==
+
+= 1.5.2 - 20/09/2014 =
+* Fix - Emails - Bug causing `call_user_func_array()` warning, fixed. Suggested by Andrew.
+* Dev - New WooCommerce Jetpack Dashboard in admin settings.
 
 = 1.5.1 - 14/09/2014 =
 * Dev - Custom Price Labels - `textarea` instead of `<input type="text">`.

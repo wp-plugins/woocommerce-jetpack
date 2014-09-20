@@ -5,8 +5,7 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.0.0
- * @package		WC_Jetpack/Classes
+ * @version		1.0.1
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -85,9 +84,7 @@ class WCJ_Reports {
 	 * Add settings section to WooCommerce > Settings > Jetpack.
 	 */
 	function settings_section( $sections ) {
-
 		$sections['reports'] = __( 'Smart Reports', 'woocommerce-jetpack' );
-
 		return $sections;
 	}
 
@@ -201,7 +198,7 @@ class WCJ_Reports {
 		$info['total_stock_price'] = 0;
 		$info['stock_price_average'] = 0;
 		$info['stock_average'] = 0;
-		$info['sales_in_period_average'] = 0;
+		$info['sales_in_period_average'][$this->period] = 0;
 		$stock_non_zero_number = 0;
 
 		foreach ( $products_info as $product_info ) {
@@ -214,7 +211,7 @@ class WCJ_Reports {
 			if ( $product_info['stock_price'] > 0 ) {
 				$info['stock_price_average'] += $product_info['stock_price'];
 				$info['stock_average'] = $product_info['stock'];
-				$info['sales_in_period_average'] += $product_info['sales_in_period'][$this->period];
+				$info['sales_in_period_average'][$this->period] += $product_info['sales_in_period'][$this->period];
 				$stock_non_zero_number++;
 			}
 
@@ -223,7 +220,7 @@ class WCJ_Reports {
 
 		$info['stock_price_average'] /= $stock_non_zero_number;
 		$info['stock_average'] /= $stock_non_zero_number;
-		$info['sales_in_period_average'] /= $stock_non_zero_number;
+		$info['sales_in_period_average'][$this->period] /= $stock_non_zero_number;
 	}
 
 	/*
@@ -262,7 +259,7 @@ class WCJ_Reports {
 	 * output_report.
 	 */
 	public function output_report( $products_info, $info, $report_info ) {
-
+	
 		// Style
 		$html = '<style>';
 		$html .= '.wcj_report_table { width: 90%; border-collapse: collapse; }';
@@ -296,19 +293,20 @@ class WCJ_Reports {
 				continue;*/
 
 			if (
-				/*(
-				 ( $info['sales_in_90_days_average'] > $product_info['sales_in_90_days'] ) &&
-				 ( $info['stock_price_average'] < $product_info['stock_price'] ) &&
-				 //( 0 != $product_info['stock'] ) &&
+				/**/(
+				 //( $info['sales_in_90_days_average'] > $product_info['sales_in_90_days'] ) &&
+				 ( $product_info['sales_in_period'][$this->period] < $info['sales_in_period_average'][$this->period] ) &&
+				 ( $product_info['stock_price'] > $info['stock_price_average'] ) &&
+				 ////( 0 != $product_info['stock'] ) &&
 				 ( 'bad_stock' === $report_info['id'] )
-			    ) || */
+			    ) || /**/
 				(
 				 ( $info['stock_price_average'] < $product_info['stock_price'] ) &&
 				 //( 0 != $product_info['stock'] ) &&
 				 ( 'most_stock_price' === $report_info['id'] )
 			    ) ||
 				(
-				 ( $product_info['sales_in_period'][$this->period] < $info['sales_in_period_average'] ) &&
+				 ( $product_info['sales_in_period'][$this->period] < $info['sales_in_period_average'][$this->period] ) &&
 				 ( $product_info['stock'] > 0 ) &&
 				 ( 'bad_sales' === $report_info['id'] )
 			    ) ||
@@ -317,11 +315,11 @@ class WCJ_Reports {
 				 ( $product_info['stock'] > 0 ) &&
 				 ( 'no_sales' === $report_info['id'] )
 			    ) ||
-				/*(
-				 ( $info['sales_in_90_days_average'] < $product_info['sales_in_90_days'] ) &&
+				(
+				 ( $product_info['sales_in_period'][$this->period] > $info['sales_in_period_average'][$this->period] ) &&
 				 ( 'good_sales' === $report_info['id'] )
 			    ) ||
-				(
+				/*(
 				 ( $info['sales_in_90_days_average'] < $product_info['sales_in_90_days'] ) &&
 				 //( $info['stock_average'] > $product_info['stock'] ) &&
 //				 ( $product_info['sales_in_90_days'] > $product_info['stock'] ) &&

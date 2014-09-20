@@ -4,8 +4,12 @@
  *
  * The WooCommerce Jetpack Emails class.
  *
- * @class        WCJ_Emails
+ * @class       WCJ_Emails
+ * @version		1.0.1
+ * @category	Class
+ * @author 		Algoritmika Ltd. 
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  
 if ( ! class_exists( 'WCJ_Emails' ) ) :
@@ -21,10 +25,10 @@ class WCJ_Emails {
         if ( get_option( 'wcj_emails_enabled' ) == 'yes' ) {
 		
 			if ( get_option( 'wcj_emails_bcc_email' ) !== '' )
-				add_filter( 'woocommerce_email_headers', 'add_bcc_email' );
+				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_email' ) );
 				
 			if ( get_option( 'wcj_emails_cc_email' ) !== '' )
-				add_filter( 'woocommerce_email_headers', 'add_cc_email' );				
+				add_filter( 'woocommerce_email_headers', array( $this, 'add_cc_email' ) );				
 				
 			// Settings
 			add_filter( 'woocommerce_email_settings', array( $this, 'add_email_forwarding_fields' ), 100 );				

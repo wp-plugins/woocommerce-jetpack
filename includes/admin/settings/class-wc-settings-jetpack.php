@@ -1,15 +1,19 @@
 <?php
 /**
  * WooCommerce Jetpack Settings
+ *
+ * The WooCommerce Jetpack Settings class.
+ *
+ * @class       WC_Settings_Jetpack
+ * @version		1.0.1
+ * @category	Class
+ * @author 		Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'WC_Settings_Jetpack' ) ) :
 
-/**
- * WC_Settings_Jetpack
- */
 class WC_Settings_Jetpack extends WC_Settings_Page {
 
 	/**
@@ -36,17 +40,87 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			''	=> __( 'Dashboard', 'woocommerce-jetpack' ),
 		) );
 	}
+	
+	/**
+	 * active.
+	 */
+	public function active( $active ) {
+		if ( 'yes' === $active ) return 'active';
+		else return 'inactive';
+	}	
 
 	/**
-	 * Output the settings
+	 * Output the settings.
 	 */
 	public function output() {
 	
 		global $current_section;
 
 		$settings = $this->get_settings( $current_section );
+		
+		if ( '' != $current_section )
+			WC_Admin_Settings::output_fields( $settings );		
+		else {
+		
+			$the_settings = $this->get_settings();
+			
+			echo '<h3>' . $the_settings[0]['title'] . '</h3>';
+			echo '<p>' . $the_settings[0]['desc'] . '</p>';
+		
+			?><table class="wp-list-table widefat plugins">
+				<thead>
+				<tr>
+				<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></th>
+				<th scope="col" id="name" class="manage-column column-name" style="">Feature</th>
+				<th scope="col" id="description" class="manage-column column-description" style="">Description</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+				<th scope="col" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox"></th>
+				<th scope="col" class="manage-column column-name" style="">Feature</th>
+				<th scope="col" class="manage-column column-description" style="">Description</th>
+				</tr>
+				</tfoot>
+				<tbody id="the-list"><?php										
+					$html = '';					
+					foreach ( $the_settings as $the_feature ) {		
 
- 		WC_Admin_Settings::output_fields( $settings );
+						if ( 'checkbox' !== $the_feature['type'] ) continue;
+					
+						$html .= '<tr id="' . $the_feature['id'] . '" ' . 'class="' . $this->active( get_option( $the_feature['id'] ) ) . '">';
+						
+						$html .= '<th scope="row" class="check-column">';
+						//$html .= '<label class="screen-reader-text" for="' . $the_feature['id'] . '">' . __( 'Enable the ', 'woocommerce-jetpack' ) . $the_feature['title'] . ' feature</label>';
+						$html .= '<label class="screen-reader-text" for="' . $the_feature['id'] . '">' . $the_feature['desc'] . '</label>';
+						$html .= '<input type="checkbox" name="' . $the_feature['id'] . '" value="1" id="' . $the_feature['id'] . '" ' . checked( get_option( $the_feature['id'] ), 'yes', false ) . '>';
+						$html .= '</th>';			
+
+						$html .= '<td class="plugin-title"><strong>' . $the_feature['title'] . '</strong>';						
+						$html .= '<div class="row-actions visible">';
+						//$html .= '<span class="deactivate"><a href="" title="Deactivate feature">Deactivate</a> | </span>';
+						
+						// Temporary solution - 17/09/2014
+						$section = $the_feature['id'];
+						$section = str_replace( 'wcj_', '', $section );
+						$section = str_replace( '_enabled', '', $section );
+						if ( 'currency' === $section ) $section = 'currencies';
+						
+						$html .= '<span class="0"><a href="/wp-admin/admin.php?page=wc-settings&tab=jetpack&section=' . $section . '">Settings</a></span>';
+						$html .= '</div>';
+						$html .= '</td>';							
+					
+						$html .= '<td class="column-description desc">';
+						$html .= '<div class="plugin-description"><p>' . $the_feature['desc_tip'] . '</p></div>';
+						//$html .= '<div class="active second plugin-version-author-uri">Versija 2.1.1 | Sukūrė <a href="" title="Aplankyti autoriaus puslapį">Ramoonus</a> | <a href="" title="Aplankyti įskiepio puslapį">Aplankyti įskiepio puslapį</a></div>';
+						$html .= '</td>';						
+	
+						$html .= '</tr>';
+					}
+					echo $html;									
+				?></tbody>
+			</table><?php 
+		}
 	}
 
 	/**
@@ -91,12 +165,12 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			
 			$settings[] = array( 'type' => 'sectionend', 'id' => 'wcj_options' );
 			
-			$updated_settings = array();
+			/*$updated_settings = array();
 			$i = 0;
 			$s = count( $settings );
 			foreach ( $settings as $single_item ) {
 				
-				if ( ( 'checkbox' == $single_item['type'] ) && ( $i > 0 ) ) {
+				if ( ( 'checkbox' === $single_item['type'] ) && ( $i > 0 ) ) {
 				
 					if ( 1 == $i ) {
 						$single_item['checkboxgroup'] = 'start';
@@ -123,9 +197,9 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 				$updated_settings[] = $single_item;
 				
 				$i++;
-			}
+			}*/
 				
-			return $updated_settings;//apply_filters('wcj_general_settings', $settings );
+			return $settings;//apply_filters('wcj_general_settings', $settings );
 		}
 	}
 }
