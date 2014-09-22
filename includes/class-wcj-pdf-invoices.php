@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.4.0
+ * @version		1.5.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -124,7 +124,8 @@ class WCJ_PDF_Invoices {
 		$pdf->SetKeywords( 'invoice, PDF' );
 
 		// set default header data
-		//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+		// TODO 2014.09.21
+//		$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
 		//$pdf->SetHeaderData( get_option( 'wcj_pdf_invoices_seller_logo_url' ), 30, get_option( 'wcj_pdf_invoices_header_title' ), get_option( 'wcj_pdf_invoices_header_string' ), array(0,64,255), array(0,64,128));
 		$pdf->SetPrintHeader(false);
 		$pdf->setFooterData(array(0,64,0), array(0,64,128));
@@ -185,6 +186,66 @@ class WCJ_PDF_Invoices {
 		// This method has several options, check the source code documentation for more information.
 //		$the_order = new WC_Order( $order_id );
 //		$order_number = $the_order->get_order_number();
+
+
+
+
+
+
+/**/
+
+		if ( $get_by_order_id > 0 ) 
+			return $pdf->Output('invoice-' . $order_id . '.pdf', 'S');
+		else
+		{
+			$file_name = 'invoice-' .  $order_id . '.pdf';
+			$file_path = sys_get_temp_dir() . '/' . $file_name;
+			$result = file_put_contents( $file_path, $pdf->Output( '', 'S' ) );
+			//echo $pdf->Output( '', 'S' );
+			
+			if ( isset( $_GET['save_pdf_invoice'] ) && '1' == $_GET['save_pdf_invoice'] ) {
+				//$pdf->Output('invoice-' . $order_id . '.pdf', 'D');			
+			
+				header("Content-Type: application/octet-stream");
+
+				//$file = $file_name;//$_GET["file"] .".pdf";
+				header("Content-Disposition: attachment; filename=" . urlencode($file_name));   
+				header("Content-Type: application/octet-stream");
+				header("Content-Type: application/download");
+				header("Content-Description: File Transfer");            
+
+			}				
+			else {
+				//$pdf->Output('invoice-' . $order_id . '.pdf', 'I');
+				
+				header("Content-type: application/pdf");
+				header("Content-Disposition: inline; filename=" . urlencode($file_name));   		
+			}
+			
+			header("Content-Length: " . filesize($file_path));
+			flush(); // this doesn't really matter.
+			$fp = fopen($file_path, "r");
+			while (!feof($fp))
+			{
+				echo fread($fp, 65536);
+				flush(); // this is essential for large downloads
+			} 
+			fclose($fp); 			
+			
+			
+		}
+
+
+						
+			
+			/**/
+			
+			
+			
+			
+			
+			/**
+			
 		
 		if ( $get_by_order_id > 0 ) 
 			return $pdf->Output('invoice-' . $order_id . '.pdf', 'S');
@@ -192,6 +253,15 @@ class WCJ_PDF_Invoices {
 			$pdf->Output('invoice-' . $order_id . '.pdf', 'D');
 		else
 			$pdf->Output('invoice-' . $order_id . '.pdf', 'I');
+			
+			/**/
+			
+			
+			
+			
+			
+			
+			
 	}
 
     /**

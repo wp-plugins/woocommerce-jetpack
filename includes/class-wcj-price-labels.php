@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class		WCJ_Price_Labels
- * @version		1.0.3
+ * @version		1.3.0
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -46,57 +46,47 @@ class WCJ_Price_Labels {
 	
 		// HOOKS
 		// Main hooks
-		if ( get_option( 'wcj_price_labels_enabled' ) == 'yes' ) {
+		if ( 'yes' === get_option( 'wcj_price_labels_enabled' ) ) {
 		
-			// Custom Price Labels hooks
-			add_action( 'add_meta_boxes', array( $this, 'add_price_label_meta_box' ) );			
-			
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// Custom Price Labels - cart item price hooks
-			//add_filter( 'woocommerce_cart_item_price_html', array( $this, 'custom_price' ), 999, 2 ); // depreciated?
-			//add_filter( 'woocommerce_cart_item_price', array( $this, 'custom_price' ), 999, 2 );						
-
-			add_filter( 'woocommerce_get_price_html', array( $this, 'custom_price' ), 100, 2 );
-			
-			//if ( $labels_array[ 'variation_simple' ] == 'off' ) {	
-
-				// Custom Price Labels - price hooks
-				add_filter( 'woocommerce_empty_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_free_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_free_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
-				add_filter( 'woocommerce_price_html', array( $this, 'custom_price' ), 100, 2 );
-				add_filter( 'woocommerce_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
-			//}
-			
-			//if ( $labels_array[ 'variation_grouped' ] == 'off' ) {
-			
-				// Custom Price Labels - price hooks
-				add_filter( 'woocommerce_grouped_price_html', array( $this, 'custom_price' ), 100, 2 );	
-			//}
-			
-			//if ( $labels_array[ 'variation_variable' ] == 'off' ) {
-			
-				// Custom Price Labels - price hooks
-				add_filter( 'woocommerce_variable_empty_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_variable_free_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_variable_free_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
-				add_filter( 'woocommerce_variable_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_variable_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
-			//}
-			
-			//if ( $labels_array[ 'variation_variation' ] == 'off' ) {
-			
-				// Custom Price Labels - price hooks
-				add_filter( 'woocommerce_variation_empty_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_variation_free_price_html', array( $this, 'custom_price' ), 100, 2 );
-				//woocommerce_variation_option_name
-				add_filter( 'woocommerce_variation_price_html', array( $this, 'custom_price' ), 100, 2 );		
-				add_filter( 'woocommerce_variation_sale_price_html', array( $this, 'custom_price' ), 100, 2 );
-			//}
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////			
-			
-			// Custom Price Labels - save post hook
+			// Add meta box
+			add_action( 'add_meta_boxes', array( $this, 'add_price_label_meta_box' ) );
+			// Save Post
 			add_action( 'save_post', array( $this, 'save_custom_price_labels' ), 999, 2 );
+			
+			// Prices Hooks
+			$this->prices_filters = array(			
+				// Cart
+				'woocommerce_cart_item_price',
+				// Composite Products
+				'woocommerce_composite_sale_price_html', 		
+				'woocommerce_composite_price_html', 						
+				'woocommerce_composite_empty_price_html', 		
+				'woocommerce_composite_free_sale_price_html', 	
+				'woocommerce_composite_free_price_html', 
+				// Booking Products
+				'woocommerce_get_price_html', 								
+				// Simple Products
+				'woocommerce_empty_price_html', 						
+				'woocommerce_free_price_html', 							
+				'woocommerce_free_sale_price_html', 			
+				'woocommerce_price_html', 						
+				'woocommerce_sale_price_html', 					
+				// Grouped Products
+				'woocommerce_grouped_price_html', 					
+				// Variable Products
+				'woocommerce_variable_empty_price_html', 				
+				'woocommerce_variable_free_price_html', 				
+				'woocommerce_variable_free_sale_price_html', 	
+				'woocommerce_variable_price_html', 						
+				'woocommerce_variable_sale_price_html', 					
+				// Variable Products - Variations
+				'woocommerce_variation_empty_price_html', 				
+				'woocommerce_variation_free_price_html', 		
+				'woocommerce_variation_price_html', 					
+				'woocommerce_variation_sale_price_html',
+			);			
+			foreach ( $this->prices_filters as $the_filter )
+				add_filter( $the_filter, array( $this, 'custom_price' ), 100, 2 );
 		}
 	
 		// Settings hooks
@@ -232,11 +222,14 @@ class WCJ_Price_Labels {
 	 * front end
 	 */	
 	public function custom_price( $price, $product ) {	
-	
+
 		$current_filter_name = current_filter();
 		
 		if ( ( 'woocommerce_get_price_html' === $current_filter_name ) && ( 'booking' !== $product->product_type ) )
 			return $price;
+			
+		if ( 'woocommerce_cart_item_price' === $current_filter_name )
+			$product = $product['data'];			
 	
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
 		
@@ -266,8 +259,8 @@ class WCJ_Price_Labels {
 			$text_to_remove = get_option( 'wcj_global_price_labels_remove_text' );
 			if ( '' != $text_to_remove )
 				$price = str_replace( $text_to_remove, '', $price );
-			
-			if ( $labels_array[ 'variation_enabled' ] == 'on' ) {
+				
+			if ( $labels_array[ 'variation_enabled' ] == 'on' ) {			
 			
 				if ( 
 					( ( $labels_array['variation_home'] 	 == 'off' ) && ( is_front_page() ) ) ||
