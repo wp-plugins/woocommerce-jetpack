@@ -1,10 +1,10 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,6 +30,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
+* Another custom CSS tool, if you need one.
 
 = Feedback =
 * We are open to your suggestions and feedback - thank you for using or trying out one of our plugins!
@@ -65,7 +66,6 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.7.0 - 01/10/2014 =
 * Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
-* New Feature - General - Another Custom CSS tool.
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * New Feature - Add second currency to the price.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
@@ -105,6 +105,11 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Dev - Major source code, documentation, locking mechanism etc. recheck.
 
 == Changelog ==
+
+= 1.6.1 - 23/09/2014 =
+* New Feature - General - Another custom CSS tool.
+* Dev - Orders - Minimum order amount - `textarea` instead of `text` option type. Now can add tags (e.g. `<span></span>`) to customers messages.
+* Dev - PDF Invoices - "Css" renamed to "CSS".
 
 = 1.6.0 - 22/09/2014 =
 * Fix - PDF Invoices - Wrong headers for PDF sent, fixed.
