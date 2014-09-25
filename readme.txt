@@ -114,7 +114,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 = 1.6.2 - 25/09/2014 =
 * Feature Upgraded - Orders - Orders Numbers - Additional custom date prefix added. Suggested by Sergio.
   Value is passed directly to PHP `date` function, so most of PHP date formats can be used.
-  Visit <a href="http://php.net/manual/en/function.date.php">PHP `date` function page</a> for more information on valid date formats.
+  Visit PHP `date` <a href="http://php.net/manual/en/function.date.php">function page</a> for more information on valid date formats.
   The only exception is using `\` symbol in date format, as this symbol will be excluded from date (that is because of WooCommerce default option saving mechanism).
 
 = 1.6.1 - 23/09/2014 =
