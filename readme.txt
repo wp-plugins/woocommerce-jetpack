@@ -119,7 +119,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.6.1 - 23/09/2014 =
 * New Feature - General - Another custom CSS tool.
-* Dev - Orders - Minimum order amount - `textarea` instead of `text` option type. Now can add tags (e.g. `<span></span>`) to customers messages.
+* Dev - Orders - Minimum order amount - `textarea` instead of `text` option type. Now can add tags (e.g. `<span class="your_class"></span>`) to customers messages.
 
 = 1.6.0 - 22/09/2014 =
 * Fix - PDF Invoices - Wrong headers for PDF sent, fixed.
