@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,8 +64,12 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.7.0 - 01/10/2014 =
+= 1.6.3 - 26/09/2014 =
 * Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
+* New Feature - Products - Option to exclude categories on shop page (when `Shop Page Display` is set to `Show subcategories` or `Show both`). Idea by Xavier.
+* Upgrade Feature - Product Info - Show SKU on archive page. Idea by Xavier.
+
+= 1.7.0 - 01/10/2014 =
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * New Feature - Add second currency to the price.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
@@ -81,6 +85,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
 * Upgrade Feature - Custom CSS - Need to add custom CSS option (problem with color of price matching the background in minimum order amount message; suggested by Augen).
 * Dev - Custom Price Labels - Rearrange settings in product edit (something like `postbox`es).
+* Dev - Rename "Features" to "Modules".
 
 = 1.8.0 - 07/10/2014 =
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
@@ -106,10 +111,15 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 == Changelog ==
 
+= 1.6.2 - 25/09/2014 =
+* Feature Upgraded - Orders - Orders Numbers - Additional custom date prefix added. Suggested by Sergio.
+  Value is passed directly to PHP `date` function, so most of PHP date formats can be used.
+  Visit <a href="http://php.net/manual/en/function.date.php">PHP `date` function page</a> for more information on valid date formats.
+  The only exception is using `\` symbol in date format, as this symbol will be excluded from date (that is because of WooCommerce default option saving mechanism).
+
 = 1.6.1 - 23/09/2014 =
 * New Feature - General - Another custom CSS tool.
 * Dev - Orders - Minimum order amount - `textarea` instead of `text` option type. Now can add tags (e.g. `<span></span>`) to customers messages.
-* Dev - PDF Invoices - "Css" renamed to "CSS".
 
 = 1.6.0 - 22/09/2014 =
 * Fix - PDF Invoices - Wrong headers for PDF sent, fixed.
