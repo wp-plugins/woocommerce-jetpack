@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.1.0
+ * @version		1.1.1
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -50,10 +50,8 @@ class WCJ_Reports {
 	 * Add Enable option to Jetpack Settings Dashboard.
 	 */
 	public function add_enabled_option( $settings ) {
-
 		$all_settings = $this->get_settings();
 		$settings[] = $all_settings[1];
-
 		return $settings;
 	}
 
@@ -283,7 +281,8 @@ class WCJ_Reports {
 
 		$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Last sale', 'woocommerce-jetpack' ) . '</th>';
 		$html .= '<th class="wcj_report_table_sales_columns">' . sprintf( __( 'Sales in last %s days', 'woocommerce-jetpack' ), $this->period ) . '</th>';
-		$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Sales in previous period', 'woocommerce-jetpack' ) . '</th>';
+		$html .= '<th class="wcj_report_table_sales_columns">' . sprintf( __( 'Sales in last %s days', 'woocommerce-jetpack' ), $this->period * 2 ) . '</th>';
+		//$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Sales in previous period', 'woocommerce-jetpack' ) . '</th>';
 		$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Total sales', 'woocommerce-jetpack' ) . '</th>';
 		$html .= '</tr>';
 
@@ -374,12 +373,22 @@ class WCJ_Reports {
 		$html .= '</tbody></table>';
 
 		$html_header = '<h4>' . $report_info['title'] . ': ' . $report_info['desc'] . '</h4>';
+		
+		$html_header .= '<table class="widefat" style="width:30% !important;"><tbody>';
+		$html_header .= '<tr>' . '<th>' . __( 'Total current stock value', 'woocommerce-jetpack' ) . '</th>' . '<td>' . wc_price( $total_current_stock_price ) . '</td>' . '</tr>';
+		$html_header .= '<tr>' . '<th>' . __( 'Total stock value', 'woocommerce-jetpack' ) . '</th>' . '<td>' . wc_price( $info['total_stock_price'] ) . '</td>' . '</tr>';
+		$html_header .= '<tr>' . '<th>' . __( 'Product stock value average', 'woocommerce-jetpack' ) . '</th>' . '<td>' . wc_price( $info['stock_price_average'] ) . '</td>' . '</tr>';
+		$html_header .= '<tr>' . '<th>' . __( 'Product stock average', 'woocommerce-jetpack' ) . '</th>' . '<td>' . number_format( $info['stock_average'], 2, '.', '' ) . '</td>' . '</tr>';
+		$html_header .= '</tbody></table>';	
+		$html_header .= '<br class="clear">';
+		
+		/*
 		$html_header .= '<div class="updated1">' . __( 'Total current stock value: ', 'woocommerce-jetpack' ) . wc_price( $total_current_stock_price ) . '</div>';
 		$html_header .= '<div class="updated1">' . __( 'Total stock value: ', 'woocommerce-jetpack' ) . wc_price( $info['total_stock_price'] ) . '</div>';
 		//$html_header .= '<div class="updated1">' . __( 'Product sales in 90 average: ', 'woocommerce-jetpack' ) . number_format( $info['sales_in_90_days_average'], 2, '.', '' ) . '</div>';
 		$html_header .= '<div class="updated1">' . __( 'Product stock value average: ', 'woocommerce-jetpack' ) . wc_price( $info['stock_price_average'] ) . '</div>';
 		$html_header .= '<div class="updated1">' . __( 'Product stock average: ', 'woocommerce-jetpack' ) . number_format( $info['stock_average'], 2, '.', '' ) . '</div>';
-
+*/
 
 		// Report title and description
 		//$html_report_title = '<h4>' . $report_info['title'] . ': ' . $report_info['desc'] . '</h4>';
@@ -427,8 +436,8 @@ class WCJ_Reports {
 			),*/
 			'on_stock'	=> array(
 				'id'		=> 'on_stock',
-				'title'		=> __( 'on_stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'on_stock.', 'woocommerce-jetpack' ),
+				'title'		=> __( 'All Products on Stock', 'woocommerce-jetpack' ),
+				'desc'		=> __( 'Report shows all products that are on stock.', 'woocommerce-jetpack' ),
 			),/*
 			'any_sale'	=> array(
 				'id'		=> 'any_sale',

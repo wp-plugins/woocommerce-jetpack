@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.1.0
+ * @version		1.1.1
  * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
@@ -92,7 +92,7 @@ class WCJ_Product_Info {
 		global $product;
 		$product_info_shortcodes_array = array(
 			'%sku%'				=> $product->get_sku(),
-			'%total_sales%'		=> get_post_custom( $product->id )['total_sales'][0],
+			/*'%total_sales%'		=> get_post_custom( $product->id )['total_sales'][0],*/
 		);
 		foreach ( $product_info_shortcodes_array as $search_for_phrase => $replace_with_phrase )
 			$the_product_info = str_replace( $search_for_phrase, $replace_with_phrase, $the_product_info );
