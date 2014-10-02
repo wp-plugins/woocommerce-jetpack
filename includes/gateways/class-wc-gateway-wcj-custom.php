@@ -82,6 +82,7 @@ function init_wc_gateway_wcj_custom_class() {
 			$icon_url = $this->get_option( 'icon', '' );//apply_filters( 'woocommerce_wcj_custom_icon', $this->get_option( 'icon', '' ) );
 			if ( $icon_url !== '' )
 				$desc = '<img src="' . $icon_url . '" alt="WooJetpack Custom" title="WooJetpack Custom" />';				
+				//$desc = '<img src="' . $icon_url . '" alt="' . $this->method_description . '" title="' . $this->method_description . '" />';				
 
 			$this->form_fields = array(
 				'enabled' => array(
