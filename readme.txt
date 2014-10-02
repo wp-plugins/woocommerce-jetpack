@@ -1,10 +1,10 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.6.2
+Stable tag: 1.7.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,6 +26,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Checkout - Customize checkout fields: disable/enable fields, set required, change labels and/or placeholders.
 * Shipping - Hide shipping when free is available.
 * Emails - Add another email recipient(s) to all WooCommerce emails.
+* Product Listings - Change display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
 * Product Info - Customize single product tabs. Change related products number.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
@@ -64,36 +65,30 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.6.3 - 26/09/2014 =
-* Fix - Payment Gateways - Instructions are not showing. Suggested by Jen.
-* New Feature - Products - Option to exclude categories on shop page (when `Shop Page Display` is set to `Show subcategories` or `Show both`). Idea by Xavier.
-* Upgrade Feature - Product Info - Show SKU on archive page. Idea by Xavier.
-
-= 1.7.0 - 01/10/2014 =
+= 1.7.1 - 06/10/2014 =
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock.
-* New Feature - Add second currency to the price.
+* Upgrade Feature - Payment Gateways - Additional payment gateways. Idea by Kristof.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
-* Upgrade Feature - Custom Price Labels - Add price countdown.
-* Upgrade Feature - Orders - Minimum order amount - Stop customer from seeing the checkout page if below minimum order amount. Idea by Augen.
-* Upgrade Feature - Custom Price Labels - Add "global labels".
-* Upgrade Feature - Shipping - Add "Custom Shipping Method".
-* Upgrade Feature - Product Info - Add "total sales" and "time since last sale" info.
-* Upgrade Feature - Product Info - Add widget.
-* Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
 * Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
 * Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
-* Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
-* Upgrade Feature - Custom CSS - Need to add custom CSS option (problem with color of price matching the background in minimum order amount message; suggested by Augen).
-* Dev - Custom Price Labels - Rearrange settings in product edit (something like `postbox`es).
-* Dev - Rename "Features" to "Modules".
 
-= 1.8.0 - 07/10/2014 =
+= 1.8.0 - 13/10/2014 =
+* New Feature - Add second currency to the price.
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
-* Upgrade Feature - Smart Reports - Export to CSV file.
+* Upgrade Feature - Shipping - Add "Custom Shipping Method".
+* Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
+* Upgrade Feature - Custom Price Labels - Add price countdown.
+* Upgrade Feature - Custom Price Labels - Add "global labels".
+* Upgrade Feature - Product Info - Add widget.
 * Upgrade Feature - Product Info - Today's deal.
 * Upgrade Feature - Product Info - Images for variations.
+* Upgrade Feature - Product Info - Add "%time_since_last_sale%".
+* Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
+* Upgrade Feature - Smart Reports - Export to CSV file.
+* Upgrade Feature - Call for Price - Call for price for variable products (all variations or only some).
+* Dev - Custom Price Labels - Rearrange settings in product edit (something like `postbox`es).
 
-= 1.9.0 - 21/10/2014 =
+= 1.9.0 - 20/10/2014 =
 * Upgrade Feature - Custom Price Labels - Add "local remove".
 * Upgrade Feature - Orders - Bulk orders i.e. "Buy More - Pay Less". Start from global discount for all products, i.e. cart discount; later - discounts for individual products.
 * Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
@@ -105,11 +100,23 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Orders - Maximum weight - "Contact us" to place order with products total weight over some amount.
 * Upgrade Feature - Sorting - Add sorting by popularity in e.g. 90 days (not by `total_sales` as it is by default in WooCommerce).
 
-= 2.0.0 - 01/11/2014 =
+= 2.0.0 - 27/10/2014 =
 * Dev - Move all to `WooCommerce > Jetpack` menu.
 * Dev - Major source code, documentation, locking mechanism etc. recheck.
+  Maybe rename "Features" to "Modules".
+* Dev - Add "Restore Defaults" option (will need to delete/reset all posts' some meta (e.g. price labels) also).
 
 == Changelog ==
+
+= 1.7.0 - 02/10/2014 =
+* Fix - Payment Gateways - Instructions were not showing (suggested by Jen), fixed.
+* New Feature - Product Listings - Options added (separately for "Shop" and "Categories" pages): show/hide categories count, exclude categories (idea by Xavier), show/hide empty categories.
+  This will work only when "Shop Page Display" and/or "Default Category Display" in "WooCommerce > Settings > Products > Product Listings" is set to "Show subcategories" or "Show both".
+  All new options fields are also added (duplicated) to "WooCommerce > Settings > Products > Product Listings".
+* Feature Upgraded - Payment Gateways - Instructions for emails option added (i.e. separated from instructions on thank you page).
+* Feature Upgraded - Orders - Minimum order amount - Stop customer from seeing the checkout page if below minimum order amount (in this case the customer redirected to Cart page). Idea by Augen.
+* Feature Upgraded - Product Info - Additional product info (separately for "Single" and "Archive" pages): text, position and priority options added.
+  First "Product Info Shortcodes" added: %sku% for SKU (idea by Xavier) and %total_sales% for Total Sales.
 
 = 1.6.2 - 25/09/2014 =
 * Feature Upgraded - Orders - Orders Numbers - Additional custom date prefix added. Suggested by Sergio.
@@ -119,7 +126,8 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.6.1 - 23/09/2014 =
 * New Feature - General - Another custom CSS tool.
-* Dev - Orders - Minimum order amount - `textarea` instead of `text` option type. Now can add tags (e.g. `<span class="your_class"></span>`) to customers messages.
+  This was added because of the problem with color of price matching the background in minimum order amount message (suggested by Augen), which can be fixed with custom CSS.
+* Dev - Orders - Minimum order amount - `textarea` instead of `text` option type. Now it is possible to add tags (e.g. `<span class="your_class"></span>`) to customers messages.
 
 = 1.6.0 - 22/09/2014 =
 * Fix - PDF Invoices - Wrong headers for PDF sent, fixed.

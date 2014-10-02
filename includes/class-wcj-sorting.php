@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Sorting class.
  *
  * @class 		WCJ_Sorting
- * @version		1.0.0
+ * @version		1.0.1
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -72,13 +72,13 @@ class WCJ_Sorting {
 			if ( isset( $section['id'] ) && 'woocommerce_cart_redirect_after_add' == $section['id'] ) {
 
 				$updated_settings[] = array(
-					'title' 	=> __( 'Remove All Sorting', 'woocommerce-jetpack' ),				
-					'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+					'title' 	=> __( 'WooJetpack: Remove All Sorting', 'woocommerce-jetpack' ),					
 					'id'		=> 'wcj_sorting_remove_all_enabled',
 					'type'		=> 'checkbox',
 					'default'	=> 'no',
 					'desc'		=> __( 'Completely remove sorting from the shop front end', 'woocommerce-jetpack' ),
 					'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+					'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				);
 			}
 			
@@ -273,10 +273,8 @@ class WCJ_Sorting {
 	/*
 	 * Add settings section to WooCommerce > Settings > Jetpack.
 	 */	
-	function settings_section( $sections ) {
-	
-		$sections['sorting'] = 'Sorting';
-		
+	function settings_section( $sections ) {	
+		$sections['sorting'] = __( 'Sorting', 'woocommerce-jetpack' );		
 		return $sections;
 	}	
 }

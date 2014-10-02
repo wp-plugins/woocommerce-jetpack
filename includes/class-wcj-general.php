@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack General class.
  *
  * @class		WCJ_General
- * @version		1.0.0
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd. 
  */
@@ -19,18 +19,14 @@ class WCJ_General {
     /**
      * Constructor.
      */
-    public function __construct() {
- 
+    public function __construct() { 
         // Main hooks
         if ( 'yes' === get_option( 'wcj_general_enabled' ) ) {
-			if ( '' != get_option( 'wcj_general_custom_css' ) ) {
+			if ( '' != get_option( 'wcj_general_custom_css' ) )
 				add_action( 'wp_head', 		array( $this, 'hook_custom_css' ) );
-			}
-			if ( '' != get_option( 'wcj_general_custom_admin_css' ) ) {
+			if ( '' != get_option( 'wcj_general_custom_admin_css' ) )
 				add_action( 'admin_head', 	array( $this, 'hook_custom_admin_css' ) );
-			}			
-        }        
-    
+		}    
         // Settings hooks
         add_filter( 'wcj_settings_sections', 	array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_general', 	array( $this, 'get_settings' ), 		100 );
@@ -102,7 +98,7 @@ class WCJ_General {
 				'css'	   => 'width:66%;min-width:300px;min-height:300px;',
             ),			
         
-            array( 'type'  => 'sectionend', 'id' => 'wcj_general_custom_css_options' ),			
+            array( 'type'  => 'sectionend', 'id' => 'wcj_general_custom_css_options' ),
         );
         
         return $settings;
@@ -111,10 +107,8 @@ class WCJ_General {
     /**
      * settings_section.
      */
-    function settings_section( $sections ) {
-    
-        $sections['general'] = __( 'General', 'woocommerce-jetpack' );
-        
+    function settings_section( $sections ) {    
+        $sections['general'] = __( 'General', 'woocommerce-jetpack' );        
         return $sections;
     }    
 }

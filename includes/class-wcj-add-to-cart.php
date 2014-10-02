@@ -5,7 +5,11 @@
  * The WooCommerce Jetpack Add to cart class.
  *
  * @class		WCJ_Add_to_cart
+ * @version		1.0.0
+ * @category	Class
+ * @author 		Algoritmika Ltd.
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  
 if ( ! class_exists( 'WCJ_Add_to_cart' ) ) :

@@ -4,8 +4,12 @@
  *
  * The WooCommerce Jetpack Checkout class.
  *
- * @class        WCJ_Checkout
+ * @class		WCJ_Checkout
+ * @version		1.1.0
+ * @category	Class
+ * @author 		Algoritmika Ltd. 
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  
 if ( ! class_exists( 'WCJ_Checkout' ) ) :
@@ -17,11 +21,9 @@ class WCJ_Checkout {
 	 */
 	public $sub_items = array(
 		'enabled'		=> 'checkbox',		
-		////'type', 
 		'required'		=> 'checkbox',
 		'label' 		=> 'text', 
 		'placeholder'	=> 'text', 		
-		//'clear',			
 	);
 	
 	/**
@@ -58,24 +60,15 @@ class WCJ_Checkout {
     public function __construct() {
  
         // Main hooks
-        if ( get_option( 'wcj_checkout_enabled' ) == 'yes' ) {
-			
+        if ( 'yes' === get_option( 'wcj_checkout_enabled' ) ) {
 			add_filter( 'woocommerce_checkout_fields' , array( $this, 'custom_override_checkout_fields' ) );
-			
-			//if ( is_super_admin() )
-			//global $woocommerce;
-			//	print_r( $woocommerce );
-			
 			add_filter( 'woocommerce_order_button_text', array( $this, 'set_order_button_text' ) );
         }        
     
         // Settings hooks
         add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_checkout', array( $this, 'get_settings' ), 100 );
-        add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
-		
-		
-			
+        add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	
     }
 	
     /**
@@ -276,10 +269,8 @@ class WCJ_Checkout {
     /**
      * settings_section.
      */
-    function settings_section( $sections ) {
-    
-        $sections['checkout'] = 'Checkout';
-        
+    function settings_section( $sections ) {    
+        $sections['checkout'] = __( 'Checkout', 'woocommerce-jetpack' );        
         return $sections;
     }    
 }

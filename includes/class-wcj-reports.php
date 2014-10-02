@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.0.1
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -151,7 +151,8 @@ class WCJ_Reports {
 
 		$args_orders = array(
 			'post_type'			=> 'shop_order',
-			'post_status' 		=> 'publish',
+			//'post_status' 		=> 'publish',
+			'post_status' 		=> 'completed',
 			'posts_per_page' 	=> -1,
 			'orderby'			=> 'date',
 			'order'				=> 'DESC',
@@ -218,9 +219,11 @@ class WCJ_Reports {
 			$info['total_stock_price'] += $product_info['stock_price'];
 		}
 
-		$info['stock_price_average'] /= $stock_non_zero_number;
-		$info['stock_average'] /= $stock_non_zero_number;
-		$info['sales_in_period_average'][$this->period] /= $stock_non_zero_number;
+		if ( 0 != $stock_non_zero_number ) {
+			$info['stock_price_average'] /= $stock_non_zero_number;
+			$info['stock_average'] /= $stock_non_zero_number;
+			$info['sales_in_period_average'][$this->period] /= $stock_non_zero_number;
+		}
 	}
 
 	/*
@@ -391,7 +394,7 @@ class WCJ_Reports {
 	public function create_reports_tool() {
 
 		$this->reports_info = array(
-			'bad_stock'	=> array(
+			/*'bad_stock'	=> array(
 				'id'		=> 'bad_stock',
 				'title'		=> __( 'Low sales - big stock', 'woocommerce-jetpack' ),
 				'desc'		=> __( 'Report shows you products with stock bigger than <span style="color:green;">%s</span> average, but with sales in last 90 days lower than average. Sorted by total stock value.', 'woocommerce-jetpack' ),
@@ -421,12 +424,12 @@ class WCJ_Reports {
 				'id'		=> 'good_sales_low_stock',
 				'title'		=> __( 'Good sales - low stock', 'woocommerce-jetpack' ),
 				'desc'		=> __( 'Report shows you products with sales in last 90 days higher than average, but stock lower than products sales in 90 days. Sorted by total stock value.', 'woocommerce-jetpack' ),
-			),
+			),*/
 			'on_stock'	=> array(
 				'id'		=> 'on_stock',
 				'title'		=> __( 'on_stock', 'woocommerce-jetpack' ),
 				'desc'		=> __( 'on_stock.', 'woocommerce-jetpack' ),
-			),
+			),/*
 			'any_sale'	=> array(
 				'id'		=> 'any_sale',
 				'title'		=> __( 'any_sale', 'woocommerce-jetpack' ),
@@ -442,10 +445,12 @@ class WCJ_Reports {
 				'id'		=> 'sales_down',
 				'title'		=> __( 'sales_down', 'woocommerce-jetpack' ),
 				'desc'		=> __( 'sales_down.', 'woocommerce-jetpack' ),
-			),
+			),*/
 		);
 
-		$this->output_submenu();
+		echo '<h2>WooCommerce Jetpack - Smart Reports</h2>';
+		
+//		$this->output_submenu();
 
 		if ( isset( $_GET['report'] ) ) {
 
@@ -481,12 +486,16 @@ class WCJ_Reports {
 		}
 		else {
 			echo '<p>' . __( 'Here you can generate reports. Some reports are generated using all your orders and products, so if you have a lot of them - it may take a while.', 'woocommerce-jetpack' ) . '</p>';
-			echo '<p>' . __( 'Reports:', 'woocommerce-jetpack' ) . '</p>';
-			echo '<ul>';
+			//echo '<p>' . __( 'Reports:', 'woocommerce-jetpack' ) . '</p>';
+			echo '<table class="widefat"><tbody>';
 			foreach ( $this->reports_info as $report => $report_info ) {
-				echo '<li><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a> - ' . $report_info['desc'] . '</li>';
+				//echo '<li><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a> - ' . $report_info['desc'] . '</li>';
+				echo '<tr>';
+				if ( ! isset( $report_info['tab'] ) || 'general' === $report_info['tab'] )
+					echo '<td><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a></td>' . '<td>' . $report_info['desc'] . '</td>';
+				echo '</tr>';
 			}
-			echo '</ul>';
+			echo '</tbody></table>';
 		}
 	}
 }

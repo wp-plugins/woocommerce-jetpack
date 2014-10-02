@@ -4,8 +4,12 @@
  *
  * The WooCommerce Jetpack Payment Gateways class.
  *
- * @class        WCJ_Payment_Gateways
+ * @class       WCJ_Payment_Gateways
+ * @version		1.0.1
+ * @category	Class
+ * @author 		Algoritmika Ltd. 
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  
 if ( ! class_exists( 'WCJ_Payment_Gateways' ) ) :
@@ -16,7 +20,7 @@ class WCJ_Payment_Gateways {
 		'woocommerce_cod_icon' 				=> 'COD',
 		'woocommerce_cheque_icon' 			=> 'Cheque',
 		'woocommerce_bacs_icon' 			=> 'BACS',
-		'woocommerce_mijireh_checkout_icon' => 'Mijireh Checkout',
+		'woocommerce_mijireh_checkout_icon' => 'Mijireh Checkout', //depreciated?
 		'woocommerce_paypal_icon' 			=> 'PayPal',
 		//'woocommerce_wcj_custom_icon' 		=> 'WooJetpack Custom',
 	);

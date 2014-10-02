@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.3.5
+ * @version		1.4.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -46,6 +46,9 @@ class WCJ_Orders {
 			if ( get_option( 'wcj_order_minimum_amount' ) > 0 ) {
 				add_action( 'woocommerce_checkout_process', array( $this, 'order_minimum_amount' ) );
 				add_action( 'woocommerce_before_cart', 		array( $this, 'order_minimum_amount' ) );
+				if ( 'yes' === get_option( 'wcj_order_minimum_amount_stop_from_seeing_checkout' ) )				
+					add_action( 'wp', 						array( $this, 'stop_from_seeing_checkout' ) );
+				
 			}
 
 			if ( 'yes' === get_option( 'wcj_orders_custom_statuses_enabled' ) ) {
@@ -66,7 +69,7 @@ class WCJ_Orders {
         add_filter( 'wcj_settings_orders', 		array( $this, 'get_settings' ), 		100 );
         add_filter( 'wcj_features_status', 		array( $this, 'add_enabled_option' ), 	100 );
     }
-
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//																				CUSTOM STATUSES																		  //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -362,6 +365,15 @@ class WCJ_Orders {
 			}
 		}
 	}
+	
+	/**
+	 * stop_from_seeing_checkout.
+	 */
+	public function stop_from_seeing_checkout() {
+		global $woocommerce;
+		if ( $woocommerce->cart->total < get_option( 'wcj_order_minimum_amount' ) && is_checkout() )			
+			wp_safe_redirect( $woocommerce->cart->get_cart_url() );
+	}	
 
 
     /**
@@ -491,6 +503,14 @@ class WCJ_Orders {
 						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
 				'css'	   => 'width:50%;min-width:300px;',
             ),
+			
+            array(
+                'title'    => __( 'Stop customer from seeing the Checkout page if minimum amount not reached.', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Redirect back to Cart page', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_order_minimum_amount_stop_from_seeing_checkout',
+                'default'  => 'no',
+                'type'     => 'checkbox',
+            ),			
 
             array( 'type'  => 'sectionend', 'id' => 'wcj_order_minimum_amount_options' ),
 

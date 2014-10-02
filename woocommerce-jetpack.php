@@ -3,13 +3,14 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.6.2
+Version: 1.7.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // exit if accessed directly
 
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // check if WooCommerce is active
@@ -107,14 +108,6 @@ final class WC_Jetpack {
 	}	
 	
 	/**
-	 * wcj_get_option.
-	 *	
-	public function wcj_get_option( $value ) {
-	
-		return $value;
-	}
-	
-	/**
 	 * get_wcj_plus_message.
 	 */
 	public function get_wcj_plus_message( $value, $message_type ) {
@@ -168,6 +161,7 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-call-for-price.php' );		
 		$settings[] = include_once( 'includes/class-wcj-currencies.php' );		
 		$settings[] = include_once( 'includes/class-wcj-sorting.php' );
+		$settings[] = include_once( 'includes/class-wcj-product-listings.php' );
 		$settings[] = include_once( 'includes/class-wcj-product-info.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-add-to-cart.php' );

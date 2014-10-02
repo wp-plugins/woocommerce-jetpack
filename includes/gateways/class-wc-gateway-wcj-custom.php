@@ -1,7 +1,15 @@
 <?php
 /**
- * class WC_Gateway_WCJ_Custom
+ * WooCommerce Jetpack Custom Payment Gateway
+ *
+ * The WooCommerce Jetpack Custom Payment Gateway class.
+ *
+ * @class		WC_Gateway_WCJ_Custom
+ * @version		1.1.0
+ * @category	Class
+ * @author 		Algoritmika Ltd.
  */
+
 add_action( 'plugins_loaded', 'init_wc_gateway_wcj_custom_class' );
 
 function init_wc_gateway_wcj_custom_class() {
@@ -24,17 +32,21 @@ function init_wc_gateway_wcj_custom_class() {
 			$this->init_settings();
 
 			// Define user set variables
-			$this->title        		= $this->get_option( 'title' );
-			$this->description  		= $this->get_option( 'description' );
-			$this->instructions 		= $this->get_option( 'instructions', $this->description );
-			$this->icon					= $this->get_option( 'icon', '' );//apply_filters( 'woocommerce_wcj_custom_icon', $this->get_option( 'icon', '' ) );
-			$this->min_amount			= $this->get_option( 'min_amount', 0 );
-			$this->enable_for_methods 	= $this->get_option( 'enable_for_methods', array() );
-			$this->enable_for_virtual 	= $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;			
+			$this->title        			= $this->get_option( 'title' );
+			$this->description  			= $this->get_option( 'description' );
+			$this->instructions 			= $this->get_option( 'instructions', '' );//$this->description );
+			$this->instructions_in_email	= $this->get_option( 'instructions_in_email', '' );
+			$this->icon						= $this->get_option( 'icon', '' );//apply_filters( 'woocommerce_wcj_custom_icon', $this->get_option( 'icon', '' ) );
+			$this->min_amount				= $this->get_option( 'min_amount', 0 );
+			$this->enable_for_methods 		= $this->get_option( 'enable_for_methods', array() );
+			$this->enable_for_virtual 		= $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;			
 
 			// Actions
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-			add_action( 'woocommerce_thankyou_wcj_custom', array( $this, 'thankyou_page' ) );
+
+//			add_action( 'woocommerce_thankyou_jetpack_custom_gateway', 	array( $this, 'thankyou_page' ) );		
+			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );		
+
 
 			// Customer Emails
 			add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 );
@@ -95,10 +107,17 @@ function init_wc_gateway_wcj_custom_class() {
 				'instructions' => array(
 					'title'       => __( 'Instructions', 'woocommerce' ),
 					'type'        => 'textarea',
-					'description' => __( 'Instructions that will be added to the thank you page and emails.', 'woocommerce' ),
+					'description' => __( 'Instructions that will be added to the thank you page.', 'woocommerce-jetpack' ),
 					'default'     => '',
 					'desc_tip'    => true,
 				),
+				'instructions_in_email' => array(
+					'title'       => __( 'Email Instructions', 'woocommerce' ),
+					'type'        => 'textarea',
+					'description' => __( 'Instructions that will be added to the emails.', 'woocommerce-jetpack' ),
+					'default'     => '',
+					'desc_tip'    => true,
+				),				
 				'icon' => array(
 					'title'       => __( 'Icon', 'woocommerce-jetpack' ),
 					'type'        => 'text',
@@ -248,8 +267,9 @@ function init_wc_gateway_wcj_custom_class() {
 		 * @param bool $plain_text
 		 */
 		public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
-			if ( $this->instructions && ! $sent_to_admin && 'jetpack_custom' === $order->payment_method && 'on-hold' === $order->status ) {
-				echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
+//			if ( $this->instructions_in_email && ! $sent_to_admin && 'jetpack_custom_gateway' === $order->payment_method && 'on-hold' === $order->status ) {
+			if ( $this->instructions_in_email && ! $sent_to_admin && $this->id === $order->payment_method && 'on-hold' === $order->status ) {
+				echo wpautop( wptexturize( $this->instructions_in_email ) ) . PHP_EOL;
 			}
 		}
 
@@ -275,7 +295,7 @@ function init_wc_gateway_wcj_custom_class() {
 			// Return thankyou redirect
 			return array(
 				'result' 	=> 'success',
-				'redirect'	=> $this->get_return_url( $order )
+				'redirect'	=> $this->get_return_url( $order ),
 			);
 		}		
 	}

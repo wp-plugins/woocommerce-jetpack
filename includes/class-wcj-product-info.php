@@ -5,11 +5,12 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.0.0
+ * @version		1.1.0
  * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'WCJ_Product_Info' ) ) :
@@ -21,15 +22,44 @@ class WCJ_Product_Info {
 	 */	
 	public function __construct() {
 	
+		// Product archives filters array
+		$this->product_info_on_archive_filters_array = array(
+			'woocommerce_before_shop_loop_item'				=> __( 'Before product', 'woocommerce-jetpack' ),
+			'woocommerce_before_shop_loop_item_title'		=> __( 'Before product title', 'woocommerce-jetpack' ),
+			'woocommerce_after_shop_loop_item'				=> __( 'After product', 'woocommerce-jetpack' ),
+			'woocommerce_after_shop_loop_item_title'		=> __( 'After product title', 'woocommerce-jetpack' ),
+		);
+
+		// Single product filters array
+		$this->product_info_on_single_filters_array = array(
+			'woocommerce_single_product_summary'			=> __( 'Inside single product summary', 'woocommerce-jetpack' ),
+			'woocommerce_before_single_product_summary'		=> __( 'Before single product summary', 'woocommerce-jetpack' ),
+			'woocommerce_after_single_product_summary'		=> __( 'After single product summary', 'woocommerce-jetpack' ),
+		);			
+	
 		// Main hooks
-		if ( 'yes' == get_option( 'wcj_product_info_enabled' ) ) {
+		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {
 		
 			add_filter( 'woocommerce_product_tabs', array( $this, 'customize_product_tabs' ), 98 );	
 			
-			if ( get_option( 'wcj_product_info_related_products_enable' ) == 'yes' ) {
+			if ( get_option( 'wcj_product_info_related_products_enable' ) === 'yes' ) {
 				add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), 100 );
 				add_filter( 'woocommerce_output_related_products_args', array( $this, 'related_products_limit_args' ), 100 );
 			}
+					
+			if ( ( 'yes' === get_option( 'wcj_product_info_on_archive_enabled' ) ) &&
+				 ( '' != get_option( 'wcj_product_info_on_archive' ) ) &&
+				 ( '' != get_option( 'wcj_product_info_on_archive_filter' ) ) && 
+				 ( '' != get_option( 'wcj_product_info_on_archive_filter_priority' ) ) &&
+				 ( array_key_exists( get_option( 'wcj_product_info_on_archive_filter' ), $this->product_info_on_archive_filters_array ) ) )
+						add_action( get_option( 'wcj_product_info_on_archive_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_archive_filter_priority' ) );
+				
+			if ( ( 'yes' === get_option( 'wcj_product_info_on_single_enabled' ) ) &&
+				 ( '' != get_option( 'wcj_product_info_on_single' ) ) &&
+				 ( '' != get_option( 'wcj_product_info_on_single_filter' ) ) &&
+				 ( '' != get_option( 'wcj_product_info_on_single_filter_priority' ) ) &&
+				 ( array_key_exists( get_option( 'wcj_product_info_on_single_filter' ), $this->product_info_on_single_filters_array ) ) )
+						add_action( get_option( 'wcj_product_info_on_single_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_single_filter_priority' ) );				
 		}
 		
 		// Settings hooks
@@ -48,6 +78,26 @@ class WCJ_Product_Info {
 		
 		return $settings;
 	}
+	
+	/**
+	 * product_info.
+	 */
+	public function product_info() {	
+
+		$the_action_name = current_filter();
+		if ( array_key_exists( $the_action_name, $this->product_info_on_archive_filters_array ) )
+			$the_product_info = get_option( 'wcj_product_info_on_archive' );
+		else if ( array_key_exists( $the_action_name, $this->product_info_on_single_filters_array ) )
+			$the_product_info = apply_filters( 'wcj_get_option_filter', 'Total sales: %total_sales%', get_option( 'wcj_product_info_on_single' ) );			
+		global $product;
+		$product_info_shortcodes_array = array(
+			'%sku%'				=> $product->get_sku(),
+			'%total_sales%'		=> get_post_custom( $product->id )['total_sales'][0],
+		);
+		foreach ( $product_info_shortcodes_array as $search_for_phrase => $replace_with_phrase )
+			$the_product_info = str_replace( $search_for_phrase, $replace_with_phrase, $the_product_info );
+		echo $the_product_info;
+	}	
 	
 	/**
 	 * Change number of related products on product page.
@@ -122,10 +172,91 @@ class WCJ_Product_Info {
 				'desc_tip'	=> __( 'Customize single product tabs, change related products number.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_enabled',
 				'default'	=> 'yes',
-				'type' 		=> 'checkbox'
+				'type' 		=> 'checkbox',
 			),
 			
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_options' ),		
+			
+			// Product Info Additional Options
+			array( 'title' 	=> __( 'More Products Info', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_info_additional_options' ),
+			
+			array(
+				'title' 	=> __( 'Product Info on Archive Pages', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_archive_enabled',
+				'default'	=> 'no',
+				'type' 		=> 'checkbox',
+			),			
+			
+			array(
+				'title' 	=> '',
+				'desc_tip'	=> __( 'HTML info. Predefined: %total_sales%, %sku%', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_archive',
+				'default'	=> 'SKU: %sku%',
+				'type' 		=> 'textarea',
+				'css'	   => 'width:50%;min-width:300px;height:100px;',				
+			),
+			
+			array(
+				'title'    => '',
+				'desc'     => __( 'Position', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_on_archive_filter',
+				'css'      => 'min-width:350px;',
+				'class'    => 'chosen_select',
+				'default'  => 'woocommerce_after_shop_loop_item_title',
+				'type'     => 'select',
+				'options'  => $this->product_info_on_archive_filters_array,
+				'desc_tip' =>  true,
+			),		
+
+			array(
+				'title'    => '',
+				'desc_tip'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_on_archive_filter_priority',
+				'default'  => 10,
+				'type'     => 'number',
+			),			
+			
+			array(
+				'title' 	=> __( 'Product Info on Single Product Pages', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_single_enabled',
+				'default'	=> 'no',
+				'type' 		=> 'checkbox',
+			),			
+
+			array(
+				'title' 	=> '',
+				'desc_tip'	=> __( 'HTML info. Predefined: %total_sales%, %sku%', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_single',
+				'default'	=> 'Total sales: %total_sales%',
+				'type' 		=> 'textarea',
+				'custom_attributes'
+						    => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'	    => 'width:50%;min-width:300px;height:100px;',				
+			),		
+
+			array(
+				'title'    => '',
+				'desc'     => __( 'Position', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_on_single_filter',
+				'css'      => 'min-width:350px;',
+				'class'    => 'chosen_select',
+				'default'  => 'woocommerce_after_single_product_summary',
+				'type'     => 'select',
+				'options'  => $this->product_info_on_single_filters_array,
+				'desc_tip' =>  true,
+			),		
+
+			array(
+				'title'    => '',
+				'desc_tip'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_on_single_filter_priority',
+				'default'  => 10,
+				'type'     => 'number',
+			),			
+			
+			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_additional_options' ),				
 		
 			// Product Tabs Options
 			array( 'title' 	=> __( 'Product Tabs Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This section lets you customize single product tabs.', 'id' => 'wcj_product_info_product_tabs_options' ),
@@ -135,7 +266,7 @@ class WCJ_Product_Info {
 				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_product_tabs_description_disable',
 				'default'	=> 'no',
-				'type' 		=> 'checkbox'
+				'type' 		=> 'checkbox',
 			),
 			
 			array(
@@ -161,7 +292,7 @@ class WCJ_Product_Info {
 				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_product_tabs_reviews_disable',
 				'default'	=> 'no',
-				'type' 		=> 'checkbox'
+				'type' 		=> 'checkbox',
 			),
 
 			array(
@@ -187,7 +318,7 @@ class WCJ_Product_Info {
 				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_product_tabs_additional_information_disable',
 				'default'	=> 'no',
-				'type' 		=> 'checkbox'
+				'type' 		=> 'checkbox',
 			),
 			
 			array(
@@ -217,7 +348,7 @@ class WCJ_Product_Info {
 				'title' 	=> __( 'Enable', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_related_products_enable',
 				'default'	=> 'no',
-				'type' 		=> 'checkbox'
+				'type' 		=> 'checkbox',
 			),
 			
 			array(
@@ -268,10 +399,8 @@ class WCJ_Product_Info {
 	/**
 	 * Add settings section.
 	 */	
-	function settings_section( $sections ) {
-	
-		$sections['product_info'] = __( 'Product Info', 'woocommerce-jetpack' );
-		
+	function settings_section( $sections ) {	
+		$sections['product_info'] = __( 'Product Info', 'woocommerce-jetpack' );		
 		return $sections;
 	}	
 }
