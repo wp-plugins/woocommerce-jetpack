@@ -266,5 +266,8 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 == Upgrade Notice ==
 
+= 1.7.2 =
+Bug causing "PHP Parse error" (appearing on some machines, e.g. PHP 5.3 servers) fixed. Upgrade immediately.
+
 = 1.0.0 =
 This is the first release of the plugin.
