@@ -60,7 +60,9 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 1. Plugin admin area.
 
-== TODO List ==
+== Other Notes ==
+
+= TODO List =
 
 Please note that this list is only preliminary and may be corrected at any time.
 
