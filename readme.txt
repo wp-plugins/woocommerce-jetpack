@@ -41,6 +41,9 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 = More =
 * Visit the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
 
+= Available Translations =
+* `FR_fr` by Jean-Marc Schreiber.
+
 == Installation ==
 
 1. Upload the entire `woocommerce-jetpack` folder to the `/wp-content/plugins/` directory
