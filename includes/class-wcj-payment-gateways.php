@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Payment Gateways class.
  *
  * @class       WCJ_Payment_Gateways
- * @version		1.0.1
+ * @version		1.0.2
  * @category	Class
  * @author 		Algoritmika Ltd. 
  */
@@ -128,6 +128,24 @@ class WCJ_Payment_Gateways {
             ),
         
             array( 'type'  => 'sectionend', 'id' => 'wcj_payment_gateways_options' ),
+			
+            array( 'title' => __( 'Custom Payment Gateways Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( '', 'woocommerce-jetpack' ), 'id' => 'wcj_custom_payment_gateways_options' ),
+            
+            array(
+                'title'    => __( 'Number of Gateways', 'woocommerce-jetpack' ),
+                'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'desc_tip' => __( 'Number of custom payments gateways to be added. All settings for each new gateway are in WooCommerce > Settings > Checkout.', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_custom_payment_gateways_number',
+                'default'  => 1,
+                'type'     => 'number',
+				'custom_attributes' => array(
+					'min'  => 1,
+					'step' => 1,
+					'max'  => apply_filters( 'wcj_get_option_filter', 1, 10 ),
+				)				
+            ),
+        
+            array( 'type'  => 'sectionend', 'id' => 'wcj_custom_payment_gateways_options' ),			
 		);
 			
         $settings[] = array( 'title' => __( 'Default WooCommerce Payment Gateways Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'If you want to show an image next to the gateway\'s name on the frontend, enter a URL to an image.', 'woocommerce-jetpack' ), 'id' => 'wcj_payment_gateways_icons_options' );

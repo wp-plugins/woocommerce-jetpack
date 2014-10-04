@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Custom Payment Gateway class.
  *
  * @class		WC_Gateway_WCJ_Custom
- * @version		1.1.0
+ * @version		1.2.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -14,46 +14,7 @@ add_action( 'plugins_loaded', 'init_wc_gateway_wcj_custom_class' );
 
 function init_wc_gateway_wcj_custom_class() {
 
-	class WC_Gateway_WCJ_Custom extends WC_Payment_Gateway {
-	
-		/**
-		 * Constructor.
-		 */
-		public function __construct() {	
-	
-			$this->id 					= 'jetpack_custom_gateway';
-			//$this->icon 				= ''; //If you want to show an image next to the gateway’s name on the frontend, enter a URL to an image.
-			$this->has_fields 			= false;
-			$this->method_title 		= __( 'Custom Gateway', 'woocommerce-jetpack' );
-			$this->method_description 	= __( 'WooCommerce Jetpack: Custom Payment Gateway', 'woocommerce-jetpack' );
-			
-			// Load the settings.
-			$this->init_form_fields();
-			$this->init_settings();
-
-			// Define user set variables
-			$this->title        			= $this->get_option( 'title' );
-			$this->description  			= $this->get_option( 'description' );
-			$this->instructions 			= $this->get_option( 'instructions', '' );//$this->description );
-			$this->instructions_in_email	= $this->get_option( 'instructions_in_email', '' );
-			$this->icon						= $this->get_option( 'icon', '' );//apply_filters( 'woocommerce_wcj_custom_icon', $this->get_option( 'icon', '' ) );
-			$this->min_amount				= $this->get_option( 'min_amount', 0 );
-			$this->enable_for_methods 		= $this->get_option( 'enable_for_methods', array() );
-			$this->enable_for_virtual 		= $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;			
-
-			// Actions
-			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-
-//			add_action( 'woocommerce_thankyou_jetpack_custom_gateway', 	array( $this, 'thankyou_page' ) );		
-			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );		
-
-
-			// Customer Emails
-			add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 );
-			
-			
-			//add_filter( 'woocommerce_wcj_custom_icon', array( $this, 'set_icon' ) );
-		}
+	class WC_Gateway_WCJ_Custom_Template extends WC_Payment_Gateway {	
 		
 		/**
 		 * set_icon
@@ -81,15 +42,15 @@ function init_wc_gateway_wcj_custom_class() {
 			$desc = '';
 			$icon_url = $this->get_option( 'icon', '' );//apply_filters( 'woocommerce_wcj_custom_icon', $this->get_option( 'icon', '' ) );
 			if ( $icon_url !== '' )
-				$desc = '<img src="' . $icon_url . '" alt="WooJetpack Custom" title="WooJetpack Custom" />';				
-				//$desc = '<img src="' . $icon_url . '" alt="' . $this->method_description . '" title="' . $this->method_description . '" />';				
+				//$desc = '<img src="' . $icon_url . '" alt="WooJetpack Custom" title="WooJetpack Custom" />';				
+				$desc = '<img src="' . $icon_url . '" alt="' . $this->title . '" title="' . $this->title . '" />';				
 
 			$this->form_fields = array(
 				'enabled' => array(
 					'title'   => __( 'Enable/Disable', 'woocommerce' ),
 					'type'    => 'checkbox',
 					'label'   => __( 'Enable Custom Payment', 'woocommerce' ),
-					'default' => 'no'
+					'default' => 'no',
 				),
 				'title' => array(
 					'title'       => __( 'Title', 'woocommerce' ),
@@ -156,6 +117,11 @@ function init_wc_gateway_wcj_custom_class() {
 					'default'           => 'yes'
 				),
 			);
+			
+			if ( 1 != $this->id_count ) {
+				$this->form_fields['enabled']['description'] = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' );
+				$this->form_fields['enabled']['custom_attributes'] = apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' );
+			}
 		}		
 		
 		/**
@@ -298,15 +264,58 @@ function init_wc_gateway_wcj_custom_class() {
 				'result' 	=> 'success',
 				'redirect'	=> $this->get_return_url( $order ),
 			);
-		}		
+		}
+
+		public function init( $id_count ) {
+			if ( 1 === $id_count )
+				$this->id 					= 'jetpack_custom_gateway';
+			else
+				$this->id 					= 'jetpack_custom_gateway_' . $id_count;				
+			$this->has_fields 				= false;				
+			$this->method_title 			= __( 'Custom Gateway', 'woocommerce-jetpack' ) . ' #' . $id_count;
+			$this->method_description 		= __( 'WooCommerce Jetpack: Custom Payment Gateway', 'woocommerce-jetpack' ) . ' #' . $id_count;
+			$this->id_count = $id_count;
+			// Load the settings.
+			$this->init_form_fields();
+			$this->init_settings();
+			// Define user set variables
+			$this->title        			= $this->get_option( 'title' );
+			$this->description  			= $this->get_option( 'description' );
+			$this->instructions 			= $this->get_option( 'instructions', '' );//$this->description );
+			$this->instructions_in_email	= $this->get_option( 'instructions_in_email', '' );
+			$this->icon						= $this->get_option( 'icon', '' );//apply_filters( 'woocommerce_wcj_custom_icon', $this->get_option( 'icon', '' ) );
+			$this->min_amount				= $this->get_option( 'min_amount', 0 );
+			$this->enable_for_methods 		= $this->get_option( 'enable_for_methods', array() );
+			$this->enable_for_virtual 		= $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;			
+			// Actions
+			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );		
+			// Customer Emails
+			add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 );		
+		}
+		
+		/**
+		 * Constructor.
+		 */	
+		public function __construct() {
+		}
 	}
-	
-	
 
-	function add_wc_gateway_wcj_custom_class( $methods ) {
-
-		$methods[] = 'WC_Gateway_WCJ_Custom';
+	class WC_Gateway_WCJ_Custom    extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 1 );  } } // required
+	class WC_Gateway_WCJ_Custom_2  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 2 );  } }
+	class WC_Gateway_WCJ_Custom_3  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 3 );  } }
+	class WC_Gateway_WCJ_Custom_4  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 4 );  } }
+	class WC_Gateway_WCJ_Custom_5  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 5 );  } }
+	class WC_Gateway_WCJ_Custom_6  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 6 );  } }
+	class WC_Gateway_WCJ_Custom_7  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 7 );  } }
+	class WC_Gateway_WCJ_Custom_8  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 8 );  } }
+	class WC_Gateway_WCJ_Custom_9  extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 9 );  } }
+	class WC_Gateway_WCJ_Custom_10 extends WC_Gateway_WCJ_Custom_Template { public function __construct() { $this->init( 10 ); } }	
+	function add_wc_gateway_wcj_custom_classes( $methods ) {
+		$methods[] = 'WC_Gateway_WCJ_Custom'; // required
+		for ( $i = 2; $i <= apply_filters( 'wcj_get_option_filter', 0, get_option( 'wcj_custom_payment_gateways_number' ) ); $i++ )
+			$methods[] = 'WC_Gateway_WCJ_Custom_' . $i;
 		return $methods;
 	}
-	add_filter( 'woocommerce_payment_gateways', 'add_wc_gateway_wcj_custom_class' );
+	add_filter( 'woocommerce_payment_gateways', 'add_wc_gateway_wcj_custom_classes' );
 }

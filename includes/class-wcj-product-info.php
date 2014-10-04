@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.1.3
+ * @version		1.1.4
  * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
@@ -233,6 +233,7 @@ class WCJ_Product_Info {
 				'id' 		=> 'wcj_product_info_on_single',
 				'default'	=> 'Total sales: %total_sales%',
 				'type' 		=> 'textarea',
+				'desc' 	    => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'
 						    => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
 				'css'	    => 'width:50%;min-width:300px;height:100px;',				
