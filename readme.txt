@@ -69,6 +69,7 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
 = 1.7.6 - 09/10/2014 =
+* Tweak - Custom Price Labels - Add "Migrate from Custom Price Labels" tool to tools dashboard.
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * Upgrade Feature - PDF Invoices - International date formats. Idea by Jean-Marc.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
