@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Emails class.
  *
  * @class       WCJ_Emails
- * @version		1.0.1
+ * @version		1.0.3
  * @category	Class
  * @author 		Algoritmika Ltd. 
  */
@@ -19,21 +19,16 @@ class WCJ_Emails {
     /**
      * Constructor.
      */
-    public function __construct() {
- 
+    public function __construct() { 
         // Main hooks
-        if ( get_option( 'wcj_emails_enabled' ) == 'yes' ) {
-		
-			if ( get_option( 'wcj_emails_bcc_email' ) !== '' )
-				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_email' ) );
-				
-			if ( get_option( 'wcj_emails_cc_email' ) !== '' )
+        if ( 'yes' === get_option( 'wcj_emails_enabled' ) ) {		
+			if ( '' != get_option( 'wcj_emails_bcc_email' ) )
+				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_email' ) );				
+			if ( '' != get_option( 'wcj_emails_cc_email' ) )
 				add_filter( 'woocommerce_email_headers', array( $this, 'add_cc_email' ) );				
-				
 			// Settings
-			add_filter( 'woocommerce_email_settings', array( $this, 'add_email_forwarding_fields' ), 100 );				
-        }        
-    
+			add_filter( 'woocommerce_email_settings', array( $this, 'add_email_forwarding_fields' ), 100 );
+        }
         // Settings hooks
         add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_emails', array( $this, 'get_settings' ), 100 );
@@ -43,11 +38,9 @@ class WCJ_Emails {
     /**
      * add_enabled_option.
      */
-    public function add_enabled_option( $settings ) {
-    
+    public function add_enabled_option( $settings ) {    
         $all_settings = $this->get_settings();
-        $settings[] = $all_settings[1];
-        
+        $settings[] = $all_settings[1];        
         return $settings;
     }
 	
@@ -101,17 +94,15 @@ class WCJ_Emails {
 	 /**
 	 * Add another email recipient to all WooCommerce emails
 	 */
-	function add_bcc_email() {
-	  
-		return 'Bcc: ' . get_option( 'wcj_emails_bcc_email' ) . '\r\n';
+	function add_bcc_email( $email_headers ) {	  
+		return $email_headers . "Bcc: " . get_option( 'wcj_emails_bcc_email' ) . "\r\n";
 	}
 
 	 /**
 	 * Add another email recipient to all WooCommerce emails
 	 */
-	function add_cc_email() {
-	  
-		return 'Cc: ' . get_option( 'wcj_emails_cc_email' ) . '\r\n';
+	function add_cc_email( $email_headers ) {
+		return $email_headers . "Cc: " . get_option( 'wcj_emails_cc_email' ) . "\r\n";
 	}	
     
     /**
@@ -167,10 +158,8 @@ class WCJ_Emails {
     /**
      * settings_section.
      */
-    function settings_section( $sections ) {
-    
-        $sections['emails'] = __( 'Emails', 'woocommerce-jetpack' );
-        
+    function settings_section( $sections ) {    
+        $sections['emails'] = __( 'Emails', 'woocommerce-jetpack' );        
         return $sections;
     }    
 }

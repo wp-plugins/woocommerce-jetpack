@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.4.0
+ * @version		1.4.2
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -47,7 +47,9 @@ class WCJ_Orders {
 				add_action( 'woocommerce_checkout_process', array( $this, 'order_minimum_amount' ) );
 				add_action( 'woocommerce_before_cart', 		array( $this, 'order_minimum_amount' ) );
 				if ( 'yes' === get_option( 'wcj_order_minimum_amount_stop_from_seeing_checkout' ) )				
-					add_action( 'wp', 						array( $this, 'stop_from_seeing_checkout' ) );
+					add_action( 'wp', 						array( $this, 'stop_from_seeing_checkout' ),							100 );
+					//add_action( 'template_redirect', 		array( $this, 'stop_from_seeing_checkout' ),							100 );
+					
 				
 			}
 
@@ -369,9 +371,10 @@ class WCJ_Orders {
 	/**
 	 * stop_from_seeing_checkout.
 	 */
-	public function stop_from_seeing_checkout() {
+	public function stop_from_seeing_checkout( $wp ) {
 		global $woocommerce;
-		if ( $woocommerce->cart->total < get_option( 'wcj_order_minimum_amount' ) && is_checkout() )			
+		$the_cart_total = $woocommerce->cart->cart_contents_total;
+		if ( 0 != $the_cart_total && $the_cart_total < get_option( 'wcj_order_minimum_amount' ) && is_checkout() )			
 			wp_safe_redirect( $woocommerce->cart->get_cart_url() );
 	}	
 
