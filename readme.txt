@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -68,7 +68,7 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.7.5 - 08/10/2014 =
+= 1.7.6 - 09/10/2014 =
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * Upgrade Feature - PDF Invoices - International date formats. Idea by Jean-Marc.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
@@ -82,7 +82,6 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Shipping - Add "Custom Shipping Method".
 * Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
 * Upgrade Feature - Custom Price Labels - Add price countdown.
-* Upgrade Feature - Custom Price Labels - Add "global labels".
 * Upgrade Feature - Product Info - Add widget.
 * Upgrade Feature - Product Info - Today's deal.
 * Upgrade Feature - Product Info - Images for variations.
@@ -94,7 +93,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Dev - Custom Price Labels - Rearrange settings in product edit (something like `postbox`es).
 
 = 1.9.0 - 20/10/2014 =
-* Upgrade Feature - Custom Price Labels - Add "local remove".
+* Upgrade Feature - Custom Price Labels - ?Add "local remove".
 * Upgrade Feature - Orders - Bulk orders i.e. "Buy More - Pay Less". Start from global discount for all products, i.e. cart discount; later - discounts for individual products.
 * Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
 * Upgrade Feature - Custom Price Labels - Custom free price.
@@ -114,9 +113,14 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Dev - Move all to `WooCommerce > Jetpack` menu.
 * Dev - Major source code, documentation, locking mechanism etc. recheck.
   Maybe rename "Features" to "Modules".
-* Dev - Add "Restore Defaults" option (will need to delete/reset all posts' some meta (e.g. price labels) also).
+* Dev - Add "Restore Defaults" option (will also need to delete/reset some meta data (e.g. price labels) for all posts).
 
 == Changelog ==
+
+= 1.7.5 - 08/10/2014 =
+* Feature Upgraded - Custom Price Labels - "Global labels" section extended: `add after price`, `add before price`, `replace in price`.
+  `Remove from price` code also have been moved (and now in one place with all Global Labels) - before that it was called multiple times, fixed.
+* Dev - Custom Price Labels - "Migrate from Custom Price Labels (Pro)" tool added. Suggested by Paolo.
 
 = 1.7.4 - 07/10/2014 =
 * Fix - Emails - Bcc and Cc options not working, fixed. Reported by Helpmiphone.
@@ -136,7 +140,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.7.0 - 02/10/2014 =
 * Fix - Payment Gateways - Instructions were not showing (suggested by Jen), fixed.
-* New Feature - Product Listings - Options added (separately for "Shop" and "Categories" pages): show/hide categories count, exclude categories (idea by Xavier), show/hide empty categories.
+* Feature - Product Listings - Options added (separately for "Shop" and "Categories" pages): show/hide categories count, exclude categories (idea by Xavier), show/hide empty categories.
   This will work only when "Shop Page Display" and/or "Default Category Display" in "WooCommerce > Settings > Products > Product Listings" is set to "Show subcategories" or "Show both".
   All new options fields are also added (duplicated) to "WooCommerce > Settings > Products > Product Listings".
 * Feature Upgraded - Payment Gateways - Instructions for emails option added (i.e. separated from instructions on thank you page).
