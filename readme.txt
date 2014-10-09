@@ -119,11 +119,12 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.7.6 - 09/10/2014 =
 * Fix - Custom Price Labels - Bug causing setting all product's checkbox labels to off, fixed.
+  Bug was not resetting Text labels however. Bug was in code since v.1.0.0.
   The bug caused resetting all product's checkbox labels to off, when generally any product save, except "normal" conditions (i.e. saving through standard edit), happened:
   - when any other plugin used `wp_update_post` function,
   - when user updated product via Quick Edit,
   - when user deactivated WooJetpack Plugin and then updated (saved) the product.
-  Could be more possible conditions. Bug however was not resetting Text labels (i.e. checkboxes only). Bug was in code not only since the beginning of WooJetpack, but in Custom Price Labels (Pro) plugins also.
+  - could be more possible conditions. (i.e. checkboxes only). 
 * Fix - Custom Price Labels - "Migrate from Custom Price Labels" tool info added to tools dashboard.
 * Dev - Custom Price Labels - Labels settings in product edit rearranged (to `table`).
 * Dev - Tools Dashboard rearranged (to `table`).
