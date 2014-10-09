@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.4.2
+ * @version		1.5.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -105,11 +105,15 @@ class WCJ_Orders {
 	 * add_custom_statuses_tool_info_to_tools_dashboard.
 	 */
 	public function add_custom_statuses_tool_info_to_tools_dashboard() {
-		if ( 'yes' === get_option( 'wcj_orders_custom_statuses_enabled' ) )
-			echo '<h3>Custom Statuses tool is enabled.</h3>';
+		echo '<tr>';
+		if ( 'yes' === get_option( 'wcj_orders_custom_statuses_enabled') )		
+			$is_enabled = '<span style="color:green;font-style:italic;">' . __( 'enabled', 'woocommerce-jetpack' ) . '</span>';
 		else
-			echo '<h3>Custom Statuses tool is disabled.</h3>';
-		echo '<p>The tool lets you add or delete any custom status for WooCommerce orders.</p>';
+			$is_enabled = '<span style="color:gray;font-style:italic;">' . __( 'disabled', 'woocommerce-jetpack' ) . '</span>';
+		echo '<td>' . __( 'Custom Statuses', 'woocommerce-jetpack' ) . '</td>';
+		echo '<td>' . $is_enabled . '</td>';
+		echo '<td>' . __( 'Tool lets you add or delete any custom status for WooCommerce orders.', 'woocommerce-jetpack' ) . '</td>';
+		echo '</tr>';	
 	}
 
 	/**
@@ -250,11 +254,15 @@ class WCJ_Orders {
 	 * add_renumerate_orders_tool_info_to_tools_dashboard.
 	 */
 	public function add_renumerate_orders_tool_info_to_tools_dashboard() {
-		if ( 'yes' === get_option( 'wcj_order_numbers_enabled' ) )
-			echo '<h3>Orders Renumerate tool is enabled.</h3>';
+		echo '<tr>';
+		if ( 'yes' === get_option( 'wcj_order_numbers_enabled') )		
+			$is_enabled = '<span style="color:green;font-style:italic;">' . __( 'enabled', 'woocommerce-jetpack' ) . '</span>';
 		else
-			echo '<h3>Orders Renumerate tool is disabled.</h3>';
-		echo '<p>' . __( 'The tool renumerates all orders.', 'woocommerce-jetpack' ) . '</p>';
+			$is_enabled = '<span style="color:gray;font-style:italic;">' . __( 'disabled', 'woocommerce-jetpack' ) . '</span>';
+		echo '<td>' . __( 'Orders Renumerate', 'woocommerce-jetpack' ) . '</td>';
+		echo '<td>' . $is_enabled . '</td>';
+		echo '<td>' . __( 'Tool renumerates all orders.', 'woocommerce-jetpack' ) . '</td>';
+		echo '</tr>';	
 	}
 
 	/**

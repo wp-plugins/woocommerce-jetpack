@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class		WCJ_Price_Labels
- * @version		1.4.0
+ * @version		1.5.0
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -22,20 +22,20 @@ class WCJ_Price_Labels {
 	public $custom_tab_sections_titles = array ( 
 		'_instead'	=> 'Instead of the price',// for compatibility with Custom Price Label Pro plugin should use ''	 
 		'_before'	=> 'Before the price', 
-		'_between'	=> 'Between the regular and sale price', 
+		'_between'	=> 'Between regular and sale prices', 
 		'_after'	=> 'After the price', 
 	);
 	public $custom_tab_section_variations = array ( '_text', '_enabled', '_home', '_products', '_single', '_page', /*'_simple',*/ '_variable', '_variation', /*'_grouped',*/ );
 	public $custom_tab_section_variations_titles = array ( 
-		'_text'		 => 'The label', 
+		'_text'		 => '',//'The label', 
 		'_enabled'	 => 'Enable',// for compatibility with Custom Price Label Pro plugin should use ''	  
 		'_home'		 => 'Hide on home page', 
 		'_products'	 => 'Hide on products page', 
 		'_single'	 => 'Hide on single',
 		'_page'	 	 => 'Hide on pages',
 		//'_simple'	 => 'Hide for simple product',
-		'_variable'	 => 'Hide for variable product (main price) - ignored if product type is not variable',
-		'_variation' => 'Hide for each variation of variable product - ignored if product type is not variable',
+		'_variable'	 => 'Hide for main price',
+		'_variation' => 'Hide for all variations',
 		//'_grouped'	 => 'Hide for grouped product',
 	);	
 	
@@ -99,11 +99,28 @@ class WCJ_Price_Labels {
 				add_filter( $the_filter, array( $this, 'custom_price' ), 100, 2 );
 		}
 	
+		add_action( 'wcj_tools_dashboard', array( $this, 'add_migrate_tool_info_to_tools_dashboard' ), 1000 );
+	
 		// Settings hooks
 		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
 		add_filter( 'wcj_settings_price_labels', array( $this, 'get_settings' ), 100 );
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
 	}
+	
+	/**
+	 * add_migrate_tool_info_to_tools_dashboard.
+	 */
+	public function add_migrate_tool_info_to_tools_dashboard() {
+		echo '<tr>';
+		if ( 'yes' === get_option( 'wcj_migrate_from_custom_price_labels_enabled') && 'yes' === get_option( 'wcj_price_labels_enabled') )		
+			$is_enabled = '<span style="color:green;font-style:italic;">' . __( 'enabled', 'woocommerce-jetpack' ) . '</span>';
+		else
+			$is_enabled = '<span style="color:gray;font-style:italic;">' . __( 'disabled', 'woocommerce-jetpack' ) . '</span>';
+		echo '<td>' . __( 'Migrate from Custom Price Labels (Pro)', 'woocommerce-jetpack' ) . '</td>';
+		echo '<td>' . $is_enabled . '</td>';
+		echo '<td>' . __( 'Tool lets you copy all the data (that is labels) from Custom Price labels (Pro) plugin to WooCommerce Jetpack.', 'woocommerce-jetpack' ) . '</td>';
+		echo '</tr>';
+	}		
 	
 	/**
 	 * Add tab to WooCommerce > Jetpack Tools.
@@ -123,7 +140,7 @@ class WCJ_Price_Labels {
 
 	public function create_migrate_from_custom_price_labels_tool_tab() {
 	
-		echo __( '<h2>WooCommerce Jetpack - Migrate from Custom Price Labels (Pro)</h2>', 'woocommerce-jetpack' );
+		echo '<h2>' . __( 'WooCommerce Jetpack - Migrate from Custom Price Labels (Pro)', 'woocommerce-jetpack' ) . '</h2>';
 	
 		$migrate = isset( $_POST['migrate'] ) ? true : false;		
 		
@@ -165,26 +182,30 @@ class WCJ_Price_Labels {
 				foreach ( $migration_data as $old_meta_name => $new_meta_name ) {
 					$old_meta_value = get_post_meta( $the_product_id, $old_meta_name, true );
 					if ( '' != $old_meta_value ) {					
-						$new_meta_value = get_post_meta( $the_product_id, $new_meta_name, true );
-						
-						if ( $new_meta_value !== $old_meta_value ) {
-						
+						// Found Old (Custom Price Labels Plugin) meta to migrate from
+						$new_meta_value = get_post_meta( $the_product_id, $new_meta_name, true );						
+						if ( $new_meta_value !== $old_meta_value ) {						
+							// Found Old (Custom Price Labels Plugin) meta to migrate to							
 							if ( true === $migrate ) {					
-
+								// Migrating
 								$html .= '<li>' . __( 'Migrating: ', 'woocommerce-jetpack' ) . $old_meta_name . '[' . $old_meta_value . ']' . ' -> ' . $new_meta_name . '[' . $new_meta_value . ']. ';// . '</li>'; 
-								$html .= __( ' Result: ', 'woocommerce-jetpack' ) . update_post_meta( $the_product_id, $new_meta_name, $old_meta_value );
-								$html .= '</li>';	
+								$html .= __( 'Result: ', 'woocommerce-jetpack' ) . update_post_meta( $the_product_id, $new_meta_name, $old_meta_value );
+								$html .= '</li>';
+								
+								//wp_update_post( array( 'ID' => $the_product_id ) );
 							}
-							else { // just info
+							else {
+								// Info only
 								$html .= '<li>' . __( 'Found data to migrate: ', 'woocommerce-jetpack' ) . $old_meta_name . '[' . $old_meta_value . ']' . ' -> ' . $new_meta_name . '[' . $new_meta_value . ']' . '</li>'; 
-							}
-							
+							}							
 							/*if ( true === $do_delete_old ) {
+								// Delete Old (Custom Price Labels Plugin) meta
 								$html .= '<li>' . __( 'Deleting: ', 'woocommerce-jetpack' ) . $old_meta_name . '[' . $old_meta_value . ']. ';// . '</li>'; 
 								$html .= __( ' Result: ', 'woocommerce-jetpack' ) . delete_post_meta( $the_product_id, $old_meta_name, $old_meta_value );
 								$html .= '</li>';										
 							}*/	
-						}							
+						}
+						//wp_update_post( array( 'ID' => $the_product_id ) );
 					}
 				}
 			endwhile;
@@ -198,8 +219,8 @@ class WCJ_Price_Labels {
 		wp_reset_postdata();
 
 		$form_html =  '<form method="post" action="">';
-		$form_html .= '<p>Press button below to copy all labels from Custom Price Labels (Pro) plugin. Old labels will NOT be deleted. New labels will be overwritten.</p>';
-		$form_html .= '<p><input type="submit" name="migrate" value="Migrate" /></p>';
+		$form_html .= '<p>' . __( 'Press button below to copy all labels from Custom Price Labels (Pro) plugin. Old labels will NOT be deleted. New labels will be overwritten.', 'woocommerce-jetpack' ) . '</p>';
+		$form_html .= '<p><input type="submit" class="button-primary" name="migrate" value="' . __( 'Migrate data', 'woocommerce-jetpack' ) . '" /></p>';
 		$form_html .= '</form>';
 		
 		echo $form_html . $html;
@@ -228,10 +249,13 @@ class WCJ_Price_Labels {
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {			
 		
 			foreach ( $this->custom_tab_section_variations as $custom_tab_section_variation ) {
-			
+							
 				//$option_name = $this->custom_tab_group_name;
 				$option_name = $this->custom_tab_group_name . $custom_tab_section . $custom_tab_section_variation;
 				
+				if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
+			
+				/*
 				if ( $custom_tab_section_variation == '_text' ) {
 					//$option_name .= $custom_tab_section_variation . $custom_tab_section;
 					if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
@@ -241,6 +265,7 @@ class WCJ_Price_Labels {
 					if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
 					else update_post_meta( $post_id, '_' . $option_name, 'off' );			
 				}
+				*/
 			}
 		}
 	}	
@@ -256,13 +281,35 @@ class WCJ_Price_Labels {
 	public function wcj_price_label() {
 	
 		$current_post_id = get_the_ID();
+		echo '<table style="width:100%;">';		
+
 		
+		echo '<tr>';
+		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
+			echo '<td style="width:25%;"><h4>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</h4></td>';
+		}
+		echo '</tr>';
+		/*echo '<tr>';
+		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
+			if ( '_instead' != $custom_tab_section )
+				$disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_below' );
+			else 
+				$disabled_if_no_plus = '';
+			echo '<td style="width:25%;">' . $disabled_if_no_plus . '</td>';
+		}
+		echo '</tr>';		*/
+
+		
+		echo '<tr>';
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
 		
-			if ( $custom_tab_section == '_before' ) $disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_below' );
-			else $disabled_if_no_plus = '';
+			echo '<td style="width:25%;">';
 		
-			echo '<p>' . $disabled_if_no_plus . '<ul><h4>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</h4>';
+			/*if ( $custom_tab_section == '_before' ) $disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_below' );
+			else $disabled_if_no_plus = '';
+			echo '<p>' . $disabled_if_no_plus . '<ul><h4>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</h4>';*/
+			
+			echo '<ul>';//<li><h4>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</h4></li>';
 		
 			foreach ( $this->custom_tab_section_variations as $custom_tab_section_variation ) {
 			
@@ -277,18 +324,24 @@ class WCJ_Price_Labels {
 					else $disabled_if_no_plus = '';			
 					//if ( $disabled_if_no_plus != '' ) $disabled_if_no_plus = 'readonly';
 					
-					$label_text = get_post_meta($current_post_id, '_' . $option_name, true );
+					$label_text = get_post_meta( $current_post_id, '_' . $option_name, true );
 					$label_text = str_replace ( '"', '&quot;', $label_text );					
 					
 					//echo '<li>' . $this->custom_tab_section_variations_titles[ $custom_tab_section_variation ] . ' <input style="width:50%;min-width:300px;" type="text" ' . $disabled_if_no_plus . ' name="' . $option_name . '" id="' . $option_name . '" value="' . $label_text . '" /></li>';
-					echo '<li>' . $this->custom_tab_section_variations_titles[ $custom_tab_section_variation ] . '<br><textarea style="width:50%;min-width:300px;height:100px;" ' . $disabled_if_no_plus . ' name="' . $option_name . '">' . $label_text . '</textarea></li>';
+					echo '<li>' . $this->custom_tab_section_variations_titles[ $custom_tab_section_variation ] . '<textarea style="width:95%;min-width:100px;height:100px;" ' . $disabled_if_no_plus . ' name="' . $option_name . '">' . $label_text . '</textarea></li>';
 					
 				}
 				else { 
 				
+					if ( '_home' === $custom_tab_section_variation )
+						echo '<li><h5>Hide by page type</h5></li>';
+						
+					if ( '_variable' === $custom_tab_section_variation )
+						echo '<li><h5>Variable products</h5></li>';						
+				
 					//$option_name .= $custom_tab_section . $custom_tab_section_variation;
 					
-					if ( $custom_tab_section != '_instead' ) $disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled_string' );
+					if ( '_instead' != $custom_tab_section ) $disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled_string' );
 					else $disabled_if_no_plus = '';
 					//if ( $disabled_if_no_plus != '' ) $disabled_if_no_plus = 'disabled';
 		
@@ -297,8 +350,25 @@ class WCJ_Price_Labels {
 				}
 			}
 
-			echo '</ul></p>';
+			echo '</ul>';//</p>';
+			
+			echo '</td>';
+
 		}
+		
+		echo '</tr>';
+		
+		echo '<tr>';
+		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
+			if ( '_instead' != $custom_tab_section )
+				$disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_above' );
+			else 
+				$disabled_if_no_plus = '';
+			echo '<td style="width:25%;">' . $disabled_if_no_plus . '</td>';
+		}
+		echo '</tr>';		
+		
+		echo '</table>';
 	}
 	
 	/*
@@ -356,7 +426,7 @@ class WCJ_Price_Labels {
 		// Global price labels - Remove text from price
 		$text_to_replace = apply_filters( 'wcj_get_option_filter', '', get_option( 'wcj_global_price_labels_replace_text' ) );
 		$text_to_replace_with = apply_filters( 'wcj_get_option_filter', '', get_option( 'wcj_global_price_labels_replace_with_text' ) );
-		if ( '' != $text_to_replace &&  '' != $text_to_replace_with )
+		if ( '' != $text_to_replace && '' != $text_to_replace_with )
 			$price = str_replace( $text_to_replace, $text_to_replace_with, $price );			
 	
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
@@ -383,13 +453,13 @@ class WCJ_Price_Labels {
 				//$price .= print_r( $labels_array );
 			}
 			
-			if ( $labels_array[ 'variation_enabled' ] == 'on' ) {			
+			if ( 'on' === $labels_array[ 'variation_enabled' ] ) {			
 			
 				if ( 
-					( ( $labels_array['variation_home'] 	 == 'off' ) && ( is_front_page() ) ) ||
-					( ( $labels_array['variation_products']  == 'off' ) && ( is_archive() ) ) ||
-					( ( $labels_array['variation_single'] 	 == 'off' ) && ( is_single() ) ) ||
-					( ( $labels_array['variation_page'] 	 == 'off' ) && ( is_page() ) )					
+					( ( 'off' === $labels_array['variation_home'] ) && ( is_front_page() ) ) ||
+					( ( 'off' === $labels_array['variation_products'] ) && ( is_archive() ) ) ||
+					( ( 'off' === $labels_array['variation_single'] ) && ( is_single() ) ) ||
+					( ( 'off' === $labels_array['variation_page'] ) && ( is_page() ) )					
 				   ) 
 					{	
 						//$current_filter_name = current_filter();

@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Tools class.
  *
  * @class 		WCJ_Tools
- * @version		1.0.0
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -59,7 +59,20 @@ class WCJ_Tools {
 		
 		echo $html;
 		
-		do_action( 'wcj_tools_' . $active_tab );		
+		if ( 'dashboard' === $active_tab ) {
+			echo '<h3>' . __( 'WooCommerce Jetpack Tools Dashboard', 'woocommerce-jetpack' ) . '</h3>';
+			echo '<p>' . __( 'This dashboard lets you check statuses and short descriptions of all available WooCommerce Jetpack tools. Tools can be enabled through WooCommerce > Settings > Jetpack. Enabled tools will appear in the tabs menu above.', 'woocommerce-jetpack' ) . '</p>';
+			echo '<table class="widefat" style="width:90%;">';
+			echo '<tr>';
+			echo '<th style="width:25%;">' . __( 'Tool', 'woocommerce-jetpack' ) . '</th>';
+			echo '<th style="width:25%;">' . __( 'Status', 'woocommerce-jetpack' ) . '</th>';
+			echo '<th style="width:50%;">' . __( 'Description', 'woocommerce-jetpack' ) . '</th>';
+			echo '</tr>';
+			do_action( 'wcj_tools_' . $active_tab );		
+			echo '</table>';
+		}
+		else 
+			do_action( 'wcj_tools_' . $active_tab );
 	}	
 }
 
