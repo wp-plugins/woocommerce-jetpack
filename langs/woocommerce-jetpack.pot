@@ -1,0 +1,1893 @@
+# Copyright (C) 2014 WooCommerce Jetpack
+# This file is distributed under the same license as the WooCommerce Jetpack package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Jetpack 1.7.6\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/woocommerce-jetpack\n"
+"POT-Creation-Date: 2014-10-09 02:37:37+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:24
+msgid "Jetpack"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:40
+msgid "Dashboard"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:152
+msgid "WooCommerce Jetpack Dashboard"
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:34
+msgid "Tools Dashboard"
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:63
+msgid "WooCommerce Jetpack Tools Dashboard"
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:64
+msgid ""
+"This dashboard lets you check statuses and short descriptions of all "
+"available WooCommerce Jetpack tools. Tools can be enabled through "
+"WooCommerce > Settings > Jetpack. Enabled tools will appear in the tabs menu "
+"above."
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:67
+msgid "Tool"
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:68
+msgid "Status"
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:69
+#: includes/gateways/class-wc-gateway-wcj-custom.php:63
+msgid "Description"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:141
+msgid "Add to Cart Options"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:144
+#: includes/class-wcj-add-to-cart.php:315
+msgid "Add to Cart"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:145
+msgid "Enable the Add to Cart feature"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:146
+msgid ""
+"Set any url to redirect to on add to cart. Change text for Add to cart "
+"button by product type. Display \"Already in cart\" instead of \"Add to cart"
+"\" button if current product is already in cart."
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:158
+msgid "Add to Cart Redirect Options"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:158
+msgid ""
+"This section lets you set any url to redirect to after successfully adding "
+"product to cart. Leave empty to redirect to checkout page (skipping the cart "
+"page)."
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:161
+msgid "Redirect"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:162
+#: includes/class-wcj-add-to-cart.php:184 includes/class-wcj-cart.php:135
+#: includes/class-wcj-cart.php:168 includes/class-wcj-orders.php:426
+#: includes/class-wcj-orders.php:532 includes/class-wcj-orders.php:545
+#: includes/class-wcj-price-labels.php:583
+#: includes/class-wcj-product-info.php:187
+#: includes/class-wcj-product-info.php:224
+#: includes/class-wcj-product-info.php:351 includes/class-wcj-sorting.php:206
+#: includes/class-wcj-sorting.php:224 includes/class-wcj-sorting.php:242
+#: includes/class-wcj-sorting.php:260
+msgid "Enable"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:169
+msgid "Redirect URL"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:170
+msgid "Redirect URL. Leave empty to redirect to checkout."
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:180
+msgid "Add to Cart Button Text Options"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:183
+msgid "Add to cart text"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:194
+msgid "Simple product"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:199
+msgid "Variable product"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:204
+msgid "External product"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:209
+msgid "Grouped product"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:214
+msgid "Other product"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:235
+msgid "Enable on single product pages"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:254
+msgid "Enable on product archives"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:279
+msgid "Enable \"Already in cart\" on single product pages"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:298
+msgid "Enable \"Already in cart\" on product archives"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:72
+msgid "Call for Price Options"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:72
+msgid ""
+"Leave price empty when adding or editing products. Then set the options here."
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:75
+#: includes/class-wcj-call-for-price.php:158
+msgid "Call for Price"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:76
+msgid "Enable the Call for Price feature"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:77
+msgid "Create any custom price label for all products with empty price."
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:84
+msgid "Label to Show on Single"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:85
+#: includes/class-wcj-call-for-price.php:97
+#: includes/class-wcj-call-for-price.php:109
+#: includes/class-wcj-call-for-price.php:121
+msgid "This sets the html to output on empty price. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:96
+msgid "Label to Show on Archives"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:108
+msgid "Label to Show on Homepage"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:120
+msgid "Label to Show on Related"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:132
+msgid "Hide Sale! Tag"
+msgstr ""
+
+#: includes/class-wcj-call-for-price.php:133
+msgid "Hide the tag"
+msgstr ""
+
+#: includes/class-wcj-cart.php:118
+msgid "Cart Options"
+msgstr ""
+
+#: includes/class-wcj-cart.php:121 includes/class-wcj-cart.php:186
+msgid "Cart"
+msgstr ""
+
+#: includes/class-wcj-cart.php:122
+msgid "Enable the Cart feature"
+msgstr ""
+
+#: includes/class-wcj-cart.php:123
+msgid "Add empty cart button, automatically add to cart on product visit."
+msgstr ""
+
+#: includes/class-wcj-cart.php:131
+msgid "Empty Cart Options"
+msgstr ""
+
+#: includes/class-wcj-cart.php:131
+msgid ""
+"This section lets you add and customize \"Empty Cart\" button to cart page."
+msgstr ""
+
+#: includes/class-wcj-cart.php:134
+msgid "Empty Cart"
+msgstr ""
+
+#: includes/class-wcj-cart.php:142
+msgid "Empty Cart Button Text"
+msgstr ""
+
+#: includes/class-wcj-cart.php:152
+msgid "Wrapping DIV style"
+msgstr ""
+
+#: includes/class-wcj-cart.php:153
+msgid "Style for the button's div. Default is \"float: right;\""
+msgstr ""
+
+#: includes/class-wcj-cart.php:164 includes/class-wcj-cart.php:167
+msgid "Add to Cart on Visit"
+msgstr ""
+
+#: includes/class-wcj-cart.php:164
+msgid ""
+"This section lets you enable automatically adding product to cart on "
+"visiting the product page. Product is only added once, so if it is already "
+"in cart - duplicate product is not added. "
+msgstr ""
+
+#: includes/class-wcj-checkout.php:141
+msgid "Checkout Options"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:144 includes/class-wcj-checkout.php:273
+msgid "Checkout"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:145
+msgid "Enable the Checkout feature"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:146
+msgid ""
+"Customize checkout fields. Disable/enable fields, set required, change "
+"labels and/or placeholders."
+msgstr ""
+
+#: includes/class-wcj-checkout.php:156
+msgid "Place order (Order now) Button"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:159
+msgid "Text"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:160
+msgid "leave blank for WooCommerce default"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:161
+msgid "Button on the checkout page."
+msgstr ""
+
+#: includes/class-wcj-checkout.php:170
+msgid "Checkout Fields Options"
+msgstr ""
+
+#: includes/class-wcj-checkout.php:170
+msgid ""
+"This section lets you customize the checkout fields: change label, "
+"placeholder, set required, or remove any field."
+msgstr ""
+
+#: includes/class-wcj-checkout.php:236
+msgid "Leave blank for WooCommerce defaults."
+msgstr ""
+
+#: includes/class-wcj-currencies.php:389
+msgid "Currency Symbol"
+msgstr ""
+
+#: includes/class-wcj-currencies.php:390
+msgid "This sets the currency symbol."
+msgstr ""
+
+#: includes/class-wcj-currencies.php:411
+msgid "Currencies Options"
+msgstr ""
+
+#: includes/class-wcj-currencies.php:414 includes/class-wcj-currencies.php:445
+msgid "Currencies"
+msgstr ""
+
+#: includes/class-wcj-currencies.php:415
+msgid "Enable the Currencies feature"
+msgstr ""
+
+#: includes/class-wcj-currencies.php:416
+msgid "Add all world currencies, change currency symbol."
+msgstr ""
+
+#: includes/class-wcj-currencies.php:424
+msgid "Currency Symbol Options"
+msgstr ""
+
+#: includes/class-wcj-emails.php:57
+msgid "WooCommerce Jetpack: Email Forwarding Options"
+msgstr ""
+
+#: includes/class-wcj-emails.php:57 includes/class-wcj-emails.php:128
+msgid ""
+"This section lets you add another email recipient(s) to all WooCommerce "
+"emails. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-emails.php:61 includes/class-wcj-emails.php:131
+msgid "Cc Email"
+msgstr ""
+
+#: includes/class-wcj-emails.php:63 includes/class-wcj-emails.php:133
+msgid "Cc to email, e.g. youremail@yourdomain.com. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-emails.php:73 includes/class-wcj-emails.php:142
+msgid "Bcc Email"
+msgstr ""
+
+#: includes/class-wcj-emails.php:75 includes/class-wcj-emails.php:144
+msgid "Bcc to email, e.g. youremail@yourdomain.com. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-emails.php:115
+msgid "Emails Options"
+msgstr ""
+
+#: includes/class-wcj-emails.php:118 includes/class-wcj-emails.php:162
+msgid "Emails"
+msgstr ""
+
+#: includes/class-wcj-emails.php:119
+msgid "Enable the Emails feature"
+msgstr ""
+
+#: includes/class-wcj-emails.php:120
+msgid "Add another email recipient(s) to all WooCommerce emails."
+msgstr ""
+
+#: includes/class-wcj-emails.php:128
+msgid "Email Forwarding Options"
+msgstr ""
+
+#: includes/class-wcj-general.php:70 includes/class-wcj-pdf-invoices.php:1018
+msgid "General Options"
+msgstr ""
+
+#: includes/class-wcj-general.php:73 includes/class-wcj-general.php:111
+msgid "General"
+msgstr ""
+
+#: includes/class-wcj-general.php:74
+msgid "Enable the General feature"
+msgstr ""
+
+#: includes/class-wcj-general.php:75
+msgid "Separate custom CSS for front and back end."
+msgstr ""
+
+#: includes/class-wcj-general.php:83
+msgid "Custom CSS Options"
+msgstr ""
+
+#: includes/class-wcj-general.php:83
+msgid "Another custom CSS, if you need one."
+msgstr ""
+
+#: includes/class-wcj-general.php:86
+msgid "Custom CSS - Front end (Customers)"
+msgstr ""
+
+#: includes/class-wcj-general.php:94
+msgid "Custom CSS - Back end (Admin)"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:49 includes/class-wcj-orders.php:110
+#: includes/class-wcj-orders.php:259 includes/class-wcj-price-labels.php:116
+msgid "enabled"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:51 includes/class-wcj-orders.php:112
+#: includes/class-wcj-orders.php:261 includes/class-wcj-price-labels.php:118
+msgid "disabled"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:52 includes/class-wcj-old-slugs.php:64
+msgid "Remove Old Slugs"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:54 includes/class-wcj-old-slugs.php:165
+msgid "Tool removes old slugs/permalinks from database."
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:86
+msgid "Old Slugs Options"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:89 includes/class-wcj-old-slugs.php:109
+msgid "Old Slugs"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:90
+msgid "Enable the Remove Old Product Slugs feature"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:92
+msgid "Remove old product slugs."
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:164
+msgid "WooCommerce Jetpack - Remove Old Product Slugs"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:170
+msgid "Old products slugs found:"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:178
+msgid "None-products slugs found:"
+msgstr ""
+
+#: includes/class-wcj-old-slugs.php:185
+msgid "No old slugs found."
+msgstr ""
+
+#: includes/class-wcj-orders.php:26
+msgctxt "Order status"
+msgid "Pending payment"
+msgstr ""
+
+#: includes/class-wcj-orders.php:27
+msgctxt "Order status"
+msgid "Processing"
+msgstr ""
+
+#: includes/class-wcj-orders.php:28
+msgctxt "Order status"
+msgid "On hold"
+msgstr ""
+
+#: includes/class-wcj-orders.php:29
+msgctxt "Order status"
+msgid "Completed"
+msgstr ""
+
+#: includes/class-wcj-orders.php:30
+msgctxt "Order status"
+msgid "Cancelled"
+msgstr ""
+
+#: includes/class-wcj-orders.php:31
+msgctxt "Order status"
+msgid "Refunded"
+msgstr ""
+
+#: includes/class-wcj-orders.php:32
+msgctxt "Order status"
+msgid "Failed"
+msgstr ""
+
+#: includes/class-wcj-orders.php:113 includes/class-wcj-orders.php:125
+#: includes/class-wcj-orders.php:541 includes/class-wcj-orders.php:544
+msgid "Custom Statuses"
+msgstr ""
+
+#: includes/class-wcj-orders.php:115
+msgid "Tool lets you add or delete any custom status for WooCommerce orders."
+msgstr ""
+
+#: includes/class-wcj-orders.php:155
+msgid "Status slug is empty. Status not added."
+msgstr ""
+
+#: includes/class-wcj-orders.php:157
+msgid "Status label is empty. Status not added."
+msgstr ""
+
+#: includes/class-wcj-orders.php:163
+msgid "Duplicate slug. Status not added."
+msgstr ""
+
+#: includes/class-wcj-orders.php:169
+msgid "New status have been successfully added!"
+msgstr ""
+
+#: includes/class-wcj-orders.php:171
+msgid "Status was not added."
+msgstr ""
+
+#: includes/class-wcj-orders.php:187
+msgid "Status have been successfully deleted."
+msgstr ""
+
+#: includes/class-wcj-orders.php:189
+msgid "Delete failed."
+msgstr ""
+
+#: includes/class-wcj-orders.php:192
+msgid "WooCommerce Jetpack - Custom Statuses"
+msgstr ""
+
+#: includes/class-wcj-orders.php:193
+msgid ""
+"The tool lets you add or delete any custom status for WooCommerce orders."
+msgstr ""
+
+#: includes/class-wcj-orders.php:195
+msgid "Statuses"
+msgstr ""
+
+#: includes/class-wcj-orders.php:198
+msgid "Slug"
+msgstr ""
+
+#: includes/class-wcj-orders.php:199 includes/class-wcj-orders.php:224
+msgid "Label"
+msgstr ""
+
+#: includes/class-wcj-orders.php:201 includes/class-wcj-orders.php:211
+msgid "Delete"
+msgstr ""
+
+#: includes/class-wcj-orders.php:223
+msgid "Slug (without wc- prefix)"
+msgstr ""
+
+#: includes/class-wcj-orders.php:262
+msgid "Orders Renumerate"
+msgstr ""
+
+#: includes/class-wcj-orders.php:264
+msgid "Tool renumerates all orders."
+msgstr ""
+
+#: includes/class-wcj-orders.php:274
+msgid "Renumerate orders"
+msgstr ""
+
+#: includes/class-wcj-orders.php:289
+msgid "WooCommerce Jetpack - Renumerate Orders"
+msgstr ""
+
+#: includes/class-wcj-orders.php:290
+msgid ""
+"The tool renumerates all orders. Press the button below to renumerate all "
+"existing orders starting from order counter settings in WooCommerce > "
+"Settings > Jetpack > Order Numbers."
+msgstr ""
+
+#: includes/class-wcj-orders.php:409
+msgid "Orders Options"
+msgstr ""
+
+#: includes/class-wcj-orders.php:412 includes/class-wcj-orders.php:563
+msgid "Orders"
+msgstr ""
+
+#: includes/class-wcj-orders.php:413
+msgid "Enable the Orders feature"
+msgstr ""
+
+#: includes/class-wcj-orders.php:414
+msgid ""
+"Sequential order numbering, custom order number prefix and number width. "
+"Minimum order amount."
+msgstr ""
+
+#: includes/class-wcj-orders.php:422 includes/class-wcj-orders.php:425
+msgid "Order Numbers"
+msgstr ""
+
+#: includes/class-wcj-orders.php:422
+msgid ""
+"This section lets you enable sequential order numbering, set custom number "
+"prefix and width."
+msgstr ""
+
+#: includes/class-wcj-orders.php:427
+msgid "This will enable sequential order numbering and custom prefixes."
+msgstr ""
+
+#: includes/class-wcj-orders.php:434
+msgid "Next Order Number"
+msgstr ""
+
+#: includes/class-wcj-orders.php:435
+msgid "Next new order will be given this number."
+msgstr ""
+
+#: includes/class-wcj-orders.php:442
+msgid "Order Number Custom Prefix"
+msgstr ""
+
+#: includes/class-wcj-orders.php:444
+msgid ""
+"Prefix before order number (optional). This will change the prefixes for all "
+"existing orders."
+msgstr ""
+
+#: includes/class-wcj-orders.php:453
+msgid "Order Number Date Prefix"
+msgstr ""
+
+#: includes/class-wcj-orders.php:455
+msgid ""
+"Date prefix before order number (optional). This will change the prefixes "
+"for all existing orders. Value is passed directly to PHP `date` function, so "
+"most of PHP date formats can be used. The only exception is using `\\` "
+"symbol in date format, as this symbol will be excluded from date. Try: Y-m-"
+"d- or mdy."
+msgstr ""
+
+#: includes/class-wcj-orders.php:464
+msgid "Order Number Width"
+msgstr ""
+
+#: includes/class-wcj-orders.php:466
+msgid ""
+"Minimum width of number without prefix (zeros will be added to the left "
+"side). This will change the minimum width of order number for all existing "
+"orders. E.g. set to 5 to have order number displayed as 00001 instead of 1. "
+"Leave zero to disable."
+msgstr ""
+
+#: includes/class-wcj-orders.php:476
+msgid "Order Minimum Amount"
+msgstr ""
+
+#: includes/class-wcj-orders.php:476
+msgid "This section lets you set minimum order amount."
+msgstr ""
+
+#: includes/class-wcj-orders.php:479
+msgid "Amount"
+msgstr ""
+
+#: includes/class-wcj-orders.php:480
+msgid "Minimum order amount. Set to 0 to disable."
+msgstr ""
+
+#: includes/class-wcj-orders.php:487
+msgid "Error message"
+msgstr ""
+
+#: includes/class-wcj-orders.php:489 includes/class-wcj-orders.php:509
+msgid ""
+"Message to customer if order is below minimum amount. Default: You must have "
+"an order with a minimum of %s to place your order, your current order total "
+"is %s."
+msgstr ""
+
+#: includes/class-wcj-orders.php:499
+msgid "Add notice to cart page also"
+msgstr ""
+
+#: includes/class-wcj-orders.php:500
+msgid "Add"
+msgstr ""
+
+#: includes/class-wcj-orders.php:507
+msgid "Message on cart page"
+msgstr ""
+
+#: includes/class-wcj-orders.php:519
+msgid ""
+"Stop customer from seeing the Checkout page if minimum amount not reached."
+msgstr ""
+
+#: includes/class-wcj-orders.php:520
+msgid "Redirect back to Cart page"
+msgstr ""
+
+#: includes/class-wcj-orders.php:528
+msgid "Orders Auto-Complete"
+msgstr ""
+
+#: includes/class-wcj-orders.php:528
+msgid "This section lets you enable orders auto-complete function."
+msgstr ""
+
+#: includes/class-wcj-orders.php:531
+msgid "Auto-complete all WooCommerce orders"
+msgstr ""
+
+#: includes/class-wcj-orders.php:533
+msgid ""
+"E.g. if you sell digital products then you are not shipping anything and you "
+"may want auto-complete all your orders."
+msgstr ""
+
+#: includes/class-wcj-orders.php:541
+msgid "This section lets you enable custom statuses tool."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:64
+msgid "WooCommerce Jetpack: Default WooCommerce Payment Gateways Options"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:64
+#: includes/class-wcj-payment-gateways.php:151
+#: includes/gateways/class-wc-gateway-wcj-custom.php:86
+msgid ""
+"If you want to show an image next to the gateway's name on the frontend, "
+"enter a URL to an image."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:119
+msgid "Payment Gateways Options"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:122
+#: includes/class-wcj-payment-gateways.php:183
+msgid "Payment Gateways"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:123
+msgid "Enable the Payment Gateways feature"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:124
+msgid ""
+"Add custom payment gateway, change icons (images) for all default "
+"WooCommerce payment gateways."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:132
+msgid "Custom Payment Gateways Options"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:135
+msgid "Number of Gateways"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:137
+msgid ""
+"Number of custom payments gateways to be added. All settings for each new "
+"gateway are in WooCommerce > Settings > Checkout."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:151
+msgid "Default WooCommerce Payment Gateways Options"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:76
+#: includes/class-wcj-pdf-invoices.php:81
+msgid "Invoice"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:600
+#: includes/class-wcj-pdf-invoices.php:606
+msgid "PDF Invoice"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:631
+msgid "PDF Invoices Options"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:634
+#: includes/class-wcj-pdf-invoices.php:1086
+msgid "PDF Invoices"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:635
+msgid "Enable the PDF Invoices feature"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:636
+msgid "Add PDF invoices for the store owners and for the customers."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:644
+msgid "Invoice Header"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:644
+msgid ""
+"This section lets you set texts for required invoice number and date, and "
+"optional logo, header text, invoice due and fulfillment dates."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:647
+msgid "Your Logo URL"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:648
+msgid ""
+"Enter a URL to an image you want to show in the invoice's header. Upload "
+"your image using the <a href=\"/wp-admin/media-new.php\">media uploader</a>."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:649
+#: includes/class-wcj-pdf-invoices.php:658
+#: includes/class-wcj-pdf-invoices.php:696
+#: includes/class-wcj-pdf-invoices.php:725
+#: includes/class-wcj-pdf-invoices.php:789
+#: includes/class-wcj-pdf-invoices.php:824
+#: includes/class-wcj-pdf-invoices.php:866
+#: includes/class-wcj-pdf-invoices.php:875
+#: includes/class-wcj-pdf-invoices.php:884
+#: includes/class-wcj-pdf-invoices.php:893
+#: includes/class-wcj-pdf-invoices.php:902
+#: includes/class-wcj-pdf-invoices.php:911
+#: includes/class-wcj-pdf-invoices.php:991
+#: includes/class-wcj-pdf-invoices.php:1000
+msgid "Leave blank to disable"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:657
+msgid "Header Text"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:659
+msgid "Default: INVOICE"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:661
+msgid "INVOICE"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:667
+msgid "Invoice Number"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:668
+msgid "Default: Invoice number"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:670
+msgid "Invoice number"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:676
+msgid "Invoice Date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:677
+msgid "Default: Invoice date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:679
+msgid "Invoice date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:695
+msgid "Default: Invoice due date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:698
+msgid "Invoice due date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:705
+#: includes/class-wcj-pdf-invoices.php:734
+msgid "days"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:724
+msgid "Default: Invoice fulfillment date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:727
+msgid "Invoice fulfillment date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:744
+msgid "Seller and Buyer Info"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:747
+#: includes/class-wcj-pdf-invoices.php:750
+msgid "Seller"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:756
+msgid "Your business information"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:758
+msgid "New lines are added automatically."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:760
+msgid "<strong>Company Name</strong>"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:766
+#: includes/class-wcj-pdf-invoices.php:769
+msgid "Buyer"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:776
+#: includes/class-wcj-pdf-invoices.php:782
+msgid "Items"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:779
+msgid "Items Table Heading Text"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:788
+msgid "Shipping as Item"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:790
+msgid "Display shipping as item"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:808
+#: includes/class-wcj-pdf-invoices.php:816
+msgid "Add shipping method info"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:815
+msgid "Do not add shipping method info"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:817
+msgid "Replace with shipping method info"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:823
+msgid "Discount as Item"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:825
+msgid "Display discount as item"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:835
+msgid "Items Columns"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:835
+msgid ""
+"This section lets you set column names in invoice items table. You can "
+"disable some columns by leaving blank column name."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:838
+#: includes/class-wcj-pdf-invoices.php:841
+msgid "Nr."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:847
+#: includes/class-wcj-pdf-invoices.php:850
+msgid "Item Name"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:856
+#: includes/class-wcj-pdf-invoices.php:859
+msgid "Qty"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:865
+msgid "Single Item Price (TAX excl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:868
+msgid "Price (TAX excl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:874
+msgid "Single Item TAX"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:877
+msgid "TAX"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:883
+msgid "Single Item Price (TAX incl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:886
+msgid "Price (TAX incl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:892
+#: includes/class-wcj-pdf-invoices.php:895
+msgid "Sum (TAX excl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:901
+msgid "Tax Percent"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:904
+msgid "Taxes %"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:910
+#: includes/class-wcj-pdf-invoices.php:913
+#: includes/class-wcj-pdf-invoices.php:971
+msgid "Taxes"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:919
+#: includes/class-wcj-pdf-invoices.php:922
+msgid "Sum (TAX incl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:929
+msgid "Totals"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:929
+msgid "This section lets you set texts for totals table."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:932
+#: includes/class-wcj-pdf-invoices.php:935
+msgid "Order Subtotal"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:933
+msgid "Order Subtotal = Total - Taxes - Shipping - Discounts"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:941
+msgid "Order Shipping Price"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:944 includes/class-wcj-shipping.php:155
+#: includes/class-wcj-shipping.php:200
+msgid "Shipping"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:950
+msgid "Total Discount"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:953
+msgid "Discount"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:959
+#: includes/class-wcj-pdf-invoices.php:962
+msgid "Order Total (TAX excl.)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:960
+msgid ""
+"Order Total (TAX excl.) = Total - Taxes. Shown only if discount or shipping "
+"is not equal to zero. In other words: if \"Order Total (TAX excl.)\" not "
+"equal to \"Order Subtotal\""
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:968
+msgid "Order Total Taxes"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:977
+#: includes/class-wcj-pdf-invoices.php:980
+msgid "Order Total"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:987
+msgid "Footer"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:990
+#: includes/class-wcj-pdf-invoices.php:993
+msgid "Payment Method"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:999
+#: includes/class-wcj-pdf-invoices.php:1002
+msgid "Shipping Method"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1008
+msgid "Additional Footer"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1021
+msgid "Font size"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1022
+msgid "Default: 8"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1030
+msgid "CSS"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1045
+msgid "PDF Invoices for Customers (in My Account)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1046
+msgid "Enable the PDF Invoices in customers account"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1055
+msgid "PDF Invoices for Customers (Email attachment)"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1056
+msgid ""
+"Enable the PDF Invoices attachment files in customers email on order "
+"completed"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1065
+msgid "Enable Save as"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1066
+msgid "Enable save as pdf instead of view pdf"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:119
+msgid "Migrate from Custom Price Labels (Pro)"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:121
+msgid ""
+"Tool lets you copy all the data (that is labels) from Custom Price labels "
+"(Pro) plugin to WooCommerce Jetpack."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:131
+msgid "Migrate from Custom Price Labels"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:143
+msgid "WooCommerce Jetpack - Migrate from Custom Price Labels (Pro)"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:191
+msgid "Migrating: "
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:192
+msgid "Result: "
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:199
+msgid "Found data to migrate: "
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:213
+msgid "No data to migrate found"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:217
+msgid "No products found"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:222
+msgid ""
+"Press button below to copy all labels from Custom Price Labels (Pro) plugin. "
+"Old labels will NOT be deleted. New labels will be overwritten."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:223
+msgid "Migrate data"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:502
+msgid "Custom Price Labels Options"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:505
+#: includes/class-wcj-price-labels.php:599
+msgid "Custom Price Labels"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:506
+msgid "Enable the Custom Price Labels feature"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:507
+msgid "Create any custom price label for any product."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:515
+msgid "Global Custom Price Labels"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:515
+msgid "This section lets you set price labels for all products globally."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:518
+msgid "Add before the price"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:519
+msgid "Enter text to add before all products prices. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:530
+msgid "Add after the price"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:531
+msgid "Enter text to add after all products prices. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:542
+msgid "Remove from price"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:544
+msgid "Enter text to remove from all products prices. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:555
+msgid "Replace in price"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:556
+msgid "Enter text to replace in all products prices. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:568
+msgid "Enter text to replace with. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:580
+msgid "Migrate from Custom Price Labels (Pro) Options"
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:580
+msgid ""
+"This section lets you enable \"Migrate from Custom Price Labels (Pro)\" tool."
+msgstr ""
+
+#: includes/class-wcj-product-info.php:27
+msgid "Before product"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:28
+msgid "Before product title"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:29
+msgid "After product"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:30
+msgid "After product title"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:35
+msgid "Inside single product summary"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:36
+msgid "Before single product summary"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:37
+msgid "After single product summary"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:169
+msgid "Product Info Options"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:172
+#: includes/class-wcj-product-info.php:406
+msgid "Product Info"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:173
+msgid "Enable the Product Info feature"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:174
+msgid "Customize single product tabs, change related products number."
+msgstr ""
+
+#: includes/class-wcj-product-info.php:183
+msgid "More Products Info"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:186
+msgid "Product Info on Archive Pages"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:195
+#: includes/class-wcj-product-info.php:232
+msgid "HTML info. Predefined: %total_sales%, %sku%"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:204
+#: includes/class-wcj-product-info.php:244
+msgid "Position"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:216
+#: includes/class-wcj-product-info.php:256
+#: includes/class-wcj-product-info.php:276
+#: includes/class-wcj-product-info.php:302
+#: includes/class-wcj-product-info.php:328
+msgid "Priority (i.e. Order)"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:223
+msgid "Product Info on Single Product Pages"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:265
+msgid "Product Tabs Options"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:268
+msgid "Description Tab"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:269
+#: includes/class-wcj-product-info.php:295
+#: includes/class-wcj-product-info.php:321
+msgid "Remove tab from product page"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:286
+#: includes/class-wcj-product-info.php:312
+#: includes/class-wcj-product-info.php:338
+#: includes/class-wcj-product-info.php:379
+#: includes/gateways/class-wc-gateway-wcj-custom.php:56
+#: includes/shipping/class-wc-shipping-wcj-custom.php:62
+msgid "Title"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:287
+#: includes/class-wcj-product-info.php:313
+#: includes/class-wcj-product-info.php:339
+msgid "Leave blank for WooCommerce defaults"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:294
+msgid "Reviews Tab"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:320
+msgid "Additional Information Tab"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:348
+msgid "Related Products Options"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:358
+msgid "Related Products Number"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:365
+msgid "Related Products Columns"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:372
+msgid "Order by"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:377
+msgid "Random"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:378
+msgid "Date"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:384
+msgid "Order"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:385
+msgid "Ignored if order by \"Random\" is selected above."
+msgstr ""
+
+#: includes/class-wcj-product-info.php:390
+msgid "Ascending"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:391
+msgid "Descending"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:55
+msgid "Product Listings Options"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:58
+#: includes/class-wcj-product-listings.php:136
+msgid "Product Listings"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:59
+msgid "Enable the Product Listings feature"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:60
+msgid ""
+"Change display options for shop and category pages: show/hide categories "
+"count, exclude categories, show/hide empty categories."
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:68
+msgid "Shop Page Display Options"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:68
+msgid ""
+"This will work only when \"Shop Page Display\" in \"WooCommerce > Settings > "
+"Products > Product Listings\" is set to \"Show subcategories\" or \"Show both"
+"\"."
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:71
+msgid "Categories Count"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:72
+#: includes/class-wcj-product-listings.php:155
+msgid "Hide categories count on shop page"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:79
+msgid "Exclude Categories"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:80
+#: includes/class-wcj-product-listings.php:163
+msgid ""
+" Excludes one or more categories from the shop page. This parameter takes a "
+"comma-separated list of categories by unique ID, in ascending order. Leave "
+"blank to disable."
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:88
+#: includes/class-wcj-product-listings.php:119
+msgid "Hide Empty"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:89
+#: includes/class-wcj-product-listings.php:172
+msgid "Hide empty categories on shop page"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:97
+msgid "Category Display Options"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:97
+msgid ""
+"This will work only when \"Default Category Display\" in \"WooCommerce > "
+"Settings > Products > Product Listings\" is set to \"Show subcategories\" or "
+"\"Show both\"."
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:100
+msgid "Subcategories Count"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:101
+#: includes/class-wcj-product-listings.php:184
+msgid "Hide subcategories count on category pages"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:110
+msgid "Exclude Subcategories"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:111
+#: includes/class-wcj-product-listings.php:194
+msgid ""
+" Excludes one or more categories from the category (archive) pages. This "
+"parameter takes a comma-separated list of categories by unique ID, in "
+"ascending order. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:120
+#: includes/class-wcj-product-listings.php:203
+msgid "Hide empty subcategories on category pages"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:154
+msgid "WooJetpack: Categories Count"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:162
+msgid "WooJetpack: Exclude Categories on Shop Page"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:171
+#: includes/class-wcj-product-listings.php:202
+msgid "WooJetpack: Hide Empty"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:183
+msgid "WooJetpack: Subcategories Count"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:193
+msgid "WooJetpack: Exclude Subcategories on Category Pages"
+msgstr ""
+
+#: includes/class-wcj-reports.php:44 includes/class-wcj-reports.php:85
+msgid "Smart Reports"
+msgstr ""
+
+#: includes/class-wcj-reports.php:65
+msgid "Reports Options"
+msgstr ""
+
+#: includes/class-wcj-reports.php:68 includes/class-wcj-reports.php:256
+msgid "Reports"
+msgstr ""
+
+#: includes/class-wcj-reports.php:69
+msgid "Enable the Reports feature"
+msgstr ""
+
+#: includes/class-wcj-reports.php:277
+msgid "Product"
+msgstr ""
+
+#: includes/class-wcj-reports.php:278
+msgid "Price"
+msgstr ""
+
+#: includes/class-wcj-reports.php:279
+msgid "Stock"
+msgstr ""
+
+#: includes/class-wcj-reports.php:280
+msgid "Stock price"
+msgstr ""
+
+#: includes/class-wcj-reports.php:282
+msgid "Last sale"
+msgstr ""
+
+#: includes/class-wcj-reports.php:283 includes/class-wcj-reports.php:284
+msgid "Sales in last %s days"
+msgstr ""
+
+#: includes/class-wcj-reports.php:286
+msgid "Total sales"
+msgstr ""
+
+#: includes/class-wcj-reports.php:361
+msgid "No sales yet"
+msgstr ""
+
+#: includes/class-wcj-reports.php:378
+msgid "Total current stock value"
+msgstr ""
+
+#: includes/class-wcj-reports.php:379
+msgid "Total stock value"
+msgstr ""
+
+#: includes/class-wcj-reports.php:380
+msgid "Product stock value average"
+msgstr ""
+
+#: includes/class-wcj-reports.php:381
+msgid "Product stock average"
+msgstr ""
+
+#: includes/class-wcj-reports.php:439
+msgid "All Products on Stock"
+msgstr ""
+
+#: includes/class-wcj-reports.php:440
+msgid "Report shows all products that are on stock."
+msgstr ""
+
+#: includes/class-wcj-reports.php:497
+msgid ""
+"Here you can generate reports. Some reports are generated using all your "
+"orders and products, so if you have a lot of them - it may take a while."
+msgstr ""
+
+#: includes/class-wcj-shipping.php:63
+msgid "WooCommerce Jetpack: Hide shipping"
+msgstr ""
+
+#: includes/class-wcj-shipping.php:64 includes/class-wcj-shipping.php:170
+msgid "Hide local delivery when free is available"
+msgstr ""
+
+#: includes/class-wcj-shipping.php:75 includes/class-wcj-shipping.php:180
+msgid "Hide all when free is available"
+msgstr ""
+
+#: includes/class-wcj-shipping.php:152
+msgid "Shipping Options"
+msgstr ""
+
+#: includes/class-wcj-shipping.php:156
+msgid "Enable the Shipping feature"
+msgstr ""
+
+#: includes/class-wcj-shipping.php:157
+msgid "Hide shipping when free is available."
+msgstr ""
+
+#: includes/class-wcj-shipping.php:165
+msgid "Hide if free is available"
+msgstr ""
+
+#: includes/class-wcj-shipping.php:165
+msgid ""
+"This section lets you hide other shipping options when free shipping is "
+"available on shop frontend."
+msgstr ""
+
+#: includes/class-wcj-shipping.php:169
+msgid "Hide shipping"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:75
+msgid "WooJetpack: Remove All Sorting"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:79
+msgid "Completely remove sorting from the shop front end"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:165
+msgid "Sorting Options"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:168 includes/class-wcj-sorting.php:277
+msgid "Sorting"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:169
+msgid "Enable the Sorting feature"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:170
+msgid "Add more sorting options or remove all sorting including default."
+msgstr ""
+
+#: includes/class-wcj-sorting.php:178 includes/class-wcj-sorting.php:181
+msgid "Remove All Sorting"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:182
+msgid "Remove all sorting (including WooCommerce default)"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:193
+msgid "Add More Sorting"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:196
+msgid "Sort by Name - Asc"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:197 includes/class-wcj-sorting.php:215
+#: includes/class-wcj-sorting.php:233 includes/class-wcj-sorting.php:251
+msgid "Text visible at front end"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:214
+msgid "Sort by Name - Desc"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:232
+msgid "Sort by SKU - Asc"
+msgstr ""
+
+#: includes/class-wcj-sorting.php:250
+msgid "Sort by SKU - Desc"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:50
+#: includes/shipping/class-wc-shipping-wcj-custom.php:56
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:52
+msgid "Enable Custom Payment"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:58
+#: includes/shipping/class-wc-shipping-wcj-custom.php:64
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:59
+msgid "Custom Payment"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:65
+msgid "Payment method description that the customer will see on your checkout."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:66
+msgid "Custom Payment Description."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:70
+msgid "Instructions"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:72
+msgid "Instructions that will be added to the thank you page."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:77
+msgid "Email Instructions"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:79
+msgid "Instructions that will be added to the emails."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:84
+msgid "Icon"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:92
+msgid "Minimum order amount"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:94
+msgid ""
+"If you want to set minimum order amount to show this gateway on frontend, "
+"enter a number here. Set to 0 to disable."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:101
+msgid "Enable for shipping methods"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:106
+msgid ""
+"If gateway is only available for certain shipping methods, set it up here. "
+"Leave blank to enable for all methods."
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:110
+msgid "Select shipping methods"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:114
+msgid "Enable for virtual orders"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:115
+msgid "Enable gateway if the order is virtual"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:254
+msgid "Awaiting payment"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:275
+msgid "Custom Gateway"
+msgstr ""
+
+#: includes/gateways/class-wc-gateway-wcj-custom.php:276
+msgid "WooCommerce Jetpack: Custom Payment Gateway"
+msgstr ""
+
+#: includes/shipping/class-wc-shipping-wcj-custom.php:19
+#: includes/shipping/class-wc-shipping-wcj-custom.php:65
+msgid "Custom Shipping"
+msgstr ""
+
+#: includes/shipping/class-wc-shipping-wcj-custom.php:20
+msgid "WooCommerce Jetpack: Custom Shipping Method"
+msgstr ""
+
+#: includes/shipping/class-wc-shipping-wcj-custom.php:58
+msgid "Enable Custom Shipping"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (WooCommerce Jetpack 1.7.6)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: woocommerce-jetpack.php:94
+msgid "WooCommerce Jetpack"
+msgstr ""
+
+#: woocommerce-jetpack.php:94
+msgid "Jetpack Settings"
+msgstr ""
+
+#: woocommerce-jetpack.php:105
+msgid "Settings"
+msgstr ""
+
+#: woocommerce-jetpack.php:106
+msgid "Docs"
+msgstr ""
+
+#: woocommerce-jetpack.php:107
+msgid "Unlock all"
+msgstr ""
+
+#: woocommerce-jetpack.php:120
+msgid "Install WooCommerce Jetpack Plus to unlock all features"
+msgstr ""
+
+#: woocommerce-jetpack.php:121
+msgid ""
+"Some settings fields are locked and you will need %s to modify all locked "
+"fields."
+msgstr ""
+
+#: woocommerce-jetpack.php:122
+msgid "Buy now"
+msgstr ""
+
+#: woocommerce-jetpack.php:122
+msgid "Visit %s"
+msgstr ""
+
+#: woocommerce-jetpack.php:126
+msgid ""
+"Get <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce "
+"Jetpack Plus</a> to change value."
+msgstr ""
+
+#: woocommerce-jetpack.php:129
+msgid ""
+"Get <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce "
+"Jetpack Plus</a> to change values below."
+msgstr ""
+
+#: woocommerce-jetpack.php:132
+msgid ""
+"Get <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce "
+"Jetpack Plus</a> to change values above."
+msgstr ""
+
+#: woocommerce-jetpack.php:135
+msgid "Get WooCommerce Jetpack Plus to change value."
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://woojetpack.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Supercharge your WooCommerce site with these awesome powerful features."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Algoritmika Ltd"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.algoritmika.com"
+msgstr ""
