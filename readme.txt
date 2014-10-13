@@ -132,8 +132,8 @@ If you wish that some task would go up the queue to make it faster, please conta
 == Changelog ==
 
 = 1.7.7 - 13/10/2014 =
-* Fix - Custom Price Labels - Bug causing setting checkboxes back to *on*, fixed. 
-* Fix - Custom Price Labels - "Migrate from Custom Price Labels (Pro)" tool - new since Custom Price Labels plugin data were missing, fixed.
+* Fix - Custom Price Labels - Bug causing setting checkboxes back to *on*, fixed. Suggested by Erika.
+* Fix - Custom Price Labels - "Migrate from Custom Price Labels (Pro)" tool - new since Custom Price Labels plugin data was missing, fixed. Suggested by Paolo.
 
 = 1.7.6 - 09/10/2014 =
 * Fix - Custom Price Labels - Bug causing setting all product's checkbox labels to off, fixed.
