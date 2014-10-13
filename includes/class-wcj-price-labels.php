@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class		WCJ_Price_Labels
- * @version		1.5.0
+ * @version		1.7.0
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -55,13 +55,12 @@ class WCJ_Price_Labels {
 					add_filter( 'wcj_tools_tabs', array( $this, 'add_migrate_from_custom_price_labels_tool_tab' ), 100 );
 					add_action( 'wcj_tools_migrate_from_custom_price_labels', array( $this, 'create_migrate_from_custom_price_labels_tool_tab' ), 100 );
 				}
-			}		
-
-		
+			}
+			
 			// Add meta box
 			add_action( 'add_meta_boxes', array( $this, 'add_price_label_meta_box' ) );
 			// Save Post
-			add_action( 'save_post', array( $this, 'save_custom_price_labels' ), 999, 2 );
+			add_action( 'save_post_product', array( $this, 'save_custom_price_labels' ), 999, 2 );
 			
 			// Prices Hooks
 			$this->prices_filters = array(			
@@ -188,22 +187,37 @@ class WCJ_Price_Labels {
 							// Found Old (Custom Price Labels Plugin) meta to migrate to							
 							if ( true === $migrate ) {					
 								// Migrating
-								$html .= '<li>' . __( 'Migrating: ', 'woocommerce-jetpack' ) . $old_meta_name . '[' . $old_meta_value . ']' . ' -> ' . $new_meta_name . '[' . $new_meta_value . ']. ';// . '</li>'; 
+								$html .= '<li>' . __( 'Migrating (product ID ', 'woocommerce-jetpack' ) . $the_product_id . '): ' .  $old_meta_name . '[' . $old_meta_value . ']' . ' -> ' . $new_meta_name . '[' . $new_meta_value . ']. ';// . '</li>'; 
 								$html .= __( 'Result: ', 'woocommerce-jetpack' ) . update_post_meta( $the_product_id, $new_meta_name, $old_meta_value );
 								$html .= '</li>';
 								
 								//wp_update_post( array( 'ID' => $the_product_id ) );
+								
+								// Fill all data with defaults
+								foreach ( $this->custom_tab_sections as $custom_tab_section ) {			
+									foreach ( $this->custom_tab_section_variations as $custom_tab_section_variation ) {
+										$option_name = $this->custom_tab_group_name . $custom_tab_section . $custom_tab_section_variation;
+										if ( '' == get_post_meta( $the_product_id, '_' . $option_name, true ) ) {
+											if ( '_text' === $custom_tab_section_variation )
+												update_post_meta( $the_product_id, '_' . $option_name, '' );
+											else
+												update_post_meta( $the_product_id, '_' . $option_name, 'off' );
+												
+											//$html .= '<li>' . __( 'Setting defaults for: ', 'woocommerce-jetpack' ) . '_' . $option_name . '</li>';
+										}
+									}
+								}								
 							}
 							else {
 								// Info only
-								$html .= '<li>' . __( 'Found data to migrate: ', 'woocommerce-jetpack' ) . $old_meta_name . '[' . $old_meta_value . ']' . ' -> ' . $new_meta_name . '[' . $new_meta_value . ']' . '</li>'; 
+								$html .= '<li>' . __( 'Found data to migrate (product ID ', 'woocommerce-jetpack' ) . $the_product_id . '): ' . $old_meta_name . '[' . $old_meta_value . ']' . ' -> ' . $new_meta_name . '[' . $new_meta_value . ']' . '</li>'; 
 							}							
 							/*if ( true === $do_delete_old ) {
 								// Delete Old (Custom Price Labels Plugin) meta
 								$html .= '<li>' . __( 'Deleting: ', 'woocommerce-jetpack' ) . $old_meta_name . '[' . $old_meta_value . ']. ';// . '</li>'; 
 								$html .= __( ' Result: ', 'woocommerce-jetpack' ) . delete_post_meta( $the_product_id, $old_meta_name, $old_meta_value );
 								$html .= '</li>';										
-							}*/	
+							}*/
 						}
 						//wp_update_post( array( 'ID' => $the_product_id ) );
 					}
@@ -246,6 +260,9 @@ class WCJ_Price_Labels {
 		
 		//$product = get_product( $post );TODO - do I need it?
 		
+		if ( ! isset( $_POST['woojetpack_price_labels_save_post'] ) )
+			return;
+		
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {			
 		
 			foreach ( $this->custom_tab_section_variations as $custom_tab_section_variation ) {
@@ -253,9 +270,9 @@ class WCJ_Price_Labels {
 				//$option_name = $this->custom_tab_group_name;
 				$option_name = $this->custom_tab_group_name . $custom_tab_section . $custom_tab_section_variation;
 				
-				if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
+//				if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
 			
-				/*
+				/**/
 				if ( $custom_tab_section_variation == '_text' ) {
 					//$option_name .= $custom_tab_section_variation . $custom_tab_section;
 					if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
@@ -265,7 +282,7 @@ class WCJ_Price_Labels {
 					if ( isset( $_POST[ $option_name ] ) ) update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
 					else update_post_meta( $post_id, '_' . $option_name, 'off' );			
 				}
-				*/
+				/**/
 			}
 		}
 	}	
@@ -281,15 +298,16 @@ class WCJ_Price_Labels {
 	public function wcj_price_label() {
 	
 		$current_post_id = get_the_ID();
-		echo '<table style="width:100%;">';		
+		echo '<table style="width:100%;">';
 
-		
 		echo '<tr>';
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
 			echo '<td style="width:25%;"><h4>' . $this->custom_tab_sections_titles[ $custom_tab_section ] . '</h4></td>';
 		}
 		echo '</tr>';
-		/*echo '<tr>';
+
+		/*
+		echo '<tr>';
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
 			if ( '_instead' != $custom_tab_section )
 				$disabled_if_no_plus = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_below' );
@@ -297,8 +315,8 @@ class WCJ_Price_Labels {
 				$disabled_if_no_plus = '';
 			echo '<td style="width:25%;">' . $disabled_if_no_plus . '</td>';
 		}
-		echo '</tr>';		*/
-
+		echo '</tr>';
+		*/
 		
 		echo '<tr>';
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
@@ -355,9 +373,7 @@ class WCJ_Price_Labels {
 			echo '</td>';
 
 		}
-		
-		echo '</tr>';
-		
+		echo '</tr>';		
 		echo '<tr>';
 		foreach ( $this->custom_tab_sections as $custom_tab_section ) {
 			if ( '_instead' != $custom_tab_section )
@@ -367,8 +383,8 @@ class WCJ_Price_Labels {
 			echo '<td style="width:25%;">' . $disabled_if_no_plus . '</td>';
 		}
 		echo '</tr>';		
-		
 		echo '</table>';
+		echo '<input type="hidden" name="woojetpack_price_labels_save_post" value="woojetpack_price_labels_save_post">';
 	}
 	
 	/*
