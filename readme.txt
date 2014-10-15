@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.7.7
+Stable tag: 1.7.8
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,15 +69,17 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
 = 1.8.0 - XX/10/2014 =
-* Upgrade Feature - Custom Price Labels - Hide on cart/checkout only. Idea by Paolo.
-* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
-* Upgrade Feature - PDF Invoices - International date formats. Idea by Jean-Marc.
 * Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
 * Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
 * Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
+* Upgrade Feature - PDF Invoices - International date formats. Idea by Jean-Marc.
+* New Feature - Checkout to PDF (wish list). Idea by Mick.
 * Upgrade Feature - Checkout - Extra fee (e.g. for PayPal). Suggested by Daniele.
+* New Feature - Custom Product Input Fields - Fields to fill before adding product to cart. Idea by Mangesh.
+
+= 1.9.0 - 15/11/2014 =
 * Upgrade Feature - Product Info - Custom product tabs.
-* New Feature - Checkout to PDF (wish list). Idea by Mick 01/10/2014.
+* New Feature - Smart Reports - Various reports based on products prices, sales, stock.
 * New Feature - Add second currency to the price.
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
 * Upgrade Feature - Shipping - Add "Custom Shipping Method".
@@ -91,9 +93,6 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Smart Reports - Export to CSV file.
 * Upgrade Feature - Call for Price - Call for price for variable products (all variations or only some).
 * Upgrade Feature - Custom Statuses - Bulk change status.
-* Product Add-ons. Idea by Mangesh.
-
-= 1.9.0 - 30/10/2014 =
 * Upgrade Feature - Custom Price Labels - ?Add "local remove".
 * Upgrade Feature - Orders - Bulk orders i.e. "Buy More - Pay Less". Start from global discount for all products, i.e. cart discount; later - discounts for individual products.
 * Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
@@ -109,7 +108,7 @@ If you wish that some task would go up the queue to make it faster, please conta
   Programs like SellerActive and BigCommerce come close, but don't do everything.
   Idea by Dave.
 
-= 2.0.0 - 15/11/2014 =
+= 2.0.0 - 30/11/2014 =
 * Dev - Move all to `WooCommerce > Jetpack` menu.
 * Dev - Major source code, documentation, locking mechanism etc. recheck.
   Maybe rename "Features" to "Modules".
@@ -130,6 +129,11 @@ If you wish that some task would go up the queue to make it faster, please conta
 	- Orders: Customer VAT Number field (very useful in Europa).
 
 == Changelog ==
+
+= 1.7.8 - 15/10/2014 =
+* Fix - Product Listings - Hide empty not working, fixed. Suggested by Rene.
+  This was caused by changes in WooCommerce code.
+* Feature Upgraded - Custom Price Labels - Option for **hiding labels on cart page only**, added. Idea by Paolo.
 
 = 1.7.7 - 13/10/2014 =
 * Fix - Custom Price Labels - Bug causing setting checkboxes back to *on*, fixed. Suggested by Erika.

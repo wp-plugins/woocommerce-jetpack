@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class		WCJ_Price_Labels
- * @version		1.7.0
+ * @version		1.8.0
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -25,14 +25,15 @@ class WCJ_Price_Labels {
 		'_between'	=> 'Between regular and sale prices', 
 		'_after'	=> 'After the price', 
 	);
-	public $custom_tab_section_variations = array ( '_text', '_enabled', '_home', '_products', '_single', '_page', /*'_simple',*/ '_variable', '_variation', /*'_grouped',*/ );
+	public $custom_tab_section_variations = array ( '_text', '_enabled', '_home', '_products', '_single', '_page', '_cart', /*'_simple',*/ '_variable', '_variation', /*'_grouped',*/ );
 	public $custom_tab_section_variations_titles = array ( 
 		'_text'		 => '',//'The label', 
 		'_enabled'	 => 'Enable',// for compatibility with Custom Price Label Pro plugin should use ''	  
 		'_home'		 => 'Hide on home page', 
 		'_products'	 => 'Hide on products page', 
 		'_single'	 => 'Hide on single',
-		'_page'	 	 => 'Hide on pages',
+		'_page'	 	 => 'Hide on all pages',
+		'_cart'	 	 => 'Hide on cart page only',
 		//'_simple'	 => 'Hide for simple product',
 		'_variable'	 => 'Hide for main price',
 		'_variation' => 'Hide for all variations',
@@ -472,13 +473,15 @@ class WCJ_Price_Labels {
 			if ( 'on' === $labels_array[ 'variation_enabled' ] ) {			
 			
 				if ( 
-					( ( 'off' === $labels_array['variation_home'] ) && ( is_front_page() ) ) ||
+					( ( 'off' === $labels_array['variation_home'] ) 	&& ( is_front_page() ) ) ||
 					( ( 'off' === $labels_array['variation_products'] ) && ( is_archive() ) ) ||
-					( ( 'off' === $labels_array['variation_single'] ) && ( is_single() ) ) ||
-					( ( 'off' === $labels_array['variation_page'] ) && ( is_page() ) )					
+					( ( 'off' === $labels_array['variation_single'] ) 	&& ( is_single() ) ) ||
+					( ( 'off' === $labels_array['variation_page'] ) 	&& ( is_page() ) )					
 				   ) 
 					{	
 						//$current_filter_name = current_filter();
+						if ( 'woocommerce_cart_item_price' === $current_filter_name && 'off' === $labels_array['variation_cart'] )
+							continue;
 
 						$variable_filters_array = array(
 							'woocommerce_variable_empty_price_html', 		
@@ -610,10 +613,8 @@ class WCJ_Price_Labels {
 		return $settings;
 	}
 	
-	function settings_section( $sections ) {
-	
-		$sections['price_labels'] = __( 'Custom Price Labels', 'woocommerce-jetpack' );
-		
+	function settings_section( $sections ) {	
+		$sections['price_labels'] = __( 'Custom Price Labels', 'woocommerce-jetpack' );		
 		return $sections;
 	}	
 }

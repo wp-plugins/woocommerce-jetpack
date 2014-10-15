@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.7.7
+Version: 1.7.8
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
@@ -165,6 +165,7 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-call-for-price.php' );		
 		$settings[] = include_once( 'includes/class-wcj-currencies.php' );		
 		$settings[] = include_once( 'includes/class-wcj-sorting.php' );
+		//$settings[] = include_once( 'includes/class-wcj-product-input-fields.php' );
 		$settings[] = include_once( 'includes/class-wcj-product-listings.php' );
 		$settings[] = include_once( 'includes/class-wcj-product-info.php' );
 		

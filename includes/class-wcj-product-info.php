@@ -5,8 +5,7 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.1.4
- * @package		WC_Jetpack/Classes
+ * @version		1.2.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */

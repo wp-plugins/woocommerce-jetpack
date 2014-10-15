@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Listings class.
  *
  * @class		WCJ_Product_Listings
- * @version		1.0.0
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -23,7 +23,8 @@ class WCJ_Product_Listings {
         // Main hooks
 		if ( 'yes' === get_option( 'wcj_product_listings_enabled' ) ) {		
 			// Exclude and Hide Empty
-			add_filter( 'woocommerce_product_subcategories_args', array( $this, 'filter_subcategories' ), 100 );
+			add_filter( 'woocommerce_product_subcategories_args', 		array( $this, 'filter_subcategories' ), 100 );
+			add_filter( 'woocommerce_product_subcategories_hide_empty', array( $this, 'filter_subcategories_show_empty' ), 100 );
 			// Hide Count
 			if ( 'yes' === get_option( 'wcj_product_listings_hide_cats_count_on_shop' ) || 'yes' === get_option( 'wcj_product_listings_hide_cats_count_on_archive' ) )
 				add_filter( 'woocommerce_subcategory_count_html', array( $this, 'remove_subcategory_count' ), 100 );
@@ -227,14 +228,27 @@ class WCJ_Product_Listings {
     public function filter_subcategories( $args ) {
 		if ( is_shop() ) {
 			$args['exclude'] = get_option( 'wcj_product_listings_exclude_cats_on_shop' );
-			$args['hide_empty'] = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_shop' ) ) ? 1 : 0;
+			$args['hide_empty'] = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_shop' ) ) ? 1 : 0;		// depreciated?
 		}
 		else {
 			$args['exclude'] = get_option( 'wcj_product_listings_exclude_cats_on_archives' );
-			$args['hide_empty'] = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_archives' ) ) ? 1 : 0;
+			$args['hide_empty'] = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_archives' ) ) ? 1 : 0;	// depreciated?
 		}
 		return $args;
     }
+	
+    /**
+     * filter_subcategories_show_empty.
+     */
+    public function filter_subcategories_show_empty() {		
+		$show_empty = false;
+		if ( is_shop() )
+			$show_empty = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_shop' ) ) ? false : true;
+		else
+			$show_empty = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_archives' ) ) ? false : true;
+			
+		return $show_empty;
+    }	
 }
 
 endif;
