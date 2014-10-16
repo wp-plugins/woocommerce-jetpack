@@ -24,6 +24,11 @@ class WCJ_Product_Custom_Input {
         // Main hooks
         if ( 'yes' === get_option( 'wcj_product_custom_input_enabled' ) ) {
 		
+			// Add meta box
+			add_action( 'add_meta_boxes', array( $this, 'add_custom_input_fields_meta_box' ) );
+			// Save Post
+			add_action( 'save_post_product', array( $this, 'save_custom_input_fields' ), 999, 2 );		
+		
 			// Product Add-ons		
 			add_action( 'woocommerce_before_add_to_cart_button', 	array( $this, 'product_add_ons_add_custom_text_input' ), 100 );
 			add_filter( 'woocommerce_add_cart_item_data', 			array( $this, 'product_add_ons_add_cart_item_data' ), 100, 3 );
@@ -40,6 +45,74 @@ class WCJ_Product_Custom_Input {
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
 	
+	/**
+	 * Save custom input fields.
+	 */	
+	public function save_custom_input_fields( $post_id, $post ) {
+		// Check that we are saving with input fields displayed.
+		if ( ! isset( $_POST['woojetpack_input_fields_save_post'] ) )
+			return;
+		// Option name?
+		$option_name = 'wcj_input_fields_text_1_enabled';
+		// Save
+		if ( isset( $_POST[ $option_name ] ) )
+			update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
+	}		
+	
+	/**
+	 * add_custom_input_fields_meta_box.
+	 */	
+	public function add_custom_input_fields_meta_box() {	
+		add_meta_box( 'wc-jetpack-input-fields', 'WooCommerce Jetpack: Custom Input Fields', array($this, 'create_custom_input_fields_meta_box'), 'product', 'normal', 'high' );
+	}	
+	
+	/**
+	 * create_custom_input_fields_meta_box.
+	 */	
+	public function create_custom_input_fields_meta_box() {
+		$html = '<h4>' . __( 'Text Fields', 'woocommerce-jetpack' ) . '</h4>';
+		$html .= '<table style="width:100%;">';
+	
+		$is_disabled = '';		
+		$current_post_id = 0;		
+		
+		$option_name = 'wcj_input_fields_text_1_enabled';		
+		$is_checked = checked( get_post_meta( $current_post_id, '_' . $option_name, true ), 'on', false );				
+		$html .= '<tr>';
+		$html .= '<td>';		
+		$html .= __( 'Enable', 'woocommerce-jetpack' );
+		$html .= '</td>';		
+		$html .= '<td>';
+		$html .= '<input class="checkbox" type="checkbox" ' . $is_disabled . ' name="' . $option_name . '" id="' . $option_name . '" ' . $is_checked . ' />';
+		$html .= '</td>';
+		$html .= '</tr>';
+		
+		$option_name = 'wcj_input_fields_text_1_requred';		
+		$is_checked = checked( get_post_meta( $current_post_id, '_' . $option_name, true ), 'on', false );		
+		$html .= '<tr>';
+		$html .= '<td>';		
+		$html .= __( 'Required', 'woocommerce-jetpack' );
+		$html .= '</td>';		
+		$html .= '<td>';
+		$html .= '<input class="checkbox" type="checkbox" ' . $is_disabled . ' name="' . $option_name . '" id="' . $option_name . '" ' . $is_checked . ' />';
+		$html .= '</td>';
+		$html .= '</tr>';		
+
+		$option_name = 'wcj_input_fields_text_1_title';
+		$saved_title = get_post_meta( $current_post_id, '_' . $option_name, true );
+		$html .= '<tr>';
+		$html .= '<td>';
+		$html .= __( 'Title', 'woocommerce-jetpack' );
+		$html .= '</td>';
+		$html .= '<td>';
+		$html .= '<textarea style="width:30%;min-width:100px;height:50px;" ' . $is_disabled . ' name="' . $option_name . '">' . $saved_title . '</textarea>';		
+		$html .= '</td>';
+		$html .= '</tr>';
+	
+		$html .= '</table>';
+		$html .= '<input type="hidden" name="woojetpack_input_fields_save_post" value="woojetpack_input_fields_save_post">';
+		echo $html;
+	}	
 	
 	/**
 	 * product_add_ons_validate_values.

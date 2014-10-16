@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.7.8
+Stable tag: 1.7.9
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,8 +127,12 @@ If you wish that some task would go up the queue to make it faster, please conta
 	- More: Packing Slip Option (without prices because Packing Slip is not Invoice),
 	- Customizable Packing Slip template.
 	- Orders: Customer VAT Number field (very useful in Europa).
+* Add pdf packing slips (also be attached to the admin new order email). Idea by Ron.
 
 == Changelog ==
+
+= 1.7.9 - 16/10/2014 =
+* Fix - Custom Price Labels - Hiding price labels on cart page didn't work, fixed. Suggested by Paolo.
 
 = 1.7.8 - 15/10/2014 =
 * Fix - Product Listings - Hide empty not working, fixed. Suggested by Rene.

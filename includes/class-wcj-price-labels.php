@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price Labels class.
  *
  * @class		WCJ_Price_Labels
- * @version		1.8.0
+ * @version		1.8.1
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -477,10 +477,10 @@ class WCJ_Price_Labels {
 					( ( 'off' === $labels_array['variation_products'] ) && ( is_archive() ) ) ||
 					( ( 'off' === $labels_array['variation_single'] ) 	&& ( is_single() ) ) ||
 					( ( 'off' === $labels_array['variation_page'] ) 	&& ( is_page() ) )					
-				   ) 
+				   )
 					{	
 						//$current_filter_name = current_filter();
-						if ( 'woocommerce_cart_item_price' === $current_filter_name && 'off' === $labels_array['variation_cart'] )
+						if ( 'woocommerce_cart_item_price' === $current_filter_name && 'on' === $labels_array['variation_cart'] )
 							continue;
 
 						$variable_filters_array = array(
