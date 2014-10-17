@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.5.1
+ * @version		1.5.2
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -330,11 +330,11 @@ class WCJ_PDF_Invoices {
 		// NUMBER AND DATE //
 		$html .= '<table class="pdf_invoice_number_and_date_table_wcj"><tbody>';
 		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_number_text' ) . '</td><td>' . $order_number . '</td></tr>';
-		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_date_text' ) . '</td><td>' . date( get_option('date_format') , strtotime( $the_order->order_date ) ) . '</td></tr>';
+		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_date_text' ) . '</td><td>' . date_i18n( get_option('date_format'), strtotime( $the_order->order_date ) ) . '</td></tr>';
 		if ( '' != get_option( 'wcj_pdf_invoices_invoice_due_date_text' ) )
-			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_due_date_text' ) . '</td><td>' . date( get_option('date_format') , ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_due_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
+			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_due_date_text' ) . '</td><td>' . date_i18n( get_option('date_format'), ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_due_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
 		if ( '' != get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_text' ) )
-			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_text' ) . '</td><td>' . date( get_option('date_format') , ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
+			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_text' ) . '</td><td>' . date_i18n( get_option('date_format'), ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
 		$html .= '</tbody></table>';
 		$html .= '</p>';
 

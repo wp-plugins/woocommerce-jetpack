@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.1.1
+ * @version		1.1.2
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -359,7 +359,7 @@ class WCJ_Reports {
 
 				$html .= '<td class="wcj_report_table_sales_columns">';
 				if ( 0 == $product_info['last_sale'] ) $html .= __( 'No sales yet', 'woocommerce-jetpack' );
-				else $html .= date( get_option( 'date_format' ), $product_info['last_sale'] );
+				else $html .= date_i18n( get_option( 'date_format' ), $product_info['last_sale'] );
 				$html .= '</td>';
 				$html .= '<td class="wcj_report_table_sales_columns">' . $product_info['sales_in_period'][ $this->period ] . '</td>';
 				$html .= '<td class="wcj_report_table_sales_columns">' . $product_info['sales_in_period'][ $this->period * 2 ] . '</td>';

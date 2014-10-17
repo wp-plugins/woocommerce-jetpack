@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.5.0
+ * @version		1.5.1
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -244,7 +244,7 @@ class WCJ_Orders {
 				'#' . $order_number_meta, 
 				sprintf( '%s%s%0' . get_option( 'wcj_order_number_min_width', 0 ) . 'd', 
 				get_option( 'wcj_order_number_prefix', '' ), 
-				date( get_option( 'wcj_order_number_date_prefix', '' ), $order_timestamp ),				
+				date_i18n( get_option( 'wcj_order_number_date_prefix', '' ), $order_timestamp ),				
 				$order_number_meta ) );
 		}
 		return $order_number;

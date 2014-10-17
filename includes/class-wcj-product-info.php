@@ -38,8 +38,6 @@ class WCJ_Product_Info {
 	
 		// Main hooks
 		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {
-		
-			add_filter( 'woocommerce_product_tabs', array( $this, 'customize_product_tabs' ), 98 );	
 			
 			if ( get_option( 'wcj_product_info_related_products_enable' ) === 'yes' ) {
 				add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), 100 );
@@ -65,8 +63,8 @@ class WCJ_Product_Info {
 		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
 		add_filter( 'wcj_settings_product_info', array( $this, 'get_settings' ), 100 );
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
-	}
-
+	}	
+		
 	/**
 	 * Return feature's enable/disable option.
 	 */
@@ -123,39 +121,6 @@ class WCJ_Product_Info {
 				
 		return $args;
 	}
-
-	/**
-	 * Customize the product tabs.
-	 */
-	function customize_product_tabs( $tabs ) {
-	 
-		// Unset
-		if ( get_option( 'wcj_product_info_product_tabs_description_disable' ) === 'yes' ) 
-			unset( $tabs['description'] );
-		if ( get_option( 'wcj_product_info_product_tabs_reviews_disable' ) === 'yes' ) 
-			unset( $tabs['reviews'] );
-		if ( get_option( 'wcj_product_info_product_tabs_additional_information_disable' ) === 'yes' ) 
-			unset( $tabs['additional_information'] );
-		
-		// Priority and Title
-		if ( isset( $tabs['description'] ) ) { 
-			$tabs['description']['priority'] = apply_filters( 'wcj_get_option_filter', 10, get_option( 'wcj_product_info_product_tabs_description_priority' ) );
-			if ( get_option( 'wcj_product_info_product_tabs_description_title' ) !== '' ) 
-				$tabs['description']['title'] = get_option( 'wcj_product_info_product_tabs_description_title' );
-		}
-		if ( isset( $tabs['reviews'] ) ) { 
-			$tabs['reviews']['priority'] = apply_filters( 'wcj_get_option_filter', 20, get_option( 'wcj_product_info_product_tabs_reviews_priority' ) );
-			if ( get_option( 'wcj_product_info_product_tabs_reviews_title' ) !== '' )
-				$tabs['reviews']['title'] = get_option( 'wcj_product_info_product_tabs_reviews_title' );
-		}
-		if ( isset( $tabs['additional_information'] ) ) {
-			$tabs['additional_information']['priority'] = apply_filters( 'wcj_get_option_filter', 30, get_option( 'wcj_product_info_product_tabs_additional_information_priority' ) );
-			if ( get_option( 'wcj_product_info_product_tabs_additional_information_title' ) !== '' )
-				$tabs['additional_information']['title'] = get_option( 'wcj_product_info_product_tabs_additional_information_title' );
-		}
-	 
-		return $tabs;
-	}	
 	
 	/**
 	 * Get settings.
@@ -260,89 +225,6 @@ class WCJ_Product_Info {
 			
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_additional_options' ),				
 		
-			// Product Tabs Options
-			array( 'title' 	=> __( 'Product Tabs Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This section lets you customize single product tabs.', 'id' => 'wcj_product_info_product_tabs_options' ),
-		
-			array(
-				'title' 	=> __( 'Description Tab', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_product_tabs_description_disable',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox',
-			),
-			
-			array(
-				'title'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_description_priority',
-				'default'  => 10,
-				'type'     => 'number',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'	
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),					
-			),
-			
-			array(
-				'title'    => __( 'Title', 'woocommerce-jetpack' ),
-				'desc_tip' 	   => __( 'Leave blank for WooCommerce defaults', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_description_title',
-				'default'  => '',
-				'type'     => 'text',
-			),			
-		
-			array(
-				'title' 	=> __( 'Reviews Tab', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_product_tabs_reviews_disable',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox',
-			),
-
-			array(
-				'title'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_reviews_priority',
-				'default'  => 20,
-				'type'     => 'number',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'	
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),				
-			),
-			
-			array(
-				'title'    => __( 'Title', 'woocommerce-jetpack' ),
-				'desc_tip' 	   => __( 'Leave blank for WooCommerce defaults', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_reviews_title',
-				'default'  => '',
-				'type'     => 'text',
-			),			
-				
-			array(
-				'title' 	=> __( 'Additional Information Tab', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_product_tabs_additional_information_disable',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox',
-			),
-			
-			array(
-				'title'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_additional_information_priority',
-				'default'  => 30,
-				'type'     => 'number',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'	
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),				
-			),
-
-			array(
-				'title'    => __( 'Title', 'woocommerce-jetpack' ),
-				'desc_tip' => __( 'Leave blank for WooCommerce defaults', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_additional_information_title',
-				'default'  => '',
-				'type'     => 'text',
-			),
-			
-			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_product_tabs_options' ),
-			
 			// Related Products Options
 			array( 'title' 	=> __( 'Related Products Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This section lets you change related products number.', 'id' => 'wcj_product_info_related_products_options' ),
 		
