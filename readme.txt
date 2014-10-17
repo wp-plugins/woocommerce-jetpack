@@ -28,7 +28,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Emails - Add another email recipient(s) to all WooCommerce emails.
 * Product Listings - Change display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
 * Product Info - Add additional info to product. Change related products number.
-* Product Info - Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs.
+* Product Tabs - Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
