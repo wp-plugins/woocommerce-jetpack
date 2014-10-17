@@ -1,7 +1,7 @@
 === WooCommerce Jetpack ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales
+Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,
 Requires at least: 3.9.1
 Tested up to: 4.0
 Stable tag: 1.8.0
@@ -27,7 +27,8 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Shipping - Hide shipping when free is available.
 * Emails - Add another email recipient(s) to all WooCommerce emails.
 * Product Listings - Change display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
-* Product Info - Customize single product tabs. Change related products number.
+* Product Info - Add additional info to product. Change related products number.
+* Product Info - Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
