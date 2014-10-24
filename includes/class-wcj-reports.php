@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.1.2
+ * @version		1.1.2.1
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -33,6 +33,63 @@ class WCJ_Reports {
 		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) ); 		// Add section to WooCommerce > Settings > Jetpack
 		add_filter( 'wcj_settings_reports', array( $this, 'get_settings' ), 100 ); 		// Add the settings
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard
+		
+		
+		add_filter( 'woocommerce_admin_reports', array( $this, 'add_customers_by_country_report' ) );		
+		
+	}
+	
+	/**
+	 * prepare_items function.
+	 */
+	public function prepare_items() {
+		
+
+		//$customers = get_users( 'orderby=nicename&role=customer' );
+		$customers = get_users( 'role=customer' );
+		// Array of WP_User objects.
+		foreach ( $customers as $customer ) {
+			//print_r( $user );
+			//print_r( get_user_meta( $user->ID ) );			
+			$user_meta = get_user_meta( $customer->ID );
+			$customer_country = isset( $user_meta['billing_country'][0] ) ? $user_meta['billing_country'][0] : 'UNKNOWN';
+			//echo "<p>$customer_country</p>";
+			$country_counter[ $customer_country ]++;
+		}
+	
+		echo '<pre>';
+		print_r( $country_counter );
+		echo '</pre>';
+	}	
+	
+	/**
+	 * Add tab to WooCommerce > Jetpack Tools.
+	 */
+	public function add_customers_by_country_report( $reports ) {
+		$reports['wcj_reports'] = array(
+			'title'  => __( 'WooCommerce Jetpack Reports', 'woocommerce-jetpack' ),
+			'reports' => array(
+				'customers_by_country' => array(
+					'title'       => __( 'Customers By Country', 'woocommerce' ),
+					'description' => '',
+					'hide_title'  => true,
+					'callback'    => array( $this, 'get_report' ),
+				),
+			),
+		);
+		
+		$reports['customers']['reports']['customers_by_country'] = array(
+			'title'       => __( 'Customers By Country', 'woocommerce-jetpack' ),
+			'description' => '',
+			'hide_title'  => true,
+			'callback'    => array( $this, 'get_report' ),
+		);
+		
+		return $reports;
+	}
+	
+	public function get_report() {
+		$this->prepare_items();
 	}
 
 	/**
@@ -115,7 +172,9 @@ class WCJ_Reports {
 				$the_title = get_the_title();
 				$the_date = get_the_date();
 				$the_permalink = get_the_permalink();
-				$total_sales = get_post_custom( $the_ID )['total_sales'][0];
+				
+				$post_custom = get_post_custom( $the_ID );
+				$total_sales = $post_custom['total_sales'][0];
 
 				$products_info[$the_ID] = array(
 					'ID'				=>	$the_ID,

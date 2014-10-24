@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,16 +70,21 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
 = 1.9.0 - XX/10/2014 =
-* Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
+* Fix - Crash report - https://wordpress.org/support/topic/crash-15?replies=2#post-
 * Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
 * Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
+* Upgrade Feature - PDF Invoices - Bilingual invoice. Idea by Tudor Mateescu.
+* Upgrade Feature - PDF Invoices - Second currency in invoice. Idea by Tudor Mateescu.
+* Upgrade Feature - Shipping - Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
 * New Feature - Checkout to PDF (wish list). Idea by Mick.
-* Upgrade Feature - Checkout - Extra fee (e.g. for PayPal). Suggested by Daniele.
+* Upgrade Feature - Checkout - Extra fee (e.g. for PayPal). Idea by Daniele.
+* Product Info on Archive Pages option within WooJetpack to list the different colour variations of a product on the category sections. Idea by Tony.
 * New Feature - Custom Product Input Fields - Fields to fill before adding product to cart. Idea by Mangesh.
-
-= 1.X.X - XX/11/2014 =
 * New Feature - Smart Reports - Various reports based on products prices, sales, stock, customers.
 * New Feature - Add second currency to the price.
+
+= 1.X.X - XX/11/2014 =
+
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
 * Upgrade Feature - Shipping - Add "Custom Shipping Method".
 * Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
@@ -92,13 +97,10 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Smart Reports - Export to CSV file.
 * Upgrade Feature - Call for Price - Call for price for variable products (all variations or only some).
 * Upgrade Feature - Custom Statuses - Bulk change status.
-* Upgrade Feature - Custom Price Labels - ?Add "local remove".
 * Upgrade Feature - Orders - Bulk orders i.e. "Buy More - Pay Less". Start from global discount for all products, i.e. cart discount; later - discounts for individual products.
 * Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
 * Upgrade Feature - Custom Price Labels - Custom free price.
 * Upgrade Feature - Checkout - Custom checkout fields.
-* Upgrade Feature - Checkout - Skrill.
-* Upgrade Feature - Checkout - Amazon Payments.
 * Upgrade Feature - Orders - Maximum weight - "Contact us" to place order with products total weight over some amount.
 * Upgrade Feature - Sorting - Add sorting by popularity in e.g. 90 days (not by `total_sales` as it is by default in WooCommerce).
 * New Feature - Integrating Amazon FBA inventory into WooCommerce.
@@ -115,7 +117,6 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = More Ideas =
 * Different prices for different countries (WPML?). Suggested by Daniele.
-* Product Info on Archive Pages option within Woo Jetpack to list the different colour variations of a product on the category sections. Idea by Tony.
 * Ideas by Jean-Marc:
 	- PDF invoice: Sequential invoice numbers: different than the order number. could use woocomerce santard order number and special invoice number,
 	- Choose starting point for invoice numbers,
@@ -129,6 +130,15 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Add pdf packing slips (also be attached to the admin new order email). Idea by Ron.
 
 == Changelog ==
+
+= 1.8.1 - 24/10/2014 =
+* Fix - PDF Invoices - Variation(s) name was not showing in invoice, fixed.
+  Reported by https://wordpress.org/support/topic/item-description?replies=4
+* Feature Upgraded - PDF Invoices - Now shortcodes are displayed in invoice's additional header and footer.
+  Idea by https://wordpress.org/support/topic/displaying-short-codes?replies=3  
+* Feature Upgraded - PDF Invoices - Additional header option added.  
+* Feature Upgraded - PDF Invoices - *Item Name Additional Info* (e.g. SKU) option added to invoice.
+  Idea by https://wordpress.org/support/topic/item-description?replies=4
 
 = 1.8.0 - 17/10/2014 =
 * New Feature - Product Tabs - **Custom product tabs** - global or per product.
@@ -146,7 +156,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 
 = 1.7.7 - 13/10/2014 =
 * Fix - Custom Price Labels - Bug causing setting checkboxes back to *on*, fixed. Suggested by Erika.
-* Fix - Custom Price Labels - "Migrate from Custom Price Labels (Pro)" tool - new since Custom Price Labels plugin data was missing, fixed. Suggested by Paolo.
+* Fix - Custom Price Labels - *Migrate from Custom Price Labels (Pro)* tool - new since Custom Price Labels plugin data was missing, fixed. Suggested by Paolo.
 
 = 1.7.6 - 09/10/2014 =
 * Fix - Custom Price Labels - Bug causing setting all product's checkbox labels to off, fixed.

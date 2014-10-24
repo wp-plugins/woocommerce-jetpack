@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.2.0
+ * @version		1.2.1
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -89,9 +89,23 @@ class WCJ_Product_Info {
 		global $product;
 		$product_custom_fields = get_post_custom( $product->id );
 		$total_sales = ( isset( $product_custom_fields['total_sales'][0] ) ) ? $product_custom_fields['total_sales'][0] : 0;
+		/*$you_save = 0;
+		$you_save_percent = 0;
+		if ( $product->is_on_sale() ) {
+			$you_save = $product->get_regular_price() - $product->get_sale_price();
+			if ( 0 != $product->get_regular_price() )
+				$you_save_percent = intval( $you_save / $product->get_regular_price() * 100 );
+		}
+		*/
+		/*//$available_variations = '';
+		//if ( 'variable' === $product->product_type )
+			$available_variations = $product->list_attributes();// $product->get_formatted_name();// print_r( $product->get_available_variations() );*/
 		$product_info_shortcodes_array = array(
-			'%sku%'				=> $product->get_sku(),
-			'%total_sales%'		=> $total_sales,
+			'%sku%'						=> $product->get_sku(),
+			'%total_sales%'				=> $total_sales,
+			//'%you_save%'				=> wc_price( $you_save ),
+			//'%you_save_percent%'		=> $you_save_percent . '%',
+			//'%available_variations%' 	=> $available_variations,
 		);
 		foreach ( $product_info_shortcodes_array as $search_for_phrase => $replace_with_phrase )
 			$the_product_info = str_replace( $search_for_phrase, $replace_with_phrase, $the_product_info );
@@ -135,7 +149,7 @@ class WCJ_Product_Info {
 			array(
 				'title' 	=> __( 'Product Info', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable the Product Info feature', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Customize single product tabs, change related products number.', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Add additional info to product, change related products number.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox',
@@ -152,8 +166,8 @@ class WCJ_Product_Info {
 				'id' 		=> 'wcj_product_info_on_archive_enabled',
 				'default'	=> 'no',
 				'type' 		=> 'checkbox',
-			),			
-			
+			),	
+
 			array(
 				'title' 	=> '',
 				'desc_tip'	=> __( 'HTML info. Predefined: %total_sales%, %sku%', 'woocommerce-jetpack' ),
@@ -162,6 +176,43 @@ class WCJ_Product_Info {
 				'type' 		=> 'textarea',
 				'css'	   => 'width:50%;min-width:300px;height:100px;',				
 			),
+			
+			/*
+			array(
+				'title' 	=> '',
+				'desc_tip'	=> __( '"You save" information for products on sale.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_archive_you_save',
+				'default'	=> '<p>You save: %you_save% (%you_save_percent%)</p>',
+				'type' 		=> 'textarea',
+				'css'	   => 'width:30%;min-width:300px;',
+			),
+			
+			array(
+				'title' 	=> '',
+				'desc_tip'	=> __( '"You save" information for products on sale.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_archive_you_save_priority',
+				'default'	=> '<p>You save: %you_save% (%you_save_percent%)</p>',
+				'type' 		=> 'number',
+			),			
+
+			array(
+				'title' 	=> '',
+				'desc_tip'	=> __( 'Product\'s total sales counter.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_archive_total_sales',
+				'default'	=> '<p>Total sales: %total_sales%</p>',
+				'type' 		=> 'textarea',
+				'css'	   => 'width:30%;min-width:300px;',
+			),
+
+			array(
+				'title' 	=> '',
+				'desc_tip'	=> __( 'SKU.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_on_archive_sku',
+				'default'	=> '<p>SKU: %sku%</p>',
+				'type' 		=> 'textarea',
+				'css'	   => 'width:30%;min-width:300px;',
+			),			
+			*/
 			
 			array(
 				'title'    => '',
@@ -172,7 +223,7 @@ class WCJ_Product_Info {
 				'default'  => 'woocommerce_after_shop_loop_item_title',
 				'type'     => 'select',
 				'options'  => $this->product_info_on_archive_filters_array,
-				'desc_tip' =>  true,
+				'desc_tip' => true,
 			),		
 
 			array(

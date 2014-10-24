@@ -52,11 +52,24 @@ class WCJ_Product_Custom_Input {
 		// Check that we are saving with input fields displayed.
 		if ( ! isset( $_POST['woojetpack_input_fields_save_post'] ) )
 			return;
-		// Option name?
-		$option_name = 'wcj_input_fields_text_1_enabled';
-		// Save
-		if ( isset( $_POST[ $option_name ] ) )
-			update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
+		// Save: total custom text input fields number
+		$option_name = 'wcj_input_fields_text_local_total_number';
+		$total_text_input_fields = isset( $_POST[ $option_name ] ) ? $_POST[ $option_name ] : apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_input_fields_text_local_total_number_default', 1 ) );		
+		update_post_meta( $post_id, '_' . $option_name, $_POST[ $option_name ] );
+		// Save: enabled, required, title
+		$option_names = array(
+			'wcj_input_fields_text_enabled_local_',
+			'wcj_input_fields_text_required_local_',
+			'wcj_input_fields_text_title_local_',
+		);		
+		for ( $i = 1; $i <= $total_text_input_fields; $i++ ) {
+			foreach ( $option_names as $option_name ) {
+				if ( isset( $_POST[ $option_name . $i ] ) )
+					update_post_meta( $post_id, '_' . $option_name . $i, $_POST[ $option_name . $i ] );
+				else if ( 'wcj_input_fields_text_title_local_' != $option_name )
+					update_post_meta( $post_id, '_' . $option_name . $i, 'off' );
+			}
+		}			
 	}		
 	
 	/**
@@ -70,6 +83,9 @@ class WCJ_Product_Custom_Input {
 	 * create_custom_input_fields_meta_box.
 	 */	
 	public function create_custom_input_fields_meta_box() {
+	
+		//$number_of_text_fields_to_add = 2;
+	
 		$html = '<h4>' . __( 'Text Fields', 'woocommerce-jetpack' ) . '</h4>';
 		$html .= '<table style="width:100%;">';
 	

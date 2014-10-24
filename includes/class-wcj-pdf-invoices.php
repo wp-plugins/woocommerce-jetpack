@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.5.2
+ * @version		1.6.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -519,25 +519,31 @@ class WCJ_PDF_Invoices {
 			// Line Prices
 			$line_total_excl_tax 	= $the_order->get_line_total( $item, false );//$the_order->get_line_subtotal( $item, false, true );//$item['line_subtotal'];//$item['line_total'];
 			$line_tax 				= $the_order->get_line_tax( $item );//$item['line_tax'];
-			$line_total_tax_percent 		= round( ( $item['line_tax'] / $item['line_subtotal'] * 100 ), 2 );
+			$line_total_tax_percent = 0;
+			if ( 0 != $item['line_subtotal'] )
+				$line_total_tax_percent 		= round( ( $item['line_tax'] / $item['line_subtotal'] * 100 ), 2 );
 			$line_total_incl_tax 	= $the_order->get_line_total( $item, true );//$line_total_excl_tax + $line_tax;
 			$line_total_excl_tax_formatted =  wc_price( $line_total_excl_tax, $order_currency_array );
 			$line_total_tax_formatted =  wc_price( $line_tax, $order_currency_array );
-			$line_total_incl_tax_formatted =  wc_price( $line_total_incl_tax, $order_currency_array );
+			$line_total_incl_tax_formatted =  wc_price( $line_total_incl_tax, $order_currency_array );			
+			
 			// Item Quantity
 			$item_quantity			= $item['qty'];
-			// Item Name
-			$item_name				= $item['name'];
 			
-			$product = $the_order->get_product_from_item( $item ); // variation (if needed)
-			if ( isset ( $product->variation_data ) ) {
-				foreach ( $product->variation_data as $key => $value ) {
-					$taxonomy_name = str_replace( 'attribute_', '', $key );
-					$taxonomy = get_taxonomy( $taxonomy_name );
-					$term = get_term_by( 'slug', $value, $taxonomy_name );
-					if ( isset( $term->name ) ) $item_name .= '<div style="font-size:x-small;">' . $taxonomy->label . ': ' . $term->name . '</div>';
-				}
-			}
+			// Item Name
+			$item_name				= $item['name'];	//$product->get_title();
+			
+			
+			$product = $the_order->get_product_from_item( $item );
+			
+			// Additional info (e.g. SKU)
+			if ( '' != get_option( 'wcj_pdf_invoices_column_item_name_additional_text' ) && $product->get_sku() )
+				$item_name .= ' ' . str_replace( '%sku%', $product->get_sku(), get_option( 'wcj_pdf_invoices_column_item_name_additional_text' ) );
+				
+			// Variation (if needed)
+			if ( $product->is_type( 'variation' ) )
+				$item_name .= '<div style="font-size:smaller;">' . wc_get_formatted_variation( $product->variation_data, true ) . '</div>';
+				
 			// Item Counter
 			$item_counter++;
 
@@ -585,7 +591,18 @@ class WCJ_PDF_Invoices {
 		if ( '' != get_option( 'wcj_pdf_invoices_order_shipping_method_text' ) )
 			$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_method_text' ). ': ' . $the_order->get_shipping_method() . '</p>';
 		// ADDITIONAL FOOTER
-		$html .= '<p>' . str_replace( PHP_EOL, '<br>', get_option( 'wcj_pdf_invoices_footer_text' ) ) . '</p>';
+		if ( '' != get_option( 'wcj_pdf_invoices_footer_text' ) ) {
+			$additional_footer = str_replace( PHP_EOL, '<br>', get_option( 'wcj_pdf_invoices_footer_text' ) );
+			$additional_footer = apply_filters( 'the_content', $additional_footer );
+			$html .= '<p>' . $additional_footer . '</p>';
+		}
+		
+		// ADDITIONAL HEADER
+		if ( '' != get_option( 'wcj_pdf_invoices_additional_header_text' ) ) {
+			$additional_header = str_replace( PHP_EOL, '<br>', get_option( 'wcj_pdf_invoices_additional_header_text' ) );
+			$additional_header = apply_filters( 'the_content', $additional_header );
+			$html = '<p>' . $additional_header . '</p>' . $html;		
+		}
 		
 		return $html;
 	}
@@ -738,6 +755,15 @@ class WCJ_PDF_Invoices {
                 'type'     => 'number',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
+			
+			array(
+                'title'    => __( 'Additional Header', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Additional header - will be displayed above all data on invoice. You can use html and/or shortcodes here.', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_additional_header_text',
+                'default'  => '',
+                'type'     => 'textarea',
+				'css'	   => 'width:33%;min-width:300px;min-height:300px;',
+            ),			
 
 			array( 'type'  => 'sectionend', 'id' => 'wcj_pdf_invoices_header_options' ),
 
@@ -851,6 +877,15 @@ class WCJ_PDF_Invoices {
                 'type'     => 'text',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
+			
+            array(
+                'title'    => __( 'Item Name Additional Info', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Here you can add more info to item\'s name column (e.g. sku). Default is (SKU: %sku%)', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_column_item_name_additional_text',
+                'default'  => __( '(SKU: %sku%)', 'woocommerce-jetpack' ),
+                'type'     => 'textarea',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),			
 
             array(
                 'title'    => __( 'Qty', 'woocommerce-jetpack' ),
@@ -1006,7 +1041,7 @@ class WCJ_PDF_Invoices {
 
 			array(
                 'title'    => __( 'Additional Footer', 'woocommerce-jetpack' ),
-                //'desc_tip' => __( 'Additional Footer text', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Additional footer - will be displayed below all other data on invoice. You can use html and/or shortcodes here.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_footer_text',
                 'default'  => '',
                 'type'     => 'textarea',
