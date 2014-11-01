@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.2.1
+ * @version		1.3.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -34,29 +34,51 @@ class WCJ_Product_Info {
 			'woocommerce_single_product_summary'			=> __( 'Inside single product summary', 'woocommerce-jetpack' ),
 			'woocommerce_before_single_product_summary'		=> __( 'Before single product summary', 'woocommerce-jetpack' ),
 			'woocommerce_after_single_product_summary'		=> __( 'After single product summary', 'woocommerce-jetpack' ),
+		);
+		
+		// List of product info short codes
+		$this->product_info_shortcodes_array = array(
+			'%sku%',								
+			'%title%',
+			'%weight%',
+			'%sale_price%',
+			'%regular_price_if_on_sale%',			
+			'%regular_price%',				
+			'%price%',
+			'%price_including_tax%',
+			'%price_excluding_tax%',
+			'%tax_class%',
+			'%average_rating%',
+			'%categories%',
+			'%shipping_class%',
+			'%dimensions%',
+			'%formatted_name%',			
+			'%stock_availability%',
+			'%total_sales%',
+			'%you_save%',
+			'%you_save_percent%',
+			'%sale_price_formatted%',
+			'%regular_price_if_on_sale_formatted%',
+			'%regular_price_formatted%',
+			'%price_formatted%',
+			'%price_including_tax_formatted%',
+			'%price_excluding_tax_formatted%',
+			'%you_save_formatted%',
+			'%time_since_last_sale%',			
+			//'%available_variations%',
+			'%list_attributes%',
 		);			
 	
 		// Main hooks
-		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {
-			
+		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {	
+			// Product Info
+			$this->add_product_info_filters( 'archive' );
+			$this->add_product_info_filters( 'single' );	
+			// Related products
 			if ( get_option( 'wcj_product_info_related_products_enable' ) === 'yes' ) {
 				add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), 100 );
 				add_filter( 'woocommerce_output_related_products_args', array( $this, 'related_products_limit_args' ), 100 );
-			}
-					
-			if ( ( 'yes' === get_option( 'wcj_product_info_on_archive_enabled' ) ) &&
-				 ( '' != get_option( 'wcj_product_info_on_archive' ) ) &&
-				 ( '' != get_option( 'wcj_product_info_on_archive_filter' ) ) && 
-				 ( '' != get_option( 'wcj_product_info_on_archive_filter_priority' ) ) &&
-				 ( array_key_exists( get_option( 'wcj_product_info_on_archive_filter' ), $this->product_info_on_archive_filters_array ) ) )
-						add_action( get_option( 'wcj_product_info_on_archive_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_archive_filter_priority' ) );
-				
-			if ( ( 'yes' === get_option( 'wcj_product_info_on_single_enabled' ) ) &&
-				 ( '' != get_option( 'wcj_product_info_on_single' ) ) &&
-				 ( '' != get_option( 'wcj_product_info_on_single_filter' ) ) &&
-				 ( '' != get_option( 'wcj_product_info_on_single_filter_priority' ) ) &&
-				 ( array_key_exists( get_option( 'wcj_product_info_on_single_filter' ), $this->product_info_on_single_filters_array ) ) )
-						add_action( get_option( 'wcj_product_info_on_single_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_single_filter_priority' ) );				
+			}	
 		}
 		
 		// Settings hooks
@@ -64,77 +86,392 @@ class WCJ_Product_Info {
 		add_filter( 'wcj_settings_product_info', array( $this, 'get_settings' ), 100 );
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
 	}	
-		
-	/**
-	 * Return feature's enable/disable option.
-	 */
-	public function add_enabled_option( $settings ) {
 	
-		$all_settings = $this->get_settings();
-		$settings[] = $all_settings[1];
-		
-		return $settings;
+	/**
+	 * add_product_info_filters.
+	 */	
+	public function list_short_codes() {
+		//return __( 'Available short codes are:', 'woocommerce-jetpack' ) . ' ' . implode( ", ", $this->product_info_shortcodes_array );
+		return __( 'Available short codes are:', 'woocommerce-jetpack' ) . '<ul><li>' . implode( '</li><li>', $this->product_info_shortcodes_array ) . '</li></ul>';
+	}	
+	
+	/**
+	 * add_product_info_filters.
+	 */	
+	public function add_product_info_filters( $single_or_archive ) {	
+		// Product Info 
+		if ( ( 'yes' === get_option( 'wcj_product_info_on_' . $single_or_archive . '_enabled' ) ) &&
+			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive ) ) &&
+			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter' ) ) && 
+			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) ) )
+					add_action( get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) );
+		// More product Info
+		if ( 'yes' === get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_enabled' ) )
+					add_action( get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'more_product_info' ), get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter_priority' ) );						
 	}
 	
 	/**
 	 * product_info.
 	 */
 	public function product_info() {	
-
-		$the_action_name = current_filter();
-		if ( array_key_exists( $the_action_name, $this->product_info_on_archive_filters_array ) )
+		$the_action_name = current_filter();		
+		if ( array_key_exists( $the_action_name, $this->product_info_on_archive_filters_array ) ) {
 			$the_product_info = get_option( 'wcj_product_info_on_archive' );
-		else if ( array_key_exists( $the_action_name, $this->product_info_on_single_filters_array ) )
-			$the_product_info = apply_filters( 'wcj_get_option_filter', 'Total sales: %total_sales%', get_option( 'wcj_product_info_on_single' ) );			
-		global $product;
-		$product_custom_fields = get_post_custom( $product->id );
-		$total_sales = ( isset( $product_custom_fields['total_sales'][0] ) ) ? $product_custom_fields['total_sales'][0] : 0;
-		/*$you_save = 0;
-		$you_save_percent = 0;
-		if ( $product->is_on_sale() ) {
-			$you_save = $product->get_regular_price() - $product->get_sale_price();
-			if ( 0 != $product->get_regular_price() )
-				$you_save_percent = intval( $you_save / $product->get_regular_price() * 100 );
+			$this->apply_product_info_short_codes( $the_product_info, false );
 		}
-		*/
-		/*//$available_variations = '';
-		//if ( 'variable' === $product->product_type )
-			$available_variations = $product->list_attributes();// $product->get_formatted_name();// print_r( $product->get_available_variations() );*/
-		$product_info_shortcodes_array = array(
-			'%sku%'						=> $product->get_sku(),
-			'%total_sales%'				=> $total_sales,
-			//'%you_save%'				=> wc_price( $you_save ),
-			//'%you_save_percent%'		=> $you_save_percent . '%',
-			//'%available_variations%' 	=> $available_variations,
-		);
-		foreach ( $product_info_shortcodes_array as $search_for_phrase => $replace_with_phrase )
-			$the_product_info = str_replace( $search_for_phrase, $replace_with_phrase, $the_product_info );
-		echo $the_product_info;
+		else if ( array_key_exists( $the_action_name, $this->product_info_on_single_filters_array ) ) {			
+			$the_product_info = get_option( 'wcj_product_info_on_single' );
+			$this->apply_product_info_short_codes( $the_product_info, false );
+		}
+	}
+	
+	/**
+	 * more_product_info.
+	 */
+	public function more_product_info() {	
+		$the_action_name = current_filter();		
+		if ( array_key_exists( $the_action_name, $this->product_info_on_archive_filters_array ) )			
+			$this->add_more_product_info( 'archive' );
+		else if ( array_key_exists( $the_action_name, $this->product_info_on_single_filters_array ) )				
+			$this->add_more_product_info( 'single' );
 	}	
+	
+	/**
+	 * add_more_product_info.
+	 */
+	public function add_more_product_info( $single_or_archive ) {			
+		//$single_or_archive = 'archive';
+		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 4, get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_fields_total', 4 ) ); $i++ ) {	
+			$field_id = 'wcj_more_product_info_on_' . $single_or_archive . '_' . $i ;
+			$the_product_info = get_option( $field_id );				
+			$this->apply_product_info_short_codes( $the_product_info, true );
+		}
+	}	
+	
+	/**
+	 * apply_product_info_short_codes.
+	 */
+	public function apply_product_info_short_codes( $the_product_info, $remove_on_empty ) {
+		if ( '' == $the_product_info )
+			return;					
+		foreach ( $this->product_info_shortcodes_array as $product_info_short_code ) {									
+			if ( false !== strpos( $the_product_info, $product_info_short_code ) ) {
+				// We found short code in the text
+				$replace_with_phrase = $this->get_product_info_short_code( $product_info_short_code );
+				if ( false === $replace_with_phrase && true === $remove_on_empty ) {
+					// No phrase to replace exists, then empty the text and continue with next field
+					$the_product_info = '';
+					return;
+				}
+				else {
+					if ( false === $replace_with_phrase ) $replace_with_phrase = '';
+					// Replacing the short code
+					$the_product_info = str_replace( $product_info_short_code, $replace_with_phrase, $the_product_info );				
+				}
+			}
+		}
+		echo $the_product_info;			
+	}		
+	
+	/**
+	 * get_product_info.
+	 */ 
+	public function get_product_info_short_code( $short_code ) {	
+	
+		global $product;	
+	
+		switch( $short_code ) {
+		
+			case '%sku%':
+				return $product->get_sku();	
+								
+			case '%title%':
+				return $product->get_title();			
+
+			case '%weight%':
+				if ( $product->has_weight() )
+					return $product->get_weight();				
+				else
+					return false;					
+
+			case '%sale_price%':
+				if ( $product->is_on_sale() )
+					return $product->get_sale_price();				
+				else
+					return false;	
+
+			case '%regular_price_if_on_sale%':
+				if ( $product->is_on_sale() )
+					return $product->get_regular_price();				
+				else
+					return false;						
+
+			case '%regular_price%':
+				return $product->get_regular_price();						
+				
+			case '%price%':
+				return $product->get_price();				
+				
+			case '%price_including_tax%':
+				return $product->get_price_including_tax();					
+				
+			case '%price_excluding_tax%':
+				return $product->get_price_excluding_tax();
+
+			case '%tax_class%':
+				return $product->get_tax_class();				
+
+			case '%average_rating%':
+				return $product->get_average_rating();			
+				
+			case '%categories%':
+				return $product->get_categories();	
+
+			case '%shipping_class%':
+				return $product->get_shipping_class();		
+
+			case '%dimensions%':				
+				if ( $product->has_dimensions() )
+					return $product->get_dimensions();				
+				else
+					return false;				
+
+			case '%formatted_name%':
+				return $product->get_formatted_name();					
+			
+			case '%stock_availability%':
+				$stock_availability_array = $product->get_availability();
+				if ( isset( $stock_availability_array['availability'] ) )
+					return $stock_availability_array['availability'];
+				else
+					return false;			
+
+			case '%total_sales%':
+				$product_custom_fields = get_post_custom( $product->id );
+				if ( isset( $product_custom_fields['total_sales'][0] ) )
+					return $product_custom_fields['total_sales'][0];
+				else
+					return false;
+		
+			case '%you_save%':
+				if ( $product->is_on_sale() )
+					return ( $product->get_regular_price() - $product->get_sale_price() );				
+				else
+					return false;				
+					
+			case '%you_save_percent%':
+				if ( $product->is_on_sale() ) {
+					if ( 0 != $product->get_regular_price() ) {
+						$you_save = ( $product->get_regular_price() - $product->get_sale_price() );		
+						return intval( $you_save / $product->get_regular_price() * 100 );
+					}
+					else
+						return false;
+				}
+				else
+					return false;	
+					
+			case '%sale_price_formatted%':
+				if ( $product->is_on_sale() )
+					return wc_price( $product->get_sale_price() );			
+				else
+					return false;
+					
+			case '%regular_price_if_on_sale_formatted%':
+				if ( $product->is_on_sale() )
+					return wc_price( $product->get_regular_price() );			
+				else
+					return false;						
+
+			case '%regular_price_formatted%':
+				return wc_price( $product->get_regular_price() );			
+				
+			case '%price_formatted%':
+				return wc_price( $product->get_price() );				
+				
+			case '%price_including_tax_formatted%':
+				return wc_price( $product->get_price_including_tax() );					
+				
+			case '%price_excluding_tax_formatted%':
+				return wc_price( $product->get_price_excluding_tax() );		
+
+			case '%you_save_formatted%':
+				if ( $product->is_on_sale() )
+					return wc_price( $product->get_regular_price() - $product->get_sale_price() );				
+				else
+					return false;					
+
+			case '%time_since_last_sale%':
+				return $this->get_time_since_last_sale();						
+				
+			case '%list_attributes%':
+				if ( $product->has_attributes() )
+					return $product->list_attributes();
+				else
+					return false;
+					
+			// Not finished!
+			case '%available_variations%':				
+				if ( $product->is_type( 'variable' ) )
+					return print_r( $product->get_available_variations(), true );
+				else
+					return false;					
+					
+			default:
+				return false;
+		}
+
+		return false;
+	}
+	
+	/**
+	 * get_time_since_last_sale.
+	 */	
+	public function get_time_since_last_sale() {
+		// Constants
+		$days_to_cover = 90;
+		$do_use_only_completed_orders = true;
+		// Get the ID before new query
+		$the_ID = get_the_ID();		
+		// Create args for new query
+		$args = array(
+			'post_type'			=> 'shop_order',
+			'post_status' 		=> ( true === $do_use_only_completed_orders ? 'completed' : 'any' ),
+			'posts_per_page' 	=> -1,
+			'orderby'			=> 'date',
+			'order'				=> 'DESC',
+			'date_query' 		=> array( array( 'after'   => strtotime( '-' . $days_to_cover . ' days' ) ) ),
+		);		
+		// Run new query
+		$loop = new WP_Query( $args );
+		// Analyze the results, i.e. orders
+		while ( $loop->have_posts() ) : $loop->the_post();
+			$order = new WC_Order( $loop->post->ID );
+			$items = $order->get_items();
+			foreach ( $items as $item ) {
+				// Run through all order's items
+				if ( $item['product_id'] == $the_ID ) {
+					// Found sale!
+					$result = sprintf( __( '%s ago', 'woocommerce-jetpack' ), human_time_diff( get_the_time('U'), current_time('timestamp') ) );
+					wp_reset_query();
+					return $result;
+				}
+			}	
+		endwhile;			
+		wp_reset_query();
+		// No sales found
+		return false;			
+	}	
+	
+	// RELATED PRODUCTS //
 	
 	/**
 	 * Change number of related products on product page.
 	 */ 
-	function related_products_limit_args( $args ) {
-			
+	function related_products_limit_args( $args ) {			
 		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
 		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-		$args['columns'] = get_option( 'wcj_product_info_related_products_columns' );
-				
+		$args['columns'] = get_option( 'wcj_product_info_related_products_columns' );				
 		return $args;
 	}	
 	
 	/**
 	 * Change number of related products on product page.
 	 */ 
-	function related_products_limit( $args ) {
-			
+	function related_products_limit( $args ) {			
 		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
 		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-		if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) $args['order'] = get_option( 'wcj_product_info_related_products_order' );
-				
+		if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) $args['order'] = get_option( 'wcj_product_info_related_products_order' );				
 		return $args;
 	}
+	
+	// ADMIN //
+	
+	/**
+	 * admin_add_product_info_fields_with_header.
+	 */	
+	function admin_add_product_info_fields_with_header( &$settings, $single_or_archive, $title, $filters_array ) {
+		$settings = array_merge( $settings, array(
+			array(
+				'title' 	=> $title,//__( 'Product Info on Archive Pages', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_more_product_info_on_' . $single_or_archive . '_enabled',
+				'default'	=> 'no',
+				'type' 		=> 'checkbox',
+			),	
+
+			array(
+				'title'    => '',
+				'desc'     => __( 'Position', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_more_product_info_on_' . $single_or_archive . '_filter',
+				'css'      => 'min-width:350px;',
+				'class'    => 'chosen_select',
+				'default'  => 'woocommerce_after_shop_loop_item_title',
+				'type'     => 'select',
+				'options'  => $filters_array,// $this->product_info_on_archive_filters_array,
+				'desc_tip' => true,
+			),		
+
+			array(
+				'title'    => '',
+				'desc_tip'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_more_product_info_on_' . $single_or_archive . '_filter_priority',
+				'default'  => 10,
+				'type'     => 'number',
+			),	
+
+			array(
+				'title' 	=> '',
+				'desc_tip' 	=> __( 'Number of product info fields. Click "Save changes" after you change this number.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_more_product_info_on_' . $single_or_archive . '_fields_total',
+				'default'	=> 4,
+				'type' 		=> 'number',
+				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'	
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),					
+			),				
+		) );
+		
+		$this->admin_add_product_info_fields( $settings, $single_or_archive );	
+	}
+	
+	/**
+	 * admin_add_product_info_fields.
+	 */	
+	function admin_add_product_info_fields( &$settings, $single_or_archive ) {	
+		//$single_or_archive = 'archive';
+		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 4, get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_fields_total', 4 ) ); $i++ ) {	
+			$field_id = 'wcj_more_product_info_on_' . $single_or_archive . '_' . $i ;
+			$default_value = '';
+			switch ( $i ) {
+				case 1: $default_value = '<ul>'; break;
+				case 2: $default_value = '<li>' . __( 'You save: <strong>%you_save_formatted%</strong> (%you_save_percent%%)', 'woocommerce-jetpack' ) . '</li>'; break;
+				case 3: $default_value = '<li>' . __( 'Total sales: %total_sales%', 'woocommerce-jetpack' ) . '</li>'; break;
+				case 4: $default_value = '</ul>'; break;
+			}			
+			$desc = ( '' != $default_value ) ? __( 'Default', 'woocommerce-jetpack' ) . ': ' . esc_html( $default_value ) : '';
+			$short_codes_list = '%you_save%, %total_sales%';
+			$desc_tip = __( 'Field Nr. ', 'woocommerce-jetpack' ) . $i . '<br>' . __( 'Available short codes: ', 'woocommerce-jetpack' ) . $short_codes_list;
+			$settings[] = array(
+					'title' 	=> '',
+					//'desc_tip'	=> $desc_tip,
+					//'desc'		=> $desc,
+					'id' 		=> $field_id,
+					'default'	=> $default_value,
+					'type' 		=> 'textarea',
+					'css'	    => 'width:50%;min-width:300px;',				
+			);
+		}	
+	}	
+	
+	/**
+	 * Return feature's enable/disable option.
+	 */
+	public function add_enabled_option( $settings ) {	
+		$all_settings = $this->get_settings();
+		$settings[] = $all_settings[1];		
+		return $settings;
+	}	
 	
 	/**
 	 * Get settings.
@@ -143,7 +480,7 @@ class WCJ_Product_Info {
 
 		$settings = array(
 		
-			// Product Info Options
+			// Product Info Options - Global
 			array( 'title' 	=> __( 'Product Info Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_info_options' ),
 			
 			array(
@@ -155,10 +492,24 @@ class WCJ_Product_Info {
 				'type' 		=> 'checkbox',
 			),
 			
-			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_options' ),		
+			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_options' ),
 			
-			// Product Info Additional Options
-			array( 'title' 	=> __( 'More Products Info', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_info_additional_options' ),
+			// More Product Info
+			array( 'title' 	=> __( 'More Products Info', 'woocommerce-jetpack' ), 'type' => 'title', 
+				   'desc' 	=> __( 'For full list of short codes, please visit <a target="_blank" href="http://woojetpack.com/features/product-info/">http://woojetpack.com/features/product-info/</a>', 'woocommerce-jetpack' ), 
+				   //'desc' 	=> $this->list_short_codes(), 
+				   'id' 	=> 'wcj_more_product_info_options' ),
+		);	
+
+		$this->admin_add_product_info_fields_with_header( $settings, 'archive', __( 'Product Info on Archive Pages', 'woocommerce-jetpack' ), $this->product_info_on_archive_filters_array );
+		$this->admin_add_product_info_fields_with_header( $settings, 'single', __( 'Product Info on Single Pages', 'woocommerce-jetpack' ), $this->product_info_on_single_filters_array );
+		
+		$settings[] = array( 'type' 	=> 'sectionend', 'id' => 'wcj_more_product_info_options' );
+		
+		$settings = array_merge( $settings, array(		
+		
+			// More Product Info - "Constant" modification
+			array( 'title' 	=> __( 'Even More Products Info', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_info_additional_options' ),
 			
 			array(
 				'title' 	=> __( 'Product Info on Archive Pages', 'woocommerce-jetpack' ),
@@ -167,53 +518,16 @@ class WCJ_Product_Info {
 				'default'	=> 'no',
 				'type' 		=> 'checkbox',
 			),	
-
+			
 			array(
 				'title' 	=> '',
-				'desc_tip'	=> __( 'HTML info. Predefined: %total_sales%, %sku%', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'HTML info.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_on_archive',
-				'default'	=> 'SKU: %sku%',
+				'default'	=> __( 'SKU: %sku%', 'woocommerce-jetpack' ),
 				'type' 		=> 'textarea',
 				'css'	   => 'width:50%;min-width:300px;height:100px;',				
-			),
-			
-			/*
-			array(
-				'title' 	=> '',
-				'desc_tip'	=> __( '"You save" information for products on sale.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_on_archive_you_save',
-				'default'	=> '<p>You save: %you_save% (%you_save_percent%)</p>',
-				'type' 		=> 'textarea',
-				'css'	   => 'width:30%;min-width:300px;',
-			),
-			
-			array(
-				'title' 	=> '',
-				'desc_tip'	=> __( '"You save" information for products on sale.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_on_archive_you_save_priority',
-				'default'	=> '<p>You save: %you_save% (%you_save_percent%)</p>',
-				'type' 		=> 'number',
 			),			
 
-			array(
-				'title' 	=> '',
-				'desc_tip'	=> __( 'Product\'s total sales counter.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_on_archive_total_sales',
-				'default'	=> '<p>Total sales: %total_sales%</p>',
-				'type' 		=> 'textarea',
-				'css'	   => 'width:30%;min-width:300px;',
-			),
-
-			array(
-				'title' 	=> '',
-				'desc_tip'	=> __( 'SKU.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_on_archive_sku',
-				'default'	=> '<p>SKU: %sku%</p>',
-				'type' 		=> 'textarea',
-				'css'	   => 'width:30%;min-width:300px;',
-			),			
-			*/
-			
 			array(
 				'title'    => '',
 				'desc'     => __( 'Position', 'woocommerce-jetpack' ),
@@ -232,7 +546,7 @@ class WCJ_Product_Info {
 				'id'       => 'wcj_product_info_on_archive_filter_priority',
 				'default'  => 10,
 				'type'     => 'number',
-			),			
+			),	
 			
 			array(
 				'title' 	=> __( 'Product Info on Single Product Pages', 'woocommerce-jetpack' ),
@@ -244,13 +558,13 @@ class WCJ_Product_Info {
 
 			array(
 				'title' 	=> '',
-				'desc_tip'	=> __( 'HTML info. Predefined: %total_sales%, %sku%', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'HTML info.', 'woocommerce-jetpack' ),// . ' ' . $this->list_short_codes(),
 				'id' 		=> 'wcj_product_info_on_single',
-				'default'	=> 'Total sales: %total_sales%',
+				'default'	=> __( 'Total sales: %total_sales%', 'woocommerce-jetpack' ),
 				'type' 		=> 'textarea',
-				'desc' 	    => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				/*'desc' 	    => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'
-						    => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+						    => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),*/
 				'css'	    => 'width:50%;min-width:300px;height:100px;',				
 			),		
 
@@ -325,8 +639,8 @@ class WCJ_Product_Info {
 			),					
 		
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_related_products_options' ),			
-			
-		);
+
+		) );
 		
 		return $settings;
 	}

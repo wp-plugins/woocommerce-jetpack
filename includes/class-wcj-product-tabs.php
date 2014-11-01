@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Tabs class.
  *
  * @class		WCJ_Product_Tabs
- * @version		1.0.0
+ * @version		1.1.0
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -92,13 +92,13 @@ class WCJ_Product_Tabs {
 			$key = 'local_' . $i;
 			
 			$tab_priority = get_post_meta( $current_post_id, '_' . 'wcj_custom_product_tabs_priority_' . $key, true );
-			if ( ! $tab_prority )
-				$tab_prority = (50 + $i - 1);
+			if ( ! $tab_priority )
+				$tab_priority = (50 + $i - 1);
 			
 			if ( '' != get_post_meta( $current_post_id, '_' . 'wcj_custom_product_tabs_title_' . $key, true ) && '' != get_post_meta( $current_post_id, '_' . 'wcj_custom_product_tabs_content_' . $key, true ) )
 				$tabs[ $key ] = array(
 					'title' 	=> get_post_meta( $current_post_id, '_' . 'wcj_custom_product_tabs_title_' . $key, true ),
-					'priority' 	=> $tab_prority,
+					'priority' 	=> $tab_priority,
 					'callback' 	=> array( $this, 'create_new_custom_product_tab_local' ),
 				);
 		}		
@@ -164,7 +164,11 @@ class WCJ_Product_Tabs {
 		$html .= __( 'Total number of custom tabs', 'woocommerce-jetpack' );
 		$html .= '</th>';
 		$html .= '<td>';
-		$html .= '<input type="number" id="' . $option_name . '" name="' . $option_name . '" value="' . $total_custom_tabs . '" ' . $is_disabled . '> ' . $is_disabled_message;		
+		$html .= '<input type="number" id="' . $option_name . '" name="' . $option_name . '" value="' . $total_custom_tabs . '" ' . $is_disabled . '>';
+		$html .= '</td>';
+		$html .= '<td>';
+		$html .= __( 'Click "Update" product after you change this number.', 'woocommerce-jetpack' ) . '<br>' . $is_disabled_message;		
+		$html .= '</td>';		
 		$html .= '</td>';
 		$html .= '</tr>';
 		$html .= '</table>';
@@ -194,8 +198,8 @@ class WCJ_Product_Tabs {
 			foreach ( $options as $option ) {					
 				$option_id = $option['id'] . $i;
 				$option_value = get_post_meta( $current_post_id, '_' . $option_id, true );		
-				/*if ( ! $option_value )
-					$option_value = get_option(  $option['id'] . 'default', '' );*/
+				if ( ! $option_value && 'wcj_custom_product_tabs_priority_local_' == $option['id'] )
+					$option_value = 50;
 				$html .= '<th>' . $option['title'] . '</th>';
 				if ( 'textarea' === $option['type'] )
 					$html .= '<td style="width:30%;">';
@@ -261,6 +265,7 @@ class WCJ_Product_Tabs {
 			
 			array(
 				'title' 	=> __( 'Custom Product Tabs Number', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Click "Save changes" after you change this number.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_custom_product_tabs_global_total_number',
 				'default'	=> 1,
 				'type' 		=> 'number',
@@ -354,6 +359,32 @@ class WCJ_Product_Tabs {
 				'id'       => 'wcj_product_info_product_tabs_description_title',
 				'default'  => '',
 				'type'     => 'text',
+			),	
+
+			array(
+				'title' 	=> __( 'Additional Information Tab', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_product_info_product_tabs_additional_information_disable',
+				'default'	=> 'no',
+				'type' 		=> 'checkbox',
+			),
+			
+			array(
+				'title'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_product_tabs_additional_information_priority',
+				'default'  => 20,
+				'type'     => 'number',
+				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'	
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),				
+			),
+
+			array(
+				'title'    => __( 'Title', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Leave blank for WooCommerce defaults', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_product_tabs_additional_information_title',
+				'default'  => '',
+				'type'     => 'text',
 			),			
 		
 			array(
@@ -367,7 +398,7 @@ class WCJ_Product_Tabs {
 			array(
 				'title'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_product_info_product_tabs_reviews_priority',
-				'default'  => 20,
+				'default'  => 30,
 				'type'     => 'number',
 				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'	
@@ -378,32 +409,6 @@ class WCJ_Product_Tabs {
 				'title'    => __( 'Title', 'woocommerce-jetpack' ),
 				'desc_tip' 	   => __( 'Leave blank for WooCommerce defaults', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_product_info_product_tabs_reviews_title',
-				'default'  => '',
-				'type'     => 'text',
-			),			
-				
-			array(
-				'title' 	=> __( 'Additional Information Tab', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Remove tab from product page', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_product_tabs_additional_information_disable',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox',
-			),
-			
-			array(
-				'title'    => __( 'Priority (i.e. Order)', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_additional_information_priority',
-				'default'  => 30,
-				'type'     => 'number',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'	
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),				
-			),
-
-			array(
-				'title'    => __( 'Title', 'woocommerce-jetpack' ),
-				'desc_tip' => __( 'Leave blank for WooCommerce defaults', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_product_tabs_additional_information_title',
 				'default'  => '',
 				'type'     => 'text',
 			),

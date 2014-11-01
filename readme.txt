@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Shipping - Hide shipping when free is available.
 * Emails - Add another email recipient(s) to all WooCommerce emails.
 * Product Listings - Change display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
-* Product Info - Add additional info to product. Change related products number.
+* Product Info - Add more info to product on category or single pages. Change related products number.
 * Product Tabs - Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
@@ -69,8 +69,8 @@ Please let us know if you want anything added to list by <a href="http://woojetp
 
 If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
 
-= 1.9.0 - XX/10/2014 =
-* Fix - Crash report - https://wordpress.org/support/topic/crash-15?replies=2#post-
+= The list =
+
 * Upgrade Feature - PDF Invoices - Make emailing PDF as attachment option available for certain payment methods only (user selection). Idea by Jen.
 * Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
 * Upgrade Feature - PDF Invoices - Bilingual invoice. Idea by Tudor Mateescu.
@@ -80,11 +80,11 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Checkout - Extra fee (e.g. for PayPal). Idea by Daniele.
 * Product Info on Archive Pages option within WooJetpack to list the different colour variations of a product on the category sections. Idea by Tony.
 * New Feature - Custom Product Input Fields - Fields to fill before adding product to cart. Idea by Mangesh.
-* New Feature - Smart Reports - Various reports based on products prices, sales, stock, customers.
+* Upgrade Feature - PDF Invoices - Shipping labels. Suggested by Glenda.
+* New Feature - Different prices for different countries. Suggested by Illona.
 * New Feature - Add second currency to the price.
-
-= 1.X.X - XX/11/2014 =
-
+* New Feature - Smart Reports - Various reports based on products prices, sales, stock, customers.
+* New Feature - Set SKUs as product IDs.
 * New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
 * Upgrade Feature - Shipping - Add "Custom Shipping Method".
 * Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
@@ -92,7 +92,6 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Product Info - Add widget.
 * Upgrade Feature - Product Info - Today's deal.
 * Upgrade Feature - Product Info - Images for variations.
-* Upgrade Feature - Product Info - Add `%time_since_last_sale%`.
 * Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
 * Upgrade Feature - Smart Reports - Export to CSV file.
 * Upgrade Feature - Call for Price - Call for price for variable products (all variations or only some).
@@ -103,47 +102,40 @@ If you wish that some task would go up the queue to make it faster, please conta
 * Upgrade Feature - Checkout - Custom checkout fields.
 * Upgrade Feature - Orders - Maximum weight - "Contact us" to place order with products total weight over some amount.
 * Upgrade Feature - Sorting - Add sorting by popularity in e.g. 90 days (not by `total_sales` as it is by default in WooCommerce).
-* New Feature - Integrating Amazon FBA inventory into WooCommerce.
-  Program that feeds the product information and pictures from Amazon to WooCommerce.
-  Also something that updates inventory between the two.
-  Programs like SellerActive and BigCommerce come close, but don't do everything.
-  Idea by Dave.
-
-= 2.0.0 - 30/11/2014 =
-* Dev - Move all to `WooCommerce > Jetpack` menu.
-* Dev - Major source code, documentation, locking mechanism etc. recheck.
-  Maybe rename "Features" to "Modules".
-* Dev - Add "Restore Defaults" option (will also need to delete/reset some meta data (e.g. price labels) for all posts).
-
-= More Ideas =
-* Different prices for different countries (WPML?). Suggested by Daniele.
-* Ideas by Jean-Marc:
-	- PDF invoice: Sequential invoice numbers: different than the order number. could use woocomerce santard order number and special invoice number,
-	- Choose starting point for invoice numbers,
-	- Proforma invoicing (change title to proforma invoice),
-	- Add additional company information with html tags like `<strong>`...,
-	- Add refunds policies, conditions...,
-	- Customizable invoice template.
-	- More: Packing Slip Option (without prices because Packing Slip is not Invoice),
-	- Customizable Packing Slip template.
-	- Orders: Customer VAT Number field (very useful in Europa).
-* Add pdf packing slips (also be attached to the admin new order email). Idea by Ron.
 
 == Changelog ==
 
+= 1.8.2 - 01/11/2014 =
+* Fix - Orders - Custom Order Statuses - Bug causing fail on changing status with slug more that 17 characters, fixed. Reported by Patryk.
+* Fix - Product Tabs - Priority was not working in custom local tabs, fixed.
+  Also added default priority in custom local product tabs.
+* Fix - *Settings* link in *WooCommerce > Jetpack Settings* was wrong, fixed.
+  This caused bug, where on non-root WordPress instalations *Settings* link gave 404 error. Reported by Brian.
+* Fix - Product Tabs - Wrong default priority for WooCommerce Standard Product Tabs, fixed.
+  *Reviews Tab* priority was 20 (wrong), changed to 30 (good), *Additional Information Tab* 30 and 20 accordingly. Reported by Patryk.
+* Feature Upgraded - Product Info - Major upgrade: added new info options with separate lines.
+  Also added about 20 new short codes, including:
+  %price%, %price_excluding_tax% (suggested by Josh), 
+  %stock_availability% (by https://wordpress.org/support/topic/custom-tabs-1), 
+  %time_since_last_sale%, %weight%, %list_attributes% etc.
+  For full list of short codes, please visit http://woojetpack.com/features/product-info/  
+* Feature Upgraded - Product Listings - Option to change default WooCommece behavior on displaying all products if none categories are dispalyed. 
+  Now it's possible to disable displaying the products. Suggested by Xavier.
+* Feature Upgraded - PDF Invoices - Order date and time added. Suggested by https://wordpress.org/support/topic/order-time  
+
 = 1.8.1 - 24/10/2014 =
 * Fix - PDF Invoices - Variation(s) name was not showing in invoice, fixed.
-  Reported by https://wordpress.org/support/topic/item-description?replies=4
+  Reported by https://wordpress.org/support/topic/item-description
 * Feature Upgraded - PDF Invoices - Now shortcodes are displayed in invoice's additional header and footer.
-  Idea by https://wordpress.org/support/topic/displaying-short-codes?replies=3  
+  Idea by https://wordpress.org/support/topic/displaying-short-codes
 * Feature Upgraded - PDF Invoices - Additional header option added.  
 * Feature Upgraded - PDF Invoices - *Item Name Additional Info* (e.g. SKU) option added to invoice.
-  Idea by https://wordpress.org/support/topic/item-description?replies=4
+  Idea by https://wordpress.org/support/topic/item-description
 
 = 1.8.0 - 17/10/2014 =
 * New Feature - Product Tabs - **Custom product tabs** - global or per product.
   Related *product tabs* options were also moved to this feature from *Product Info*.
-* Dev - `date` function changed to `date_i18n`. Suggested in https://wordpress.org/support/topic/pdf-invoices-date-bug.
+* Dev - `date` function changed to `date_i18n`. Suggested in https://wordpress.org/support/topic/pdf-invoices-date-bug
   Changes affected the *Orders* and *PDF Invoices* features (this covers request from Jean-Marc for international date formats in *PDF Invoices*).
 
 = 1.7.9 - 16/10/2014 =
@@ -190,7 +182,7 @@ If you wish that some task would go up the queue to make it faster, please conta
 = 1.7.1 - 02/10/2014 =
 * Fix - Product Info - `%total_sales%` is temporary disabled.
   This was causing "PHP Parse error" on some servers (PHP 5.3), now fixed. Reported by Xavier.
-  Also reported in https://wordpress.org/support/topic/parse-error-syntax-error-unexpected-expecting-2.
+  Also reported in https://wordpress.org/support/topic/parse-error-syntax-error-unexpected-expecting-2
 
 = 1.7.0 - 02/10/2014 =
 * Fix - Payment Gateways - Instructions were not showing (suggested by Jen), fixed.

@@ -97,7 +97,7 @@ class WCJ_Add_to_cart {
      */
     public function custom_add_to_cart_button_text( $add_to_cart_text) {
 	
-		global $woocommerce,$product;
+		global $woocommerce, $product;
 		
 		$product_type = $product->product_type;
 		

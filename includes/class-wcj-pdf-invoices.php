@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoices class.
  *
  * @class		WCJ_PDF_Invoices
- * @version		1.6.0
+ * @version		1.7.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -328,13 +328,17 @@ class WCJ_PDF_Invoices {
 			$html .= '<img src="' . get_option( 'wcj_pdf_invoices_seller_logo_url' ) . '">';
 		$html .= '<div class="pdf_invoice_header_text_wcj">' . get_option( 'wcj_pdf_invoices_header_text' ) . '</div>';		
 		// NUMBER AND DATE //
-		$html .= '<table class="pdf_invoice_number_and_date_table_wcj"><tbody>';
-		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_number_text' ) . '</td><td>' . $order_number . '</td></tr>';
-		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_date_text' ) . '</td><td>' . date_i18n( get_option('date_format'), strtotime( $the_order->order_date ) ) . '</td></tr>';
+		$html .= '<table class="pdf_invoice_number_and_date_table_wcj"><tbody>';		
+		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_number_text' ) . '</td><td>' . $order_number . '</td></tr>';		
+		if ( '' != get_option( 'wcj_pdf_invoices_order_date_text' ) )
+			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_order_date_text' ) . '</td><td>' . date_i18n( get_option( 'date_format' ), strtotime( $the_order->order_date ) ) . '</td></tr>';
+		if ( '' != get_option( 'wcj_pdf_invoices_order_time_text' ) )
+			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_order_time_text' ) . '</td><td>' . date_i18n( get_option( 'time_format' ), strtotime( $the_order->order_date ) ) . '</td></tr>';
+		$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_date_text' ) . '</td><td>' . date_i18n( get_option( 'date_format' ), strtotime( $the_order->order_date ) ) . '</td></tr>';
 		if ( '' != get_option( 'wcj_pdf_invoices_invoice_due_date_text' ) )
-			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_due_date_text' ) . '</td><td>' . date_i18n( get_option('date_format'), ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_due_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
+			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_due_date_text' ) . '</td><td>' . date_i18n( get_option( 'date_format' ), ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_due_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
 		if ( '' != get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_text' ) )
-			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_text' ) . '</td><td>' . date_i18n( get_option('date_format'), ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
+			$html .= '<tr><td>' . get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_text' ) . '</td><td>' . date_i18n( get_option( 'date_format' ), ( strtotime( $the_order->order_date ) + get_option( 'wcj_pdf_invoices_invoice_fulfillment_date_days' ) * 24 * 60 *60 ) ) . '</td></tr>';
 		$html .= '</tbody></table>';
 		$html .= '</p>';
 
@@ -688,6 +692,26 @@ class WCJ_PDF_Invoices {
                 'type'     => 'text',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
+			
+            array(
+                'title'    => __( 'Order Date', 'woocommerce-jetpack' ),
+                'desc' 	   => __( 'Default: Order date', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Leave blank to disable', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_order_date_text',
+                'default'  => __( 'Order date', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),
+
+            array(
+                'title'    => __( 'Order Time', 'woocommerce-jetpack' ),
+                'desc' 	   => __( 'Default: Order time', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Leave blank to disable', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_order_time_text',
+                'default'  => __( 'Order time', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),			
 
             array(
                 'title'    => __( 'Invoice Date', 'woocommerce-jetpack' ),
@@ -697,15 +721,6 @@ class WCJ_PDF_Invoices {
                 'type'     => 'text',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
-
-			/*array(
-                'title'    => __( 'Invoice Due Date', 'woocommerce-jetpack' ),
-                'desc' 	   => __( 'Enable', 'woocommerce-jetpack' ),
-				//'desc_tip' => __( 'Set to 0 to disable', 'woocommerce-jetpack' ),
-                'id'       => 'wcj_pdf_invoices_invoice_due_date_enabled',
-                'default'  => 'no',
-                'type'     => 'checkbox',
-            ),*/
 
 			array(
                 'title'    => 'Invoice Due Date',
@@ -726,15 +741,6 @@ class WCJ_PDF_Invoices {
                 'type'     => 'number',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
-
-			/*array(
-                'title'    => __( 'Invoice Fulfillment Date', 'woocommerce-jetpack' ),
-                'desc' 	   => __( 'Enable', 'woocommerce-jetpack' ),
-				//'desc_tip' => __( 'Set to 0 to disable', 'woocommerce-jetpack' ),
-                'id'       => 'wcj_pdf_invoices_invoice_fulfillment_date_enabled',
-                'default'  => 'no',
-                'type'     => 'checkbox',
-            ),*/
 
 			array(
                 'title'    => 'Invoice Fulfillment Date',

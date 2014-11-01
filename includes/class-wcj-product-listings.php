@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Listings class.
  *
  * @class		WCJ_Product_Listings
- * @version		1.1.0
+ * @version		1.2.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -77,7 +77,7 @@ class WCJ_Product_Listings {
             ),
 
             array(
-				'title'     => __( 'Exclude Categories', 'woocommerce-jetpack' ),
+				'title'    => __( 'Exclude Categories', 'woocommerce-jetpack' ),
 				'desc_tip' => __(' Excludes one or more categories from the shop page. This parameter takes a comma-separated list of categories by unique ID, in ascending order. Leave blank to disable.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_product_listings_exclude_cats_on_shop',
                 'default'  => '',
@@ -86,12 +86,20 @@ class WCJ_Product_Listings {
             ),
 
             array(
-                'title'     => __( 'Hide Empty', 'woocommerce-jetpack' ),
+                'title'    => __( 'Hide Empty', 'woocommerce-jetpack' ),
 				'desc'     => __( 'Hide empty categories on shop page', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_product_listings_hide_empty_cats_on_shop',
                 'default'  => 'yes',
                 'type'     => 'checkbox',
             ),
+			
+			array(
+					'title'    => __( 'Show Products', 'woocommerce-jetpack' ),
+					'desc'     => __( 'Show products if no categories are displayed on shop page', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_product_listings_show_products_if_no_cats_on_shop',
+					'default'  => 'yes',
+					'type'     => 'checkbox',
+			),			
 
 			array( 'type'  => 'sectionend', 'id' => 'wcj_product_listings_shop_page_options' ),
 
@@ -123,6 +131,14 @@ class WCJ_Product_Listings {
                 'default'  => 'yes',
                 'type'     => 'checkbox',
             ),
+			
+			array(
+					'title'    => __( 'Show Products', 'woocommerce-jetpack' ),
+					'desc'     => __( 'Show products if no categories are displayed on category page', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_product_listings_show_products_if_no_cats_on_archives',
+					'default'  => 'yes',
+					'type'     => 'checkbox',
+			),
 
 			array( 'type'  => 'sectionend', 'id' => 'wcj_product_listings_archive_pages_options' ),
         );
@@ -175,7 +191,14 @@ class WCJ_Product_Listings {
 					'default'  => 'yes',
 					'type'     => 'checkbox',
 				);
-
+				
+				$updated_settings[] = array(
+					'title'     => __( 'WooJetpack: Show Products', 'woocommerce-jetpack' ),
+					'desc'     => __( 'Show products if no categories are displayed on shop page', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_product_listings_show_products_if_no_cats_on_shop',
+					'default'  => 'yes',
+					'type'     => 'checkbox',
+				);
 			}
 
 			if ( isset( $section['id'] ) && 'woocommerce_category_archive_display' == $section['id'] ) {
@@ -206,6 +229,14 @@ class WCJ_Product_Listings {
 					'default'  => 'yes',
 					'type'     => 'checkbox',
 				);
+				
+				$updated_settings[] = array(
+					'title'     => __( 'WooJetpack: Show Products', 'woocommerce-jetpack' ),
+					'desc'     => __( 'Show products if no categories are displayed on category page', 'woocommerce-jetpack' ),
+					'id'       => 'wcj_product_listings_show_products_if_no_cats_on_archives',
+					'default'  => 'yes',
+					'type'     => 'checkbox',
+				);				
 			}
 		}
 
@@ -238,15 +269,39 @@ class WCJ_Product_Listings {
     }
 	
     /**
+     * hide_products_by_disabling_loop.
+     */
+    public function hide_products_by_disabling_loop() {			
+		// If we are hiding products disable the loop and pagination
+		global $wp_query;
+		if ( is_product_category() && 
+			 get_option( 'woocommerce_category_archive_display' ) == 'subcategories' &&
+			 'no' === get_option( 'wcj_product_listings_show_products_if_no_cats_on_archives' ) ) {
+				$wp_query->post_count    = 0;
+				$wp_query->max_num_pages = 0;
+		}
+		if ( is_shop() && 
+			 get_option( 'woocommerce_shop_page_display' ) == 'subcategories' &&
+			 'no' === get_option( 'wcj_product_listings_show_products_if_no_cats_on_shop' ) ) {
+				$wp_query->post_count    = 0;
+				$wp_query->max_num_pages = 0;
+			}		
+	}
+	
+    /**
      * filter_subcategories_show_empty.
      */
     public function filter_subcategories_show_empty() {		
+	
+		// Not the best solution, but it's the only place I found to put it...
+		$this->hide_products_by_disabling_loop();
+				
 		$show_empty = false;
 		if ( is_shop() )
 			$show_empty = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_shop' ) ) ? false : true;
 		else
 			$show_empty = ( 'yes' === get_option( 'wcj_product_listings_hide_empty_cats_on_archives' ) ) ? false : true;
-			
+		
 		return $show_empty;
     }	
 }

@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.5.1
+ * @version		1.6.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -153,6 +153,8 @@ class WCJ_Orders {
 		// Checking function arguments
 		if ( ! isset( $new_status ) || '' == $new_status )
 			return '<div class="error"><p>' . __( 'Status slug is empty. Status not added.', 'woocommerce-jetpack' ) . '</p></div>';
+		if ( strlen( $new_status ) > 17 )
+			return '<div class="error"><p>' . __( 'The length of status slug must be 17 or less characters.', 'woocommerce-jetpack' ) . '</p></div>';				
 		if ( ! isset( $new_status_label ) || '' == $new_status_label )
 			return '<div class="error"><p>' . __( 'Status label is empty. Status not added.', 'woocommerce-jetpack' ) . '</p></div>';
 

@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.8.1
+Version: 1.8.2
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
@@ -198,26 +198,19 @@ final class WC_Jetpack {
 	/**
 	 * Add Jetpack settings tab to WooCommerce settings.
 	 */	
-	public function add_wcj_settings_tab( $settings ) {
-	
-		$settings[] = include( 'includes/admin/settings/class-wc-settings-jetpack.php' );
-		
+	public function add_wcj_settings_tab( $settings ) {	
+		$settings[] = include( 'includes/admin/settings/class-wc-settings-jetpack.php' );		
 		return $settings;
 	}
-
 
 	/**
 	 * Init WC_Jetpack when WordPress initialises.
 	 */
 	public function init() {
-	
 		// Before init action
-		do_action( 'before_wcj_init' );
-		
+		do_action( 'before_wcj_init' );		
 		// Set up localisation
-		//$this->load_plugin_textdomain();
-		load_plugin_textdomain( 'woocommerce-jetpack',  false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
-				
+		load_plugin_textdomain( 'woocommerce-jetpack',  false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );				
 		// Init action
 		do_action( 'wcj_init' );
 	}
@@ -231,7 +224,6 @@ endif;
  * @return WC_Jetpack
  */
 function WCJ() {
-
 	return WC_Jetpack::instance();
 }
 

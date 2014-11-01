@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Settings class.
  *
  * @class       WC_Settings_Jetpack
- * @version		1.0.1
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -22,7 +22,6 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	public function __construct() {
 		$this->id    = 'jetpack';
 		$this->label = __( 'Jetpack', 'woocommerce-jetpack' );
-
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
@@ -34,8 +33,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	 *
 	 * @return array
 	 */
-	public function get_sections() {
-	
+	public function get_sections() {	
 		return apply_filters( 'wcj_settings_sections', array(
 			''	=> __( 'Dashboard', 'woocommerce-jetpack' ),
 		) );
@@ -70,16 +68,16 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			?><table class="wp-list-table widefat plugins">
 				<thead>
 				<tr>
-				<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></th>
-				<th scope="col" id="name" class="manage-column column-name" style="">Feature</th>
-				<th scope="col" id="description" class="manage-column column-description" style="">Description</th>
+				<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-1"><?php _e( 'Select All', 'woocommerce-jetpack' ); ?></label><input id="cb-select-all-1" type="checkbox"></th>
+				<th scope="col" id="name" class="manage-column column-name" style=""><?php _e( 'Feature', 'woocommerce-jetpack' ); ?></th>
+				<th scope="col" id="description" class="manage-column column-description" style=""><?php _e( 'Description', 'woocommerce-jetpack' ); ?></th>
 				</tr>
 				</thead>
 				<tfoot>
 				<tr>
-				<th scope="col" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox"></th>
-				<th scope="col" class="manage-column column-name" style="">Feature</th>
-				<th scope="col" class="manage-column column-description" style="">Description</th>
+				<th scope="col" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-2"><?php _e( 'Select All', 'woocommerce-jetpack' ); ?></label><input id="cb-select-all-2" type="checkbox"></th>
+				<th scope="col" class="manage-column column-name" style=""><?php _e( 'Feature', 'woocommerce-jetpack' ); ?></th>
+				<th scope="col" class="manage-column column-description" style=""><?php _e( 'Description', 'woocommerce-jetpack' ); ?></th>
 				</tr>
 				</tfoot>
 				<tbody id="the-list"><?php										
@@ -91,14 +89,12 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 						$html .= '<tr id="' . $the_feature['id'] . '" ' . 'class="' . $this->active( get_option( $the_feature['id'] ) ) . '">';
 						
 						$html .= '<th scope="row" class="check-column">';
-						//$html .= '<label class="screen-reader-text" for="' . $the_feature['id'] . '">' . __( 'Enable the ', 'woocommerce-jetpack' ) . $the_feature['title'] . ' feature</label>';
 						$html .= '<label class="screen-reader-text" for="' . $the_feature['id'] . '">' . $the_feature['desc'] . '</label>';
 						$html .= '<input type="checkbox" name="' . $the_feature['id'] . '" value="1" id="' . $the_feature['id'] . '" ' . checked( get_option( $the_feature['id'] ), 'yes', false ) . '>';
 						$html .= '</th>';			
 
 						$html .= '<td class="plugin-title"><strong>' . $the_feature['title'] . '</strong>';						
 						$html .= '<div class="row-actions visible">';
-						//$html .= '<span class="deactivate"><a href="" title="Deactivate feature">Deactivate</a> | </span>';
 						
 						// Temporary solution - 17/09/2014
 						$section = $the_feature['id'];
@@ -106,13 +102,12 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 						$section = str_replace( '_enabled', '', $section );
 						if ( 'currency' === $section ) $section = 'currencies';
 						
-						$html .= '<span class="0"><a href="/wp-admin/admin.php?page=wc-settings&tab=jetpack&section=' . $section . '">Settings</a></span>';
+						$html .= '<span class="0"><a href="' . admin_url() . 'admin.php?page=wc-settings&tab=jetpack&section=' . $section . '">Settings</a></span>';
 						$html .= '</div>';
 						$html .= '</td>';							
 					
 						$html .= '<td class="column-description desc">';
 						$html .= '<div class="plugin-description"><p>' . $the_feature['desc_tip'] . '</p></div>';
-						//$html .= '<div class="active second plugin-version-author-uri">Versija 2.1.1 | Sukūrė <a href="" title="Aplankyti autoriaus puslapį">Ramoonus</a> | <a href="" title="Aplankyti įskiepio puslapį">Aplankyti įskiepio puslapį</a></div>';
 						$html .= '</td>';						
 	
 						$html .= '</tr>';
@@ -126,13 +121,10 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	/**
 	 * Save settings
 	 */
-	public function save() {
-	
+	public function save() {	
 		global $current_section;
-
 		$settings = $this->get_settings( $current_section );
-		WC_Admin_Settings::save_fields( $settings );
-		
+		WC_Admin_Settings::save_fields( $settings );		
 		echo apply_filters('get_wc_jetpack_plus_message', '', 'global' );
 	}
 	
@@ -142,64 +134,15 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings( $current_section = '' ) {
-
 		if ( $current_section != '' ) {
-			
 			return apply_filters('wcj_settings_' . $current_section, array() );
 		}
 		else {
-
 			$settings[] = array( 'title' => __( 'WooCommerce Jetpack Dashboard', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This dashboard lets you enable/disable any Jetpack feature. Each checkbox comes with short feature\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'id' => 'wcj_options' );
-			
 			$settings = apply_filters( 'wcj_features_status', $settings );		
-			
-			/*$statuses = array();		
-			$statuses[] = include_once( 'class-wcj-price-labels.php' );
-			$statuses[] = include_once( 'includes/class-wcj-call-for-price.php' );
-			$statuses[] = include_once( 'includes/class-wcj-currencies.php' );		
-			$statuses[] = include_once( 'includes/class-wcj-sorting.php' );
-			$statuses[] = include_once( 'includes/class-wcj-old-slugs.php' );
-			$statuses[] = include_once( 'includes/class-wcj-product-info.php' );
-			foreach ( $statuses as $section )
-				$settings[] = $section->get_statuses()[1];*/
-			
 			$settings[] = array( 'type' => 'sectionend', 'id' => 'wcj_options' );
-			
-			/*$updated_settings = array();
-			$i = 0;
-			$s = count( $settings );
-			foreach ( $settings as $single_item ) {
-				
-				if ( ( 'checkbox' === $single_item['type'] ) && ( $i > 0 ) ) {
-				
-					if ( 1 == $i ) {
-						$single_item['checkboxgroup'] = 'start';
-						$single_item['title'] = 'The Features';
-					}
-					else { 
-						if ( ( $s - 2 ) == $i )
-							$single_item['checkboxgroup'] = 'end';
-						else
-							$single_item['checkboxgroup'] = '';
-							
-						$single_item['title'] = '';
-					}
-					
-					// Temporary solution - 2014.07.21
-					$single_item['desc'] = str_replace( 'Enable the ', 'Enable the <strong>', $single_item['desc'] );
-					$single_item['desc'] = str_replace( ' feature', '</strong> feature', $single_item['desc'] );
-					
-					$single_item['desc'] .= ': <em>' . $single_item['desc_tip'] . '</em>';
-					//$single_item['desc'] .= ': <em>' . $single_item['desc_tip'] . __( ' Default: ', 'woocommerce-jetpack' ) . $single_item['default'] . '</em>';
-					$single_item['desc_tip'] = '';
-				}
-				
-				$updated_settings[] = $single_item;
-				
-				$i++;
-			}*/
-				
-			return $settings;//apply_filters('wcj_general_settings', $settings );
+			return $settings;
+			//apply_filters('wcj_general_settings', $settings );
 		}
 	}
 }
