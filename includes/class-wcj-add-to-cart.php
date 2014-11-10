@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Add to cart class.
  *
  * @class		WCJ_Add_to_cart
- * @version		1.0.0
+ * @version		1.1.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -99,6 +99,9 @@ class WCJ_Add_to_cart {
 	
 		global $woocommerce, $product;
 		
+		if ( ! $product )
+			return $add_to_cart_text;			
+		
 		$product_type = $product->product_type;
 		
 		if ( ! in_array( $product_type, array( 'external', 'grouped', 'simple', 'variable' ) ) )
@@ -108,23 +111,30 @@ class WCJ_Add_to_cart {
 		if ( current_filter() == 'woocommerce_product_single_add_to_cart_text' ) $single_or_archive = 'single';
 		else if ( current_filter() == 'woocommerce_product_add_to_cart_text' )  $single_or_archive = 'archives';
 		
-		if ( $single_or_archive !== '' ) {
+		if ( '' != $single_or_archive ) {
 		
-			if ( get_option( 'wcj_add_to_cart_text_enabled_on_' . $single_or_archive . '_in_cart_' . $product_type ) == 'yes' ) {
-
-				foreach( $woocommerce->cart->get_cart() as $cart_item_key => $values ) {
-				
-					$_product = $values['data'];
-				
-					if( get_the_ID() == $_product->id ) {
-					
+			//if ( 'yes' === get_option( 'wcj_add_to_cart_text_enabled_on_' . $single_or_archive . '_in_cart_' . $product_type, 'no' ) ) {
+			if ( '' != get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_in_cart_' . $product_type, '' ) ) {
+				foreach( $woocommerce->cart->get_cart() as $cart_item_key => $values ) {				
+					$_product = $values['data'];				
+					if( get_the_ID() == $_product->id )					
 						return get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_in_cart_' . $product_type );
-					}
 				}
 			}
 			
-			if ( get_option( 'wcj_add_to_cart_text_enabled_on_' . $single_or_archive . '_' . $product_type ) == 'yes' ) return get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_' . $product_type );
-			else return $add_to_cart_text;		
+			$text_on_no_price = get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_no_price_' . $product_type, '' );
+			if ( '' != $text_on_no_price && '' === $product->get_price() )
+				return $text_on_no_price;
+				
+			$text_on_zero_price = get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_zero_price_' . $product_type, '' );
+			if ( '' != $text_on_zero_price && 0 == $product->get_price() )
+				return $text_on_zero_price;				
+			
+			//if ( get_option( 'wcj_add_to_cart_text_enabled_on_' . $single_or_archive . '_' . $product_type ) == 'yes' )
+			if ( '' != get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_' . $product_type ) )
+				return get_option( 'wcj_add_to_cart_text_on_' . $single_or_archive . '_' . $product_type );
+			else
+				return $add_to_cart_text;		
 		}
 
 		// Default
@@ -224,31 +234,35 @@ class WCJ_Add_to_cart {
 				array(
 					'title'    => $group_by_product_type['title'],
 					'id'       => 'wcj_add_to_cart_text_on_single_' . $group_by_product_type['id'],
+					'desc'     => __( 'Single product view.', 'woocommerce-jetpack' ),
+					'desc_tip' => __( 'Leave blank to disable.', 'woocommerce-jetpack' ) . ' ' . __( 'Default: ', 'woocommerce-jetpack' ) . $group_by_product_type['default'],
 					'default'  => $group_by_product_type['default'],
 					'type'     => 'text',
 					'css'      => 'width:30%;min-width:300px;',
 				);
 				
-			$settings[] = 
+			/*$settings[] = 
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'desc'     => __( 'Enable on single product pages', 'woocommerce-jetpack' ),
 					'id'       => 'wcj_add_to_cart_text_enabled_on_single_' . $group_by_product_type['id'],
 					'default'  => 'yes',
 					'type'     => 'checkbox',
-				);
+				);*/
 				
 			$settings[] = 
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'id'       => 'wcj_add_to_cart_text_on_archives_' . $group_by_product_type['id'],
+					'desc'     => __( 'Product category (archive) view.', 'woocommerce-jetpack' ),
+					'desc_tip' => __( 'Leave blank to disable.', 'woocommerce-jetpack' ) . ' ' . __( 'Default: ', 'woocommerce-jetpack' ) . $group_by_product_type['default'],
 					'default'  => $group_by_product_type['default'],
 					'type'     => 'text',
 					'css'      => 'width:30%;min-width:300px;',
 					//'custom_attributes' => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
 				);				
 				
-			$settings[] = 
+			/*$settings[] = 
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'desc'     => __( 'Enable on product archives', 'woocommerce-jetpack' ),
@@ -257,7 +271,40 @@ class WCJ_Add_to_cart {
 					'default'  => 'yes',
 					'type'     => 'checkbox',
 					//'custom_attributes' => apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
-				);
+				);*/
+				
+			if ( 'variable' !== $group_by_product_type['id'] )				
+				$settings = array_merge( $settings, array( 
+					
+					array (
+						'title'    => '',
+						'desc'     => __( 'Products with price set to 0 (i.e. free). Single product view.', 'woocommerce-jetpack' ),
+						'desc_tip' => __( 'Leave blank to disable. Default: Add to cart', 'woocommerce-jetpack' ),
+						'id'       => 'wcj_add_to_cart_text_on_single_zero_price_' . $group_by_product_type['id'],
+						'default'  => __( 'Add to cart', 'woocommerce-jetpack' ),
+						'type'     => 'text',
+						'css'      => 'width:30%;min-width:300px;',			
+					),		
+					array (
+						'title'    => '',
+						'desc'     => __( 'Products with price set to 0 (i.e. free). Product category (archive) view.', 'woocommerce-jetpack' ),
+						'desc_tip' => __( 'Leave blank to disable. Default: Add to cart', 'woocommerce-jetpack' ),
+						'id'       => 'wcj_add_to_cart_text_on_archives_zero_price_' . $group_by_product_type['id'],
+						'default'  => __( 'Add to cart', 'woocommerce-jetpack' ),
+						'type'     => 'text',
+						'css'      => 'width:30%;min-width:300px;',			
+					),
+					
+					array (
+						'title'    => '',
+						'desc'     => __( 'Products with empty price. Product category (archive) view.', 'woocommerce-jetpack' ),
+						'desc_tip' => __( 'Leave blank to disable. Default: Read More', 'woocommerce-jetpack' ),
+						'id'       => 'wcj_add_to_cart_text_on_archives_no_price_' . $group_by_product_type['id'],
+						'default'  => __( 'Read More', 'woocommerce-jetpack' ),
+						'type'     => 'text',
+						'css'      => 'width:30%;min-width:300px;',			
+					),					
+				) );				
 				
 			if ( $group_by_product_type['id'] === 'external' ) continue;
 				
@@ -265,7 +312,12 @@ class WCJ_Add_to_cart {
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'id'       => 'wcj_add_to_cart_text_on_single_in_cart_' . $group_by_product_type['id'],
-					'default'  => 'Already in cart - Add Again?',
+					'desc'     => __( 'Already in cart. Single product view.', 'woocommerce-jetpack' ),
+					'desc_tip' => __( 'Leave blank to disable.', 'woocommerce-jetpack' ) . ' ' . 
+								  __( 'Try: ', 'woocommerce-jetpack' ) . __( 'Already in cart - Add Again?', 'woocommerce-jetpack' ) . ' ' . 
+								  __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Add to cart', 'woocommerce-jetpack' ),
+					//'default'  => __( 'Already in cart - Add Again?', 'woocommerce-jetpack' ),
+					'default'  => __( 'Add to cart', 'woocommerce-jetpack' ),
 					'type'     => 'text',
 					'css'      => 'width:30%;min-width:300px;',
 					//'custom_attributes' => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
@@ -273,33 +325,38 @@ class WCJ_Add_to_cart {
 					//'desc'	   => __( 'Set text for "Already in cart" on single product pages', 'woocommerce-jetpack' ),
 				);
 				
-			$settings[] = 
+			/*$settings[] = 
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'desc'     => __( 'Enable "Already in cart" on single product pages', 'woocommerce-jetpack' ),
 					'id'       => 'wcj_add_to_cart_text_enabled_on_single_in_cart_' . $group_by_product_type['id'],
 					'default'  => 'yes',
 					'type'     => 'checkbox',
-				);	
+				);*/
 				
 			$settings[] = 
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'id'       => 'wcj_add_to_cart_text_on_archives_in_cart_' . $group_by_product_type['id'],
-					'default'  => 'Already in cart - Add Again?',
+					'desc'     => __( 'Already in cart. Product category (archive) view.', 'woocommerce-jetpack' ),
+					'desc_tip' => __( 'Leave blank to disable.', 'woocommerce-jetpack' ) . ' ' . 
+								  __( 'Try: ', 'woocommerce-jetpack' ) . __( 'Already in cart - Add Again?', 'woocommerce-jetpack' ) . ' ' . 
+								  __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Add to cart', 'woocommerce-jetpack' ),					
+					//'default'  => __( 'Already in cart - Add Again?', 'woocommerce-jetpack' ),
+					'default'  => __( 'Add to cart', 'woocommerce-jetpack' ),
 					'type'     => 'text',
 					'css'      => 'width:30%;min-width:300px;',
 					//'custom_attributes' => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
 				);
 				
-			$settings[] = 
+			/*$settings[] = 
 				array(
 					'title'    => '',//$group_by_product_type['title'],
 					'desc'     => __( 'Enable "Already in cart" on product archives', 'woocommerce-jetpack' ),
 					'id'       => 'wcj_add_to_cart_text_enabled_on_archives_in_cart_' . $group_by_product_type['id'],
 					'default'  => 'yes',
 					'type'     => 'checkbox',
-				);					
+				);*/
 		}
 		
 		$settings[] = array( 'type' => 'sectionend', 'id' => 'wcj_add_to_cart_text_options' );

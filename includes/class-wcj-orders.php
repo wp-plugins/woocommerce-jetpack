@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.6.0
+ * @version		1.7.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -244,10 +244,11 @@ class WCJ_Orders {
 			$order_timestamp = strtotime( $order->post->post_date );
 			$order_number = apply_filters( 'wcj_get_option_filter', 
 				'#' . $order_number_meta, 
-				sprintf( '%s%s%0' . get_option( 'wcj_order_number_min_width', 0 ) . 'd', 
+				sprintf( '%s%s%0' . get_option( 'wcj_order_number_min_width', 0 ) . 'd%s', 
 				get_option( 'wcj_order_number_prefix', '' ), 
 				date_i18n( get_option( 'wcj_order_number_date_prefix', '' ), $order_timestamp ),				
-				$order_number_meta ) );
+				$order_number_meta,
+				get_option( 'wcj_order_number_suffix', '' ) ) );
 		}
 		return $order_number;
     }
@@ -472,6 +473,17 @@ class WCJ_Orders {
 				'custom_attributes'
 						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
             ),
+			
+            array(
+                'title'    => __( 'Order Number Custom Suffix', 'woocommerce-jetpack' ),
+				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'desc_tip' => __( 'Suffix before order number (optional). This will change the suffixes for all existing orders.', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_order_number_suffix',
+                'default'  => '',
+                'type'     => 'text',
+				'custom_attributes'
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+            ),				
 
             array( 'type'  => 'sectionend', 'id' => 'wcj_order_numbers_options' ),
 
@@ -545,7 +557,7 @@ class WCJ_Orders {
             array(
                 'title'    => __( 'Custom Statuses', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
-                //'desc_tip' => __( 'E.g. if you sell digital products then you are not shipping anything and you may want auto-complete all your orders.', 'woocommerce-jetpack' ),
+				'desc_tip'	=> sprintf( __( 'When enabled, the Custom Statuses tool is accessible through <a href="%sadmin.php?page=wcj-tools&tab=custom_statuses">WooCommerce > Jetpack Tools > Custom Statuses</a>.', 'woocommerce-jetpack' ), admin_url() ),
                 'id'       => 'wcj_orders_custom_statuses_enabled',
                 'default'  => 'yes',
                 'type'     => 'checkbox',

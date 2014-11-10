@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Sorting class.
  *
  * @class 		WCJ_Sorting
- * @version		1.0.1
+ * @version		1.2.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -24,16 +24,19 @@ class WCJ_Sorting {
 		// HOOKS
 		
 		// Main hooks
-		if ( get_option( 'wcj_sorting_enabled' ) == 'yes' ) {
+		if ( 'yes' === get_option( 'wcj_sorting_enabled' ) ) {
 		
-			add_filter( 'woocommerce_get_catalog_ordering_args', array( $this, 'custom_woocommerce_get_catalog_ordering_args' ), 100 ); // Sorting
-			add_filter( 'woocommerce_catalog_orderby', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Front end
-			add_filter( 'woocommerce_default_catalog_orderby_options', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Back end (default sorting)
-			if ( get_option( 'wcj_sorting_remove_all_enabled' ) == 'yes' )
-				add_action( apply_filters( 'wcj_get_option_filter', 'wcj_empty_action', 'init' ), array( $this, 'remove_sorting' ), 100 ); // Remove sorting
+			if ( 'yes' === get_option( 'wcj_more_sorting_enabled' ) ) {
+				add_filter( 'woocommerce_get_catalog_ordering_args', array( $this, 'custom_woocommerce_get_catalog_ordering_args' ), 100 ); // Sorting
+				add_filter( 'woocommerce_catalog_orderby', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Front end
+				add_filter( 'woocommerce_default_catalog_orderby_options', array( $this, 'custom_woocommerce_catalog_orderby' ), 100 ); // Back end (default sorting)
+			}	
 			
-			// Settings
-			add_filter( 'woocommerce_product_settings', array( $this, 'add_remove_sorting_checkbox' ), 100 ); // Add 'Remove All Sorting' checkbox to WooCommerce > Settings > Products
+			if ( 'yes' === get_option( 'wcj_sorting_remove_all_enabled' ) ) {
+				add_action( apply_filters( 'wcj_get_option_filter', 'wcj_empty_action', 'init' ), array( $this, 'remove_sorting' ), 100 ); // Remove sorting
+				// Settings
+				add_filter( 'woocommerce_product_settings', array( $this, 'add_remove_sorting_checkbox' ), 100 ); // Add 'Remove All Sorting' checkbox to WooCommerce > Settings > Products
+			}
 		}
 		
 		// Settings hooks
@@ -102,17 +105,27 @@ class WCJ_Sorting {
 	 */
 	function custom_woocommerce_catalog_orderby( $sortby ) {
 		
-		if ( get_option( 'wcj_sorting_by_name_asc_enabled' ) == 'yes' )
+		//if ( get_option( 'wcj_sorting_by_name_asc_enabled' ) == 'yes' )
+		if ( '' != get_option( 'wcj_sorting_by_name_asc_text' ) )
 			$sortby['title_asc'] = get_option( 'wcj_sorting_by_name_asc_text' );
 			
-		if ( get_option( 'wcj_sorting_by_name_desc_enabled' ) == 'yes' )
+		//if ( get_option( 'wcj_sorting_by_name_desc_enabled' ) == 'yes' )
+		if ( '' != get_option( 'wcj_sorting_by_name_desc_text' ) )
 			$sortby['title_desc'] = get_option( 'wcj_sorting_by_name_desc_text' );
 
-		if ( get_option( 'wcj_sorting_by_sku_asc_enabled' ) == 'yes' )
+		//if ( get_option( 'wcj_sorting_by_sku_asc_enabled' ) == 'yes' )
+		if ( '' != get_option( 'wcj_sorting_by_sku_asc_text' ) )
 			$sortby['sku_asc'] = get_option( 'wcj_sorting_by_sku_asc_text' );
 			
-		if ( 'yes' == get_option( 'wcj_sorting_by_sku_desc_enabled' ) )
+		//if ( 'yes' == get_option( 'wcj_sorting_by_sku_desc_enabled' ) )
+		if ( '' != get_option( 'wcj_sorting_by_sku_desc_text' ) )
 			$sortby['sku_desc'] = get_option( 'wcj_sorting_by_sku_desc_text' );
+			
+		if ( '' != get_option( 'wcj_sorting_by_stock_quantity_asc_text' ) )
+			$sortby['stock_quantity_asc'] = get_option( 'wcj_sorting_by_stock_quantity_asc_text' );	
+
+		if ( '' != get_option( 'wcj_sorting_by_stock_quantity_desc_text' ) )
+			$sortby['stock_quantity_desc'] = get_option( 'wcj_sorting_by_stock_quantity_desc_text' );				
 			
 		return $sortby;
 	}
@@ -130,26 +143,36 @@ class WCJ_Sorting {
 		$orderby       = esc_attr( $orderby_value[0] );
 
 		switch ( $orderby ) :
-			case 'title_asc' :
+			case 'title_asc':
 				$args['orderby'] = 'title';
 				$args['order'] = 'asc';
 				$args['meta_key'] = '';
 			break;			
-			case 'title_desc' :
+			case 'title_desc':
 				$args['orderby'] = 'title';
 				$args['order'] = 'desc';
 				$args['meta_key'] = '';
 			break;
-			case 'sku_asc' :
+			case 'sku_asc':
 				$args['orderby'] = 'meta_value';
 				$args['order'] = 'asc';
 				$args['meta_key'] = '_sku';
 			break;			
-			case 'sku_desc' :
+			case 'sku_desc':
 				$args['orderby'] = 'meta_value';
 				$args['order'] = 'desc';
 				$args['meta_key'] = '_sku';
 			break;
+			case 'stock_quantity_asc':
+				$args['orderby'] = 'meta_value';
+				$args['order'] = 'asc';
+				$args['meta_key'] = '_stock';
+			break;			
+			case 'stock_quantity_desc':
+				$args['orderby'] = 'meta_value';
+				$args['order'] = 'desc';
+				$args['meta_key'] = '_stock';
+			break;			
 		endswitch;
 			
 		return $args;				
@@ -191,79 +214,75 @@ class WCJ_Sorting {
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_remove_all_sorting_options' ),			
 
 			array( 'title'	=> __( 'Add More Sorting', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_more_sorting_options' ),			
+			
+			array(
+				'title' 	=> __( 'Add More Sorting', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_more_sorting_enabled',
+				'default'	=> 'yes',
+				'type' 		=> 'checkbox'
+			),			
 
 			array(
-				'title' 	=> __( 'Sort by Name - Asc', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Text visible at front end', 'woocommerce-jetpack' ),
+				'title' 	=> __( 'Sort by Name', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Sort by title: A to Z', 'woocommerce-jetpack' ),				
+				'desc_tip' 	=> __( 'Text to show on frontend. Leave blank to disable.', 'woocommerce-jetpack' ),	
 				'id' 		=> 'wcj_sorting_by_name_asc_text',
-				'default'	=> 'Sort: A to Z',
+				'default'	=> __( 'Sort by title: A to Z', 'woocommerce-jetpack' ),
 				'type' 		=> 'text',
 				'css'		=> 'min-width:300px;',
 			),
-			
-			array(
-				'title' 	=> __( '', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_sorting_by_name_asc_enabled',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
-			),
 
 			array(
-				'title' 	=> __( 'Sort by Name - Desc', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Text visible at front end', 'woocommerce-jetpack' ),
+				'title' 	=> '',//'title' 	=> __( 'Sort by Name - Desc', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Sort by title: Z to A', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Text to show on frontend. Leave blank to disable.', 'woocommerce-jetpack' ),	
 				'id' 		=> 'wcj_sorting_by_name_desc_text',
-				'default'	=> 'Sort: Z to A',
+				'default'	=> __( 'Sort by title: Z to A', 'woocommerce-jetpack' ),
 				'type' 		=> 'text',
 				'css'		=> 'min-width:300px;',
 			),
 			
 			array(
-				'title' 	=> __( '', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
-				'id' 		=> 'wcj_sorting_by_name_desc_enabled',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
-			),
-
-			array(
-				'title' 	=> __( 'Sort by SKU - Asc', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Text visible at front end', 'woocommerce-jetpack' ),
+				'title' 	=> __( 'Sort by SKU', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Sort by SKU: low to high', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Text to show on frontend. Leave blank to disable.', 'woocommerce-jetpack' ),	
 				'id' 		=> 'wcj_sorting_by_sku_asc_text',
-				'default'	=> 'Sort: SKU (asc)',
+				'default'	=> __( 'Sort by SKU: low to high', 'woocommerce-jetpack' ),
 				'type' 		=> 'text',
 				'css'		=> 'min-width:300px;',
 			),
 			
 			array(
-				'title' 	=> __( '', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
-				'id' 		=> 'wcj_sorting_by_sku_asc_enabled',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
-			),
-
-			array(
-				'title' 	=> __( 'Sort by SKU - Desc', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Text visible at front end', 'woocommerce-jetpack' ),
+				'title' 	=> '',//'title' 	=> __( 'Sort by SKU - Desc', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Sort by SKU: high to low', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Text to show on frontend. Leave blank to disable.', 'woocommerce-jetpack' ),	
 				'id' 		=> 'wcj_sorting_by_sku_desc_text',
-				'default'	=> 'Sort: SKU (desc)',
+				'default'	=> __( 'Sort by SKU: high to low', 'woocommerce-jetpack' ),
 				'type' 		=> 'text',
 				'css'		=> 'min-width:300px;',
 			),
 			
 			array(
-				'title' 	=> __( '', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Enable', 'woocommerce-jetpack' ),
-				//'desc_tip' 	=> __( 'Check to enable.', 'woocommerce-jetpack' ),				
-				'id' 		=> 'wcj_sorting_by_sku_desc_enabled',
-				'default'	=> 'yes',
-				'type' 		=> 'checkbox',
+				'title' 	=> __( 'Sort by stock quantity', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Sort by stock quantity: low to high', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Text to show on frontend. Leave blank to disable.', 'woocommerce-jetpack' ),				
+				'id' 		=> 'wcj_sorting_by_stock_quantity_asc_text',
+				'default'	=> __( 'Sort by stock quantity: low to high', 'woocommerce-jetpack' ),
+				'type' 		=> 'text',
+				'css'		=> 'min-width:300px;',
 			),
 			
+			array(
+				'title' 	=> '',
+				'desc' 		=> __( 'Default: ', 'woocommerce-jetpack' ) . __( 'Sort by stock quantity: high to low', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Text to show on frontend. Leave blank to disable.', 'woocommerce-jetpack' ),				
+				'id' 		=> 'wcj_sorting_by_stock_quantity_desc_text',
+				'default'	=> __( 'Sort by stock quantity: high to low', 'woocommerce-jetpack' ),
+				'type' 		=> 'text',
+				'css'		=> 'min-width:300px;',
+			),		
+
 			array( 'type' => 'sectionend', 'id' => 'wcj_more_sorting_options' ),
 		);
 		

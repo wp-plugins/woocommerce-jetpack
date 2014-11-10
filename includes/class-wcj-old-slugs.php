@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Old Slugs class.
  *
  * @class 		WCJ_Old_Slugs
- * @version		1.2.0
+ * @version		1.2.1
  * @package		WC_Jetpack/Classes
  * @category	Class
  * @author 		Algoritmika Ltd.
@@ -88,8 +88,8 @@ class WCJ_Old_Slugs {
 			array(
 				'title' 	=> __( 'Old Slugs', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable the Remove Old Product Slugs feature', 'woocommerce-jetpack' ),
-				//'desc_tip'	=> __( 'Remove old product slugs. Tool is accessible through <a href="/wp-admin/admin.php?page=woocommerce-jetpack-old-slugs">WooCommerce > Remove Old Slugs</a>.', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Remove old product slugs.', 'woocommerce-jetpack' ),
+				'desc_tip'	=> sprintf( __( 'Remove old product slugs. When enabled, the tool is accessible through <a href="%sadmin.php?page=wcj-tools&tab=old_slugs">WooCommerce > Jetpack Tools > Remove Old Slugs</a>.', 'woocommerce-jetpack' ), admin_url() ),
+				//'desc_tip'	=> __( 'Remove old product slugs.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_old_slugs_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox'

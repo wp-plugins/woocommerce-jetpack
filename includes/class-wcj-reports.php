@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.1.2.1
+ * @version		1.2.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -22,64 +22,143 @@ class WCJ_Reports {
 	public function __construct() {
 
 		// Main hooks
-		if ( get_option( 'wcj_reports_enabled' ) == 'yes' ) {
+		if ( 'yes' === get_option( 'wcj_reports_enabled' ) ) {
 			if ( is_admin() ) {
-				add_filter( 'wcj_tools_tabs', array( $this, 'add_reports_tool_tab' ), 100 );
-				add_action( 'wcj_tools_reports', array( $this, 'create_reports_tool' ), 100 );
+				//add_filter( 'wcj_tools_tabs', array( $this, 'add_reports_tool_tab' ), 100 );
+				//add_action( 'wcj_tools_reports', array( $this, 'create_reports_tool' ), 100 );
+				add_filter( 'woocommerce_admin_reports', array( $this, 'add_customers_by_country_report' ) );	
+				add_filter( 'woocommerce_admin_reports', array( $this, 'add_all_in_stock_report' ) );	
 			}
 		}
 
 		// Settings hooks
 		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) ); 		// Add section to WooCommerce > Settings > Jetpack
 		add_filter( 'wcj_settings_reports', array( $this, 'get_settings' ), 100 ); 		// Add the settings
-		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard
-		
-		
-		add_filter( 'woocommerce_admin_reports', array( $this, 'add_customers_by_country_report' ) );		
-		
+		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard		
+	}
+	
+	public function get_all_in_stock_report() {
+		$this->create_reports_tool();
 	}
 	
 	/**
 	 * prepare_items function.
 	 */
 	public function prepare_items() {
+			
+		$eu_countries = array(
+			'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 
+		);		
 		
+		if ( 'no' === get_option( 'wcj_reports_eu_as_single_country' ) )
+			$eu_countries = array();
 
 		//$customers = get_users( 'orderby=nicename&role=customer' );
 		$customers = get_users( 'role=customer' );
 		// Array of WP_User objects.
 		foreach ( $customers as $customer ) {
 			//print_r( $user );
-			//print_r( get_user_meta( $user->ID ) );			
+						
 			$user_meta = get_user_meta( $customer->ID );
-			$customer_country = isset( $user_meta['billing_country'][0] ) ? $user_meta['billing_country'][0] : 'UNKNOWN';
+			//echo '<pre>';
+			//print_r( $user_meta );
+			//echo '</pre>';
+			$billing_country = isset( $user_meta['billing_country'][0] ) ? $user_meta['billing_country'][0] : '';
+			$shipping_country = isset( $user_meta['shipping_country'][0] ) ? $user_meta['shipping_country'][0] : '';
+			$customer_country = ( '' == $billing_country ) ? $shipping_country : $billing_country;
+			
+			if ( in_array( $customer_country, $eu_countries ) )
+				$customer_country = 'EU';			
+			
+			if ( '' == $customer_country )
+				$customer_country = 'N/A';
 			//echo "<p>$customer_country</p>";
 			$country_counter[ $customer_country ]++;
 		}
 	
-		echo '<pre>';
-		print_r( $country_counter );
-		echo '</pre>';
+		//echo '<pre>';
+		//print_r( $country_counter );
+		//echo '</pre>';		
+		
+		//ksort( $country_counter );
+		arsort( $country_counter );
+		
+		$total_customers = count( $customers );
+		
+		$html = '<h5>' . __( 'Total customers', 'woocommerce-jetpack' ) . ': ' . $total_customers . '</h5>';
+		
+
+
+		
+		
+		$html .= '<table class="widefat" style="width:30% !important;"><tbody>';
+		$html .= '<tr>';
+		//$html .= '<th>' . __( 'Country Flag', 'woocommerce-jetpack' ) . '</th>';
+		$html .= '<th></th>';
+		$html .= '<th>' . __( 'Country Code', 'woocommerce-jetpack' ) . '</th>';
+		$html .= '<th>' . __( 'Customers Count', 'woocommerce-jetpack' ) . '</th>';
+		$html .= '<th>' . __( 'Percent of total', 'woocommerce-jetpack' ) . '</th>';
+		$html .= '<th></th>';
+		$html .= '</tr>';
+		$i = 0;
+		foreach ( $country_counter as $country_code => $counter ) {
+			$html .= '<tr>';	
+
+			$html .= '<td>' . ++$i . '</td>';
+			
+			$html .= '<td>' . $country_code . '</td>';
+			$html .= '<td>' . $counter . '</td>';
+			if ( 0 != $total_customers )
+				$html .= '<td>' . number_format( ( $counter / $total_customers ) * 100, 2 ) . '%' . '</td>';
+			else
+				$html .= '<td></td>';
+				
+			if ( 'N/A' != $country_code )				
+				$html .= '<td>' . '<img src="' . plugins_url() . '/woocommerce-jetpack/assets/images/flag-icons/' . strtolower( $country_code ) . '.png">' . '</td>';
+			else
+				$html .= '<td></td>';
+				//$html .= '<td>' . '<img src="' . plugins_url() . '/woocommerce-jetpack/assets/images/flag-icons/europeanunion.png">' . '</td>';				
+				
+			$html .= '</tr>';
+		}
+		$html .= '</tbody></table>';
+		echo $html;		
+		
+		//$this->create_reports_tool();
+	}	
+	
+	/**
+	 * Add tab to WooCommerce > Jetpack Tools.
+	 */
+	public function add_all_in_stock_report( $reports ) {
+		$reports['stock']['reports']['all_in_stock'] = array(
+			'title'       => __( 'WooJetpack: All in stock (with sales info)', 'woocommerce-jetpack' ),
+			'description' => '',
+			'hide_title'  => true,
+			'callback'    => array( $this, 'get_all_in_stock_report' ),
+		);
+		
+		return $reports;
 	}	
 	
 	/**
 	 * Add tab to WooCommerce > Jetpack Tools.
 	 */
 	public function add_customers_by_country_report( $reports ) {
-		$reports['wcj_reports'] = array(
+		/*$reports['wcj_reports'] = array(
 			'title'  => __( 'WooCommerce Jetpack Reports', 'woocommerce-jetpack' ),
 			'reports' => array(
 				'customers_by_country' => array(
-					'title'       => __( 'Customers By Country', 'woocommerce' ),
+					'title'       => __( 'WooJetpack: Customers by Country', 'woocommerce' ),
 					'description' => '',
 					'hide_title'  => true,
 					'callback'    => array( $this, 'get_report' ),
 				),
 			),
-		);
+		);*/
 		
 		$reports['customers']['reports']['customers_by_country'] = array(
-			'title'       => __( 'Customers By Country', 'woocommerce-jetpack' ),
+			'title'       => __( 'WooJetpack: Customers by Country', 'woocommerce-jetpack' ),
 			'description' => '',
 			'hide_title'  => true,
 			'callback'    => array( $this, 'get_report' ),
@@ -98,7 +177,7 @@ class WCJ_Reports {
 	public function add_reports_tool_tab( $tabs ) {
 		$tabs[] = array(
 			'id'		=> 'reports',
-			'title'		=> __( 'Smart Reports', 'woocommerce-jetpack' ),
+			'title'		=> __( 'Smart Reports', 'woocommerce-jetpack' ) .  ' - ' . __( '<i>BETA Version</i>', 'woocommerce-jetpack' ),
 		);
 		return $tabs;
 	}
@@ -124,12 +203,31 @@ class WCJ_Reports {
 			array(
 				'title' 	=> __( 'Reports', 'woocommerce-jetpack' ),
 				'desc' 		=> __( 'Enable the Reports feature', 'woocommerce-jetpack' ),
+				'desc_tip' 	=> __( 'Stock, sales, customers etc. reports.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_reports_enabled',
 				'default'	=> 'yes',
 				'type' 		=> 'checkbox'
 			),
 
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_reports_options' ),
+			
+			array( 
+				'title' 	=> __( 'Reports Options', 'woocommerce-jetpack' ),
+				'type' 		=> 'title', 
+				'desc' 		=> __( 'WooJetpack: Customers by Country. Available in WooCommerce > Reports > Customers.', 'woocommerce-jetpack' ) . '<br>' .
+							   __( 'WooJetpack: All in stock (with sales info). Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_reports_more_options' 
+			),
+
+			array(
+				'title' 	=> __( 'European Union as single country', 'woocommerce-jetpack' ),
+				'desc' 		=> __( 'When checked all EU contries are counted as one country in all reports.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_reports_eu_as_single_country',
+				'default'	=> 'no',
+				'type' 		=> 'checkbox'
+			),
+
+			array( 'type' 	=> 'sectionend', 'id' => 'wcj_reports_more_options' ),			
 		);
 
 		return $settings;
@@ -139,7 +237,7 @@ class WCJ_Reports {
 	 * Add settings section to WooCommerce > Settings > Jetpack.
 	 */
 	function settings_section( $sections ) {
-		$sections['reports'] = __( 'Smart Reports', 'woocommerce-jetpack' );
+		$sections['reports'] = __( 'Reports', 'woocommerce-jetpack' ) . __( ' - <em>BETA</em>', 'woocommerce-jetpack' );
 		return $sections;
 	}
 
@@ -229,11 +327,18 @@ class WCJ_Reports {
 				$now_time = time();
 				$order_age = ( $now_time - $the_timestamp );
 				$one_day_seconds = ( 24 * 60 * 60 );
+				
+				
+				$products_info_sales_in_period = $products_info[$item['product_id']]['sales_in_period'];
+				//echo '<pre>' . print_r( $products_info_sales_in_period, true ) . '</pre>';
 
-				foreach ( $products_info[$item['product_id']]['sales_in_period'] as $the_period => $the_value ) {
-					if ( $order_age < ( $the_period * $one_day_seconds ) ) {
-						$products_info[$item['product_id']]['sales_in_period'][$the_period] += $item['qty'];
-						//$products_info[$item['product_id']]['orders_in_period'][$the_period]++;
+				if ( ! empty( $products_info_sales_in_period ) ) {
+				
+					foreach ( $products_info_sales_in_period as $the_period => $the_value ) {
+						if ( $order_age < ( $the_period * $one_day_seconds ) ) {
+							$products_info[$item['product_id']]['sales_in_period'][$the_period] += $item['qty'];
+							//$products_info[$item['product_id']]['orders_in_period'][$the_period]++;
+						}
 					}
 				}
 
@@ -496,7 +601,7 @@ class WCJ_Reports {
 			'on_stock'	=> array(
 				'id'		=> 'on_stock',
 				'title'		=> __( 'All Products on Stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows all products that are on stock.', 'woocommerce-jetpack' ),
+				'desc'		=> __( 'Report shows all products that are on stock and some sales info.', 'woocommerce-jetpack' ),
 			),/*
 			'any_sale'	=> array(
 				'id'		=> 'any_sale',
@@ -516,9 +621,12 @@ class WCJ_Reports {
 			),*/
 		);
 
-		echo '<h2>WooCommerce Jetpack - Smart Reports</h2>';
+		//echo '<h2>' . __( 'WooCommerce Jetpack - Smart Reports', 'woocommerce-jetpack' ) . '</h2>';
 		
 //		$this->output_submenu();
+
+		$_GET['report'] = 'on_stock';
+		$_GET['period'] = 90;
 
 		if ( isset( $_GET['report'] ) ) {
 
@@ -549,21 +657,25 @@ class WCJ_Reports {
 
 			$this->output_report( $products_info, $info, $this->reports_info[$this->report] );
 
-			echo 'Time Elapsed: ' . ( microtime( true ) - $time ) . 's';
-			echo get_option( 'woocommerce_manage_stock' );
+			//echo 'Time Elapsed: ' . ( microtime( true ) - $time ) . 's';
 		}
 		else {
 			echo '<p>' . __( 'Here you can generate reports. Some reports are generated using all your orders and products, so if you have a lot of them - it may take a while.', 'woocommerce-jetpack' ) . '</p>';
 			//echo '<p>' . __( 'Reports:', 'woocommerce-jetpack' ) . '</p>';
-			echo '<table class="widefat"><tbody>';
-			foreach ( $this->reports_info as $report => $report_info ) {
-				//echo '<li><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a> - ' . $report_info['desc'] . '</li>';
-				echo '<tr>';
-				if ( ! isset( $report_info['tab'] ) || 'general' === $report_info['tab'] )
-					echo '<td><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a></td>' . '<td>' . $report_info['desc'] . '</td>';
-				echo '</tr>';
+			echo '<h3>' . __( 'Stock based reports', 'woocommerce-jetpack' ) . '</h3>';			
+			if ( 'yes' === get_option( 'woocommerce_manage_stock' ) ) {
+				echo '<table class="widefat"><tbody>';			
+				foreach ( $this->reports_info as $report => $report_info ) {
+					//echo '<li><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a> - ' . $report_info['desc'] . '</li>';
+					echo '<tr>';
+					if ( ! isset( $report_info['tab'] ) || 'general' === $report_info['tab'] )
+						echo '<td><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a></td>' . '<td>' . $report_info['desc'] . '</td>';
+					echo '</tr>';
+				}
+				echo '</tbody></table>';
 			}
-			echo '</tbody></table>';
+			else
+				echo '<p>' . __( 'Please enable stock management in <strong>WooCommerce > Settings > Products > Inventory</strong> to generate stock based reports.', 'woocommerce-jetpack' ) . '</p>';
 		}
 	}
 }

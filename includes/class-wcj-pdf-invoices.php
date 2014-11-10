@@ -54,10 +54,17 @@ class WCJ_PDF_Invoices {
     }
 	
     /**
+     * do_attach_for_payment_method.
+     */
+    public function do_attach_for_payment_method( $payment_method ) {
+		return ( 'no' === get_option( 'wcj_gateways_attach_invoice_' . $payment_method, 'yes' ) ) ? false : true;
+	}
+	
+    /**
      * add_pdf_invoice_email_attachment.
      */
     public function add_pdf_invoice_email_attachment( $attachments, $status, $order ) {
-		if ( ( isset( $status ) && 'customer_completed_order' === $status ) && isset( $order ) ) {			
+		if ( isset( $status ) && 'customer_completed_order' === $status && isset( $order ) && true === $this->do_attach_for_payment_method( $order->payment_method ) ) {			
 			$file_name = sys_get_temp_dir() . '/invoice-' .  $order->id . '.pdf';
 			$result = file_put_contents( $file_name, $this->generate_pdf( $order->id ) );
 			$attachments[] = $file_name;
@@ -281,8 +288,6 @@ class WCJ_PDF_Invoices {
 		$order_total_shipping		= $the_order->get_total_shipping();
 		$order_total_shipping_tax	= $the_order->get_shipping_tax();
 		$order_total_discount		= $the_order->get_total_discount();
-		
-					
 		
 		$order_tax_percent = 0;
 		$order_total_before_discount = $order_total + $order_total_discount;
@@ -564,6 +569,11 @@ class WCJ_PDF_Invoices {
 		
 		// ORDER TOTALS //
 		$html .= '<p><table class="pdf_invoice_totals_table_wcj"><tbody>';
+			// FEES			
+			$fees_array = $the_order->get_fees();
+			if ( ! empty( $fees_array ) )
+				foreach ( $fees_array as $key => $fee_array )
+					$html .= '<tr><th>' . $fee_array['name'] . '</th><td>' . wc_price( $fee_array['line_total'], $order_currency_array ) . '</td></tr>';			
 			// SUBTOTAL
 			//$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</th><td>' . wc_price( ( $order_subtotal + $order_total_discount_excl_tax ), $order_currency_array ) . '</td></tr>';
 			$html .= '<tr><th>' . get_option( 'wcj_pdf_invoices_order_subtotal_text' ) . '</th><td>' . wc_price( $order_subtotal, $order_currency_array ) . '</td></tr>';
@@ -594,6 +604,11 @@ class WCJ_PDF_Invoices {
 		// SHIPPING METHOD
 		if ( '' != get_option( 'wcj_pdf_invoices_order_shipping_method_text' ) )
 			$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_method_text' ). ': ' . $the_order->get_shipping_method() . '</p>';
+		// SHIPPING ADDRESS
+		if ( '' != get_option( 'wcj_pdf_invoices_order_shipping_address_text' ) && 
+			 $the_order->get_formatted_billing_address() != $the_order->get_formatted_shipping_address() )
+			$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_address_text' ). ':<br>' . $the_order->get_formatted_shipping_address() . '</p>';		
+		
 		// ADDITIONAL FOOTER
 		if ( '' != get_option( 'wcj_pdf_invoices_footer_text' ) ) {
 			$additional_footer = str_replace( PHP_EOL, '<br>', get_option( 'wcj_pdf_invoices_footer_text' ) );
@@ -1044,6 +1059,15 @@ class WCJ_PDF_Invoices {
                 'type'     => 'text',
 				'css'	   => 'width:33%;min-width:300px;',
             ),
+			
+			array(
+                'title'    => __( 'Shipping Address', 'woocommerce-jetpack' ),
+                'desc_tip' => __( 'Will be displayed only if customer\'s shipping address differs from billing address. Leave blank to disable', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_order_shipping_address_text',
+                'default'  => __( 'Shipping Address', 'woocommerce-jetpack' ),
+                'type'     => 'text',
+				'css'	   => 'width:33%;min-width:300px;',
+            ),			
 
 			array(
                 'title'    => __( 'Additional Footer', 'woocommerce-jetpack' ),
@@ -1123,9 +1147,7 @@ class WCJ_PDF_Invoices {
      * settings_section.
      */
     function settings_section( $sections ) {
-
         $sections['pdf_invoices'] = __( 'PDF Invoices', 'woocommerce-jetpack' );
-
         return $sections;
     }
 }

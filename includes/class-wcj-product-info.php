@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Product Info class.
  *
  * @class 		WCJ_Product_Info
- * @version		1.3.0
+ * @version		1.4.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -67,10 +67,11 @@ class WCJ_Product_Info {
 			'%time_since_last_sale%',			
 			//'%available_variations%',
 			'%list_attributes%',
+			'%stock_quantity%',
 		);			
 	
 		// Main hooks
-		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {	
+		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {
 			// Product Info
 			$this->add_product_info_filters( 'archive' );
 			$this->add_product_info_filters( 'single' );	
@@ -85,14 +86,36 @@ class WCJ_Product_Info {
 		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
 		add_filter( 'wcj_settings_product_info', array( $this, 'get_settings' ), 100 );
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
+		
+		// Shortcodes
+		add_shortcode( 'wcjp_list_attribute', array( $this, 'shortcode_wcjp_list_attribute' ) );
+	}
+
+	/**
+	 * shortcode_wcjp_list_attribute.
+	 */	
+	public function shortcode_wcjp_list_attribute( $atts ) {
+		$atts_array = shortcode_atts( array(
+			'attribute_name' 	=> '',
+			'before' 			=> '',
+			'after' 			=> '',
+			'visibility' 		=> '',
+		), $atts );
+		global $product;
+		if ( '' != $atts_array['attribute_name'] && $product && '' != $product->get_attribute( $atts_array['attribute_name'] ) ) {		
+			if ( 'admin' === $atts_array['visibility'] && !is_super_admin() )
+				return '';		
+			return $atts_array['before'] . $product->get_attribute( $atts_array['attribute_name'] ) . $atts_array['after'];
+		}
+		return '';
 	}	
 	
 	/**
 	 * add_product_info_filters.
 	 */	
 	public function list_short_codes() {
-		//return __( 'Available short codes are:', 'woocommerce-jetpack' ) . ' ' . implode( ", ", $this->product_info_shortcodes_array );
-		return __( 'Available short codes are:', 'woocommerce-jetpack' ) . '<ul><li>' . implode( '</li><li>', $this->product_info_shortcodes_array ) . '</li></ul>';
+		//return __( 'Available shortcodes are:', 'woocommerce-jetpack' ) . ' ' . implode( ", ", $this->product_info_shortcodes_array );
+		return __( 'Available shortcodes are:', 'woocommerce-jetpack' ) . '<ul><li>' . implode( '</li><li>', $this->product_info_shortcodes_array ) . '</li></ul>';
 	}	
 	
 	/**
@@ -170,7 +193,7 @@ class WCJ_Product_Info {
 				}
 			}
 		}
-		echo $the_product_info;			
+		echo apply_filters( 'the_content', $the_product_info );
 	}		
 	
 	/**
@@ -307,6 +330,13 @@ class WCJ_Product_Info {
 			case '%list_attributes%':
 				if ( $product->has_attributes() )
 					return $product->list_attributes();
+				else
+					return false;
+					
+			case '%stock_quantity%':
+				$stock_quantity = $product->get_stock_quantity();
+				if ( '' != $stock_quantity )
+					return $stock_quantity;
 				else
 					return false;
 					
