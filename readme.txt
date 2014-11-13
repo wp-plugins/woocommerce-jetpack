@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,57 +62,14 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 1. Plugin admin area.
 
-== TODO List ==
-
-Please note that this list is only preliminary and may be corrected at any time.
-
-Please let us know if you want anything added to list by <a href="http://woojetpack.com/submit-idea/">filling the form</a>.
-
-If you wish that some task would go up the queue to make it faster, please contact us by <a href="http://woojetpack.com/contact-us/">filling this form</a>. We are listening carefully to our users!
-
-= The list =
-* Reported bug in `Empty cart` feature. Checking on our test site didn't show any problems. Reported by Patryk.
-* Upgrade Feature - Shipping - Add "Custom Shipping Method".
-  Advance free shipping - Free shipping for multiple country/places. Each country/places different prices. Idea by LQTOYS.
-* New Feature - Custom Product Input Fields - Fields to fill before adding product to cart. Idea by Mangesh.
-* Upgrade Feature - Orders - Order Numbers - Custom order number date suffix. Idea by Patryk.
-* Upgrade Feature - PDF Invoices - Sending invoice on customer's request. Idea by Jen.
-  This modification will consist also of **Checkout** feature upgrade, as sending invoice on customer's request will require custom checkout fields.
-  Additional (custom) checkout fields idea by Tom.
-* Upgrade Feature - PDF Invoices - Bilingual invoice. Idea by Tudor.
-* Upgrade Feature - PDF Invoices - Second currency in invoice. Idea by Tudor.
-* New Feature - Checkout to PDF (wish list). Idea by Mick.
-* Upgrade Feature - PDF Invoices - Shipping labels. Suggested by Glenda.
-* New Feature - Different prices for different countries. Suggested by Illona.
-* New Feature - Facebook like and share buttons. Idea by Kristof.
-* My account page customization. Idea by Adeyemi.
-* New Feature - Set SKUs as product IDs.
-* New Feature - Add second currency to the price (i.e. display multiple currencies).
-* New Feature - Products per Page - Add "products per page" option for customers (i.e. front end).
-* Upgrade Feature - PDF Invoices - Separate numbering for invoices option, then can add `add_order_number_to_invoice` option.
-* Upgrade Feature - Custom Price Labels - Add price countdown.
-* Upgrade Feature - Product Info - Add widget.
-* Upgrade Feature - Product Info - Today's deal.
-* Upgrade Feature - Product Info - Images for variations.
-* Upgrade Feature - Orders - Custom Order Statuses - Add options for selecting icons and color.
-* Upgrade Feature - Smart Reports - Export to CSV file.
-* Upgrade Feature - Call for Price - Call for price for variable products (all variations or only some).
-* Upgrade Feature - Custom Statuses - Bulk change status.
-* Upgrade Feature - Orders - Bulk orders i.e. "Buy More - Pay Less". Start from global discount for all products, i.e. cart discount; later - discounts for individual products.
-* Upgrade Feature - Custom Price Labels - Add different labels for archives, single, homepage, related. Add option to select which price hooks to use. Different labels for variable and variation.
-* Upgrade Feature - Custom Price Labels - Custom free price.
-* Upgrade Feature - Checkout - Custom checkout fields.
-* Upgrade Feature - Orders - Maximum weight - "Contact us" to place order with products total weight over some amount.
-* Upgrade Feature - Sorting - Add sorting by popularity in e.g. 90 days (not by `total_sales` as it is by default in WooCommerce).
-* Dev - Product info - On "Home Page".
-* Dev - Reports - Stock buy price.
-* Dev - Two Companies - Idea by Ireneusz.
-* Dev - Add to cart. Idea by Craig.
-* Dev - Second currency in shop (i.e. display different currency depending on product). Idea by Leon.
-* Dev - Product Info - Related Products Options: 3+ requires additional css code. Suggested by Patryk.
-* Dev - PDF Invoices - Use shortcodes for template.
-
 == Changelog ==
+
+= 1.9.1 - 13/11/2014 =
+* Fix - **Payment Gateways** - Bug causing displaying *fee type* as *percent* instead of *fixed*, fixed.
+  This did not affect Plus version.
+* Dev - French translation updated.
+* Dev - POT file updated.
+* Tweak - Submenus added in admin's WooCommerce > Settings > Jetpack.
 
 = 1.9.0 - 10/11/2014 =
 * Feature Upgraded - **Payment Gateways** - Payment Gateways Fees, added. Idea by Daniele.
@@ -132,7 +89,7 @@ If you wish that some task would go up the queue to make it faster, please conta
   Shortcode has `visibility` parameter which gives the possibility to show shortcode's product info to admin only.
 * Feature Upgraded - **Product Info** - `%stock_quantity%` WooJetpack Shortcode added.
 * Dev - **Product Info** - `the_content` filter added to result. Now shortcodes will be displayed properly.
-* Tweak - **Add to Cart** - Removed *enable* checkboxes in admin settings. Now need to leave the value empty to disable.
+* Tweak - **Add to Cart** and **Sorting** - Removed *enable* checkboxes in admin settings. Now need to leave the value empty to disable.
 * Tweak - Added some info to *Old Slugs*, *Custom Statuses* and *Product Tabs* features. Suggested by Patryk.
 * New Feature - **Reports** - Various sales, stock, customers etc. reports. *BETA* version.
 

@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Payment Gateways class.
  *
  * @class       WCJ_Payment_Gateways
- * @version		1.1.0
+ * @version		1.1.1
  * @category	Class
  * @author 		Algoritmika Ltd. 
  */
@@ -185,8 +185,8 @@ class WCJ_Payment_Gateways {
 					'default'  	=> 'fixed',
 					'type'		=> 'select',
 					'options'     => array(
-						'percent'   => __( 'Percent', 'woocommerce-jetpack' ),
 						'fixed' 	=> __( 'Fixed', 'woocommerce-jetpack' ),
+						'percent'   => __( 'Percent', 'woocommerce-jetpack' ),						
 					),
 				),
 				

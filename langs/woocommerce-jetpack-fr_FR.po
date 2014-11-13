@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce Jetpack v1.7.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2014-10-08 09:11:20+0000\n"
+"PO-Revision-Date: 2014-11-11 14:25:38+0000\n"
 "Last-Translator: admin <postmaster@gobeletspersonnalises.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Croissant"
 #: includes/class-wcj-call-for-price.php:158
 #@ woocommerce-jetpack
 msgid "Call for Price"
-msgstr "Masquer les prix"
+msgstr "Contactez-nous"
 
 #: includes/class-wcj-call-for-price.php:72
 #@ woocommerce-jetpack
@@ -283,7 +283,7 @@ msgstr "Tout masquer lorsque la livraison gratuite est disponible"
 #: includes/class-wcj-shipping.php:165
 #@ woocommerce-jetpack
 msgid "Hide if free is available"
-msgstr "Masquer si l'option de livraison gratuite est disponible"
+msgstr "Option: Masquer si l'option de livraison gratuite est disponible"
 
 #: includes/class-wcj-shipping.php:64
 #: includes/class-wcj-shipping.php:170
@@ -319,12 +319,12 @@ msgstr "Texte pour les produits seul"
 #: includes/class-wcj-product-info.php:384
 #@ woocommerce-jetpack
 msgid "Order"
-msgstr "Classement"
+msgstr "Ordre"
 
 #: includes/class-wcj-product-info.php:372
 #@ woocommerce-jetpack
 msgid "Order by"
-msgstr "Classer par"
+msgstr "Trier par"
 
 #: includes/class-wcj-orders.php:404
 #: includes/class-wcj-orders.php:555
@@ -382,7 +382,7 @@ msgstr "Options: Produits en relation"
 #: includes/class-wcj-sorting.php:181
 #@ woocommerce-jetpack
 msgid "Remove All Sorting"
-msgstr "Suppression des paramètres de tri."
+msgstr "Réinitialiser les paramètres de tri"
 
 #: includes/class-wcj-old-slugs.php:60
 #@ woocommerce-jetpack
@@ -435,11 +435,6 @@ msgstr "Tri"
 msgid "Sorting Options"
 msgstr "Options: Tri"
 
-#: includes/class-wcj-orders.php:257
-#@ woocommerce-jetpack
-msgid "The tool renumerates all orders."
-msgstr "Les outils de re-numérotation des commandes"
-
 #: includes/class-wcj-orders.php:282
 #@ woocommerce-jetpack
 msgid "The tool renumerates all orders. Press the button below to renumerate all existing orders starting from order counter settings in WooCommerce > Settings > Jetpack > Order Numbers."
@@ -464,7 +459,7 @@ msgstr "Titre"
 #: includes/admin/tools/class-wcj-tools.php:34
 #@ woocommerce-jetpack
 msgid "Tools Dashboard"
-msgstr "Préférences des outils"
+msgstr "Tableau de bord des Outils"
 
 #: includes/class-wcj-add-to-cart.php:199
 #@ woocommerce-jetpack
@@ -530,26 +525,6 @@ msgstr "URL de redirection. Laisser vide pour rediriger sur la page de commande.
 #@ woocommerce-jetpack
 msgid "Other product"
 msgstr "Autres produits"
-
-#: includes/class-wcj-add-to-cart.php:235
-#@ woocommerce-jetpack
-msgid "Enable on single product pages"
-msgstr "Activer sur les pages produits"
-
-#: includes/class-wcj-add-to-cart.php:254
-#@ woocommerce-jetpack
-msgid "Enable on product archives"
-msgstr "Activer sur produits archivés"
-
-#: includes/class-wcj-add-to-cart.php:279
-#@ woocommerce-jetpack
-msgid "Enable \"Already in cart\" on single product pages"
-msgstr "Activer [Déjà dans le panier] sur les pages produits."
-
-#: includes/class-wcj-add-to-cart.php:298
-#@ woocommerce-jetpack
-msgid "Enable \"Already in cart\" on product archives"
-msgstr "Activer [Déjà dans le panier] sur les pages produits archivés."
 
 #: includes/class-wcj-call-for-price.php:72
 #@ woocommerce-jetpack
@@ -756,11 +731,6 @@ msgstr "Options: Liens périmés"
 #@ woocommerce-jetpack
 msgid "Old Slugs"
 msgstr "Permaliens"
-
-#: includes/class-wcj-old-slugs.php:88
-#@ woocommerce-jetpack
-msgid "Remove old product slugs."
-msgstr "Permet de supprimer les Permaliens des produits non utilisés."
 
 #: includes/class-wcj-old-slugs.php:161
 #@ woocommerce-jetpack
@@ -1125,7 +1095,7 @@ msgstr "Activer les factures au format PDF"
 #: includes/class-wcj-pdf-invoices.php:636
 #@ woocommerce-jetpack
 msgid "Add PDF invoices for the store owners and for the customers."
-msgstr "Permet d'étirer des factures au format PDF pour les clients."
+msgstr "Permet d'éditer des factures au format PDF pour les clients."
 
 #: includes/class-wcj-pdf-invoices.php:644
 #@ woocommerce-jetpack
@@ -1526,26 +1496,6 @@ msgstr "Activer [Enregistrer sous] à la place de visualiser le PDF"
 msgid "Migrate from Custom Price Labels"
 msgstr "Migrer depuis [Custom Price Labels]"
 
-#: includes/class-wcj-price-labels.php:126
-#@ woocommerce-jetpack
-msgid "<h2>WooCommerce Jetpack - Migrate from Custom Price Labels (Pro)</h2>"
-msgstr "<h2>WooCommerce Jetpack - importation des paramètres du plugin Custom Price Labels (Pro)</h2>"
-
-#: includes/class-wcj-price-labels.php:174
-#@ woocommerce-jetpack
-msgid "Migrating: "
-msgstr "Migration: "
-
-#: includes/class-wcj-price-labels.php:175
-#@ woocommerce-jetpack
-msgid " Result: "
-msgstr " Résultat: "
-
-#: includes/class-wcj-price-labels.php:179
-#@ woocommerce-jetpack
-msgid "Found data to migrate: "
-msgstr "Données à importer: "
-
 #: includes/class-wcj-price-labels.php:192
 #@ woocommerce-jetpack
 msgid "No data to migrate found"
@@ -1656,11 +1606,6 @@ msgstr "Avant la description du produit"
 msgid "After single product summary"
 msgstr "Après la description du produit"
 
-#: includes/class-wcj-product-info.php:174
-#@ woocommerce-jetpack
-msgid "Customize single product tabs, change related products number."
-msgstr "Permet de modifier les onglets dans les fiches produit. Permet de changer le nombre de produits en relation."
-
 #: includes/class-wcj-product-info.php:183
 #@ woocommerce-jetpack
 msgid "More Products Info"
@@ -1670,13 +1615,6 @@ msgstr "Options: Plus de produits"
 #@ woocommerce-jetpack
 msgid "Product Info on Archive Pages"
 msgstr "Pages Archivées"
-
-#: includes/class-wcj-product-info.php:195
-#: includes/class-wcj-product-info.php:232
-#, php-format
-#@ woocommerce-jetpack
-msgid "HTML info. Predefined: %total_sales%, %sku%"
-msgstr "Info HTML. Prédéfini: %total_sales%, %sku%"
 
 #: includes/class-wcj-product-info.php:204
 #: includes/class-wcj-product-info.php:244
@@ -1767,7 +1705,7 @@ msgstr "Exclure des catégories"
 #: includes/class-wcj-product-listings.php:163
 #@ woocommerce-jetpack
 msgid " Excludes one or more categories from the shop page. This parameter takes a comma-separated list of categories by unique ID, in ascending order. Leave blank to disable."
-msgstr ""
+msgstr "Permet d'exclure une ou plusieurs catégories de la page boutique. Utilisez une virgule pour séparer les identifiants des catégories. Laisser vide pour ne pas utiliser cette fonction."
 
 #: includes/class-wcj-product-listings.php:88
 #: includes/class-wcj-product-listings.php:119
@@ -1784,7 +1722,7 @@ msgstr "Masquer les catégories vides sur les pages boutiques"
 #: includes/class-wcj-product-listings.php:97
 #@ woocommerce-jetpack
 msgid "Category Display Options"
-msgstr ""
+msgstr "Options: Affichage des catégories"
 
 #: includes/class-wcj-product-listings.php:97
 #@ woocommerce-jetpack
@@ -1811,7 +1749,7 @@ msgstr "Exclure les sous-catégories"
 #: includes/class-wcj-product-listings.php:194
 #@ woocommerce-jetpack
 msgid " Excludes one or more categories from the category (archive) pages. This parameter takes a comma-separated list of categories by unique ID, in ascending order. Leave blank to disable."
-msgstr ""
+msgstr "Permet d'exclure une ou plusieurs catégories des pages d'archives. Utilisez une virgule pour séparer les identifiants des catégories. Laisser vide pour ne pas utiliser cette fonction."
 
 #: includes/class-wcj-product-listings.php:120
 #: includes/class-wcj-product-listings.php:203
@@ -1827,7 +1765,7 @@ msgstr ""
 #: includes/class-wcj-product-listings.php:162
 #@ woocommerce-jetpack
 msgid "WooJetpack: Exclude Categories on Shop Page"
-msgstr ""
+msgstr "WooJetpack: Exclure les catégories de la page Boutique "
 
 #: includes/class-wcj-product-listings.php:171
 #: includes/class-wcj-product-listings.php:202
@@ -1838,12 +1776,12 @@ msgstr "WooJetpack: Masquer si vide"
 #: includes/class-wcj-product-listings.php:183
 #@ woocommerce-jetpack
 msgid "WooJetpack: Subcategories Count"
-msgstr ""
+msgstr "WooJetpack : Produits dans les sous-catégories"
 
 #: includes/class-wcj-product-listings.php:193
 #@ woocommerce-jetpack
 msgid "WooJetpack: Exclude Subcategories on Category Pages"
-msgstr ""
+msgstr "WooJetpack: Exclure les sous-catégories des pages de catégories"
 
 #: includes/class-wcj-reports.php:44
 #: includes/class-wcj-reports.php:85
@@ -1865,7 +1803,7 @@ msgstr "Rapports"
 #: includes/class-wcj-reports.php:69
 #@ woocommerce-jetpack
 msgid "Enable the Reports feature"
-msgstr ""
+msgstr "Activer la fonction de rapports"
 
 #: includes/class-wcj-reports.php:277
 #@ woocommerce-jetpack
@@ -1885,7 +1823,7 @@ msgstr "Stock"
 #: includes/class-wcj-reports.php:280
 #@ woocommerce-jetpack
 msgid "Stock price"
-msgstr "Prix (Stock)"
+msgstr "Valeur du Stock"
 
 #: includes/class-wcj-reports.php:282
 #@ woocommerce-jetpack
@@ -1897,46 +1835,41 @@ msgstr "Dernière vente"
 #, php-format
 #@ woocommerce-jetpack
 msgid "Sales in last %s days"
-msgstr ""
+msgstr "Ventes dans les %s derniers jours"
 
 #: includes/class-wcj-reports.php:286
 #@ woocommerce-jetpack
 msgid "Total sales"
-msgstr ""
+msgstr "Total des ventes"
 
 #: includes/class-wcj-reports.php:361
 #@ woocommerce-jetpack
 msgid "No sales yet"
-msgstr "Encore aucune ventes"
+msgstr "Aucune vente"
 
 #: includes/class-wcj-reports.php:378
 #@ woocommerce-jetpack
 msgid "Total current stock value"
-msgstr ""
+msgstr "Valeur du stock réel"
 
 #: includes/class-wcj-reports.php:379
 #@ woocommerce-jetpack
 msgid "Total stock value"
-msgstr ""
+msgstr "Valeur du Stock"
 
 #: includes/class-wcj-reports.php:380
 #@ woocommerce-jetpack
 msgid "Product stock value average"
-msgstr ""
+msgstr "Valeur moyenne des produits"
 
 #: includes/class-wcj-reports.php:381
 #@ woocommerce-jetpack
 msgid "Product stock average"
-msgstr ""
+msgstr "Valeur des produits"
 
 #: includes/class-wcj-reports.php:439
 #@ woocommerce-jetpack
 msgid "All Products on Stock"
-msgstr ""
-
-#: includes/class-wcj-reports.php:440
-#@ woocommerce-jetpack
-msgid "Report shows all products that are on stock."
 msgstr ""
 
 #: includes/class-wcj-reports.php:497
@@ -1968,34 +1901,6 @@ msgstr "Permet d'ajouter ou de supprimer des options de tri."
 #@ woocommerce-jetpack
 msgid "Remove all sorting (including WooCommerce default)"
 msgstr "Supprimer tous les paramètres de tri (cela inclus les paramètres par défaut de Woocommerce)"
-
-#: includes/class-wcj-sorting.php:196
-#@ woocommerce-jetpack
-msgid "Sort by Name - Asc"
-msgstr "Trier par noms [ASC]"
-
-#: includes/class-wcj-sorting.php:197
-#: includes/class-wcj-sorting.php:215
-#: includes/class-wcj-sorting.php:233
-#: includes/class-wcj-sorting.php:251
-#@ woocommerce-jetpack
-msgid "Text visible at front end"
-msgstr "Texte visible par le client"
-
-#: includes/class-wcj-sorting.php:214
-#@ woocommerce-jetpack
-msgid "Sort by Name - Desc"
-msgstr "Trier par noms [DESC]"
-
-#: includes/class-wcj-sorting.php:232
-#@ woocommerce-jetpack
-msgid "Sort by SKU - Asc"
-msgstr "Trier par UGS [ASC]"
-
-#: includes/class-wcj-sorting.php:250
-#@ woocommerce-jetpack
-msgid "Sort by SKU - Desc"
-msgstr "Trier par UGS [DESC]"
 
 #: includes/gateways/class-wc-gateway-wcj-custom.php:50
 #: includes/shipping/class-wc-shipping-wcj-custom.php:56
@@ -2197,15 +2102,901 @@ msgstr "Visite %s"
 #: woocommerce-jetpack.php:126
 #@ woocommerce-jetpack
 msgid "Get <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> to change value."
-msgstr "Achetez <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> pour pouvoir modifier cette valeur."
+msgstr "Passez à <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> pour pouvoir modifier cette valeur."
 
 #: woocommerce-jetpack.php:129
 #@ woocommerce-jetpack
 msgid "Get <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> to change values below."
-msgstr "Achetez <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> pour pouvoir modifier cette valeur."
+msgstr "Passez à <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> pour pouvoir modifier cette valeur."
 
 #: woocommerce-jetpack.php:132
 #@ woocommerce-jetpack
 msgid "Get WooCommerce Jetpack Plus to change value."
-msgstr "Achetez WooCommerce Jetpack Plus pour modifier cette valeur."
+msgstr "Passez à WooCommerce Jetpack Plus pour modifier cette valeur."
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:71
+#: includes/admin/settings/class-wc-settings-jetpack.php:78
+#@ woocommerce-jetpack
+msgid "Select All"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:72
+#: includes/admin/settings/class-wc-settings-jetpack.php:79
+#@ woocommerce-jetpack
+msgid "Feature"
+msgstr ""
+
+#: includes/admin/tools/class-wcj-tools.php:63
+#@ woocommerce-jetpack
+msgid "WooCommerce Jetpack Tools Dashboard"
+msgstr "Tableau de bord de WooCommerce Jetpack"
+
+#: includes/admin/tools/class-wcj-tools.php:64
+#@ woocommerce-jetpack
+msgid "This dashboard lets you check statuses and short descriptions of all available WooCommerce Jetpack tools. Tools can be enabled through WooCommerce > Settings > Jetpack. Enabled tools will appear in the tabs menu above."
+msgstr "Ce tableau de bord vous permet de visualiser les statuts ainsi qu'une descritpion des outils disponibles. Ces outils peuvent être activés dans les paramètres de Woocomerce, onglet Jetpack."
+
+#: includes/admin/tools/class-wcj-tools.php:67
+#@ woocommerce-jetpack
+msgid "Tool"
+msgstr "Outil"
+
+#: includes/admin/tools/class-wcj-tools.php:68
+#@ woocommerce-jetpack
+msgid "Status"
+msgstr "Statut"
+
+#: includes/class-wcj-add-to-cart.php:237
+#@ woocommerce-jetpack
+msgid "Single product view."
+msgstr "Sur la Fiche produit."
+
+#: includes/class-wcj-add-to-cart.php:238
+#: includes/class-wcj-add-to-cart.php:258
+#: includes/class-wcj-add-to-cart.php:316
+#: includes/class-wcj-add-to-cart.php:342
+#: includes/class-wcj-payment-gateways.php:172
+#@ woocommerce-jetpack
+msgid "Leave blank to disable."
+msgstr "Laisser vide pour ne pas utiliser cette option."
+
+#: includes/class-wcj-add-to-cart.php:238
+#: includes/class-wcj-add-to-cart.php:258
+#: includes/class-wcj-add-to-cart.php:318
+#: includes/class-wcj-add-to-cart.php:344
+#: includes/class-wcj-sorting.php:228
+#: includes/class-wcj-sorting.php:238
+#: includes/class-wcj-sorting.php:248
+#: includes/class-wcj-sorting.php:258
+#: includes/class-wcj-sorting.php:268
+#: includes/class-wcj-sorting.php:278
+#@ woocommerce-jetpack
+msgid "Default: "
+msgstr "Défaut: "
+
+#: includes/class-wcj-add-to-cart.php:257
+#@ woocommerce-jetpack
+msgid "Product category (archive) view."
+msgstr "Dans les catégories (archive)."
+
+#: includes/class-wcj-add-to-cart.php:281
+#@ woocommerce-jetpack
+msgid "Products with price set to 0 (i.e. free). Single product view."
+msgstr "Dans les produits avec un prix égal à 0, sur la fiche produit."
+
+#: includes/class-wcj-add-to-cart.php:282
+#: includes/class-wcj-add-to-cart.php:291
+#@ woocommerce-jetpack
+msgid "Leave blank to disable. Default: Add to cart"
+msgstr "Laisser vide pour ne pas utiliser cette option. Par défaut: Ajouter au panier"
+
+#: includes/class-wcj-add-to-cart.php:284
+#: includes/class-wcj-add-to-cart.php:293
+#: includes/class-wcj-add-to-cart.php:318
+#: includes/class-wcj-add-to-cart.php:320
+#: includes/class-wcj-add-to-cart.php:344
+#: includes/class-wcj-add-to-cart.php:346
+#@ woocommerce-jetpack
+msgid "Add to cart"
+msgstr "Ajouter au panier"
+
+#: includes/class-wcj-add-to-cart.php:290
+#@ woocommerce-jetpack
+msgid "Products with price set to 0 (i.e. free). Product category (archive) view."
+msgstr "Dans les produits avec un prix égal à 0, dans l'affichage des catégories (archives)."
+
+#: includes/class-wcj-add-to-cart.php:300
+#@ woocommerce-jetpack
+msgid "Products with empty price. Product category (archive) view."
+msgstr "Dans les produits sans aucun prix, dans l'affichage des catégories (archives)."
+
+#: includes/class-wcj-add-to-cart.php:301
+#@ woocommerce-jetpack
+msgid "Leave blank to disable. Default: Read More"
+msgstr "Laisser vide pour ne pas utiliser cette option. Par défaut: Afficher la suite"
+
+#: includes/class-wcj-add-to-cart.php:303
+#@ woocommerce-jetpack
+msgid "Read More"
+msgstr "Lire la suite"
+
+#: includes/class-wcj-add-to-cart.php:315
+#@ woocommerce-jetpack
+msgid "Already in cart. Single product view."
+msgstr "Déjà dans le panier, sur la fiche produit."
+
+#: includes/class-wcj-add-to-cart.php:317
+#: includes/class-wcj-add-to-cart.php:343
+#@ woocommerce-jetpack
+msgid "Try: "
+msgstr "Essais: "
+
+#: includes/class-wcj-add-to-cart.php:317
+#: includes/class-wcj-add-to-cart.php:343
+#@ woocommerce-jetpack
+msgid "Already in cart - Add Again?"
+msgstr ""
+
+#: includes/class-wcj-add-to-cart.php:341
+#@ woocommerce-jetpack
+msgid "Already in cart. Product category (archive) view."
+msgstr "Déjà dans le panier, dans l'affichage des catégories (archives)."
+
+#: includes/class-wcj-old-slugs.php:49
+#: includes/class-wcj-orders.php:110
+#: includes/class-wcj-orders.php:262
+#: includes/class-wcj-price-labels.php:116
+#@ woocommerce-jetpack
+msgid "enabled"
+msgstr "Actif"
+
+#: includes/class-wcj-old-slugs.php:51
+#: includes/class-wcj-orders.php:112
+#: includes/class-wcj-orders.php:264
+#: includes/class-wcj-price-labels.php:118
+#@ woocommerce-jetpack
+msgid "disabled"
+msgstr "désactivé"
+
+#: includes/class-wcj-old-slugs.php:91
+#, php-format
+#@ woocommerce-jetpack
+msgid "Remove old product slugs. When enabled, the tool is accessible through <a href=\"%sadmin.php?page=wcj-tools&tab=old_slugs\">WooCommerce > Jetpack Tools > Remove Old Slugs</a>."
+msgstr "Permet de supprimer les permaliens des produits obsolètes. Lorsqu'elle est activée, cette fonction est accessible via <a href=\"%sadmin.php?page=wcj-tools&tab=old_slugs\">WooCommerce > Jetpack Tools > Gestion des permaliens</a>."
+
+#: includes/class-wcj-orders.php:115
+#@ woocommerce-jetpack
+msgid "Tool lets you add or delete any custom status for WooCommerce orders."
+msgstr "Outils permettant de créer ou de supprimer des statuts personnalisés pour les commandes WooCommerce."
+
+#: includes/class-wcj-orders.php:157
+#@ woocommerce-jetpack
+msgid "The length of status slug must be 17 or less characters."
+msgstr ""
+
+#: includes/class-wcj-orders.php:265
+#@ woocommerce-jetpack
+msgid "Orders Renumerate"
+msgstr "Numérotation des commandes"
+
+#: includes/class-wcj-orders.php:267
+#@ woocommerce-jetpack
+msgid "Tool renumerates all orders."
+msgstr "Outils pour re-numéroter toutes les commandes."
+
+#: includes/class-wcj-orders.php:478
+#@ woocommerce-jetpack
+msgid "Order Number Custom Suffix"
+msgstr ""
+
+#: includes/class-wcj-orders.php:480
+#@ woocommerce-jetpack
+msgid "Suffix before order number (optional). This will change the suffixes for all existing orders."
+msgstr ""
+
+#: includes/class-wcj-orders.php:560
+#, php-format
+#@ woocommerce-jetpack
+msgid "When enabled, the Custom Statuses tool is accessible through <a href=\"%sadmin.php?page=wcj-tools&tab=custom_statuses\">WooCommerce > Jetpack Tools > Custom Statuses</a>."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:151
+#: includes/class-wcj-payment-gateways.php:342
+#@ woocommerce-jetpack
+msgid "Payment Gateways Fees Options"
+msgstr "Options: Frais concernant les Passerelles de paiement"
+
+#: includes/class-wcj-payment-gateways.php:153
+#@ woocommerce-jetpack
+msgid "This section lets you set extra fees for payment gateways."
+msgstr "Permet d'ajouter des frais pour l'utilisation des modes de paiement."
+
+#: includes/class-wcj-payment-gateways.php:154
+#@ woocommerce-jetpack
+msgid "Fees are applied BEFORE taxes."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:171
+#@ woocommerce-jetpack
+msgid "Fee title to show to customer."
+msgstr "Frais à afficher pour le client."
+
+#: includes/class-wcj-payment-gateways.php:180
+#@ woocommerce-jetpack
+msgid "Fee type."
+msgstr "Type de frais."
+
+#: includes/class-wcj-payment-gateways.php:181
+#@ woocommerce-jetpack
+msgid "Percent or fixed value."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:188
+#@ woocommerce-jetpack
+msgid "Percent"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:189
+#@ woocommerce-jetpack
+msgid "Fixed"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:195
+#@ woocommerce-jetpack
+msgid "Fee value."
+msgstr "Montant des frais."
+
+#: includes/class-wcj-payment-gateways.php:196
+#@ woocommerce-jetpack
+msgid "The value."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:230
+#@ woocommerce-jetpack
+msgid "Payment Gateways Attach PDF Invoice Options"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:230
+#@ woocommerce-jetpack
+msgid "This section lets you choose when to attach PDF invoice to customers emails."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:240
+#@ woocommerce-jetpack
+msgid "Attach PDF invoice."
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:342
+#@ woocommerce-jetpack
+msgid "This section lets you enable extra fees for payment gateways. When enabled all options are added to WooCommerce > Settings > Checkout"
+msgstr ""
+
+#: includes/class-wcj-payment-gateways.php:345
+#@ woocommerce-jetpack
+msgid "Payment Gateways Fees"
+msgstr "Frais pour les passerelles de paiement"
+
+#: includes/class-wcj-payment-gateways.php:346
+#@ woocommerce-jetpack
+msgid "Enable the Payment Gateways Fees"
+msgstr "Activer la gestion des frais"
+
+#: includes/class-wcj-pdf-invoices.php:712
+#@ woocommerce-jetpack
+msgid "Order Date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:713
+#@ woocommerce-jetpack
+msgid "Default: Order date"
+msgstr "Par défaut: Date de la commande"
+
+#: includes/class-wcj-pdf-invoices.php:716
+#@ woocommerce-jetpack
+msgid "Order date"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:722
+#@ woocommerce-jetpack
+msgid "Order Time"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:723
+#@ woocommerce-jetpack
+msgid "Default: Order time"
+msgstr "Par défaut: Heure de la commande"
+
+#: includes/class-wcj-pdf-invoices.php:726
+#@ woocommerce-jetpack
+msgid "Order time"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:781
+#@ woocommerce-jetpack
+msgid "Additional Header"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:782
+#@ woocommerce-jetpack
+msgid "Additional header - will be displayed above all data on invoice. You can use html and/or shortcodes here."
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:903
+#@ woocommerce-jetpack
+msgid "Item Name Additional Info"
+msgstr "Information produit supplémentaire"
+
+#: includes/class-wcj-pdf-invoices.php:904
+#, php-format
+#@ woocommerce-jetpack
+msgid "Here you can add more info to item's name column (e.g. sku). Default is (SKU: %sku%)"
+msgstr "Permet de rajouter des infos dans la colonne [nom] du produit. Par défaut (SKU: %sku%)"
+
+#: includes/class-wcj-pdf-invoices.php:906
+#, php-format
+#@ woocommerce-jetpack
+msgid "(SKU: %sku%)"
+msgstr "(GCU: %sku%)"
+
+#: includes/class-wcj-pdf-invoices.php:1064
+#: includes/class-wcj-pdf-invoices.php:1067
+#@ woocommerce-jetpack
+msgid "Shipping Address"
+msgstr "Adresse de livraison"
+
+#: includes/class-wcj-pdf-invoices.php:1065
+#@ woocommerce-jetpack
+msgid "Will be displayed only if customer's shipping address differs from billing address. Leave blank to disable"
+msgstr ""
+
+#: includes/class-wcj-pdf-invoices.php:1074
+#@ woocommerce-jetpack
+msgid "Additional footer - will be displayed below all other data on invoice. You can use html and/or shortcodes here."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:119
+#@ woocommerce-jetpack
+msgid "Migrate from Custom Price Labels (Pro)"
+msgstr "Migrer depuis Custom Price Labels (Pro)"
+
+#: includes/class-wcj-price-labels.php:121
+#@ woocommerce-jetpack
+msgid "Tool lets you copy all the data (that is labels) from Custom Price labels (Pro) plugin to WooCommerce Jetpack."
+msgstr "Outils permettant d'importer les données du plugin Custom Price labels (Pro) dans WooCommerce Jetpack."
+
+#: includes/class-wcj-price-labels.php:143
+#@ woocommerce-jetpack
+msgid "WooCommerce Jetpack - Migrate from Custom Price Labels (Pro)"
+msgstr "WooCommerce Jetpack - Importer depuis Custom Price Labels (Pro)"
+
+#: includes/class-wcj-price-labels.php:191
+#@ woocommerce-jetpack
+msgid "Migrating (product ID "
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:192
+#@ woocommerce-jetpack
+msgid "Result: "
+msgstr "Résultat: "
+
+#: includes/class-wcj-price-labels.php:214
+#@ woocommerce-jetpack
+msgid "Found data to migrate (product ID "
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:237
+#@ woocommerce-jetpack
+msgid "Press button below to copy all labels from Custom Price Labels (Pro) plugin. Old labels will NOT be deleted. New labels will be overwritten."
+msgstr ""
+
+#: includes/class-wcj-price-labels.php:238
+#@ woocommerce-jetpack
+msgid "Migrate data"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:118
+#@ woocommerce-jetpack
+msgid "Available shortcodes are:"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:385
+#, php-format
+#@ woocommerce-jetpack
+msgid "%s ago"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:455
+#@ woocommerce-jetpack
+msgid "Number of product info fields. Click \"Save changes\" after you change this number."
+msgstr ""
+
+#: includes/class-wcj-product-info.php:478
+#, php-format
+#@ woocommerce-jetpack
+msgid "You save: <strong>%you_save_formatted%</strong> (%you_save_percent%%)"
+msgstr "Vous économisez: <strong>%you_save_formatted%</strong> (%you_save_percent%%)"
+
+#: includes/class-wcj-product-info.php:479
+#: includes/class-wcj-product-info.php:593
+#, php-format
+#@ woocommerce-jetpack
+msgid "Total sales: %total_sales%"
+msgstr "Remises: %total_sales%"
+
+#: includes/class-wcj-product-info.php:482
+#@ woocommerce-jetpack
+msgid "Default"
+msgstr "Défaut"
+
+#: includes/class-wcj-product-info.php:484
+#@ woocommerce-jetpack
+msgid "Field Nr. "
+msgstr ""
+
+#: includes/class-wcj-product-info.php:484
+#@ woocommerce-jetpack
+msgid "Available short codes: "
+msgstr ""
+
+#: includes/class-wcj-product-info.php:519
+#@ woocommerce-jetpack
+msgid "Add additional info to product, change related products number."
+msgstr "Permet d'ajouter des informations au produit. Permet de changer les produits en relation."
+
+#: includes/class-wcj-product-info.php:529
+#@ woocommerce-jetpack
+msgid "For full list of short codes, please visit <a target=\"_blank\" href=\"http://woojetpack.com/features/product-info/\">http://woojetpack.com/features/product-info/</a>"
+msgstr ""
+
+#: includes/class-wcj-product-info.php:535
+#@ woocommerce-jetpack
+msgid "Product Info on Single Pages"
+msgstr "Information produit sur les pages seules"
+
+#: includes/class-wcj-product-info.php:542
+#@ woocommerce-jetpack
+msgid "Even More Products Info"
+msgstr "Options: Plus d'informations sur le produit."
+
+#: includes/class-wcj-product-info.php:554
+#: includes/class-wcj-product-info.php:591
+#@ woocommerce-jetpack
+msgid "HTML info."
+msgstr ""
+
+#: includes/class-wcj-product-info.php:556
+#, php-format
+#@ woocommerce-jetpack
+msgid "SKU: %sku%"
+msgstr "GCU: %sku%"
+
+#: includes/class-wcj-product-input-fields.php:89
+#@ woocommerce-jetpack
+msgid "Text Fields"
+msgstr ""
+
+#: includes/class-wcj-product-input-fields.php:110
+#@ woocommerce-jetpack
+msgid "Required"
+msgstr ""
+
+#: includes/class-wcj-product-input-fields.php:139
+#@ woocommerce-jetpack
+msgid "Fill text box before adding to cart."
+msgstr ""
+
+#: includes/class-wcj-product-input-fields.php:202
+#@ woocommerce-jetpack
+msgid "Product Custom Input Options"
+msgstr ""
+
+#: includes/class-wcj-product-input-fields.php:202
+#: includes/class-wcj-product-input-fields.php:207
+#@ woocommerce-jetpack
+msgid "Product Custom Input."
+msgstr ""
+
+#: includes/class-wcj-product-input-fields.php:205
+#: includes/class-wcj-product-input-fields.php:223
+#@ woocommerce-jetpack
+msgid "Product Custom Input"
+msgstr ""
+
+#: includes/class-wcj-product-input-fields.php:206
+#@ woocommerce-jetpack
+msgid "Enable the Product Custom Input feature"
+msgstr ""
+
+#: includes/class-wcj-product-listings.php:97
+#: includes/class-wcj-product-listings.php:136
+#@ woocommerce-jetpack
+msgid "Show Products"
+msgstr "Afficher les produits"
+
+#: includes/class-wcj-product-listings.php:98
+#: includes/class-wcj-product-listings.php:197
+#@ woocommerce-jetpack
+msgid "Show products if no categories are displayed on shop page"
+msgstr "Afficher les produits si aucune catégorie ne s'affiche sur la page boutique"
+
+#: includes/class-wcj-product-listings.php:137
+#: includes/class-wcj-product-listings.php:235
+#@ woocommerce-jetpack
+msgid "Show products if no categories are displayed on category page"
+msgstr "Afficher les produits si aucune catégorie ne s'affiche sur la page des catégories"
+
+#: includes/class-wcj-product-listings.php:196
+#: includes/class-wcj-product-listings.php:234
+#@ woocommerce-jetpack
+msgid "WooJetpack: Show Products"
+msgstr "WooJetpack: Afficher les produits"
+
+#: includes/class-wcj-product-tabs.php:223
+#@ woocommerce-jetpack
+msgid "Total number of custom tabs"
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:229
+#@ woocommerce-jetpack
+msgid "Click \"Update\" product after you change this number."
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:243
+#@ woocommerce-jetpack
+msgid "Priority"
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:248
+#: includes/class-wcj-product-tabs.php:357
+#@ woocommerce-jetpack
+msgid "Content"
+msgstr "Contenu"
+
+#: includes/class-wcj-product-tabs.php:252
+#@ woocommerce-jetpack
+msgid "Customize the tab(s)"
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:256
+#: includes/class-wcj-product-tabs.php:341
+#@ woocommerce-jetpack
+msgid "Custom Product Tab"
+msgstr "Onglet personnalisé"
+
+#: includes/class-wcj-product-tabs.php:299
+#: includes/class-wcj-product-tabs.php:313
+#@ woocommerce-jetpack
+msgid "Product Tabs"
+msgstr "Onglets produit"
+
+#: includes/class-wcj-product-tabs.php:314
+#@ woocommerce-jetpack
+msgid "Enable the Product Tabs feature"
+msgstr "Activer les options des onglets de produit"
+
+#: includes/class-wcj-product-tabs.php:315
+#@ woocommerce-jetpack
+msgid "Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs."
+msgstr "Permet de personnaliser les onglets de produit. Permet de supprimer complètement les onglets de produit de WooCommerce."
+
+#: includes/class-wcj-product-tabs.php:323
+#@ woocommerce-jetpack
+msgid "Custom Product Tabs Options"
+msgstr "Options: Onglets produit personnalisés"
+
+#: includes/class-wcj-product-tabs.php:326
+#@ woocommerce-jetpack
+msgid "Custom Product Tabs Number"
+msgstr "Nombre d'onglets personnalisés"
+
+#: includes/class-wcj-product-tabs.php:327
+#@ woocommerce-jetpack
+msgid "Click \"Save changes\" after you change this number."
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:358
+#@ woocommerce-jetpack
+msgid "You can use shortcodes here..."
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:366
+#@ woocommerce-jetpack
+msgid "Comma separated PRODUCT IDs to HIDE this tab"
+msgstr "ID des PRODUITS sur lesquels cet onglet NE DOIT PAS s'afficher (séparer par des virgules)."
+
+#: includes/class-wcj-product-tabs.php:367
+#@ woocommerce-jetpack
+msgid "To hide this tab from some products, enter product IDs here."
+msgstr "Pour masquer cet onglet dans certains produits, entrez son ID ici."
+
+#: includes/class-wcj-product-tabs.php:375
+#@ woocommerce-jetpack
+msgid "Comma separated CATEGORY IDs to HIDE this tab"
+msgstr "ID des CATEGORIES sur lesquels cet onglet NE DOIT PAS s'afficher (séparer par des virgules)."
+
+#: includes/class-wcj-product-tabs.php:376
+#@ woocommerce-jetpack
+msgid "To hide this tab from some categories, enter category IDs here."
+msgstr "Pour masquer cet onglet dans certaines catégories, entrez son ID ici."
+
+#: includes/class-wcj-product-tabs.php:384
+#@ woocommerce-jetpack
+msgid "Comma separated PRODUCT IDs to SHOW this tab"
+msgstr "ID des PRODUITS sur lesquels cet onglet DOIT s'afficher (séparer par des virgules)."
+
+#: includes/class-wcj-product-tabs.php:385
+#@ woocommerce-jetpack
+msgid "To show this tab only for some products, enter product IDs here."
+msgstr "Pour afficher cet onglet dans certains produits, entrez son ID ici."
+
+#: includes/class-wcj-product-tabs.php:393
+#@ woocommerce-jetpack
+msgid "Comma separated CATEGORY IDs to SHOW this tab"
+msgstr "ID des CATEGORIES sur lesquels cet onglet DOIT s'afficher (séparer par des virgules)."
+
+#: includes/class-wcj-product-tabs.php:394
+#@ woocommerce-jetpack
+msgid "To show this tab only for some categories, enter category IDs here."
+msgstr "Pour afficher cet onglet dans certaines catégories, entrez son ID ici."
+
+#: includes/class-wcj-product-tabs.php:408
+#@ woocommerce-jetpack
+msgid "Local Custom Product Tabs"
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:411
+#@ woocommerce-jetpack
+msgid "Enable Custom Product Tabs"
+msgstr "Activer les onglets personnalisés"
+
+#: includes/class-wcj-product-tabs.php:419
+#@ woocommerce-jetpack
+msgid "Default Local Custom Product Tabs Number"
+msgstr ""
+
+#: includes/class-wcj-product-tabs.php:431
+#@ woocommerce-jetpack
+msgid "WooCommerce Standard Product Tabs Options"
+msgstr "Options: Onglets de produit standard de WooCommerce"
+
+#: includes/class-wcj-reports.php:88
+#@ woocommerce-jetpack
+msgid "Total customers"
+msgstr ""
+
+#: includes/class-wcj-reports.php:98
+#@ woocommerce-jetpack
+msgid "Country Code"
+msgstr ""
+
+#: includes/class-wcj-reports.php:99
+#@ woocommerce-jetpack
+msgid "Customers Count"
+msgstr ""
+
+#: includes/class-wcj-reports.php:100
+#@ woocommerce-jetpack
+msgid "Percent of total"
+msgstr ""
+
+#: includes/class-wcj-reports.php:135
+#@ woocommerce-jetpack
+msgid "WooJetpack: All in stock (with sales info)"
+msgstr "WooJetpack: En stock (avec les informations de ventes)"
+
+#: includes/class-wcj-reports.php:161
+#@ woocommerce-jetpack
+msgid "WooJetpack: Customers by Country"
+msgstr "WooJetpack: Clients par Pays"
+
+#: includes/class-wcj-reports.php:180
+#@ woocommerce-jetpack
+msgid "<i>BETA Version</i>"
+msgstr ""
+
+#: includes/class-wcj-reports.php:206
+#@ woocommerce-jetpack
+msgid "Stock, sales, customers etc. reports."
+msgstr "Rapports des stocks, ventes, clients etc."
+
+#: includes/class-wcj-reports.php:217
+#@ woocommerce-jetpack
+msgid "WooJetpack: Customers by Country. Available in WooCommerce > Reports > Customers."
+msgstr "WooJetpack: Clients par Pays: Dans WooCommerce > Rapports > Clients."
+
+#: includes/class-wcj-reports.php:218
+#@ woocommerce-jetpack
+msgid "WooJetpack: All in stock (with sales info). Available in WooCommerce > Reports > Stock."
+msgstr "WooJetpack: En stock (avec les informations de ventes): Dans WooCommerce > Rapports > Stock."
+
+#: includes/class-wcj-reports.php:223
+#@ woocommerce-jetpack
+msgid "European Union as single country"
+msgstr ""
+
+#: includes/class-wcj-reports.php:224
+#@ woocommerce-jetpack
+msgid "When checked all EU contries are counted as one country in all reports."
+msgstr ""
+
+#: includes/class-wcj-reports.php:240
+#@ woocommerce-jetpack
+msgid " - <em>BETA</em>"
+msgstr ""
+
+#: includes/class-wcj-reports.php:604
+#@ woocommerce-jetpack
+msgid "Report shows all products that are on stock and some sales info."
+msgstr ""
+
+#: includes/class-wcj-reports.php:665
+#@ woocommerce-jetpack
+msgid "Stock based reports"
+msgstr ""
+
+#: includes/class-wcj-reports.php:678
+#@ woocommerce-jetpack
+msgid "Please enable stock management in <strong>WooCommerce > Settings > Products > Inventory</strong> to generate stock based reports."
+msgstr ""
+
+#: includes/class-wcj-sorting.php:227
+#@ woocommerce-jetpack
+msgid "Sort by Name"
+msgstr "Tri par intitulé"
+
+#: includes/class-wcj-sorting.php:228
+#: includes/class-wcj-sorting.php:231
+#@ woocommerce-jetpack
+msgid "Sort by title: A to Z"
+msgstr "Ordre alphabétique: A à Z"
+
+#: includes/class-wcj-sorting.php:229
+#: includes/class-wcj-sorting.php:239
+#: includes/class-wcj-sorting.php:249
+#: includes/class-wcj-sorting.php:259
+#: includes/class-wcj-sorting.php:269
+#: includes/class-wcj-sorting.php:279
+#@ woocommerce-jetpack
+msgid "Text to show on frontend. Leave blank to disable."
+msgstr ""
+
+#: includes/class-wcj-sorting.php:238
+#: includes/class-wcj-sorting.php:241
+#@ woocommerce-jetpack
+msgid "Sort by title: Z to A"
+msgstr "Ordre alphabétique: Z à A"
+
+#: includes/class-wcj-sorting.php:247
+#@ woocommerce-jetpack
+msgid "Sort by SKU"
+msgstr "Tri par GCU"
+
+#: includes/class-wcj-sorting.php:248
+#: includes/class-wcj-sorting.php:251
+#@ woocommerce-jetpack
+msgid "Sort by SKU: low to high"
+msgstr "GCU: croissant"
+
+#: includes/class-wcj-sorting.php:258
+#: includes/class-wcj-sorting.php:261
+#@ woocommerce-jetpack
+msgid "Sort by SKU: high to low"
+msgstr "GCU: décroissant"
+
+#: includes/class-wcj-sorting.php:267
+#@ woocommerce-jetpack
+msgid "Sort by stock quantity"
+msgstr "Tri par le stock"
+
+#: includes/class-wcj-sorting.php:268
+#: includes/class-wcj-sorting.php:271
+#@ woocommerce-jetpack
+msgid "Sort by stock quantity: low to high"
+msgstr "quantité en stock: croissant"
+
+#: includes/class-wcj-sorting.php:278
+#: includes/class-wcj-sorting.php:281
+#@ woocommerce-jetpack
+msgid "Sort by stock quantity: high to low"
+msgstr "quantité en stock: décroissant"
+
+#: woocommerce-jetpack.php:132
+#@ woocommerce-jetpack
+msgid "Get <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> to change values above."
+msgstr "Acheter <a href=\"http://woojetpack.com/plus/\" target=\"_blank\">WooCommerce Jetpack Plus</a> pour modifier ces valeurs.."
+
+#: includes/class-wcj-price-labels.php:175
+#@ woocommerce-jetpack
+msgid " Result: "
+msgstr " Résultat: "
+
+#: includes/class-wcj-price-labels.php:126
+#@ woocommerce-jetpack
+msgid "<h2>WooCommerce Jetpack - Migrate from Custom Price Labels (Pro)</h2>"
+msgstr "<h2>WooCommerce Jetpack - importation des paramètres du plugin Custom Price Labels (Pro)</h2>"
+
+#: includes/class-wcj-product-info.php:174
+#@ woocommerce-jetpack
+msgid "Customize single product tabs, change related products number."
+msgstr "Permet de modifier les onglets dans les fiches produit. Permet de changer le nombre de produits en relation."
+
+#: includes/class-wcj-add-to-cart.php:298
+#@ woocommerce-jetpack
+msgid "Enable \"Already in cart\" on product archives"
+msgstr "Activer [Déjà dans le panier] sur les pages produits archivés."
+
+#: includes/class-wcj-add-to-cart.php:279
+#@ woocommerce-jetpack
+msgid "Enable \"Already in cart\" on single product pages"
+msgstr "Activer [Déjà dans le panier] sur les pages produits."
+
+#: includes/class-wcj-add-to-cart.php:254
+#@ woocommerce-jetpack
+msgid "Enable on product archives"
+msgstr "Activer sur produits archivés"
+
+#: includes/class-wcj-add-to-cart.php:235
+#@ woocommerce-jetpack
+msgid "Enable on single product pages"
+msgstr "Activer sur les pages produits"
+
+#: includes/class-wcj-price-labels.php:179
+#@ woocommerce-jetpack
+msgid "Found data to migrate: "
+msgstr "Données à importer: "
+
+#: includes/class-wcj-product-info.php:195
+#: includes/class-wcj-product-info.php:232
+#, php-format
+#@ woocommerce-jetpack
+msgid "HTML info. Predefined: %total_sales%, %sku%"
+msgstr "Info HTML. Prédéfini: %total_sales%, %sku%"
+
+#: includes/class-wcj-price-labels.php:174
+#@ woocommerce-jetpack
+msgid "Migrating: "
+msgstr "Migration: "
+
+#: includes/class-wcj-old-slugs.php:88
+#@ woocommerce-jetpack
+msgid "Remove old product slugs."
+msgstr "Permet de supprimer les Permaliens des produits non utilisés."
+
+#: includes/class-wcj-reports.php:440
+#@ woocommerce-jetpack
+msgid "Report shows all products that are on stock."
+msgstr ""
+
+#: includes/class-wcj-sorting.php:196
+#@ woocommerce-jetpack
+msgid "Sort by Name - Asc"
+msgstr "Trier par noms [ASC]"
+
+#: includes/class-wcj-sorting.php:214
+#@ woocommerce-jetpack
+msgid "Sort by Name - Desc"
+msgstr "Trier par noms [DESC]"
+
+#: includes/class-wcj-sorting.php:232
+#@ woocommerce-jetpack
+msgid "Sort by SKU - Asc"
+msgstr "Trier par UGS [ASC]"
+
+#: includes/class-wcj-sorting.php:250
+#@ woocommerce-jetpack
+msgid "Sort by SKU - Desc"
+msgstr "Trier par UGS [DESC]"
+
+#: includes/class-wcj-sorting.php:197
+#: includes/class-wcj-sorting.php:215
+#: includes/class-wcj-sorting.php:233
+#: includes/class-wcj-sorting.php:251
+#@ woocommerce-jetpack
+msgid "Text visible at front end"
+msgstr "Texte visible par le client"
+
+#: includes/class-wcj-orders.php:257
+#@ woocommerce-jetpack
+msgid "The tool renumerates all orders."
+msgstr "Les outils de re-numérotation des commandes"
 
