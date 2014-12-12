@@ -26,7 +26,7 @@ class WCJ_Shipping_Calculator {
 			add_filter( 'woocommerce_shipping_calculator_enable_city' , 	array( $this, 'enable_city' ) );
 			add_filter( 'woocommerce_shipping_calculator_enable_postcode',	array( $this, 'enable_postcode' ) );		
 			add_action( 'wp_head',											array( $this, 'add_custom_styles' ) );
-			add_filter( 'gettext', 											array( $this, 'change_labels' ), 20, 3 );
+			//add_filter( 'gettext', 											array( $this, 'change_labels' ), 20, 3 );
         }        
     
         // Settings hooks
@@ -37,7 +37,7 @@ class WCJ_Shipping_Calculator {
 	
     /**
      * change_labels.
-     */
+     *
     public function change_labels( $translated_text, $text, $domain ) {
 	
 		if ( ! function_exists( 'is_cart' ) || ! is_cart() )
@@ -169,7 +169,7 @@ class WCJ_Shipping_Calculator {
 							  ),
             ),			
 
-			array(
+			/*array(
                 'title'    => __( 'Label for Calculate Shipping', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_shipping_calculator_label_calculate_shipping',
                 'default'  => '',
@@ -181,7 +181,7 @@ class WCJ_Shipping_Calculator {
                 'id'       => 'wcj_shipping_calculator_label_update_totals',
                 'default'  => '',
                 'type'     => 'text',
-            ),			
+            ),*/			
         
             array( 'type'  => 'sectionend', 'id' => 'wcj_shipping_calculator_options' ),
         );

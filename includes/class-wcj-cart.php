@@ -36,8 +36,8 @@ class WCJ_Cart {
 			if ( 'yes' === get_option( 'wcj_add_to_cart_on_visit_enabled' ) )
 				add_action( 'woocommerce_before_single_product', array( $this, 'add_to_cart_on_visit' ), 100 );
 				
-			if ( 'yes' === get_option( 'wcj_cart_hide_shipping_and_taxes_estimated_message' ) )
-					add_filter( 'gettext', array( $this, 'hide_shipping_and_taxes_estimated_message' ), 20, 3 );				
+			/*if ( 'yes' === get_option( 'wcj_cart_hide_shipping_and_taxes_estimated_message' ) )
+					add_filter( 'gettext', array( $this, 'hide_shipping_and_taxes_estimated_message' ), 20, 3 );*/
 		}
 		
 		// Settings hooks
@@ -115,7 +115,7 @@ class WCJ_Cart {
 	
 	/**
      * change_labels.
-     */
+     *
     public function hide_shipping_and_taxes_estimated_message( $translated_text, $text, $domain ) {
 	
 		if ( ! function_exists( 'is_cart' ) || ! is_cart() )
@@ -147,13 +147,13 @@ class WCJ_Cart {
 				'type'     => 'checkbox',
 			),			
 			
-			array(
+			/*array(
 				'title'    => __( 'Hide "Note: Shipping and taxes are estimated..." message on Cart page', 'woocommerce-jetpack' ),
 				'desc'     => __( 'Hide', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_cart_hide_shipping_and_taxes_estimated_message',
 				'default'  => 'no',
 				'type'     => 'checkbox',
-			),
+			),*/
         
             array( 'type'  => 'sectionend', 'id' => 'wcj_cart_options' ),
 			
