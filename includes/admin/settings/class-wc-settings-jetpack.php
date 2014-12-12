@@ -22,6 +22,66 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	public function __construct() {
 		$this->id    = 'jetpack';
 		$this->label = __( 'Jetpack', 'woocommerce-jetpack' );
+		
+		
+		$this->cats = array(
+			'dashboard'	=>	array( 
+				'label'		=>	__( 'Dashboard', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'',
+				'all_cat_ids'	=>	array( '' ),
+			),
+			'price_labels'	=>	array( 
+				'label'		=>	__( 'Price Labels', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'price_labels',
+				'all_cat_ids'	=>	array( 'price_labels', 'call_for_price', ),
+			),	
+			'products'	=>	array( 
+				'label'		=>	__( 'Products', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'product_listings', 
+				'all_cat_ids'	=>	array( 'product_listings', 'product_tabs', 'product_info', 'sorting', 'product_input_fields_global', 'product_input_fields_local', ),
+			),
+			'cart'	=>	array( 
+				'label'		=>	__( 'Cart', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'cart',
+				'all_cat_ids'	=>	array( 'cart', 'add_to_cart', 'add_to_cart_per_category', 'add_to_cart_per_product', ),
+			),			
+			'checkout'	=>	array( 
+				'label'		=>	__( 'Checkout', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'checkout',
+				'all_cat_ids'	=>	array( 'checkout', 'checkout_custom_fields', 'payment_gateways', ),
+			),
+			'shipping'	=>	array( 
+				'label'		=>	__( 'Shipping', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'shipping',
+				'all_cat_ids'	=>	array( 'shipping', 'shipping_calculator', ),
+			),
+			'orders'	=>	array( 
+				'label'		=>	__( 'Orders', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'orders',
+				'all_cat_ids'	=>	array( 'orders', 'order_numbers', ),
+			),
+			'pdf_invoices'	=>	array( 
+				'label'		=>	__( 'PDF Invoices', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'pdf_invoices',
+				'all_cat_ids'	=>	array( 'pdf_invoices', ),
+			),			
+			'emails'	=>	array( 
+				'label'		=>	__( 'Emails', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'emails',
+				'all_cat_ids'	=>	array( 'emails', ),
+			),
+			'currencies'	=>	array( 
+				'label'		=>	__( 'Currencies', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'currency', 
+				'all_cat_ids'	=>	array( 'currency', 'currency_external_products', 'price_by_country', ),
+			),				
+			'misc'	=>	array( 
+				'label'		=>	__( 'Misc.', 'woocommerce-jetpack' ), 
+				'default_cat_id'	=>	'general',
+				'all_cat_ids'	=>	array( 'general', 'old_slugs', 'reports', ),
+			),			
+		);		
+		
 		add_filter( 'woocommerce_settings_tabs_array', 			array( $this, 'add_settings_page' ), 20 );
 		add_action( 'woocommerce_settings_' . $this->id, 		array( $this, 'output' ) );
 		add_action( 'woocommerce_settings_save_' . $this->id, 	array( $this, 'save' ) );
@@ -78,65 +138,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	 */	
 	public function output_cats() {	
 		//global $current_section;
-		$current_cat = empty( $_REQUEST['wcj-cat'] ) ? 'dashboard' : sanitize_title( $_REQUEST['wcj-cat'] );
-
-		$this->cats = array(
-			'dashboard'	=>	array( 
-				'label'		=>	__( 'Dashboard', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'',
-				'all_cat_ids'	=>	array( '' ),
-			),
-			'price_labels'	=>	array( 
-				'label'		=>	__( 'Price Labels', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'price_labels',
-				'all_cat_ids'	=>	array( 'price_labels', 'call_for_price', ),
-			),	
-			'products'	=>	array( 
-				'label'		=>	__( 'Products', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'product_listings', 
-				'all_cat_ids'	=>	array( 'product_listings', 'product_tabs', 'product_info', 'sorting', ),
-			),
-			'cart'	=>	array( 
-				'label'		=>	__( 'Cart', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'cart',
-				'all_cat_ids'	=>	array( 'cart', 'add_to_cart', ),
-			),			
-			'checkout'	=>	array( 
-				'label'		=>	__( 'Checkout', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'checkout',
-				'all_cat_ids'	=>	array( 'checkout', 'payment_gateways', ),
-			),
-			'shipping'	=>	array( 
-				'label'		=>	__( 'Shipping', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'shipping',
-				'all_cat_ids'	=>	array( 'shipping', ),
-			),
-			'orders'	=>	array( 
-				'label'		=>	__( 'Orders', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'orders',
-				'all_cat_ids'	=>	array( 'orders', ),
-			),
-			'pdf_invoices'	=>	array( 
-				'label'		=>	__( 'PDF Invoices', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'pdf_invoices',
-				'all_cat_ids'	=>	array( 'pdf_invoices', ),
-			),			
-			'emails'	=>	array( 
-				'label'		=>	__( 'Emails', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'emails',
-				'all_cat_ids'	=>	array( 'emails', ),
-			),
-			'currencies'	=>	array( 
-				'label'		=>	__( 'Currencies', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'currencies', 
-				'all_cat_ids'	=>	array( 'currencies', ),
-			),				
-			'misc'	=>	array( 
-				'label'		=>	__( 'Misc.', 'woocommerce-jetpack' ), 
-				'cat_id'	=>	'general',
-				'all_cat_ids'	=>	array( 'general', 'old_slugs', 'reports', ),
-			),			
-		);
+		$current_cat = empty( $_REQUEST['wcj-cat'] ) ? 'dashboard' : sanitize_title( $_REQUEST['wcj-cat'] );		
 		
 		if ( empty( $this->cats ) ) {
 			return;
@@ -147,7 +149,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 		$array_keys = array_keys( $this->cats );		
 
 		foreach ( $this->cats as $id => $label_info ) {
-			echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&wcj-cat=' . sanitize_title( $id ) ) . '&section=' . $label_info['cat_id'] . '" class="' . ( $current_cat == $id ? 'current' : '' ) . '">' . $label_info['label'] . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+			echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&wcj-cat=' . sanitize_title( $id ) ) . '&section=' . $label_info['default_cat_id'] . '" class="' . ( $current_cat == $id ? 'current' : '' ) . '">' . $label_info['label'] . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 		}
 
 		echo '</ul><br class="clear" />';		
@@ -221,11 +223,9 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 						$html .= '<td class="plugin-title"><strong>' . $the_feature['title'] . '</strong>';						
 						$html .= '<div class="row-actions visible">';
 						
-						// Temporary solution - 17/09/2014
 						$section = $the_feature['id'];
 						$section = str_replace( 'wcj_', '', $section );
 						$section = str_replace( '_enabled', '', $section );
-						if ( 'currency' === $section ) $section = 'currencies';
 						
 						$html .= '<span class="0"><a href="' . admin_url() . 'admin.php?page=wc-settings&tab=jetpack&wcj-cat=' . $this->get_cat_by_section( $section ) . '&section=' . $section . '">Settings</a></span>';
 						$html .= '</div>';
@@ -263,7 +263,12 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			return apply_filters('wcj_settings_' . $current_section, array() );
 		}
 		else {
-			$settings[] = array( 'title' => __( 'WooCommerce Jetpack Dashboard', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This dashboard lets you enable/disable any Jetpack feature. Each checkbox comes with short feature\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'id' => 'wcj_options' );
+			$settings[] = array( 
+				'title' => __( 'WooCommerce Jetpack Dashboard', 'woocommerce-jetpack' ), 
+				'type' => 'title', 
+				'desc' => __( 'This dashboard lets you enable/disable any Jetpack feature. Each checkbox comes with short feature\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'woocommerce-jetpack' ), 
+				'id' => 'wcj_options' 
+			);
 			$settings = apply_filters( 'wcj_features_status', $settings );		
 			$settings[] = array( 'type' => 'sectionend', 'id' => 'wcj_options' );
 			return $settings;

@@ -116,13 +116,33 @@ function init_wc_gateway_wcj_custom_class() {
 					'type'              => 'checkbox',
 					'default'           => 'yes'
 				),
+				
+				'default_order_status' => array(
+					'title'    			=> __( 'Default Order Status', 'woocommerce-jetpack' ),
+					'description'     	=> __( 'Enable Custom Statuses feature to add custom statuses to the list.', 'woocommerce-jetpack' ),				
+					'default'  			=> apply_filters( 'woocommerce_default_order_status', 'pending' ),
+					'type'     			=> 'select',
+					'options'  			=> $this->get_order_statuses(),
+				),				
 			);
 			
 			if ( 1 != $this->id_count ) {
 				$this->form_fields['enabled']['description'] = apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' );
 				$this->form_fields['enabled']['custom_attributes'] = apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' );
 			}
-		}		
+		}
+
+		/**
+		 * get_order_statuses.
+		 */
+		function get_order_statuses() {
+			$result = array();
+			$statuses = function_exists( 'wc_get_order_statuses' ) ? wc_get_order_statuses() : array();
+			foreach( $statuses as $status => $status_name ) {
+				$result[ substr( $status, 3 ) ] = $statuses[ $status ];
+			}
+			return $result;
+		}	
 		
 		/**
 		 * Check If The Gateway Is Available For Use
@@ -251,7 +271,10 @@ function init_wc_gateway_wcj_custom_class() {
 			$order = new WC_Order( $order_id );
 
 			// Mark as on-hold (we're awaiting the payment)
-			$order->update_status( 'on-hold', __( 'Awaiting payment', 'woocommerce' ) );
+			//$order->update_status( 'on-hold', __( 'Awaiting payment', 'woocommerce' ) );
+			$statuses = $this->get_order_statuses();
+			$note = isset( $statuses[ $this->default_order_status ] ) ? $statuses[ $this->default_order_status ] : '';
+			$order->update_status( $this->default_order_status, $note );
 
 			// Reduce stock levels
 			$order->reduce_order_stock();
@@ -287,6 +310,7 @@ function init_wc_gateway_wcj_custom_class() {
 			$this->min_amount				= $this->get_option( 'min_amount', 0 );
 			$this->enable_for_methods 		= $this->get_option( 'enable_for_methods', array() );
 			$this->enable_for_virtual 		= $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;			
+			$this->default_order_status 	= $this->get_option( 'default_order_status', 'pending' );			
 			// Actions
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );		

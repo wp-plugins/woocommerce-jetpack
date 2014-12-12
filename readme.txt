@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.9.1
 Tested up to: 4.0
-Stable tag: 1.9.1
+Stable tag: 2.0.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,6 +64,41 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 2.0.0 - 12/12/2014 =
+* Fix - CHECKOUT - **Payment Gateways** - *Fee value* step changed to two digits after point in *Payment Gateways Fees Options*. Suggested by Patryk.
+* Fix - PRODUCTS - Sorting - *Remove All Sorting* setting in "WooCommerce > Settings > Products" was disappearing after checkbox is disabled, fixed.
+* Dev - PRODUCTS - **Product Input Fields** - Fields to fill before adding product to cart. Idea by Mangesh.
+  Fields can be added globally (i.e. for all products), or on per product basis.
+  Currently only fields of `text` type are available.
+* Dev - PRODUCTS - **Product Info** - Wordpress shortcodes added for every WooJetpack shortcode.
+  WooJetpack shortcodes are now depreciated and will be removed in future releases. See v.1.9.0 changelog for more details.
+  This covers Wordpress.org Support Forum thread by dudemcpek - https://wordpress.org/support/topic/not-displaying-shortcodes.  
+* Dev - CART - **Add to Cart per Category** - Add to cart button text on *per category* basis (single or category view). Idea by Craig.
+* Dev - CART - **Add to Cart per Product** - Custom add to cart button text on *per product* basis (single or category view). Idea by Craig.
+* Dev - CART - **Cart** - Option to change position of `Empty cart` button. Suggested by Patryk.
+* Dev - CART - **Cart** - Option to hide "Note: Shipping and taxes are estimated and ..." message on Cart page, added.
+* Dev - SHIPPING - **Shipping Calculator** - Customize shipping calculator on cart page. Idea by Xavier.
+* Dev - CURRENCIES - **Prices and Currencies by Country**, added. Idea by Illona.  
+* Dev - CURRENCIES - **Different Currency for External Products**, added. Idea by Leon, Krishan.
+* Dev - CURRENCIES - **Currencies** - *Hide currency symbol* option, added.
+* Dev - CHECKOUT - **Custom Checkout Fields**, added. Idea by: Patryk, Tom, https://wordpress.org/support/topic/delivery-date-picker.  
+* Dev - CHECKOUT - **Payment Gateways** - Payment fees - Maximum and/or minimum cart amount for adding fee option, added.
+* Dev - CHECKOUT - **Payment Gateways** - Option to set *default order status* for custom gateway, added.
+* Dev - ORDERS - **Custom Statuses** - *Default Order Status* option added. Idea by Patryk.
+* Dev - ORDERS - **Order Numbers** - Custom order number date suffix. Idea by Patryk.
+* Dev - ORDERS - **Order Numbers** - Option to *enabled/disable sequential order numbers*, added. This will let use only *custom order number width, prefixes and suffixes*.
+* Dev - **PDF Invoices** - Shortcodes.
+* Dev - **PDF Invoices** - Custom billing and shipping checkout fields are now added to PDF. This covers the request to add shipping phone to PDF by Dennys.
+* Dev - PRICE LABELS - **Custom Price Labels** - *Global* price labels between regular and sale. Suggested by Roman.
+* Dev - PRICE LABELS - **Call for Price** - Empty price hook moved to `init`. That lets set "priority higher than maximum".
+  This caused *Call for Price* not to work properly with other similar plugins installed. Reported by Patryk.
+* Dev - MISC. - Reports - *Understocked* report added. Idea by Ireneusz.
+* i18n - `FR_fr` French translation updated. Translated by Jean-Marc.
+* i18n - POT file updated.
+* Tweak - PRICE LABELS - **Custom Price Labels** - Hide custom price labels if the Dashboard or the administration panel is displayed. Suggested by Jean-Marc.
+* Tweak - ORDERS - **Order Numbers** - Moved to separate module.
+* Tweak - CART - **Add to Cart** - "Only *local* URLs are accepted" info updated in *Add to cart redirect*.
+
 = 1.9.1 - 13/11/2014 =
 * Fix - **Payment Gateways** - Bug causing displaying *fee type* as *percent* instead of *fixed*, fixed.
   This did not affect Plus version.
@@ -85,7 +120,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
   Products with *empty price* only for archives (single view does not contain add to cart button at all, so nothing to cover).
 * Feature Upgraded - **Product Info** - Added `[wcjp_list_attribute]` shortcode.
   Now it is possible to display product's attribute values list (e.g. to list the different colour variations of a product). Idea by Tony.
-  This is the way to display product info, so WooJetpack shortcodes (introduced in v.1.8.2) are depreciated and will be removed in feature releases.
+  This is the right way to display product info, so WooJetpack shortcodes (introduced in v.1.8.2) are depreciated and will be removed in feature releases.
   Shortcode has `visibility` parameter which gives the possibility to show shortcode's product info to admin only.
 * Feature Upgraded - **Product Info** - `%stock_quantity%` WooJetpack Shortcode added.
 * Dev - **Product Info** - `the_content` filter added to result. Now shortcodes will be displayed properly.

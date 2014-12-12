@@ -290,7 +290,7 @@ class WCJ_Price_Labels {
 
 	public function add_price_label_meta_box() {
 	
-		add_meta_box( 'wc-jetpack-price-labels', 'WooCommerce Jetpack: Custom Price Labels', array($this, 'wcj_price_label'), 'product', 'normal', 'high' );
+		add_meta_box( 'wc-jetpack-price-labels', 'WooCommerce Jetpack: Custom Price Labels', array( $this, 'wcj_price_label' ), 'product', 'normal', 'high' );
 	}	
 	
 	/*
@@ -418,7 +418,13 @@ class WCJ_Price_Labels {
 	/*
 	 * front end
 	 */	
-	public function custom_price( $price, $product ) {	
+	public function custom_price( $price, $product ) {
+	
+		if ( is_admin() )
+			return $price;
+			
+		//if ( 'simple' === $product->product_type )
+		//	return $price;
 
 		$current_filter_name = current_filter();
 		
@@ -436,6 +442,12 @@ class WCJ_Price_Labels {
 		$text_to_add_after = get_option( 'wcj_global_price_labels_add_after_text' );
 		if ( '' != $text_to_add_after )
 			$price = $price . $text_to_add_after;
+			
+		// Global price labels - Between regular and sale prices
+		$text_to_add_between_regular_and_sale = get_option( 'wcj_global_price_labels_between_regular_and_sale_text' );
+		if ( '' != $text_to_add_between_regular_and_sale )
+			$price = apply_filters( 'wcj_get_option_filter', $price, str_replace( '</del> <ins>', '</del>' . $text_to_add_between_regular_and_sale . '<ins>', $price ) );			
+			
 		// Global price labels - Remove text from price
 		$text_to_remove = apply_filters( 'wcj_get_option_filter', '', get_option( 'wcj_global_price_labels_remove_text' ) );
 		if ( '' != $text_to_remove )
@@ -555,7 +567,22 @@ class WCJ_Price_Labels {
 				'custom_attributes'	
 						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),*/
 				'css'	   => 'width:30%;min-width:300px;',				
-			),			
+			),	
+			
+			array(
+				'title' 	=> __( 'Add between regular and sale prices', 'woocommerce-jetpack' ),
+				'desc_tip'	=> __( 'Enter text to add between regular and sale prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id' 		=> 'wcj_global_price_labels_between_regular_and_sale_text',
+				'default'	=> '',
+				'type' 		=> 'textarea',
+				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'	
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'	   => 'width:30%;min-width:300px;',				
+			),				
+
+
+			
 			
 			array(
 				'title' 	=> __( 'Remove from price', 'woocommerce-jetpack' ),

@@ -68,27 +68,63 @@ class WCJ_Product_Info {
 			//'%available_variations%',
 			'%list_attributes%',
 			'%stock_quantity%',
+			'%list_attribute%',
 		);			
 	
 		// Main hooks
 		if ( 'yes' === get_option( 'wcj_product_info_enabled' ) ) {
+		
 			// Product Info
 			$this->add_product_info_filters( 'archive' );
-			$this->add_product_info_filters( 'single' );	
+			$this->add_product_info_filters( 'single' );
+			
 			// Related products
-			if ( get_option( 'wcj_product_info_related_products_enable' ) === 'yes' ) {
-				add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), 100 );
+			if ( 'yes' === get_option( 'wcj_product_info_related_products_enable' ) ) {
+				add_filter( 'woocommerce_related_products_args', 		array( $this, 'related_products_limit' ), 100 );
 				add_filter( 'woocommerce_output_related_products_args', array( $this, 'related_products_limit_args' ), 100 );
 			}	
+			
+			// Shortcodes
+			add_shortcode( 'wcj_sku', 									array( $this, 'shortcode_product_info_sku' ) );	
+			add_shortcode( 'wcj_title', 								array( $this, 'shortcode_product_info_title' ) );	
+			add_shortcode( 'wcj_weight', 								array( $this, 'shortcode_product_info_weight' ) );	
+			add_shortcode( 'wcj_sale_price', 							array( $this, 'shortcode_product_info_sale_price' ) );	
+			add_shortcode( 'wcj_regular_price_if_on_sale', 				array( $this, 'shortcode_product_info_regular_price_if_on_sale' ) );	
+			add_shortcode( 'wcj_regular_price', 						array( $this, 'shortcode_product_info_regular_price' ) );	
+			add_shortcode( 'wcj_price', 								array( $this, 'shortcode_product_info_price' ) );		
+			add_shortcode( 'wcj_price_including_tax', 					array( $this, 'shortcode_product_info_price_including_tax' ) );
+			add_shortcode( 'wcj_price_excluding_tax', 					array( $this, 'shortcode_product_info_price_excluding_tax' ) );
+			add_shortcode( 'wcj_tax_class', 							array( $this, 'shortcode_product_info_tax_class' ) );
+			add_shortcode( 'wcj_average_rating', 						array( $this, 'shortcode_product_info_average_rating' ) );
+			add_shortcode( 'wcj_categories', 							array( $this, 'shortcode_product_info_categories' ) );
+			add_shortcode( 'wcj_shipping_class', 						array( $this, 'shortcode_product_info_shipping_class' ) );
+			add_shortcode( 'wcj_dimensions', 							array( $this, 'shortcode_product_info_dimensions' ) );
+			add_shortcode( 'wcj_formatted_name', 						array( $this, 'shortcode_product_info_formatted_name' ) );
+			add_shortcode( 'wcj_stock_availability', 					array( $this, 'shortcode_product_info_stock_availability' ) );		
+			add_shortcode( 'wcj_total_sales', 							array( $this, 'shortcode_product_info_total_sales' ) );		
+			add_shortcode( 'wcj_you_save', 								array( $this, 'shortcode_product_info_you_save' ) );
+			add_shortcode( 'wcj_you_save_percent', 						array( $this, 'shortcode_product_info_you_save_percent' ) );
+			add_shortcode( 'wcj_sale_price_formatted', 					array( $this, 'shortcode_product_info_sale_price_formatted' ) );
+			add_shortcode( 'wcj_regular_price_if_on_sale_formatted', 	array( $this, 'shortcode_product_info_regular_price_if_on_sale_formatted' ) );
+			add_shortcode( 'wcj_regular_price_formatted', 				array( $this, 'shortcode_product_info_regular_price_formatted' ) );
+			add_shortcode( 'wcj_price_formatted', 						array( $this, 'shortcode_product_info_price_formatted' ) );
+			add_shortcode( 'wcj_price_including_tax_formatted', 		array( $this, 'shortcode_product_info_price_including_tax_formatted' ) );
+			add_shortcode( 'wcj_price_excluding_tax_formatted', 		array( $this, 'shortcode_product_info_price_excluding_tax_formatted' ) );
+			add_shortcode( 'wcj_you_save_formatted', 					array( $this, 'shortcode_product_info_you_save_formatted' ) );
+			add_shortcode( 'wcj_time_since_last_sale', 					array( $this, 'shortcode_product_info_time_since_last_sale' ) );
+			add_shortcode( 'wcj_available_variations', 					array( $this, 'shortcode_product_info_available_variations' ) );
+			add_shortcode( 'wcj_list_attributes', 						array( $this, 'shortcode_product_info_list_attributes' ) );
+			add_shortcode( 'wcj_stock_quantity', 						array( $this, 'shortcode_product_info_stock_quantity' ) );			
+			add_shortcode( 'wcj_list_attribute', 						array( $this, 'shortcode_product_info_list_attribute' ) );		
+
+			// Depreciated
+			add_shortcode( 'wcjp_list_attribute', 						array( $this, 'shortcode_wcjp_list_attribute' ) );			
 		}
 		
 		// Settings hooks
-		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
-		add_filter( 'wcj_settings_product_info', array( $this, 'get_settings' ), 100 );
-		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
-		
-		// Shortcodes
-		add_shortcode( 'wcjp_list_attribute', array( $this, 'shortcode_wcjp_list_attribute' ) );
+		add_filter( 'wcj_settings_sections', 							array( $this, 'settings_section' ) );
+		add_filter( 'wcj_settings_product_info', 						array( $this, 'get_settings' ), 100 );
+		add_filter( 'wcj_features_status', 								array( $this, 'add_enabled_option' ), 100 );
 	}
 
 	/**
@@ -103,11 +139,152 @@ class WCJ_Product_Info {
 		), $atts );
 		global $product;
 		if ( '' != $atts_array['attribute_name'] && $product && '' != $product->get_attribute( $atts_array['attribute_name'] ) ) {		
-			if ( 'admin' === $atts_array['visibility'] && !is_super_admin() )
+			if ( 'admin' === $atts_array['visibility'] && ! is_super_admin() )
 				return '';		
 			return $atts_array['before'] . $product->get_attribute( $atts_array['attribute_name'] ) . $atts_array['after'];
 		}
 		return '';
+	}
+
+	/**
+	 * Shortcodes.
+	 */	
+	public function get_shortcode( $shortcode, $atts ) {	
+		$atts = shortcode_atts( array(
+			'before' 			=> '',
+			'after' 			=> '',
+			'visibility' 		=> '',
+			'options' 			=> '',
+		), $atts, $shortcode );
+		if ( 'admin' === $atts['visibility'] && ! is_super_admin() )
+			return '';		
+		if ( '' != ( $result = $this->get_product_info_short_code( $shortcode, $atts['options'] ) ) )
+			return $atts['before'] . $result . $atts['after'];
+		return '';
+	}
+
+	public function shortcode_product_info_sku( $atts ) {
+		return $this->get_shortcode( '%sku%', $atts );
+	}
+	
+	public function shortcode_product_info_title( $atts ) {
+		return $this->get_shortcode( '%title%', $atts );
+	}
+
+	public function shortcode_product_info_weight( $atts ) {
+		return $this->get_shortcode( '%weight%', $atts );
+	}
+
+	public function shortcode_product_info_sale_price( $atts ) {
+		return $this->get_shortcode( '%sale_price%', $atts );
+	}
+
+	public function shortcode_product_info_regular_price_if_on_sale( $atts ) {
+		return $this->get_shortcode( '%regular_price_if_on_sale%', $atts );
+	}	
+
+	public function shortcode_product_info_regular_price( $atts ) {
+		return $this->get_shortcode( '%regular_price%', $atts );
+	}		
+			
+	public function shortcode_product_info_price( $atts ) {
+		return $this->get_shortcode( '%price%', $atts );
+	}	
+	
+	public function shortcode_product_info_price_including_tax( $atts ) {
+		return $this->get_shortcode( '%price_including_tax%', $atts );
+	}	
+
+	public function shortcode_product_info_price_excluding_tax( $atts ) {
+		return $this->get_shortcode( '%price_excluding_tax%', $atts );
+	}	
+
+	public function shortcode_product_info_tax_class( $atts ) {
+		return $this->get_shortcode( '%tax_class%', $atts );
+	}	
+
+	public function shortcode_product_info_average_rating( $atts ) {
+		return $this->get_shortcode( '%average_rating%', $atts );
+	}	
+
+	public function shortcode_product_info_categories( $atts ) {
+		return $this->get_shortcode( '%categories%', $atts );		
+	}		
+	
+	public function shortcode_product_info_shipping_class( $atts ) {
+		return $this->get_shortcode( '%shipping_class%', $atts );		
+	}	
+
+	public function shortcode_product_info_dimensions( $atts ) {
+		return $this->get_shortcode( '%dimensions%', $atts );
+	}	
+
+	public function shortcode_product_info_formatted_name( $atts ) {
+		return $this->get_shortcode( '%formatted_name%', $atts );
+	}	
+
+	public function shortcode_product_info_stock_availability( $atts ) {
+		return $this->get_shortcode( '%stock_availability%', $atts );
+	}		
+		
+	public function shortcode_product_info_total_sales( $atts ) {
+		return $this->get_shortcode( '%total_sales%', $atts );
+	}
+
+	public function shortcode_product_info_you_save( $atts ) {
+		return $this->get_shortcode( '%you_save%', $atts );
+	}	
+
+	public function shortcode_product_info_you_save_percent( $atts ) {
+		return $this->get_shortcode( '%you_save_percent%', $atts );
+	}	
+
+	public function shortcode_product_info_sale_price_formatted( $atts ) {
+		return $this->get_shortcode( '%sale_price_formatted%', $atts );
+	}	
+
+	public function shortcode_product_info_regular_price_if_on_sale_formatted( $atts ) {
+		return $this->get_shortcode( '%regular_price_if_on_sale_formatted%', $atts );
+	}	
+
+	public function shortcode_product_info_regular_price_formatted( $atts ) {
+		return $this->get_shortcode( '%regular_price_formatted%', $atts );
+	}	
+
+	public function shortcode_product_info_price_formatted( $atts ) {
+		return $this->get_shortcode( '%price_formatted%', $atts );
+	}
+	
+	public function shortcode_product_info_price_including_tax_formatted( $atts ) {
+		return $this->get_shortcode( '%price_including_tax_formatted%', $atts );
+	}	
+
+	public function shortcode_product_info_price_excluding_tax_formatted( $atts ) {
+		return $this->get_shortcode( '%price_excluding_tax_formatted%', $atts );
+	}	
+
+	public function shortcode_product_info_you_save_formatted( $atts ) {
+		return $this->get_shortcode( '%you_save_formatted%', $atts );
+	}	
+
+	public function shortcode_product_info_time_since_last_sale( $atts ) {
+		return $this->get_shortcode( '%time_since_last_sale%', $atts );
+	}	
+
+	/*public function shortcode_product_info_available_variations( $atts ) {
+		return $this->get_shortcode( '%available_variations%', $atts );
+	}*/	
+
+	public function shortcode_product_info_list_attributes( $atts ) {
+		return $this->get_shortcode( '%list_attributes%', $atts );
+	}	
+
+	public function shortcode_product_info_stock_quantity( $atts ) {
+		return $this->get_shortcode( '%stock_quantity%', $atts );
+	}			
+	
+	public function shortcode_product_info_list_attribute( $atts ) {
+		return $this->get_shortcode( '%list_attribute%', $atts );
 	}	
 	
 	/**
@@ -127,10 +304,10 @@ class WCJ_Product_Info {
 			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive ) ) &&
 			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter' ) ) && 
 			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) ) )
-					add_action( get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) );
+				add_action( get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) );
 		// More product Info
 		if ( 'yes' === get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_enabled' ) )
-					add_action( get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'more_product_info' ), get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter_priority' ) );						
+				add_action( get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'more_product_info' ), get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter_priority' ) );						
 	}
 	
 	/**
@@ -199,11 +376,20 @@ class WCJ_Product_Info {
 	/**
 	 * get_product_info.
 	 */ 
-	public function get_product_info_short_code( $short_code ) {	
+	public function get_product_info_short_code( $short_code, $options = null ) {	
 	
 		global $product;	
+		
+		if ( ( '%list_attribute%' == $short_code ) && ( empty( $options ) || ! $product ) )
+			return '';
 	
 		switch( $short_code ) {
+		
+			case '%list_attribute%':
+				return $product->get_attribute( $options );
+					
+			case '%sku%':
+				return $product->get_sku();			
 		
 			case '%sku%':
 				return $product->get_sku();	

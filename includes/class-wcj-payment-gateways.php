@@ -87,19 +87,20 @@ class WCJ_Payment_Gateways {
 	
 		global $woocommerce;
 
-		// TODO: What is this for?
 		//if ( is_admin() && ! defined( 'DOING_AJAX' ) )
 		//	return;
 			
 		$current_gateway = $woocommerce->session->chosen_payment_method;
 		if ( '' != $current_gateway ) {
-			$fee_text  = get_option( 'wcj_gateways_fees_text_' . $current_gateway );
-			if ( '' != $fee_text ) {				
+			$fee_text  = get_option( 'wcj_gateways_fees_text_' . $current_gateway );			
+			$min_cart_amount = get_option( 'wcj_gateways_fees_min_cart_amount_' . $current_gateway );			
+			$max_cart_amount = get_option( 'wcj_gateways_fees_max_cart_amount_' . $current_gateway );			
+			// Fees are applied BEFORE taxes
+			$total_in_cart = $woocommerce->cart->cart_contents_total + $woocommerce->cart->shipping_total;			
+			if ( '' != $fee_text && $total_in_cart >= $min_cart_amount  && ( 0 == $max_cart_amount || $total_in_cart <= $max_cart_amount ) ) {				
 				$fee_value = get_option( 'wcj_gateways_fees_value_' . $current_gateway );
 				$fee_type  = apply_filters( 'wcj_get_option_filter', 'fixed', get_option( 'wcj_gateways_fees_type_' . $current_gateway ) );
 				$final_fee_to_add = 0;			
-				// Fees are applied BEFORE taxes
-				$total_in_cart = $woocommerce->cart->cart_contents_total + $woocommerce->cart->shipping_total;
 				switch ( $fee_type ) {
 					case 'fixed': 	$final_fee_to_add = $fee_value; break;
 					case 'percent': $final_fee_to_add = ( $fee_value / 100 ) * $total_in_cart; break;
@@ -198,10 +199,36 @@ class WCJ_Payment_Gateways {
 					'default'  	=> 0,
 					'type'		=> 'number',
 					'custom_attributes' => array(
-						'step' 	=> '1',
+						'step' 	=> '0.01',
 						'min'	=> '0',
 					),
 				),	
+				
+				array(
+					'title'    	=> '',
+					'desc'    	=> __( 'Minimum cart amount for adding the fee.', 'woocommerce-jetpack' ),
+					'desc_tip'	=> __( 'Set 0 to disable.', 'woocommerce-jetpack' ),
+					'id'       	=> 'wcj_gateways_fees_min_cart_amount_' . $key,
+					'default'  	=> 0,
+					'type'		=> 'number',
+					'custom_attributes' => array(
+						'step' 	=> '0.01',
+						'min'	=> '0',
+					),
+				),		
+
+				array(
+					'title'    	=> '',
+					'desc'    	=> __( 'Maximum cart amount for adding the fee.', 'woocommerce-jetpack' ),
+					'desc_tip'	=> __( 'Set 0 to disable.', 'woocommerce-jetpack' ),
+					'id'       	=> 'wcj_gateways_fees_max_cart_amount_' . $key,
+					'default'  	=> 0,
+					'type'		=> 'number',
+					'custom_attributes' => array(
+						'step' 	=> '0.01',
+						'min'	=> '0',
+					),
+				),					
 
 				/*array(
 					'title'    	=> '',

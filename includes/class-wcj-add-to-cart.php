@@ -22,23 +22,23 @@ class WCJ_Add_to_cart {
     public function __construct() {
     
         // Main hooks
-        if ( get_option( 'wcj_add_to_cart_enabled' ) == 'yes' ) {
-        
+        if ( 'yes' === get_option( 'wcj_add_to_cart_enabled' ) ) {
+		
 			if ( get_option( 'wcj_add_to_cart_text_enabled' ) == 'yes' ) {
-				add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
-				add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'custom_add_to_cart_button_text' ), 100 );
+				add_filter( 'woocommerce_product_single_add_to_cart_text', 	array( $this, 'custom_add_to_cart_button_text' ), 100 );
+				add_filter( 'woocommerce_product_add_to_cart_text', 		array( $this, 'custom_add_to_cart_button_text' ), 100 );
 			}
 			
 			if ( get_option( 'wcj_add_to_cart_redirect_enabled' ) == 'yes' )
-				add_action( 'add_to_cart_redirect', array( $this, 'redirect_to_url' ), 100 );
+				add_filter( 'add_to_cart_redirect', array( $this, 'redirect_to_url' ), 100 );
 				
 			//add_action( 'admin_head', array( $this, 'hook_javascript' ) );
         }        
     
         // Settings hooks
-        add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) );
-        add_filter( 'wcj_settings_add_to_cart', array( $this, 'get_settings' ), 100 );
-        add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
+        add_filter( 'wcj_settings_sections', 		array( $this, 'settings_section' ) );
+        add_filter( 'wcj_settings_add_to_cart', 	array( $this, 'get_settings' ), 100 );
+        add_filter( 'wcj_features_status', 			array( $this, 'add_enabled_option' ), 100 );
     }
 	
     /**
@@ -83,11 +83,10 @@ class WCJ_Add_to_cart {
 	/*
 	 * redirect_to_url.
 	 */
-	function redirect_to_url() {
-	
-		global $woocommerce;
+	function redirect_to_url( $url ) {	
+		global $woocommerce;		
 		$checkout_url = get_option( 'wcj_add_to_cart_redirect_url' );
-		if ( $checkout_url === '' ) 
+		if ( '' === $checkout_url ) 
 			$checkout_url = $woocommerce->cart->get_checkout_url();
 		return $checkout_url;
 	}	
@@ -95,13 +94,13 @@ class WCJ_Add_to_cart {
     /**
      * custom_add_to_cart_button_text.
      */
-    public function custom_add_to_cart_button_text( $add_to_cart_text) {
+    public function custom_add_to_cart_button_text( $add_to_cart_text ) {
 	
 		global $woocommerce, $product;
 		
 		if ( ! $product )
-			return $add_to_cart_text;			
-		
+			return $add_to_cart_text;
+
 		$product_type = $product->product_type;
 		
 		if ( ! in_array( $product_type, array( 'external', 'grouped', 'simple', 'variable' ) ) )
@@ -153,7 +152,7 @@ class WCJ_Add_to_cart {
 				array(
 					'title'    => __( 'Add to Cart', 'woocommerce-jetpack' ),
 					'desc'     => __( 'Enable the Add to Cart feature', 'woocommerce-jetpack' ),
-					'desc_tip' => __( 'Set any url to redirect to on add to cart. Change text for Add to cart button by product type. Display "Already in cart" instead of "Add to cart" button if current product is already in cart.', 'woocommerce-jetpack' ),
+					'desc_tip' => __( 'Set any local url to redirect to on Add to cart. Change text for Add to cart button by product type. Display "Already in cart" instead of "Add to cart" button if current product is already in cart.', 'woocommerce-jetpack' ),
 					'id'       => 'wcj_add_to_cart_enabled',
 					'default'  => 'yes',
 					'type'     => 'checkbox',
@@ -165,10 +164,14 @@ class WCJ_Add_to_cart {
 		);
 		
 		//ADD TO CART REDIRECT
-        $settings[] = array( 'title' => __( 'Add to Cart Redirect Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you set any url to redirect to after successfully adding product to cart. Leave empty to redirect to checkout page (skipping the cart page).', 'woocommerce-jetpack' ), 'id' => 'wcj_add_to_cart_redirect_options' );
+        $settings[] = array( 
+				'title' => __( 'Add to Cart Local Redirect Options', 'woocommerce-jetpack' ), 
+				'type' => 'title', 
+				'desc' => __( 'This section lets you set any local URL to redirect to after successfully adding product to cart. Leave empty to redirect to checkout page (skipping the cart page).', 'woocommerce-jetpack' ), 
+				'id' => 'wcj_add_to_cart_redirect_options' );
             
 		$settings[] = array(
-				'title'    => __( 'Redirect', 'woocommerce-jetpack' ),
+				'title'    => __( 'Local Redirect', 'woocommerce-jetpack' ),
 				'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_add_to_cart_redirect_enabled',
 				'default'  => 'no',
@@ -176,8 +179,9 @@ class WCJ_Add_to_cart {
 			);
 			
 		$settings[] = array(
-				'title'    => __( 'Redirect URL', 'woocommerce-jetpack' ),
-				'desc_tip' => __( 'Redirect URL. Leave empty to redirect to checkout.', 'woocommerce-jetpack' ),
+				'title'    => __( 'Local Redirect URL', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Performs a safe (local) redirect, using wp_redirect().', 'woocommerce-jetpack' ),
+				'desc' 	   => __( 'Local redirect URL. Leave empty to redirect to checkout.', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_add_to_cart_redirect_url',
 				'default'  => '',
 				'type'     => 'text',
@@ -306,7 +310,7 @@ class WCJ_Add_to_cart {
 					),					
 				) );				
 				
-			if ( $group_by_product_type['id'] === 'external' ) continue;
+			if ( 'external' === $group_by_product_type['id'] ) continue;
 				
 			$settings[] = 
 				array(
@@ -367,10 +371,8 @@ class WCJ_Add_to_cart {
     /**
      * settings_section.
      */
-    function settings_section( $sections ) {
-    
-        $sections['add_to_cart'] = __( 'Add to Cart', 'woocommerce-jetpack' );
-        
+    function settings_section( $sections ) {    
+        $sections['add_to_cart'] = __( 'Add to Cart', 'woocommerce-jetpack' );        
         return $sections;
     }    
 }

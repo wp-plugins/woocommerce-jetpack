@@ -24,15 +24,20 @@ class WCJ_Cart {
         // Main hooks
         if ( 'yes' === get_option( 'wcj_cart_enabled' ) ) {
 		
-			if ( 'yes' === get_option( 'wcj_empty_cart_enabled' ) ) {
-			
+			if ( 'yes' === get_option( 'wcj_empty_cart_enabled' ) ) {			
 				add_action( 'init', array( $this, 'empty_cart' ) );
-				add_action( 'woocommerce_after_cart', array( $this, 'add_empty_cart_link' ) );
+				//add_action( get_option( 'wcj_empty_cart_position', 'woocommerce_after_cart' ), array( $this, 'add_empty_cart_link' ) );
+				add_action( apply_filters( 'wcj_get_option_filter', 'woocommerce_after_cart', get_option( 'wcj_empty_cart_position', 'woocommerce_after_cart' ) ),
+							array( $this, 'add_empty_cart_link' ) );
+				
 				//add_filter( 'wcj_empty_cart_button_filter', array( $this, 'empty_cart_button_filter_function' ), 100, 2 );
 			}
 			
 			if ( 'yes' === get_option( 'wcj_add_to_cart_on_visit_enabled' ) )
 				add_action( 'woocommerce_before_single_product', array( $this, 'add_to_cart_on_visit' ), 100 );
+				
+			if ( 'yes' === get_option( 'wcj_cart_hide_shipping_and_taxes_estimated_message' ) )
+					add_filter( 'gettext', array( $this, 'hide_shipping_and_taxes_estimated_message' ), 20, 3 );				
 		}
 		
 		// Settings hooks
@@ -80,9 +85,9 @@ class WCJ_Cart {
     /**
      * add_empty_cart_link.
      */
-    public function add_empty_cart_link() {
-	
+    public function add_empty_cart_link() {	
 		echo '<div style="' . apply_filters( 'wcj_get_option_filter', 'float: right;', get_option( 'wcj_empty_cart_div_style' ) ) . '"><form action="" method="post"><input type="submit" class="button" name="empty_cart" value="' . apply_filters( 'wcj_get_option_filter', 'Empty Cart', get_option( 'wcj_empty_cart_text' ) ) . '"></form></div>';
+		//echo '<input type="submit" class="button" name="empty_cart" value="' . apply_filters( 'wcj_get_option_filter', 'Empty Cart', get_option( 'wcj_empty_cart_text' ) ) . '">';
 	}	
 	
     /**
@@ -107,6 +112,22 @@ class WCJ_Cart {
         
         return $settings;
     }
+	
+	/**
+     * change_labels.
+     */
+    public function hide_shipping_and_taxes_estimated_message( $translated_text, $text, $domain ) {
+	
+		if ( ! function_exists( 'is_cart' ) || ! is_cart() )
+			return $translated_text;
+			
+		if ( 'Note: Shipping and taxes are estimated%s and will be updated during checkout based on your billing and shipping information.' === $text )
+			return '';
+		
+		return $translated_text;
+	}		
+	
+	
     
     /**
      * get_settings.
@@ -123,6 +144,14 @@ class WCJ_Cart {
 				'desc_tip' => __( 'Add empty cart button, automatically add to cart on product visit.', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_cart_enabled',
 				'default'  => 'yes',
+				'type'     => 'checkbox',
+			),			
+			
+			array(
+				'title'    => __( 'Hide "Note: Shipping and taxes are estimated..." message on Cart page', 'woocommerce-jetpack' ),
+				'desc'     => __( 'Hide', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_cart_hide_shipping_and_taxes_estimated_message',
+				'default'  => 'no',
 				'type'     => 'checkbox',
 			),
         
@@ -157,7 +186,22 @@ class WCJ_Cart {
 				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'	
 						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),						   
-			),
+			),			
+			
+			array(
+				'title'    => __( 'Button position on the Cart page', 'woocommerce-jetpack' ),				
+				'id'       => 'wcj_empty_cart_position',
+				'default'  => 'woocommerce_after_cart',
+				'type'     => 'select',
+				'options'  => array(					
+					'woocommerce_after_cart' 			=> __( 'After Cart', 'woocommerce-jetpack' ),
+					'woocommerce_before_cart' 			=> __( 'Before Cart', 'woocommerce-jetpack' ),
+					'woocommerce_proceed_to_checkout' 	=> __( 'After Proceed to Checkout button', 'woocommerce-jetpack' ),
+				),
+				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'	
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),					
+			),			
         
             array( 'type'  => 'sectionend', 'id' => 'wcj_empty_cart_options' ),		
 

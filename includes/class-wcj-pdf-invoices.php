@@ -24,12 +24,18 @@ class WCJ_PDF_Invoices {
 .pdf_invoice_items_table_wcj td { border: 1px solid #F0F0F0; }
 .pdf_invoice_totals_table_wcj { padding: 5px; width: 100%; }
 .pdf_invoice_totals_table_wcj th { width: 80%; text-align: right; }
-.pdf_invoice_totals_table_wcj td { width: 20%; text-align: right; border: 1px solid #F0F0F0; }';
+.pdf_invoice_totals_table_wcj td { width: 20%; text-align: right; border: 1px solid #F0F0F0; }';	
 
     /**
      * Constructor.
      */
-    public function __construct() {
+    public function __construct() {	
+	
+		add_shortcode( 'wcj_order_date', 									array( $this, 'shortcode_pdf_invoices_order_date' ) );	
+		add_shortcode( 'wcj_order_billing_address',							array( $this, 'shortcode_pdf_invoices_billing_address' ) );	
+		add_shortcode( 'wcj_items_total_weight',							array( $this, 'shortcode_pdf_invoices_items_total_weight' ) );	
+		add_shortcode( 'wcj_items_total_quantity',							array( $this, 'shortcode_pdf_invoices_items_total_quantity' ) );	
+		add_shortcode( 'wcj_items_total_number',							array( $this, 'shortcode_pdf_invoices_items_total_number' ) );	
 
         // Main hooks
         if ( get_option( 'wcj_pdf_invoices_enabled' ) == 'yes' ) {
@@ -52,6 +58,95 @@ class WCJ_PDF_Invoices {
         add_filter( 'wcj_settings_pdf_invoices', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
+	
+	/**
+	 * Shortcodes.
+	 */	
+	public function get_shortcode( $shortcode, $atts ) {	
+		$atts = shortcode_atts( array(
+			'before' 			=> '',
+			'after' 			=> '',
+			'visibility' 		=> '',
+			'options' 			=> '',
+			'id' 				=> '',
+		), $atts, $shortcode );
+		if ( 'admin' === $atts['visibility'] && ! is_super_admin() )
+			return '';		
+		if ( '' != ( $result = $this->get_pdf_invoices_short_code( $shortcode, $atts['id'], $atts['options'] ) ) )
+			return $atts['before'] . $result . $atts['after'];
+		return '';	
+	}
+	
+	public function get_pdf_invoices_short_code( $shortcode, $id, $options ) {
+		// Get the order id
+		if ( isset( $_GET['pdf_invoice'] ) )			
+			$order_id = $_GET['pdf_invoice'];
+		else if ( '' != $id )
+			$order_id = $id;
+		// Get the order
+		$the_order = wc_get_order( $order_id );
+		if ( false == $the_order )
+			return '';		
+		// The shortcodes
+		switch ( $shortcode ) {
+			case '%order_date%':
+				return date_i18n( get_option( 'date_format' ), strtotime( $the_order->order_date ) );
+			case '%billing_address%':
+				return $the_order->get_formatted_billing_address();
+			case '%items_total_weight%':
+				return $this->get_order_items_total_weight( $the_order );
+			case '%items_total_number%':
+				return $this->get_order_items_total_number( $the_order );
+			case '%items_total_quantity%':
+				return $this->get_order_items_total_quantity( $the_order );
+			default:
+				return '';
+		}
+		return '';
+	}
+	
+	public function get_order_items_total_weight( $the_order ) {
+		$total_weight = 0;
+		$the_items = $the_order->get_items();
+		foreach( $the_items as $the_item ) {
+			$the_product = new WC_Product( $the_item['product_id'] );
+			$total_weight += $the_product->get_weight();
+		}
+		return ( 0 == $total_weight ) ? '' : $total_weight;
+	}
+	
+	public function get_order_items_total_number( $the_order ) {
+		$total_number = count( $the_order->get_items() );
+		return ( 0 == $total_number ) ? '' : $total_number;
+	}		
+	
+	public function get_order_items_total_quantity( $the_order ) {
+		$total_quantity = 0;
+		$the_items = $the_order->get_items();
+		foreach( $the_items as $the_item )
+			$total_quantity += $the_item['qty'];
+		return ( 0 == $total_quantity ) ? '' : $total_quantity;
+	}	
+	
+	public function shortcode_pdf_invoices_order_date( $atts ) {
+		return $this->get_shortcode( '%order_date%', $atts );
+	}
+	
+	public function shortcode_pdf_invoices_billing_address( $atts ) {
+		return $this->get_shortcode( '%billing_address%', $atts );
+	}	
+	
+	public function shortcode_pdf_invoices_items_total_weight( $atts ) {
+		return $this->get_shortcode( '%items_total_weight%', $atts );
+	}
+	
+	public function shortcode_pdf_invoices_items_total_number( $atts ) {
+		return $this->get_shortcode( '%items_total_number%', $atts );
+	}
+	
+	public function shortcode_pdf_invoices_items_total_quantity( $atts ) {
+		return $this->get_shortcode( '%items_total_quantity%', $atts );
+	}			
 	
     /**
      * do_attach_for_payment_method.
@@ -270,6 +365,30 @@ class WCJ_PDF_Invoices {
 			
 			
 	}
+	
+	
+    /**
+     * add_custom_checkout_fields_to_pdf.
+     */
+	public function add_custom_checkout_fields_to_pdf( $order_id, $section ) {
+	
+		$result = '';
+	
+		$post_meta = get_post_meta( $order_id );
+		foreach( $post_meta as $key => $values ) {
+			$value = unserialize( $values[0] );
+			if ( $section === $value['section'] ) {			
+				if ( '' != $value['value']  ) {
+					$the_label = $value['label'];
+					if ( '' != $the_label )
+						$the_label = $the_label . ': ';	
+					$result .= '<p>' . $the_label . $value['value'] . '</p>';
+				}
+			}
+		}
+		
+		return $result;
+	}
 
     /**
      * get_invoice_html.
@@ -309,7 +428,7 @@ class WCJ_PDF_Invoices {
 		
 		
 		
-		$billing_address_formatted = $the_order->get_formatted_billing_address();
+		$billing_address_formatted = $the_order->get_formatted_billing_address() . $this->add_custom_checkout_fields_to_pdf( $order_id, 'billing' );
 
 		// Count optional columns number for column width calculation
 		$total_optional_columns = 0;
@@ -607,7 +726,7 @@ class WCJ_PDF_Invoices {
 		// SHIPPING ADDRESS
 		if ( '' != get_option( 'wcj_pdf_invoices_order_shipping_address_text' ) && 
 			 $the_order->get_formatted_billing_address() != $the_order->get_formatted_shipping_address() )
-			$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_address_text' ). ':<br>' . $the_order->get_formatted_shipping_address() . '</p>';		
+			$html .= '<p>' . get_option( 'wcj_pdf_invoices_order_shipping_address_text' ). ':<br>' . $the_order->get_formatted_shipping_address() . $this->add_custom_checkout_fields_to_pdf( $order_id, 'shipping' ) . '</p>';		
 		
 		// ADDITIONAL FOOTER
 		if ( '' != get_option( 'wcj_pdf_invoices_footer_text' ) ) {
@@ -1115,7 +1234,7 @@ class WCJ_PDF_Invoices {
                 'type'     => 'checkbox',
 				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
             ),
-			
+
             array(
                 'title'    => __( 'PDF Invoices for Customers (Email attachment)', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Enable the PDF Invoices attachment files in customers email on order completed', 'woocommerce-jetpack' ),
@@ -1125,6 +1244,16 @@ class WCJ_PDF_Invoices {
                 'type'     => 'checkbox',
 				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
             ),			
+
+            /* array(
+                'title'    => __( '', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Attach PDF invoice only on customer\'s request', 'woocommerce-jetpack' ),
+				'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'id'       => 'wcj_pdf_invoices_attach_to_email_on_request_only',
+                'default'  => 'no',
+                'type'     => 'checkbox',
+				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+            ), */			
 			
             array(
                 'title'    => __( 'Enable Save as', 'woocommerce-jetpack' ),

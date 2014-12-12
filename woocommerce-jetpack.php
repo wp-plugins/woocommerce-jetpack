@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 1.9.1
+Version: 2.0.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2014 Algoritmika Ltd.
@@ -11,9 +11,9 @@ License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // check if WooCommerce is active
+if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return; // Check if WooCommerce is active
 
 if ( ! class_exists( 'WC_Jetpack' ) ) :
 
@@ -156,6 +156,9 @@ final class WC_Jetpack {
 	private function includes() {
 	
 		include_once( 'includes/admin/tools/class-wcj-tools.php' );
+		//include_once( 'includes/class-wcj-shortcodes.php' );
+		
+		include_once( 'includes/abstracts/class-wcj-product-input-fields.php' );
 	
 		$settings = array();		
 		
@@ -166,27 +169,37 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-sorting.php' );
 		$settings[] = include_once( 'includes/class-wcj-product-info.php' );
 		$settings[] = include_once( 'includes/class-wcj-product-tabs.php' );
-		//$settings[] = include_once( 'includes/class-wcj-product-input-fields.php' );
+		$settings[] = include_once( 'includes/class-wcj-product-input-fields-global.php' );
+		$settings[] = include_once( 'includes/class-wcj-product-input-fields-per-product.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-cart.php' );
 		$settings[] = include_once( 'includes/class-wcj-add-to-cart.php' );
+		$settings[] = include_once( 'includes/class-wcj-add-to-cart-per-category.php' );
+		$settings[] = include_once( 'includes/class-wcj-add-to-cart-per-product.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-checkout.php' );
+		$settings[] = include_once( 'includes/class-wcj-checkout-custom-fields.php' );
 		$settings[] = include_once( 'includes/class-wcj-payment-gateways.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-shipping.php' );
+		$settings[] = include_once( 'includes/class-wcj-shipping-calculator.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-orders.php' );
+		$settings[] = include_once( 'includes/class-wcj-order-numbers.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-pdf-invoices.php' );				
 		
 		$settings[] = include_once( 'includes/class-wcj-emails.php' );
 		
-		$settings[] = include_once( 'includes/class-wcj-currencies.php' );	
+		$settings[] = include_once( 'includes/class-wcj-currencies.php' );
+		$settings[] = include_once( 'includes/class-wcj-currency-external-products.php' );
+		$settings[] = include_once( 'includes/class-wcj-price-by-country.php' );
 		
 		$settings[] = include_once( 'includes/class-wcj-general.php' );
 		$settings[] = include_once( 'includes/class-wcj-old-slugs.php' );		
 		$settings[] = include_once( 'includes/class-wcj-reports.php' );
+		
+		//include_once( 'includes/class-wcj-shortcodes.php' );
 		
 		// Add options
 		if ( is_admin() ) {

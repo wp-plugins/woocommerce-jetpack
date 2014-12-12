@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the WooCommerce Jetpack package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Jetpack 1.9.0\n"
+"Project-Id-Version: WooCommerce Jetpack 1.9.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/woocommerce-jetpack\n"
-"POT-Creation-Date: 2014-11-13 01:22:15+00:00\n"
+"POT-Creation-Date: 2014-12-11 15:54:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,28 +16,78 @@ msgstr ""
 msgid "Jetpack"
 msgstr ""
 
-#: includes/admin/settings/class-wc-settings-jetpack.php:38
+#: includes/admin/settings/class-wc-settings-jetpack.php:85
+#: includes/admin/settings/class-wc-settings-jetpack.php:163
 msgid "Dashboard"
 msgstr ""
 
-#: includes/admin/settings/class-wc-settings-jetpack.php:71
-#: includes/admin/settings/class-wc-settings-jetpack.php:78
+#: includes/admin/settings/class-wc-settings-jetpack.php:90
+msgid "Price Labels"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:95
+msgid "Products"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:100
+#: includes/class-wcj-cart.php:121 includes/class-wcj-cart.php:186
+msgid "Cart"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:105
+#: includes/class-wcj-checkout.php:144 includes/class-wcj-checkout.php:273
+msgid "Checkout"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:110
+#: includes/class-wcj-pdf-invoices.php:1000
+#: includes/class-wcj-shipping.php:155 includes/class-wcj-shipping.php:200
+msgid "Shipping"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:115
+#: includes/class-wcj-orders.php:415 includes/class-wcj-orders.php:577
+msgid "Orders"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:120
+#: includes/class-wcj-pdf-invoices.php:670
+#: includes/class-wcj-pdf-invoices.php:1150
+msgid "PDF Invoices"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:125
+#: includes/class-wcj-emails.php:118 includes/class-wcj-emails.php:162
+msgid "Emails"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:130
+#: includes/class-wcj-currencies.php:414 includes/class-wcj-currencies.php:445
+msgid "Currencies"
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:135
+msgid "Misc."
+msgstr ""
+
+#: includes/admin/settings/class-wc-settings-jetpack.php:196
+#: includes/admin/settings/class-wc-settings-jetpack.php:203
 msgid "Select All"
 msgstr ""
 
-#: includes/admin/settings/class-wc-settings-jetpack.php:72
-#: includes/admin/settings/class-wc-settings-jetpack.php:79
+#: includes/admin/settings/class-wc-settings-jetpack.php:197
+#: includes/admin/settings/class-wc-settings-jetpack.php:204
 msgid "Feature"
 msgstr ""
 
-#: includes/admin/settings/class-wc-settings-jetpack.php:73
-#: includes/admin/settings/class-wc-settings-jetpack.php:80
+#: includes/admin/settings/class-wc-settings-jetpack.php:198
+#: includes/admin/settings/class-wc-settings-jetpack.php:205
 #: includes/admin/tools/class-wcj-tools.php:69
 #: includes/gateways/class-wc-gateway-wcj-custom.php:63
 msgid "Description"
 msgstr ""
 
-#: includes/admin/settings/class-wc-settings-jetpack.php:141
+#: includes/admin/settings/class-wc-settings-jetpack.php:266
 msgid "WooCommerce Jetpack Dashboard"
 msgstr ""
 
@@ -286,10 +336,6 @@ msgstr ""
 msgid "Cart Options"
 msgstr ""
 
-#: includes/class-wcj-cart.php:121 includes/class-wcj-cart.php:186
-msgid "Cart"
-msgstr ""
-
 #: includes/class-wcj-cart.php:122
 msgid "Enable the Cart feature"
 msgstr ""
@@ -336,10 +382,6 @@ msgstr ""
 
 #: includes/class-wcj-checkout.php:141
 msgid "Checkout Options"
-msgstr ""
-
-#: includes/class-wcj-checkout.php:144 includes/class-wcj-checkout.php:273
-msgid "Checkout"
 msgstr ""
 
 #: includes/class-wcj-checkout.php:145
@@ -394,10 +436,6 @@ msgstr ""
 msgid "Currencies Options"
 msgstr ""
 
-#: includes/class-wcj-currencies.php:414 includes/class-wcj-currencies.php:445
-msgid "Currencies"
-msgstr ""
-
 #: includes/class-wcj-currencies.php:415
 msgid "Enable the Currencies feature"
 msgstr ""
@@ -438,10 +476,6 @@ msgstr ""
 
 #: includes/class-wcj-emails.php:115
 msgid "Emails Options"
-msgstr ""
-
-#: includes/class-wcj-emails.php:118 includes/class-wcj-emails.php:162
-msgid "Emails"
 msgstr ""
 
 #: includes/class-wcj-emails.php:119
@@ -673,10 +707,6 @@ msgstr ""
 msgid "Orders Options"
 msgstr ""
 
-#: includes/class-wcj-orders.php:415 includes/class-wcj-orders.php:577
-msgid "Orders"
-msgstr ""
-
 #: includes/class-wcj-orders.php:416
 msgid "Enable the Orders feature"
 msgstr ""
@@ -869,11 +899,11 @@ msgid "Percent or fixed value."
 msgstr ""
 
 #: includes/class-wcj-payment-gateways.php:188
-msgid "Percent"
+msgid "Fixed"
 msgstr ""
 
 #: includes/class-wcj-payment-gateways.php:189
-msgid "Fixed"
+msgid "Percent"
 msgstr ""
 
 #: includes/class-wcj-payment-gateways.php:195
@@ -960,11 +990,6 @@ msgstr ""
 
 #: includes/class-wcj-pdf-invoices.php:667
 msgid "PDF Invoices Options"
-msgstr ""
-
-#: includes/class-wcj-pdf-invoices.php:670
-#: includes/class-wcj-pdf-invoices.php:1150
-msgid "PDF Invoices"
 msgstr ""
 
 #: includes/class-wcj-pdf-invoices.php:671
@@ -1275,11 +1300,6 @@ msgstr ""
 
 #: includes/class-wcj-pdf-invoices.php:997
 msgid "Order Shipping Price"
-msgstr ""
-
-#: includes/class-wcj-pdf-invoices.php:1000
-#: includes/class-wcj-shipping.php:155 includes/class-wcj-shipping.php:200
-msgid "Shipping"
 msgstr ""
 
 #: includes/class-wcj-pdf-invoices.php:1006
@@ -2353,7 +2373,7 @@ msgstr ""
 msgid "Enable Custom Shipping"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (WooCommerce Jetpack 1.9.0)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (WooCommerce Jetpack 1.9.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: woocommerce-jetpack.php:94
 msgid "WooCommerce Jetpack"

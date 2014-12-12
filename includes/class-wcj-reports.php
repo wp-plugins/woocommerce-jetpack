@@ -5,183 +5,121 @@
  * The WooCommerce Jetpack Reports class.
  *
  * @class 		WCJ_Reports
- * @version		1.2.0
+ * @version		2.0.0
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'WCJ_Reports' ) ) :
 
 class WCJ_Reports {
 
+	/** @var string Report ID. */
+	public $report_id;	
+
+	/** @var int Stock reports - range in days. */
+	public $range_days;	
+
+	/** @var string: yes/no Customers reports - group countries. */
+	public $group_countries;	
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-
+		
 		// Main hooks
 		if ( 'yes' === get_option( 'wcj_reports_enabled' ) ) {
 			if ( is_admin() ) {
-				//add_filter( 'wcj_tools_tabs', array( $this, 'add_reports_tool_tab' ), 100 );
-				//add_action( 'wcj_tools_reports', array( $this, 'create_reports_tool' ), 100 );
-				add_filter( 'woocommerce_admin_reports', array( $this, 'add_customers_by_country_report' ) );	
-				add_filter( 'woocommerce_admin_reports', array( $this, 'add_all_in_stock_report' ) );	
+				add_filter( 'woocommerce_admin_reports', 		array( $this, 'add_customers_by_country_report' ) );	
+				add_filter( 'woocommerce_admin_reports', 		array( $this, 'add_stock_reports' ) );	
+				add_action( 'init',						 		array( $this, 'catch_arguments' ) );	
+				
+				include_once( 'reports/wcj-class-reports-customers.php' );
+				include_once( 'reports/wcj-class-reports-stock.php' );
 			}
 		}
-
+		
 		// Settings hooks
-		add_filter( 'wcj_settings_sections', array( $this, 'settings_section' ) ); 		// Add section to WooCommerce > Settings > Jetpack
-		add_filter( 'wcj_settings_reports', array( $this, 'get_settings' ), 100 ); 		// Add the settings
-		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard		
-	}
-	
-	public function get_all_in_stock_report() {
-		$this->create_reports_tool();
+		add_filter( 'wcj_settings_sections', 					array( $this, 'settings_section' ) ); 			// Add section to WooCommerce > Settings > Jetpack
+		add_filter( 'wcj_settings_reports', 					array( $this, 'get_settings' ),       100 );    // Add the settings
+		add_filter( 'wcj_features_status', 						array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard		
 	}
 	
 	/**
-	 * prepare_items function.
-	 */
-	public function prepare_items() {
-			
-		$eu_countries = array(
-			'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 
-		);		
-		
-		if ( 'no' === get_option( 'wcj_reports_eu_as_single_country' ) )
-			$eu_countries = array();
-
-		//$customers = get_users( 'orderby=nicename&role=customer' );
-		$customers = get_users( 'role=customer' );
-		// Array of WP_User objects.
-		foreach ( $customers as $customer ) {
-			//print_r( $user );
-						
-			$user_meta = get_user_meta( $customer->ID );
-			//echo '<pre>';
-			//print_r( $user_meta );
-			//echo '</pre>';
-			$billing_country = isset( $user_meta['billing_country'][0] ) ? $user_meta['billing_country'][0] : '';
-			$shipping_country = isset( $user_meta['shipping_country'][0] ) ? $user_meta['shipping_country'][0] : '';
-			$customer_country = ( '' == $billing_country ) ? $shipping_country : $billing_country;
-			
-			if ( in_array( $customer_country, $eu_countries ) )
-				$customer_country = 'EU';			
-			
-			if ( '' == $customer_country )
-				$customer_country = 'N/A';
-			//echo "<p>$customer_country</p>";
-			$country_counter[ $customer_country ]++;
-		}
-	
-		//echo '<pre>';
-		//print_r( $country_counter );
-		//echo '</pre>';		
-		
-		//ksort( $country_counter );
-		arsort( $country_counter );
-		
-		$total_customers = count( $customers );
-		
-		$html = '<h5>' . __( 'Total customers', 'woocommerce-jetpack' ) . ': ' . $total_customers . '</h5>';
-		
-
-
-		
-		
-		$html .= '<table class="widefat" style="width:30% !important;"><tbody>';
-		$html .= '<tr>';
-		//$html .= '<th>' . __( 'Country Flag', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th></th>';
-		$html .= '<th>' . __( 'Country Code', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th>' . __( 'Customers Count', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th>' . __( 'Percent of total', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th></th>';
-		$html .= '</tr>';
-		$i = 0;
-		foreach ( $country_counter as $country_code => $counter ) {
-			$html .= '<tr>';	
-
-			$html .= '<td>' . ++$i . '</td>';
-			
-			$html .= '<td>' . $country_code . '</td>';
-			$html .= '<td>' . $counter . '</td>';
-			if ( 0 != $total_customers )
-				$html .= '<td>' . number_format( ( $counter / $total_customers ) * 100, 2 ) . '%' . '</td>';
-			else
-				$html .= '<td></td>';
-				
-			if ( 'N/A' != $country_code )				
-				$html .= '<td>' . '<img src="' . plugins_url() . '/woocommerce-jetpack/assets/images/flag-icons/' . strtolower( $country_code ) . '.png">' . '</td>';
-			else
-				$html .= '<td></td>';
-				//$html .= '<td>' . '<img src="' . plugins_url() . '/woocommerce-jetpack/assets/images/flag-icons/europeanunion.png">' . '</td>';				
-				
-			$html .= '</tr>';
-		}
-		$html .= '</tbody></table>';
-		echo $html;		
-		
-		//$this->create_reports_tool();
+	 * catch_arguments.
+	 */	
+	public function catch_arguments() {
+		$this->report_id       = isset( $_GET['report'] )                             ? $_GET['report'] : 'on_stock';
+		$this->range_days      = isset( $_GET['period'] )                             ? $_GET['period'] : 30;
+		$this->group_countries = ( 'customers_by_country_sets' === $this->report_id ) ? 'yes'           : 'no';
 	}	
 	
 	/**
-	 * Add tab to WooCommerce > Jetpack Tools.
+	 * get_report_stock.
+	 */		
+	public function get_report_stock() {
+		$report = new WCJ_Reports_Stock( array ( 
+			'report_id'  => $this->report_id, 
+			'range_days' => $this->range_days, 
+		) );
+		echo $report->get_report_html();		
+	}	
+	
+	/**
+	 * get_report_customers.
+	 */		
+	public function get_report_customers() {
+		$report = new WCJ_Reports_Customers( array ( 'group_countries' => $this->group_countries ) );
+		echo $report->get_report();
+	}
+	
+	/**
+	 * Add reports to WooCommerce > Reports > Stock
 	 */
-	public function add_all_in_stock_report( $reports ) {
-		$reports['stock']['reports']['all_in_stock'] = array(
-			'title'       => __( 'WooJetpack: All in stock (with sales info)', 'woocommerce-jetpack' ),
+	public function add_stock_reports( $reports ) {
+	
+		$reports['stock']['reports']['on_stock'] = array(
+			'title'       => __( 'WooJetpack: All in stock', 'woocommerce-jetpack' ),
 			'description' => '',
 			'hide_title'  => true,
-			'callback'    => array( $this, 'get_all_in_stock_report' ),
+			'callback'    => array( $this, 'get_report_stock' ),
 		);
+		
+		$reports['stock']['reports']['understocked'] = array(
+			'title'       => __( 'WooJetpack: Understocked', 'woocommerce-jetpack' ),
+			'description' => '',
+			'hide_title'  => true,
+			'callback'    => array( $this, 'get_report_stock' ),
+		);		
 		
 		return $reports;
 	}	
 	
 	/**
-	 * Add tab to WooCommerce > Jetpack Tools.
+	 * Add reports to WooCommerce > Reports > Customers
 	 */
 	public function add_customers_by_country_report( $reports ) {
-		/*$reports['wcj_reports'] = array(
-			'title'  => __( 'WooCommerce Jetpack Reports', 'woocommerce-jetpack' ),
-			'reports' => array(
-				'customers_by_country' => array(
-					'title'       => __( 'WooJetpack: Customers by Country', 'woocommerce' ),
-					'description' => '',
-					'hide_title'  => true,
-					'callback'    => array( $this, 'get_report' ),
-				),
-			),
-		);*/
 		
 		$reports['customers']['reports']['customers_by_country'] = array(
 			'title'       => __( 'WooJetpack: Customers by Country', 'woocommerce-jetpack' ),
 			'description' => '',
 			'hide_title'  => true,
-			'callback'    => array( $this, 'get_report' ),
+			'callback'    => array( $this, 'get_report_customers' ),
+		);		
+		
+		$reports['customers']['reports']['customers_by_country_sets'] = array(
+			'title'       => __( 'WooJetpack: Customers by Country Sets', 'woocommerce-jetpack' ),
+			'description' => '',
+			'hide_title'  => true,
+			'callback'    => array( $this, 'get_report_customers' ),
 		);
 		
 		return $reports;
 	}
 	
-	public function get_report() {
-		$this->prepare_items();
-	}
-
-	/**
-	 * Add tab to WooCommerce > Jetpack Tools.
-	 */
-	public function add_reports_tool_tab( $tabs ) {
-		$tabs[] = array(
-			'id'		=> 'reports',
-			'title'		=> __( 'Smart Reports', 'woocommerce-jetpack' ) .  ' - ' . __( '<i>BETA Version</i>', 'woocommerce-jetpack' ),
-		);
-		return $tabs;
-	}
-
 	/**
 	 * Add Enable option to Jetpack Settings Dashboard.
 	 */
@@ -212,19 +150,18 @@ class WCJ_Reports {
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_reports_options' ),
 			
 			array( 
-				'title' 	=> __( 'Reports Options', 'woocommerce-jetpack' ),
+				'title' 	=> __( 'Available Reports', 'woocommerce-jetpack' ),
 				'type' 		=> 'title', 
-				'desc' 		=> __( 'WooJetpack: Customers by Country. Available in WooCommerce > Reports > Customers.', 'woocommerce-jetpack' ) . '<br>' .
-							   __( 'WooJetpack: All in stock (with sales info). Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' ),
+				'desc' 		=> '<p>'
+							   . __( 'WooJetpack: Customers by Country. Available in WooCommerce > Reports > Customers.', 'woocommerce-jetpack' )
+							   . '</p><p>'
+							   . __( 'WooJetpack: Customers by Country Sets. Available in WooCommerce > Reports > Customers.', 'woocommerce-jetpack' )
+							   . '</p><p>'							   
+							   . __( 'WooJetpack: All in Stock with sales data. Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' )
+							   . '</p><p>'
+							   . __( 'WooJetpack: Understocked products (calculated by sales data). Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' )
+							   . '</p>',
 				'id' 		=> 'wcj_reports_more_options' 
-			),
-
-			array(
-				'title' 	=> __( 'European Union as single country', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'When checked all EU contries are counted as one country in all reports.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_reports_eu_as_single_country',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox'
 			),
 
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_reports_more_options' ),			
@@ -237,447 +174,9 @@ class WCJ_Reports {
 	 * Add settings section to WooCommerce > Settings > Jetpack.
 	 */
 	function settings_section( $sections ) {
-		$sections['reports'] = __( 'Reports', 'woocommerce-jetpack' ) . __( ' - <em>BETA</em>', 'woocommerce-jetpack' );
+		$sections['reports'] = __( 'Reports', 'woocommerce-jetpack' );
 		return $sections;
-	}
-
-	/*
-	 * add_reports_tool.
-	 *
-	public function add_reports_tool() {
-		add_submenu_page( 'woocommerce', 'Jetpack - Smart Reports', 'Smart Reports', 'manage_options', 'woocommerce-jetpack-reports', array( $this, 'create_reports_tool' ) );
-	}
-
-	/*
-	 * get_products_info.
-	 */
-	public function get_products_info( &$products_info ) {
-
-		$args = array(
-			'post_type' => 'product',
-			'posts_per_page' => -1
-		);
-
-		$loop = new WP_Query( $args );
-		if ( $loop->have_posts() ) {
-
-			while ( $loop->have_posts() ) : $loop->the_post();
-
-				$the_ID = get_the_ID();
-				$the_product = new WC_Product( $the_ID );
-				$the_price = $the_product->get_price();
-				$the_stock = $the_product->get_total_stock();
-				$the_title = get_the_title();
-				$the_date = get_the_date();
-				$the_permalink = get_the_permalink();
-				
-				$post_custom = get_post_custom( $the_ID );
-				$total_sales = $post_custom['total_sales'][0];
-
-				$products_info[$the_ID] = array(
-					'ID'				=>	$the_ID,
-					'title'				=>	$the_title,
-					'permalink'			=>	$the_permalink,
-					'price'				=>	$the_price,
-					'stock'				=>	$the_stock,
-					'stock_price'		=>	$the_price * $the_stock,
-					'total_sales'		=>	$total_sales,
-					'date_added'		=>	$the_date,
-					'last_sale'			=>	0,
-					'sales_in_period'	=> array(
-						7	=> 0,
-						14	=> 0,
-						30	=> 0,
-						60	=> 0,
-						90	=> 0,
-						180	=> 0,
-						360	=> 0,
-					),
-				);
-
-			endwhile;
-		}
-	}
-
-	/*
-	 * get_orders_info.
-	 */
-	public function get_orders_info( &$products_info ) {
-
-		$args_orders = array(
-			'post_type'			=> 'shop_order',
-			//'post_status' 		=> 'publish',
-			'post_status' 		=> 'completed',
-			'posts_per_page' 	=> -1,
-			'orderby'			=> 'date',
-			'order'				=> 'DESC',
-			'tax_query'			=> '',
-		);
-
-		$loop_orders = new WP_Query( $args_orders );
-		while ( $loop_orders->have_posts() ) : $loop_orders->the_post();
-
-			$order_id = $loop_orders->post->ID;
-			$order = new WC_Order( $order_id );
-			$items = $order->get_items();
-
-			foreach ( $items as $item ) {
-
-				$the_timestamp =  get_the_time( 'U' );
-				$now_time = time();
-				$order_age = ( $now_time - $the_timestamp );
-				$one_day_seconds = ( 24 * 60 * 60 );
-				
-				
-				$products_info_sales_in_period = $products_info[$item['product_id']]['sales_in_period'];
-				//echo '<pre>' . print_r( $products_info_sales_in_period, true ) . '</pre>';
-
-				if ( ! empty( $products_info_sales_in_period ) ) {
-				
-					foreach ( $products_info_sales_in_period as $the_period => $the_value ) {
-						if ( $order_age < ( $the_period * $one_day_seconds ) ) {
-							$products_info[$item['product_id']]['sales_in_period'][$the_period] += $item['qty'];
-							//$products_info[$item['product_id']]['orders_in_period'][$the_period]++;
-						}
-					}
-				}
-
-				if ( 0 == $products_info[$item['product_id']]['last_sale'] ) {
-					$products_info[$item['product_id']]['last_sale'] = $the_timestamp;
-				}
-
-			}
-
-		endwhile;
-
-		//wp_reset_query();
-	}
-
-	/*
-	 * count_info.
-	 */
-	public function count_info( &$info, &$products_info ) {
-
-		$info['total_stock_price'] = 0;
-		$info['stock_price_average'] = 0;
-		$info['stock_average'] = 0;
-		$info['sales_in_period_average'][$this->period] = 0;
-		$stock_non_zero_number = 0;
-
-		foreach ( $products_info as $product_info ) {
-
-			if ( $product_info['sales_in_period'][$this->period] > 0 )
-				$products_info[ $product_info['ID'] ]['stock_to_sales'] = $product_info['stock'] / $product_info['sales_in_period'][$this->period];
-			else
-				$products_info[ $product_info['ID'] ]['stock_to_sales'] = 0;
-
-			if ( $product_info['stock_price'] > 0 ) {
-				$info['stock_price_average'] += $product_info['stock_price'];
-				$info['stock_average'] = $product_info['stock'];
-				$info['sales_in_period_average'][$this->period] += $product_info['sales_in_period'][$this->period];
-				$stock_non_zero_number++;
-			}
-
-			$info['total_stock_price'] += $product_info['stock_price'];
-		}
-
-		if ( 0 != $stock_non_zero_number ) {
-			$info['stock_price_average'] /= $stock_non_zero_number;
-			$info['stock_average'] /= $stock_non_zero_number;
-			$info['sales_in_period_average'][$this->period] /= $stock_non_zero_number;
-		}
-	}
-
-	/*
-	 * sort_products_info.
-	 */
-	public function sort_products_info( &$products_info, $field_name, $second_field_name = '', $order_of_sorting = SORT_DESC ) {
-		$field_name_array = array();
-		foreach ( $products_info as $key => $row ) {
-			if ( '' == $second_field_name ) $field_name_array[ $key ] = $row[ $field_name ];
-			else $field_name_array[ $key ] = $row[ $field_name ][ $second_field_name ];
-		}
-		array_multisort( $field_name_array, $order_of_sorting, $products_info );
-	}
-
-	/*
-	 * output_submenu.
-	 */
-	public function output_submenu() {
-		?><ul class="subsubsub"><?php
-		$periods = array( 90, 30, 7, );
-		foreach ( $periods as $the_period ) {
-			echo '<li><a href="' . get_admin_url() . 'admin.php?page=wcj-tools&tab=' . $_GET['tab'] . '&report=' . $this->report . '&period=' . $the_period . '" class="">' . $the_period . ' days</a> | </li>';
-		}
-		?></ul>
-		<br class="clear">
-		<ul class="subsubsub"><?php
-		foreach ( $this->reports_info as $report => $report_info ) {
-			echo '<li><a href="' . get_admin_url() . 'admin.php?page=wcj-tools&tab=' . $_GET['tab'] . '&report=' . $report . '" class="">' . $report_info['title'] . '</a> | </li>';
-		}
-		?></ul>
-		<br class="clear">
-		<h3><?php _e( 'Reports', 'woocommerce-jetpack' ); ?></h3><?php
-	}
-
-	/*
-	 * output_report.
-	 */
-	public function output_report( $products_info, $info, $report_info ) {
-	
-		// Style
-		$html = '<style>';
-		$html .= '.wcj_report_table { width: 90%; border-collapse: collapse; }';
-		$html .= '.wcj_report_table th { border: 1px solid black; }';
-		$html .= '.wcj_report_table td { border: 1px solid black; text-align: right; }';
-		$html .= '.wcj_report_table_sales_columns { background-color: #F6F6F6; }';
-		$html .= '.widefat { width: 90%; }';
-		$html .= '</style>';
-
-		// Products table - header
-		$html .= '<table class="widefat"><tbody>';
-		$html .= '<tr>';
-		$html .= '<th>#</th>';
-		$html .= '<th>' . __( 'Product', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th>' . __( 'Price', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th>' . __( 'Stock', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th>' . __( 'Stock price', 'woocommerce-jetpack' ) . '</th>';
-
-		$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Last sale', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th class="wcj_report_table_sales_columns">' . sprintf( __( 'Sales in last %s days', 'woocommerce-jetpack' ), $this->period ) . '</th>';
-		$html .= '<th class="wcj_report_table_sales_columns">' . sprintf( __( 'Sales in last %s days', 'woocommerce-jetpack' ), $this->period * 2 ) . '</th>';
-		//$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Sales in previous period', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '<th class="wcj_report_table_sales_columns">' . __( 'Total sales', 'woocommerce-jetpack' ) . '</th>';
-		$html .= '</tr>';
-
-		// Products table - info loop
-		$total_current_stock_price = 0;
-		$product_counter = 0;
-		foreach ( $products_info as $product_info ) {
-
-			/*if ( ( time() - strtotime( $product_info['date_added'] ) ) < 60*60*24*30 )
-				continue;*/
-
-			if (
-				/**/(
-				 //( $info['sales_in_90_days_average'] > $product_info['sales_in_90_days'] ) &&
-				 ( $product_info['sales_in_period'][$this->period] < $info['sales_in_period_average'][$this->period] ) &&
-				 ( $product_info['stock_price'] > $info['stock_price_average'] ) &&
-				 ////( 0 != $product_info['stock'] ) &&
-				 ( 'bad_stock' === $report_info['id'] )
-			    ) || /**/
-				(
-				 ( $info['stock_price_average'] < $product_info['stock_price'] ) &&
-				 //( 0 != $product_info['stock'] ) &&
-				 ( 'most_stock_price' === $report_info['id'] )
-			    ) ||
-				(
-				 ( $product_info['sales_in_period'][$this->period] < $info['sales_in_period_average'][$this->period] ) &&
-				 ( $product_info['stock'] > 0 ) &&
-				 ( 'bad_sales' === $report_info['id'] )
-			    ) ||
-				(
-				 ( 0 == $product_info['sales_in_period'][$this->period] ) &&
-				 ( $product_info['stock'] > 0 ) &&
-				 ( 'no_sales' === $report_info['id'] )
-			    ) ||
-				(
-				 ( $product_info['sales_in_period'][$this->period] > $info['sales_in_period_average'][$this->period] ) &&
-				 ( 'good_sales' === $report_info['id'] )
-			    ) ||
-				/*(
-				 ( $info['sales_in_90_days_average'] < $product_info['sales_in_90_days'] ) &&
-				 //( $info['stock_average'] > $product_info['stock'] ) &&
-//				 ( $product_info['sales_in_90_days'] > $product_info['stock'] ) &&
-				 ( ( $product_info['stock'] / $product_info['sales_in_90_days'] ) <= 0.33 ) &&
-				 ( '' !== $product_info['stock'] ) &&
-				 ( 'good_sales_low_stock' === $report_info['id'] )
-			    ) ||*/
-				(
-				 ( $product_info['stock'] > 0 ) &&
-				 ( 'on_stock' === $report_info['id'] )
-			    ) ||
-				(
-				 //( 0 != $product_info['stock'] ) &&
-				 ( 'any_sale' === $report_info['id'] )
-			    ) ||
-				(
-				 //( $info['sales_in_90_days_average'] < $product_info['sales_in_90_days'] ) &&
-				 ( ( $product_info['sales_in_period'][ $this->period * 2 ] - $product_info['sales_in_period'][$this->period] ) < $product_info['sales_in_period'][$this->period] ) &&
-				 ( 'sales_up' === $report_info['id'] )
-			    ) ||
-				(
-				 ( ( $product_info['sales_in_period'][180] - $product_info['sales_in_period'][90] ) > $product_info['sales_in_period'][90] ) &&
-				 ( 'sales_down' === $report_info['id'] )
-			    )
-			)
-			{
-				$total_current_stock_price += $product_info['stock_price'];
-				$product_counter++;
-				$html .= '<tr>';
-				$html .= '<td>' . $product_counter . '</td>';
-				$html .= '<th>' . '<a href='. $product_info['permalink'] . '>' . $product_info['title'] . '</a>' . '</th>';
-				$html .= '<td>' . wc_price( $product_info['price'] ) . '</td>';
-				$html .= '<td>' . $product_info['stock'] . '</td>';
-				$html .= '<td>' . wc_price( $product_info['stock_price'] ) . '</td>';
-
-				$html .= '<td class="wcj_report_table_sales_columns">';
-				if ( 0 == $product_info['last_sale'] ) $html .= __( 'No sales yet', 'woocommerce-jetpack' );
-				else $html .= date_i18n( get_option( 'date_format' ), $product_info['last_sale'] );
-				$html .= '</td>';
-				$html .= '<td class="wcj_report_table_sales_columns">' . $product_info['sales_in_period'][ $this->period ] . '</td>';
-				$html .= '<td class="wcj_report_table_sales_columns">' . $product_info['sales_in_period'][ $this->period * 2 ] . '</td>';
-				//$html .= '<td>' . $product_info['orders_in_90_days'] . '</td>';
-				$html .= '<td class="wcj_report_table_sales_columns">' . $product_info['total_sales'] . '</td>';
-				//$html .= '<td>' . $product_info['date_added'] . '</td>';
-				//$html .= '<td>' . wc_price( $total_current_stock_price ) . ' (' . number_format( ( ( $total_current_stock_price / $info['total_stock_price'] ) * 100 ), 2, '.', '' ) . ')' . '</td>';
-				$html .= '</tr>';
-			}
-		}
-		$html .= '</tbody></table>';
-
-		$html_header = '<h4>' . $report_info['title'] . ': ' . $report_info['desc'] . '</h4>';
-		
-		$html_header .= '<table class="widefat" style="width:30% !important;"><tbody>';
-		$html_header .= '<tr>' . '<th>' . __( 'Total current stock value', 'woocommerce-jetpack' ) . '</th>' . '<td>' . wc_price( $total_current_stock_price ) . '</td>' . '</tr>';
-		$html_header .= '<tr>' . '<th>' . __( 'Total stock value', 'woocommerce-jetpack' ) . '</th>' . '<td>' . wc_price( $info['total_stock_price'] ) . '</td>' . '</tr>';
-		$html_header .= '<tr>' . '<th>' . __( 'Product stock value average', 'woocommerce-jetpack' ) . '</th>' . '<td>' . wc_price( $info['stock_price_average'] ) . '</td>' . '</tr>';
-		$html_header .= '<tr>' . '<th>' . __( 'Product stock average', 'woocommerce-jetpack' ) . '</th>' . '<td>' . number_format( $info['stock_average'], 2, '.', '' ) . '</td>' . '</tr>';
-		$html_header .= '</tbody></table>';	
-		$html_header .= '<br class="clear">';
-		
-		/*
-		$html_header .= '<div class="updated1">' . __( 'Total current stock value: ', 'woocommerce-jetpack' ) . wc_price( $total_current_stock_price ) . '</div>';
-		$html_header .= '<div class="updated1">' . __( 'Total stock value: ', 'woocommerce-jetpack' ) . wc_price( $info['total_stock_price'] ) . '</div>';
-		//$html_header .= '<div class="updated1">' . __( 'Product sales in 90 average: ', 'woocommerce-jetpack' ) . number_format( $info['sales_in_90_days_average'], 2, '.', '' ) . '</div>';
-		$html_header .= '<div class="updated1">' . __( 'Product stock value average: ', 'woocommerce-jetpack' ) . wc_price( $info['stock_price_average'] ) . '</div>';
-		$html_header .= '<div class="updated1">' . __( 'Product stock average: ', 'woocommerce-jetpack' ) . number_format( $info['stock_average'], 2, '.', '' ) . '</div>';
-*/
-
-		// Report title and description
-		//$html_report_title = '<h4>' . $report_info['title'] . ': ' . $report_info['desc'] . '</h4>';
-		//$html_report_title = sprintf( $html_report_title, number_format( $info['sales_in_90_days_average'], 2, '.', '' ) );
-
-		echo $html_header . $html;
-	}
-
-	/*
-	 * create_reports_tool.
-	 */
-	public function create_reports_tool() {
-
-		$this->reports_info = array(
-			/*'bad_stock'	=> array(
-				'id'		=> 'bad_stock',
-				'title'		=> __( 'Low sales - big stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows you products with stock bigger than <span style="color:green;">%s</span> average, but with sales in last 90 days lower than average. Sorted by total stock value.', 'woocommerce-jetpack' ),
-				//__( 'You should consider setting lower prices for products in table below. These products have: a) less than average sales in last 90 days, and b) larger than average stock price.', 'woocommerce-jetpack' ),
-			),
-			'bad_sales'	=> array(
-				'id'		=> 'bad_sales',
-				'title'		=> __( 'Low sales - on stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows you products on stock, but with sales in last 90 days lower than average. Sorted by total stock value.', 'woocommerce-jetpack' ),
-			),
-			'no_sales'	=> array(
-				'id'		=> 'no_sales',
-				'title'		=> __( 'No sales - on stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows you products on stock, but with not a single sale in last 90 days. Sorted by total stock value.', 'woocommerce-jetpack' ),
-			),
-			'most_stock_price'	=> array(
-				'id'		=> 'most_stock_price',
-				'title'		=> __( 'Most stock price', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows you products with stock bigger than average. Sorted by total stock value.', 'woocommerce-jetpack' ),
-			),
-			'good_sales'	=> array(
-				'id'		=> 'good_sales',
-				'title'		=> __( 'Good sales', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows you products with sales in last 90 days higher than average. Sorted by total stock value.', 'woocommerce-jetpack' ),
-			),
-			'good_sales_low_stock'	=> array(
-				'id'		=> 'good_sales_low_stock',
-				'title'		=> __( 'Good sales - low stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows you products with sales in last 90 days higher than average, but stock lower than products sales in 90 days. Sorted by total stock value.', 'woocommerce-jetpack' ),
-			),*/
-			'on_stock'	=> array(
-				'id'		=> 'on_stock',
-				'title'		=> __( 'All Products on Stock', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'Report shows all products that are on stock and some sales info.', 'woocommerce-jetpack' ),
-			),/*
-			'any_sale'	=> array(
-				'id'		=> 'any_sale',
-				'title'		=> __( 'any_sale', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'any_sale.', 'woocommerce-jetpack' ),
-			),
-			'sales_up'	=> array(
-				'id'		=> 'sales_up',
-				'title'		=> __( 'Sales up', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'with sales more than average and up in last 90 days comparing to 90 days before.', 'woocommerce-jetpack' ),
-				'desc_sort' => __( 'sales in 90 days', 'woocommerce-jetpack' ),
-			),
-			'sales_down'	=> array(
-				'id'		=> 'sales_down',
-				'title'		=> __( 'sales_down', 'woocommerce-jetpack' ),
-				'desc'		=> __( 'sales_down.', 'woocommerce-jetpack' ),
-			),*/
-		);
-
-		//echo '<h2>' . __( 'WooCommerce Jetpack - Smart Reports', 'woocommerce-jetpack' ) . '</h2>';
-		
-//		$this->output_submenu();
-
-		$_GET['report'] = 'on_stock';
-		$_GET['period'] = 90;
-
-		if ( isset( $_GET['report'] ) ) {
-
-			$time = microtime( true );
-
-			$this->report = $_GET['report'];
-
-			$this->period = 90; // default
-			if ( isset( $_GET['period'] ) )
-				$this->period = $_GET['period'];
-
-			$products_info = array();
-			$this->get_products_info( $products_info );
-//			if ( 'most_stock_price' !== $this->report )
-				$this->get_orders_info( $products_info );
-			//wp_reset_postdata();
-			$info = array();
-			$this->count_info( $info, $products_info );
-
-			$this->sort_products_info( $products_info, 'stock_price' );
-
-			if ( 'sales_up' === $this->report )
-				$this->sort_products_info( $products_info, 'sales_in_period', $this->period );
-
-			if ( 'good_sales_low_stock' === $this->report )
-				$this->sort_products_info( $products_info, 'stock_to_sales', $this->period );
-
-
-			$this->output_report( $products_info, $info, $this->reports_info[$this->report] );
-
-			//echo 'Time Elapsed: ' . ( microtime( true ) - $time ) . 's';
-		}
-		else {
-			echo '<p>' . __( 'Here you can generate reports. Some reports are generated using all your orders and products, so if you have a lot of them - it may take a while.', 'woocommerce-jetpack' ) . '</p>';
-			//echo '<p>' . __( 'Reports:', 'woocommerce-jetpack' ) . '</p>';
-			echo '<h3>' . __( 'Stock based reports', 'woocommerce-jetpack' ) . '</h3>';			
-			if ( 'yes' === get_option( 'woocommerce_manage_stock' ) ) {
-				echo '<table class="widefat"><tbody>';			
-				foreach ( $this->reports_info as $report => $report_info ) {
-					//echo '<li><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a> - ' . $report_info['desc'] . '</li>';
-					echo '<tr>';
-					if ( ! isset( $report_info['tab'] ) || 'general' === $report_info['tab'] )
-						echo '<td><a href="admin.php?page=wcj-tools&tab=reports&report=' . $report . '">' . $report_info['title'] . '</a></td>' . '<td>' . $report_info['desc'] . '</td>';
-					echo '</tr>';
-				}
-				echo '</tbody></table>';
-			}
-			else
-				echo '<p>' . __( 'Please enable stock management in <strong>WooCommerce > Settings > Products > Inventory</strong> to generate stock based reports.', 'woocommerce-jetpack' ) . '</p>';
-		}
-	}
+	}	
 }
 
 endif;

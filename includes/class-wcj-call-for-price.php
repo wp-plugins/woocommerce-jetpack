@@ -25,7 +25,8 @@ class WCJ_Call_For_Price {
 		
 		// Empty Price hooks
 		if ( get_option( 'wcj_call_for_price_enabled' ) == 'yes' ) {		
-			add_filter( 'woocommerce_empty_price_html', array( $this, 'on_empty_price' ), 100 );
+			add_action( 'init', array( $this, 'add_hook' ), PHP_INT_MAX );
+			//add_filter( 'woocommerce_empty_price_html', array( $this, 'on_empty_price' ), PHP_INT_MAX );
 			add_filter( 'woocommerce_sale_flash', array( $this, 'hide_sales_flash' ), 100, 3 );
 		}		
 	
@@ -34,6 +35,13 @@ class WCJ_Call_For_Price {
 		add_filter( 'wcj_settings_call_for_price', array( $this, 'get_settings' ), 100 );
 		add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
 	}
+	
+	/**
+	 * some.
+	 */
+	public function add_hook()	{	
+		add_filter( 'woocommerce_empty_price_html', array( $this, 'on_empty_price' ), PHP_INT_MAX );
+	}	
 	
 	/**
 	 * Hide "sales" icon for empty price products.
