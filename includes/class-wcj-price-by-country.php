@@ -182,9 +182,14 @@ class WCJ_Price_By_Country {
 	public function check_and_update_database() {
 
 		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
+		$current_version = get_option( 'wcj_geoipcountry_db_version', 0 );
+		if ( -1 == $current_version )
+			return;
+		if ( $current_version < $this->current_db_file_version ) {
 
-		if ( get_option( 'wcj_geoipcountry_db_version', 0 ) < $this->current_db_file_version ) {
-
+			// Updating DB - started
+			update_option( 'wcj_geoipcountry_db_version', -1 );
+		
 			// Updating DB - get IPs from file
 			$csv = array_map( 'str_getcsv', file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
 
@@ -414,7 +419,7 @@ class WCJ_Price_By_Country {
                 'desc'     => __( 'Enable the Price by Country feature', 'woocommerce-jetpack' ),
                 'desc_tip' => __( 'Change product\'s price and currency by customer\'s country.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_price_by_country_enabled',
-                'default'  => 'yes',
+                'default'  => 'no',
                 'type'     => 'checkbox',
             ),
 
