@@ -350,6 +350,7 @@ class WCJ_Price_By_Country {
 		// Go through all the groups, first found group is returned
 		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_price_by_country_total_groups_number', 1 ) ); $i++ ) {		
 			$country_exchange_rate_group = get_option( 'wcj_price_by_country_exchange_rate_countries_group_' . $i );
+			$country_exchange_rate_group = str_replace( ' ', '', $country_exchange_rate_group );
 			$country_exchange_rate_group = explode( ',', $country_exchange_rate_group );
 			if ( in_array( $country, $country_exchange_rate_group ) ) {
 				$this->customer_country_group_id = $i;
@@ -412,7 +413,15 @@ class WCJ_Price_By_Country {
 	
         $settings = array(
 
-            array( 'title' => __( 'Price by Country Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'Change product\'s price and currency by customer\'s country. Customer\'s country is detected automatically by IP.', 'woocommerce-jetpack' ), 'id' => 'wcj_price_by_country_options' ),
+            array( 
+				'title' => __( 'Price by Country Options', 'woocommerce-jetpack' ), 
+				'type' => 'title', 
+				'desc' => __( 'Change product\'s price and currency by customer\'s country. Customer\'s country is detected automatically by IP.', 'woocommerce-jetpack' )
+						  . '<br>'
+						  . '<span style="color:gray;font-size:smaller;">'
+						  . __( 'IP DB version: ', 'woocommerce-jetpack' ) . get_option( 'wcj_geoipcountry_db_version', 0 )
+						  . '</span>',
+				'id' => 'wcj_price_by_country_options' ),
 
             array(
                 'title'    => __( 'Prices and Currencies by Country', 'woocommerce-jetpack' ),
