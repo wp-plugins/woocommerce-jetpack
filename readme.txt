@@ -21,9 +21,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * PDF Invoices - Add PDF invoices for store owners and for customers. Automatically email PDF invoices to customers (and limit attaching invoice to selected payment gateways only).
 * Orders - Sequential order numbering, custom order number prefix, date prefix, suffix and number width. Set minimum order amount.
 * More Sorting Options - Add more sorting options or remove sorting at all (including WooCommerce default).
-* Payment Gateways - Add and customize up to 10 additional custom off-line payment gateways.
-  Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways.
-  Add payment gateways fees to any default WooCommerce gateway.
+* Payment Gateways - Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways. Add payment gateways fees to any default WooCommerce gateway. Add and customize up to 10 additional custom off-line payment gateways.
 * Checkout - Customize checkout fields: disable/enable fields, set required, change labels and/or placeholders.
 * Shipping - Hide shipping when free is available.
 * Emails - Add another email recipient(s) to all WooCommerce emails.
