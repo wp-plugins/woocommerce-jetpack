@@ -24,7 +24,7 @@ class WCJ_Price_By_Country {
 		$this->customer_country = null;
 		$this->customer_country_group_id = null;
 
-		$this->current_db_file_version = 1;
+		$this->current_db_file_version = 2;
 		
 		//$this->currency_symbols = include( 'currencies/wcj-currency-symbols.php' );
 		/*$currencies = include( 'currencies/wcj-currencies.php' );
@@ -175,6 +175,13 @@ class WCJ_Price_By_Country {
 		}
 		return $result;
 	}
+	
+	/**
+	 * str_getcsv.
+	 */	
+	public function parse_csv_line( $line ) {
+		return explode( ',', trim( $line ) );
+	}		
 
 	/**
 	 * check_and_update_database.
@@ -191,7 +198,8 @@ class WCJ_Price_By_Country {
 			update_option( 'wcj_geoipcountry_db_version', -1 );
 		
 			// Updating DB - get IPs from file
-			$csv = array_map( 'str_getcsv', file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
+			//$csv = array_map( 'str_getcsv', file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
+			$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
 
 			// Updating DB - IPs from
 			foreach ( $csv as $key => $data )
