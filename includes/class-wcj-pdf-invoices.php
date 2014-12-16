@@ -268,7 +268,12 @@ class WCJ_PDF_Invoices {
 		// dejavusans is a UTF-8 Unicode font, if you only need to
 		// print standard ASCII chars, you can use core fonts like
 		// helvetica or times to reduce file size.
-		$pdf->SetFont('dejavusans', '', apply_filters( 'wcj_get_option_filter', 8, get_option( 'wcj_pdf_invoices_general_font_size' ) ), '', true);
+		$pdf->SetFont(
+			apply_filters( 'wcj_get_option_filter', 'dejavusans', get_option( 'wcj_pdf_invoices_general_font_family', 'dejavusans' ) ), 
+			'', 
+			apply_filters( 'wcj_get_option_filter', 8, get_option( 'wcj_pdf_invoices_general_font_size' ) ), 
+			'', 
+			true);
 
 		// Add a page
 		// This method has several options, check the source code documentation for more information.
@@ -1200,11 +1205,26 @@ class WCJ_PDF_Invoices {
 			array( 'type'  => 'sectionend', 'id' => 'wcj_pdf_invoices_footer_options' ),
 
             array( 'title' => __( 'General Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( '', 'woocommerce-jetpack' ), 'id' => 'wcj_pdf_invoices_general_options' ),
+			
+            array(
+                'title'    => __( 'Font family', 'woocommerce-jetpack' ),
+                //'desc'     => __( 'Default: dejavusans', 'woocommerce-jetpack' ),
+				'desc'	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+                'id'       => 'wcj_pdf_invoices_general_font_family',
+                'default'  => 'dejavusans',
+                'type'     => 'select',
+				'options'  => array(
+								'dejavusans' => 'DejaVu Sans',
+								'courier'    => 'Courier',
+								'helvetica'  => 'Helvetica',	
+								'times'      => 'Times',
+				),
+				'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+            ),			
 
             array(
                 'title'    => __( 'Font size', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Default: 8', 'woocommerce-jetpack' ),
-                //'desc_tip' => __( 'Add PDF invoices for the store owners and for the customers.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_general_font_size',
                 'default'  => 8,
                 'type'     => 'number',
@@ -1213,7 +1233,6 @@ class WCJ_PDF_Invoices {
             array(
                 'title'    => __( 'CSS', 'woocommerce-jetpack' ),
                 'desc'	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-                //'desc_tip' => __( 'Add PDF invoices for the store owners and for the customers.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_general_css',
                 'default'  => $this->default_css,
                 'type'     => 'textarea',

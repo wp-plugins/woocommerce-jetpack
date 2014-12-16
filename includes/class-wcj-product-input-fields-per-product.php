@@ -194,9 +194,9 @@ class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields {
             array( 
 				'title'    => __( 'Product Input Fields per Product Options', 'woocommerce-jetpack' ), 
 				'type'     => 'title', 
-				'desc'     => __( 'Add custom input fields to product\'s single page for customer to fill before adding product to cart.', 'woocommerce-jetpack' ) .  
-				              ' ' . 
-							  __( 'When enabled this module will add "Product Input Fields" tab to product\'s "Edit" page.', 'woocommerce-jetpack' ), 
+				'desc'     => __( 'Add custom input fields to product\'s single page for customer to fill before adding product to cart.', 'woocommerce-jetpack' )
+				              . ' ' 
+							  . __( 'When enabled this module will add "Product Input Fields" tab to product\'s "Edit" page.', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_product_input_fields_local_options', 
 			),			
             
