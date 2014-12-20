@@ -110,7 +110,7 @@ class WCJ_PDF_Invoices {
 		$the_items = $the_order->get_items();
 		foreach( $the_items as $the_item ) {
 			$the_product = new WC_Product( $the_item['product_id'] );
-			$total_weight += $the_product->get_weight();
+			$total_weight += $the_item['qty'] * $the_product->get_weight();
 		}
 		return ( 0 == $total_weight ) ? '' : $total_weight;
 	}
@@ -279,8 +279,10 @@ class WCJ_PDF_Invoices {
 		// This method has several options, check the source code documentation for more information.
 		$pdf->AddPage();
 
-		// set text shadow effect
-		$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+		if ( 'yes' === get_option( 'wcj_pdf_invoices_general_font_shadowed', 'yes' ) ) {
+			// set text shadow effect
+			$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+		}
 
 		$html = $this->get_invoice_html( $order_id );
 
@@ -650,12 +652,14 @@ class WCJ_PDF_Invoices {
 			$item_total_tax_formatted 	=  wc_price( $item_tax, $order_currency_array );
 			$item_total_incl_tax_formatted =  wc_price( $item_total_incl_tax, $order_currency_array );
 			// Line Prices
-			$line_total_excl_tax 	= $the_order->get_line_total( $item, false );//$the_order->get_line_subtotal( $item, false, true );//$item['line_subtotal'];//$item['line_total'];
+//			$line_total_excl_tax 	= $the_order->get_line_total( $item, false );//$the_order->get_line_subtotal( $item, false, true );//$item['line_subtotal'];//$item['line_total'];
+			$line_total_excl_tax 	= $the_order->get_line_subtotal( $item, false );//$the_order->get_line_subtotal( $item, false, true );//$item['line_subtotal'];//$item['line_total'];
 			$line_tax 				= $the_order->get_line_tax( $item );//$item['line_tax'];
 			$line_total_tax_percent = 0;
 			if ( 0 != $item['line_subtotal'] )
 				$line_total_tax_percent 		= round( ( $item['line_tax'] / $item['line_subtotal'] * 100 ), 2 );
-			$line_total_incl_tax 	= $the_order->get_line_total( $item, true );//$line_total_excl_tax + $line_tax;
+//			$line_total_incl_tax 	= $the_order->get_line_total( $item, true );//$line_total_excl_tax + $line_tax;
+			$line_total_incl_tax 	= $the_order->get_line_subtotal( $item, true );//$line_total_excl_tax + $line_tax;
 			$line_total_excl_tax_formatted =  wc_price( $line_total_excl_tax, $order_currency_array );
 			$line_total_tax_formatted =  wc_price( $line_tax, $order_currency_array );
 			$line_total_incl_tax_formatted =  wc_price( $line_total_incl_tax, $order_currency_array );			
@@ -668,14 +672,15 @@ class WCJ_PDF_Invoices {
 			
 			
 			$product = $the_order->get_product_from_item( $item );
-			
-			// Additional info (e.g. SKU)
-			if ( '' != get_option( 'wcj_pdf_invoices_column_item_name_additional_text' ) && $product->get_sku() )
-				$item_name .= ' ' . str_replace( '%sku%', $product->get_sku(), get_option( 'wcj_pdf_invoices_column_item_name_additional_text' ) );
-				
-			// Variation (if needed)
-			if ( $product->is_type( 'variation' ) )
-				$item_name .= '<div style="font-size:smaller;">' . wc_get_formatted_variation( $product->variation_data, true ) . '</div>';
+			if ( $product ) {
+				// Additional info (e.g. SKU)
+				if ( '' != get_option( 'wcj_pdf_invoices_column_item_name_additional_text' ) && $product->get_sku() )
+					$item_name .= ' ' . str_replace( '%sku%', $product->get_sku(), get_option( 'wcj_pdf_invoices_column_item_name_additional_text' ) );
+					
+				// Variation (if needed)
+				if ( $product->is_type( 'variation' ) )
+					$item_name .= '<div style="font-size:smaller;">' . wc_get_formatted_variation( $product->variation_data, true ) . '</div>';
+			}
 				
 			// Item Counter
 			$item_counter++;
@@ -1207,7 +1212,7 @@ class WCJ_PDF_Invoices {
             array( 'title' => __( 'General Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( '', 'woocommerce-jetpack' ), 'id' => 'wcj_pdf_invoices_general_options' ),
 			
             array(
-                'title'    => __( 'Font family', 'woocommerce-jetpack' ),
+                'title'    => __( 'Font Family', 'woocommerce-jetpack' ),
                 //'desc'     => __( 'Default: dejavusans', 'woocommerce-jetpack' ),
 				'desc'	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
                 'id'       => 'wcj_pdf_invoices_general_font_family',
@@ -1223,12 +1228,20 @@ class WCJ_PDF_Invoices {
             ),			
 
             array(
-                'title'    => __( 'Font size', 'woocommerce-jetpack' ),
+                'title'    => __( 'Font Size', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Default: 8', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_general_font_size',
                 'default'  => 8,
                 'type'     => 'number',
             ),
+			
+            array(
+                'title'    => __( 'Make Font Shadowed', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Default: Yes', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_pdf_invoices_general_font_shadowed',
+                'default'  => 'yes',
+                'type'     => 'checkbox',
+            ),			
 
             array(
                 'title'    => __( 'CSS', 'woocommerce-jetpack' ),

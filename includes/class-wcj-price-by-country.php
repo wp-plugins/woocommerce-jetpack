@@ -24,7 +24,7 @@ class WCJ_Price_By_Country {
 		$this->customer_country = null;
 		$this->customer_country_group_id = null;
 
-		$this->current_db_file_version = 2;
+		$this->current_db_file_version = 3;
 		
 		//$this->currency_symbols = include( 'currencies/wcj-currency-symbols.php' );
 		/*$currencies = include( 'currencies/wcj-currencies.php' );
@@ -55,21 +55,42 @@ class WCJ_Price_By_Country {
 			add_filter( 'woocommerce_reports_get_order_report_data_args', 	array( $this, 'filter_reports'), 						PHP_INT_MAX, 		1 );			
 			add_filter( 'woocommerce_currency_symbol', 						array( $this, 'change_currency_symbol_reports'), 		PHP_INT_MAX, 		2 );
 			//add_filter( 'woocommerce_currency', 							array( $this, 'change_currency_code_reports'), 				PHP_INT_MAX, 		2 );
-			add_action( 'admin_bar_menu', array( $this, 'toolbar_link_to_mypage' ), 999 );
-
+			add_action( 'admin_bar_menu', 									array( $this, 'toolbar_link_to_mypage' ), 				999 );
+			
+			// Debug
+			add_action( 'woocommerce_after_add_to_cart_button',				array( $this, 'add_debug_info'), 						PHP_INT_MAX, 		0 );
+			add_action( 'admin_init',										array( $this, 'reinstall_ip_db'), 						PHP_INT_MAX, 		0 );
         }
 
         // Settings hooks
         add_filter( 'wcj_settings_sections', 								array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_price_by_country', 						array( $this, 'get_settings' ), 						100 );
         add_filter( 'wcj_features_status', 									array( $this, 'add_enabled_option' ), 					100 );
-    }
-	
+    }	
 
-	/**/
+	public function reinstall_ip_db() {
+		if ( isset( $_GET['wcj-install-ip-db'] ) && '1' == $_GET['wcj-install-ip-db'] ) {
+			$this->update_database();
+		}
+	}
+
+	public function add_debug_info() {
+		if ( isset( $_GET['wcj-debug'] ) ) {
+			echo '<input type="hidden" name="wcj-get-ip" value="'                      . $this->get_the_ip() . '" />';	
+			echo '<input type="hidden" name="wcj-get-country" value="'                 . $this->get_user_country_by_ip() . '" />';
+			echo '<input type="hidden" name="wcj-get-country-external" value="'        . $this->get_user_country_by_ip_external() . '" />';
+			echo '<input type="hidden" name="wcj-get-country-group" value="'           . $this->get_user_country_group_id() . '" />';
+			echo '<input type="hidden" name="wcj-get-country-db-cur-ver" value="'      . $this->current_db_file_version . '" />';
+			echo '<input type="hidden" name="wcj-get-country-db-ver" value="'          . get_option( 'wcj_geoipcountry_db_version', 0 ) . '" />';
+			echo '<input type="hidden" name="wcj-get-country-db-from-size" value="'    . count( get_option( 'wcj_geoipcountry_db_from', array() ) ) . '" />';
+			echo '<input type="hidden" name="wcj-get-country-db-to-size" value="'      . count( get_option( 'wcj_geoipcountry_db_to', array() ) ) . '" />';
+			echo '<input type="hidden" name="wcj-get-country-db-country-size" value="' . count( get_option( 'wcj_geoipcountry_db_country', array() ) ) . '" />';
+		}
+	}
+	
 	public function toolbar_link_to_mypage( $wp_admin_bar ) {
+	
 		//http://codex.wordpress.org/Function_Reference/add_node
-		
 		
 		if ( isset( $_GET['page'] ) && 'wc-reports' === $_GET['page'] ) {
 			$the_current_code = isset( $_GET['currency'] ) ? $_GET['currency'] : get_woocommerce_currency();
@@ -77,17 +98,22 @@ class WCJ_Price_By_Country {
 			$args = array(
 				'parent' => false, 
 				'id' => $parent,
-				'title' => 'Reports currency: ' . $the_current_code,
+				'title' => __( 'Reports currency:', 'woocommerce-jetpack' ) . ' ' . $the_current_code,
 				'href'  => false,
 				'meta' => array( 'title' => __( 'Show reports only in', 'woocommerce-jetpack' ) . ' ' . $the_current_code, ),
 			);
 			
 			$wp_admin_bar->add_node( $args );
-			//$wp_admin_bar->add_menu
 			
-			
-			
-			$this->reports_currency_symbols = array( 'GBP' => '&pound;', 'USD' => '&#36;' );
+			$currency_symbols = array();
+			$currency_symbols[ $the_current_code ] = '';
+			$currency_symbols[ get_woocommerce_currency() ] = '';
+			for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_price_by_country_total_groups_number', 1 ) ); $i++ ) {		
+				$currency_symbols[ get_option( 'wcj_price_by_country_exchange_rate_currency_group_' . $i ) ] = '';
+			}
+			$this->reports_currency_symbols = $currency_symbols;
+             
+					
 			foreach ( $this->reports_currency_symbols as $code => $symbol ) {
 				//if ( $code === $the_current_code )
 				//	continue;
@@ -181,43 +207,117 @@ class WCJ_Price_By_Country {
 	 */	
 	public function parse_csv_line( $line ) {
 		return explode( ',', trim( $line ) );
-	}		
+	}	
 
 	/**
 	 * check_and_update_database.
 	 */
-	public function check_and_update_database() {
-
-		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
-		$current_version = get_option( 'wcj_geoipcountry_db_version', 0 );
-		if ( -1 == $current_version )
-			return;
-		if ( $current_version < $this->current_db_file_version ) {
-
-			// Updating DB - started
-			update_option( 'wcj_geoipcountry_db_version', -1 );
+	public function update_database() {
+	
+		ob_start();
+	
+		// Started
+		update_option( 'wcj_geoipcountry_db_version', -1 );
 		
-			// Updating DB - get IPs from file
-			//$csv = array_map( 'str_getcsv', file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
-			$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
+		// Get IPs from file
+		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
+		$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
+		if ( ! empty ($csv) ) {
+		
+			/**
+			update_option( 'wcj_geoipcountry_db_from', array() );
+			update_option( 'wcj_geoipcountry_db_to', array() );
+			update_option( 'wcj_geoipcountry_db_country', array() );		
+		
+			foreach ( $csv as $key => $data ) {
+				$column_ip_from[ $key ] = $data[0];		
+				$column_ip_to[ $key ] = $data[1];	
+				$column_ip_country[ $key ] = $data[2];	
+			}
+			
+			update_option( 'wcj_geoipcountry_db_from', $column_ip_from );
+			update_option( 'wcj_geoipcountry_db_to', $column_ip_to );
+			update_option( 'wcj_geoipcountry_db_country', $column_ip_country );
+			/**/
+			
+				
+			/**
+			global $wpdb;
+			
+			$sql = "CREATE TABLE {$wpdb->prefix}wcj_country_ip (
+						ip_from INT(10) UNSIGNED NOT NULL, 
+						ip_to INT(10) UNSIGNED NOT NULL, 
+						country_code VARCHAR(2) NOT NULL
+					)";			
+			$results = $wpdb->get_results( $sql );			
+				
+			if ( ( $handle = fopen( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv', "r" ) ) !== FALSE ) {
+				while ( ($data = fgetcsv( $handle, 100, "," ) ) !== FALSE ) {
+					
+					print_r( $wpdb->insert( 
+						'$wpdb->prefix' . 'wcj_country_ip', 
+						array( 
+							'ip_from' => $data[0], 
+							'ip_to' => $data[1] ,
+							'country_code' => $data[2],
+						), 
+						array( 
+							'%d', 
+							'%d',
+							'%s',
+						) 
+					) );
+				}
+				fclose( $handle );
+			}
+			/**/
 
-			// Updating DB - IPs from
+			/**/
+			// IPs from
 			foreach ( $csv as $key => $data )
 				$column[ $key ] = $data[0];
 			update_option( 'wcj_geoipcountry_db_from', $column );
 
-			// Updating DB - IPs to
+			// IPs to
 			foreach ( $csv as $key => $data )
 				$column[ $key ] = $data[1];
 			update_option( 'wcj_geoipcountry_db_to', $column );
 
-			// Updating DB - Countries
+			// Countries
 			foreach ( $csv as $key => $data )
 				$column[ $key ] = $data[2];
 			update_option( 'wcj_geoipcountry_db_country', $column );
+			/**/						
+			/**/
+			$count_db_from = count( get_option( 'wcj_geoipcountry_db_from', array() ) );
+			$count_db_to = count( get_option( 'wcj_geoipcountry_db_to', array() ) );
+			$count_db_country = count( get_option( 'wcj_geoipcountry_db_country', array() ) );
+			
+			if ( 0 == $count_db_from || $count_db_from != $count_db_to || $count_db_from != $count_db_country ) {
+				// Something went wrong
+				update_option( 'wcj_geoipcountry_db_version', -2 );							
+			}
+			else {
+				// Finished
+				update_option( 'wcj_geoipcountry_db_version', $this->current_db_file_version );				
+			}
+			/**/
+		}
+				
+		$output_buffer = ob_get_contents();
+		ob_end_clean();
+		update_option( 'wcj_geoipcountry_db_update_log', $output_buffer );	
+	}
 
-			// Updating DB - version
-			update_option( 'wcj_geoipcountry_db_version', $this->current_db_file_version );
+	/**
+	 * check_and_update_database.
+	 */
+	public function check_and_update_database() {		
+		$current_version = get_option( 'wcj_geoipcountry_db_version', 0 );
+		if ( $current_version < 0 )
+			return;
+		if ( $current_version != $this->current_db_file_version ) {
+			$this->update_database();
 		}
 	}
 
@@ -340,6 +440,15 @@ class WCJ_Price_By_Country {
 
 		return null;
 	}
+	
+	public function get_user_country_by_ip_external() {
+		ob_start();
+		$country = file_get_contents( 'http://api.hostip.info/country.php?ip=' . $this->get_the_ip() );
+		//$json = file_get_contents( 'http://api.hostip.info/country.php?ip=' . $this->get_the_ip() );//file_get_contents( 'http://ipinfo.io/' . $this->get_the_ip() . '/country' );
+		//$country = json_decode( $json );		
+		ob_end_clean();		
+		return $country;
+	}	
 
 	/**
 	 * get_user_country_group_id.
@@ -351,7 +460,15 @@ class WCJ_Price_By_Country {
 			return $this->customer_country_group_id;
 		
 		// Get the country by IP
-		$country = $this->get_user_country_by_ip();
+		switch( get_option( 'wcj_price_by_country_by_ip_detection_type', 'internal' ) ) {
+			case 'internal':
+				$country = $this->get_user_country_by_ip();	
+				break;
+			case 'hostip_info':
+				$country = $this->get_user_country_by_ip_external();
+				break;
+		}
+		
 		if ( null === $country )
 			return null;
 
@@ -400,10 +517,39 @@ class WCJ_Price_By_Country {
 	public function change_price_by_country( $price ) {
 		if ( null != ( $group_id = $this->get_user_country_group_id() ) ) {
 			$country_exchange_rate = get_option( 'wcj_price_by_country_exchange_rate_group_' . $group_id, 1 );
-			return ( $price * $country_exchange_rate );
+			if ( 1 != $country_exchange_rate ) {
+				$modified_price = $price * $country_exchange_rate;
+				$rounding = get_option( 'wcj_price_by_country_rounding', 'none' );				
+				switch ( $rounding ) {
+					case 'none':
+						return ( $modified_price );
+					case 'round':
+						return round( $modified_price );
+					case 'floor':
+						return floor( $modified_price );
+					case 'ceil':
+						return ceil( $modified_price );					
+				}
+			}
 		}
+		// No changes
 		return $price;
 	}
+	
+    /**
+     * get_ip_db_status_html.
+     */
+    public function get_ip_db_status_html() {
+		$installed_db_version = get_option( 'wcj_geoipcountry_db_version', 0 );
+		if ( $this->current_db_file_version != $installed_db_version ) {		
+			if ( $installed_db_version < 0 )
+				$installed_db_version = abs( $installed_db_version ) + 10000;
+			return __( 'IP DB not installed', 'woocommerce-jetpack' ) . ' (' . $installed_db_version . ').'
+				   . ' ' . '<a href="' . add_query_arg( 'wcj-install-ip-db', '1' ) . '">' . __( 'Fix', 'woocommerce-jetpack' ) . '</a>';
+		}
+		else
+			return __( 'IP DB version: ', 'woocommerce-jetpack' ) . $this->current_db_file_version;
+    }	
 
     /**
      * add_enabled_option.
@@ -427,22 +573,48 @@ class WCJ_Price_By_Country {
 				'desc' => __( 'Change product\'s price and currency by customer\'s country. Customer\'s country is detected automatically by IP.', 'woocommerce-jetpack' )
 						  . '<br>'
 						  . '<span style="color:gray;font-size:smaller;">'
-						  . __( 'IP DB version: ', 'woocommerce-jetpack' ) . get_option( 'wcj_geoipcountry_db_version', 0 )
+						  . $this->get_ip_db_status_html()
 						  . '</span>',
 				'id' => 'wcj_price_by_country_options' ),
 
             array(
                 'title'    => __( 'Prices and Currencies by Country', 'woocommerce-jetpack' ),
-                'desc'     => __( 'Enable the Price by Country feature', 'woocommerce-jetpack' ),
-                'desc_tip' => __( 'Change product\'s price and currency by customer\'s country.', 'woocommerce-jetpack' ),
+                'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
+                'desc_tip' => __( 'Change product\'s price and currency automatically by customer\'s country.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_price_by_country_enabled',
                 'default'  => 'no',
                 'type'     => 'checkbox',
             ),
+			
+            array(
+                'title'    => __( 'Country by IP Method', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Select which method to use for detecting customers country by IP.', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_price_by_country_by_ip_detection_type',
+                'default'  => 'internal',
+                'type'     => 'select',
+				'options'  => array(
+								'internal'    => __( 'Internal DB (recommended)', 'woocommerce-jetpack' ),
+								'hostip_info' => __( 'External server:', 'woocommerce-jetpack' ) . ' '  . 'api.hostip.info',
+				),
+            ),				
+			
+            array(
+                'title'    => __( 'Price Rounding', 'woocommerce-jetpack' ),
+                'desc'     => __( 'If you choose to multiply price, set rounding options here.', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_price_by_country_rounding',
+                'default'  => 'none',
+                'type'     => 'select',
+				'options'  => array(
+								'none'  => __( 'No rounding', 'woocommerce-jetpack' ),
+								'round' => __( 'Round', 'woocommerce-jetpack' ),
+								'floor' => __( 'Round down', 'woocommerce-jetpack' ),
+								'ceil'  => __( 'Round up', 'woocommerce-jetpack' ),
+				),
+            ),			
 
             array( 'type'  => 'sectionend', 'id' => 'wcj_price_by_country_options' ),
 
-			array( 'title' => __( 'Exchange rates', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_price_by_country_exchange_rate_options' ),
+			array( 'title' => __( 'Country Groups', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_price_by_country_exchange_rate_options' ),
 
             array(
                 'title'    => __( 'Groups Number', 'woocommerce-jetpack' ),

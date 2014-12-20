@@ -3,8 +3,8 @@ Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.9.1
-Tested up to: 4.0.1
-Stable tag: 2.0.5
+Tested up to: 4.1
+Stable tag: 2.0.6
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,19 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 1. Plugin admin area.
 
 == Changelog ==
+
+= 2.0.6 - 20/12/2014 =
+* Fix - CART - **Add to Cart per Category** - `is_object` check added.
+* Fix - **PDF Invoices** - `get_line_subtotal` instead of `get_line_total`. This fixes the bug with item's discount in invoice.
+* Fix - **PDF Invoices** - "Shipping and Discount as item" fix.
+* Fix - **PDF Invoices** - Total weight shortcode quantity bug, fixed.
+* Fix - CURRENCIES - **Prices and Currencies by Country** - Report currency menu had only GBP and USD, fixed.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - *Price Rounding* option added.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - *Country by IP detection method* option added.
+  Alternative method added: `api.host.info`.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Debug info added.
+* Dev - PRODUCTS - **SKUs**.
+* Dev - **PDF Invoices** - shadowed font option added.
 
 = 2.0.5 - 16/12/2014 =
 * Fix - CURRENCIES - **Prices and Currencies by Country** - Calls to `str_getcsv` removed (as this function needs PHP 5.3.0 minimum).

@@ -176,6 +176,8 @@ class WCJ_Add_To_Cart_Per_Category {
 			$categories_info .= '</th>';
 			$categories_info .= '</tr>';
 			foreach ( $categories as $key => $category ) {
+				if ( ! is_object( $category ) )
+					continue;
 				$categories_info .= '<tr>';
 				$categories_info .= '<td>';
 				$categories_info .= $category->cat_name;

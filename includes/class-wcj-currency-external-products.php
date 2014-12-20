@@ -69,7 +69,7 @@ class WCJ_Currency_External_Products {
             
             array(
                 'title'    => __( 'Currency for External Products', 'woocommerce-jetpack' ),
-				'desc'     => '<strong>' . __( 'Enable Feature', 'woocommerce-jetpack' ) . '</strong>',
+				'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
                 'desc_tip' => __( 'Set different currency for external products.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_currency_external_products_enabled',
                 'default'  => 'no',
