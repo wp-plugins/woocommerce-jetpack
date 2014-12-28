@@ -123,6 +123,22 @@ function init_wc_gateway_wcj_custom_class() {
 					'default'  			=> apply_filters( 'woocommerce_default_order_status', 'pending' ),
 					'type'     			=> 'select',
 					'options'  			=> $this->get_order_statuses(),
+				),		
+
+				'send_email_to_admin' => array(
+					'title'    			=> __( 'Send Additional Emails', 'woocommerce-jetpack' ),
+					'label'             => __( 'Send to Admin', 'woocommerce-jetpack' ),
+					//'description'     	=> __( 'This may help if you are using pending or custom default status and not getting new order emails.', 'woocommerce-jetpack' ),				
+					'default'  			=> 'no',
+					'type'     			=> 'checkbox',
+				),	
+
+				'send_email_to_customer' => array(
+					'title'    			=> '',//__( 'Send Additional Email to Customer', 'woocommerce-jetpack' ),
+					'label'             => __( 'Send to Customer', 'woocommerce-jetpack' ),
+					'description'     	=> __( 'This may help if you are using pending or custom default status and not getting new order emails.', 'woocommerce-jetpack' ),				
+					'default'  			=> 'no',
+					'type'     			=> 'checkbox',
 				),				
 			);
 			
@@ -274,7 +290,13 @@ function init_wc_gateway_wcj_custom_class() {
 			//$order->update_status( 'on-hold', __( 'Awaiting payment', 'woocommerce' ) );
 			$statuses = $this->get_order_statuses();
 			$note = isset( $statuses[ $this->default_order_status ] ) ? $statuses[ $this->default_order_status ] : '';
-			$order->update_status( $this->default_order_status, $note );
+			$order->update_status( $this->default_order_status, $note );			
+			
+			if ( 'yes' === $this->send_email_to_admin || 'yes' === $this->send_email_to_customer ) {
+				$woocommerce_mailer = WC()->mailer();
+				if ( 'yes' === $this->send_email_to_admin )    $woocommerce_mailer->emails['WC_Email_New_Order']->trigger( $order_id );
+				if ( 'yes' === $this->send_email_to_customer ) $woocommerce_mailer->emails['WC_Email_Customer_Processing_Order']->trigger( $order_id );
+			}
 
 			// Reduce stock levels
 			$order->reduce_order_stock();
@@ -311,6 +333,8 @@ function init_wc_gateway_wcj_custom_class() {
 			$this->enable_for_methods 		= $this->get_option( 'enable_for_methods', array() );
 			$this->enable_for_virtual 		= $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;			
 			$this->default_order_status 	= $this->get_option( 'default_order_status', 'pending' );			
+			$this->send_email_to_admin		= $this->get_option( 'send_email_to_admin', 'no' );			
+			$this->send_email_to_customer	= $this->get_option( 'send_email_to_customer', 'no' );			
 			// Actions
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );		

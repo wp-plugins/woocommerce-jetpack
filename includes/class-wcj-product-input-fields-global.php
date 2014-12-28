@@ -44,7 +44,12 @@ class WCJ_Product_Input_Fields_Global extends WCJ_Product_Input_Fields {
 
 			// Make nicer name for product input fields in order at backend (shop manager)
 			add_action( 'woocommerce_before_order_itemmeta', 		array( $this, 'start_making_nicer_name_for_product_input_fields' ), 100, 3 );        
-			add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'finish_making_nicer_name_for_product_input_fields' ), 100, 3 );        
+			add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'finish_making_nicer_name_for_product_input_fields' ), 100, 3 );     
+			
+			//add_action( 'init', 		                            array( $this, 'init' ), 100 );        
+			//add_action( 'woocommerce_ajax_added_to_cart', 	    array( $this, 'ajax_add_to_cart' ), 100 );        
+			//add_action( 'woocommerce_loop_add_to_cart_link', 	    array( $this, 'replace_loop_add_to_cart_button' ), 100, 2 );        
+			//add_action( 'woocommerce_after_shop_loop_item', 	    array( $this, 'add_product_input_fields_to_frontend' ), 100 );	
         }        
     
         // Settings hooks
@@ -52,6 +57,44 @@ class WCJ_Product_Input_Fields_Global extends WCJ_Product_Input_Fields {
         add_filter( 'wcj_settings_product_input_fields_global',		array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', 							array( $this, 'add_enabled_option' ), 100 );
     }
+	
+	/**
+	 * replace_loop_add_to_cart_button.
+	 *	
+	public function replace_loop_add_to_cart_button( $button, $product ) {
+		$html .= '<form class="cart" method="post" enctype=\'multipart/form-data\'>';
+		$html .= '<input type="hidden" name="add-to-cart" value="' . esc_attr( $product->id ) . '" />';
+	 	$html .= '<button type="submit" class="button add_to_cart_button product_type_simple">' . $product->single_add_to_cart_text() . '</button>';
+		$html .= $button;
+		$html .= '</form>';
+		return $html;
+	}
+
+	/**
+	 * ajax_add_to_cart.
+	 *	
+	public function ajax_add_to_cart() {
+	
+		$message = date( 'l jS \of F Y h:i:s A' ) . ' ' . print_r( $_POST, true );
+		update_option( 'wcj_log', $message );
+		
+	
+		// check if logo_text has been defined by the client
+		//if ( isset( $_POST['logo_text'] ) ) {
+			// do something
+		//}
+	}	
+	
+	/**
+	 * init.
+	 *	
+	public function init() {
+	
+		print_r( get_option( 'wcj_log', 'N/A' ) );
+	
+		//remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 ); // remove that ajaxified Add To Cart button that automatically adds 1 item to the cart.
+		//add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_single_add_to_cart', 30 ); // replace it with the Add To Cart Button, complete with QTY field.. the same one that is used on the Single Product page.
+	}	
 	
 	/**
 	 * get_value.

@@ -25,7 +25,10 @@ class WCJ_Emails {
 			if ( '' != get_option( 'wcj_emails_bcc_email' ) )
 				add_filter( 'woocommerce_email_headers', array( $this, 'add_bcc_email' ) );				
 			if ( '' != get_option( 'wcj_emails_cc_email' ) )
-				add_filter( 'woocommerce_email_headers', array( $this, 'add_cc_email' ) );				
+				add_filter( 'woocommerce_email_headers', array( $this, 'add_cc_email' ) );	
+
+			//add_action( 'woocommerce_email_after_order_table', array( $this, 'add_payment_method_to_new_order_email' ), 15, 2 );				
+			
 			// Settings
 			add_filter( 'woocommerce_email_settings', array( $this, 'add_email_forwarding_fields' ), 100 );
         }
@@ -35,6 +38,15 @@ class WCJ_Emails {
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
     
+    /**
+     * add_payment_method_to_new_order_email.
+     *
+    public function add_payment_method_to_new_order_email( $order, $is_admin_email ) {    
+        if ( 'yes' === get_option( 'wcj_emails_add_payment_method_to_new_order_enabled' ) ) {
+			echo '<p><strong>' . __( 'Payment Method:', 'woocommerce-jetpack' ) . '</strong> ' . $order->payment_method_title . '</p>';
+		}
+    } 
+	
     /**
      * add_enabled_option.
      */
@@ -121,7 +133,15 @@ class WCJ_Emails {
                 'id'       => 'wcj_emails_enabled',
                 'default'  => 'yes',
                 'type'     => 'checkbox',
-            ),
+            ),        
+
+			/*array(
+                'title'    => __( 'Add Payment Method to New Order Email', 'woocommerce-jetpack' ),
+                'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
+                'id'       => 'wcj_emails_add_payment_method_to_new_order_enabled',
+                'default'  => 'no',
+                'type'     => 'checkbox',
+            ),*/
         
             array( 'type'  => 'sectionend', 'id' => 'wcj_emails_options' ),
 			

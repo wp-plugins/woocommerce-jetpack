@@ -316,7 +316,7 @@ class WCJ_Orders {
 
             array(
                 'title'    => __( 'Orders', 'woocommerce-jetpack' ),
-                'desc'     => __( 'Enable the Orders feature', 'woocommerce-jetpack' ),
+                'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
                 'desc_tip' => __( 'Minimum order amount, orders auto-complete, orders custom statuses.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_orders_enabled',
                 'default'  => 'yes',

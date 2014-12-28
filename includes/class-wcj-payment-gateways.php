@@ -60,8 +60,8 @@ class WCJ_Payment_Gateways {
 				add_action( 'wp_enqueue_scripts' , array( $this, 'enqueue_checkout_script' ) );				
 				// Settings Hooks
 				add_filter( 'woocommerce_payment_gateways_settings', array( $this, 'add_fees_settings' ), 100 );
-				// Scripts
-				wp_register_script( 'wcj-payment-gateways-checkout', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'js/checkout.js', array( 'jquery' ), false, true );
+				// Scripts				
+				add_action( 'init', array( $this, 'register_script' ) );
 			}			
         }        
     
@@ -72,10 +72,17 @@ class WCJ_Payment_Gateways {
 	}
 	
     /**
+     * register_script.
+     */	
+    public function register_script() {
+        wp_register_script( 'wcj-payment-gateways-checkout', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'js/checkout.js', array( 'jquery' ), false, true );
+    }	
+		
+    /**
      * enqueue_checkout_script.
      */	
     public function enqueue_checkout_script() {
-        if( !is_checkout() )
+        if( ! is_checkout() )
 			return;		
 		wp_enqueue_script( 'wcj-payment-gateways-checkout' );
     }	
@@ -311,7 +318,7 @@ class WCJ_Payment_Gateways {
             
             array(
                 'title'    => __( 'Payment Gateways', 'woocommerce-jetpack' ),
-                'desc'     => __( 'Enable the Payment Gateways feature', 'woocommerce-jetpack' ),
+                'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
                 'desc_tip' => __( 'Add custom payment gateway, change icons (images) for all default WooCommerce payment gateways.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_payment_gateways_enabled',
                 'default'  => 'yes',

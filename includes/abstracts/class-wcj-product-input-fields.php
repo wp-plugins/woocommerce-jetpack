@@ -99,7 +99,11 @@ class WCJ_Product_Input_Fields {
 	/**
 	 * validate_product_input_fields_on_add_to_cart.
 	 */
-	public function validate_product_input_fields_on_add_to_cart( $passed, $product_id ) {	
+	public function validate_product_input_fields_on_add_to_cart( $passed, $product_id ) {
+	
+		//$message = date( 'l jS \of F Y h:i:s A' ) . ' ' . print_r( $_POST, true );
+		//update_option( 'wcj_log', $message );	
+	
 		$total_number = apply_filters( 'wcj_get_option_filter', 1, $this->get_value( 'wcj_' . 'product_input_fields' . '_' . $this->scope . '_total_number', $product_id, 1 ) );		
 		for ( $i = 1; $i <= $total_number; $i++ ) {			
 			$is_required = $this->get_value( 'wcj_product_input_fields_required_' . $this->scope . '_' . $i, $product_id, 'no' );

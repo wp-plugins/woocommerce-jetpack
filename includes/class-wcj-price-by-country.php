@@ -46,6 +46,7 @@ class WCJ_Price_By_Country {
 				add_filter( 'woocommerce_get_price', 						array( $this, 'change_price_by_country' ),				PHP_INT_MAX );
 				add_filter( 'woocommerce_get_sale_price', 					array( $this, 'change_price_by_country' ), 				PHP_INT_MAX );
 				add_filter( 'woocommerce_get_regular_price', 				array( $this, 'change_price_by_country' ), 				PHP_INT_MAX );
+				add_filter( 'booking_form_calculated_booking_cost',			array( $this, 'change_price_by_country' ), 				PHP_INT_MAX );
 				add_filter( 'woocommerce_get_price_html', 					array( $this, 'fix_variable_product_price_on_sale' ), 	10 , 				2 );
 				// Currency
 				add_filter( 'woocommerce_currency_symbol', 					array( $this, 'change_currency_symbol'), 				PHP_INT_MAX, 		2 );
@@ -214,10 +215,10 @@ class WCJ_Price_By_Country {
 	 */
 	public function update_database() {
 	
-		ob_start();
-	
 		// Started
 		update_option( 'wcj_geoipcountry_db_version', -1 );
+		
+		ob_start();
 		
 		// Get IPs from file
 		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
@@ -520,10 +521,12 @@ class WCJ_Price_By_Country {
 			if ( 1 != $country_exchange_rate ) {
 				$modified_price = $price * $country_exchange_rate;
 				$rounding = get_option( 'wcj_price_by_country_rounding', 'none' );				
+				$precision = get_option( 'woocommerce_price_num_decimals', 2 );
 				switch ( $rounding ) {
 					case 'none':
-						return ( $modified_price );
-					case 'round':
+						//return ( $modified_price );
+						return round( $modified_price, $precision );
+					case 'round':						
 						return round( $modified_price );
 					case 'floor':
 						return floor( $modified_price );

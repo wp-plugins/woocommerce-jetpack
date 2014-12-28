@@ -38,7 +38,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			'products'	=>	array( 
 				'label'		=>	__( 'Products', 'woocommerce-jetpack' ), 
 				'default_cat_id'	=>	'product_listings', 
-				'all_cat_ids'	=>	array( 'product_listings', 'product_tabs', 'product_info', 'sorting', 'sku', 'product_input_fields_global', 'product_input_fields_local', ),
+				'all_cat_ids'	=>	array( 'product_listings', 'product_tabs', 'product_info', 'sorting', 'sku', 'product_input_fields_global', 'product_input_fields_local', 'bulk_price_converter', ),
 			),
 			'cart'	=>	array( 
 				'label'		=>	__( 'Cart', 'woocommerce-jetpack' ), 

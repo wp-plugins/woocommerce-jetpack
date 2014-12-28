@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.9.1
 Tested up to: 4.1
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,8 +64,16 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 2.0.7 - 28/12/2014 =
+* Dev - PRODUCTS - **Bulk Price Coverter** - Initial module release.
+* Dev - CHECKOUT - **Custom Checkout Fields** - Option to add custom checkout fields to emails, added.
+* Dev - CHECKOUT - **Payment Gateways** - *Additional emails on new order* options added.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - `booking_form_calculated_booking_cost` hook added. Partial compatibility with Bookings plugin.
+* Fix - CURRENCIES - **Prices and Currencies by Country** - On `round = none` rounding by precision set in WooCommerce.
+* Fix - Payment Gateways - `wp_register_script` moved to `init`. This caused warning generation on some servers.
+
 = 2.0.6 - 20/12/2014 =
-* Fix - CART - **Add to Cart per Category** - `is_object` check added.
+* Fix - CART - **Add to Cart per Category** - `is_object` check added. This caused warning generation on some servers.
 * Fix - **PDF Invoices** - `get_line_subtotal` instead of `get_line_total`. This fixes the bug with item's discount in invoice.
 * Fix - **PDF Invoices** - "Shipping and Discount as item" fix.
 * Fix - **PDF Invoices** - Total weight shortcode quantity bug, fixed.
@@ -115,8 +123,8 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Dev - CHECKOUT - **Payment Gateways** - Payment fees - Maximum and/or minimum cart amount for adding fee option, added.
 * Dev - CHECKOUT - **Payment Gateways** - Option to set *default order status* for custom gateway, added.
 * Dev - ORDERS - **Custom Statuses** - *Default Order Status* option added. Idea by Patryk.
-* Dev - ORDERS - **Order Numbers** - Custom order number date suffix. Idea by Patryk.
-* Dev - ORDERS - **Order Numbers** - Option to *enabled/disable sequential order numbers*, added. This will let use only *custom order number width, prefixes and suffixes*.
+* Dev - ORDERS - **Bulk Price Changer** - Custom order number date suffix. Idea by Patryk.
+* Dev - ORDERS - **Bulk Price Changer** - Option to *enabled/disable sequential order numbers*, added. This will let use only *custom order number width, prefixes and suffixes*.
 * Dev - **PDF Invoices** - Shortcodes.
 * Dev - **PDF Invoices** - Custom billing and shipping checkout fields are now added to PDF. This covers the request to add shipping phone to PDF by Dennys.
 * Dev - PRICE LABELS - **Custom Price Labels** - *Global* price labels between regular and sale. Suggested by Roman.
@@ -126,7 +134,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * i18n - `FR_fr` French translation updated. Translated by Jean-Marc.
 * i18n - POT file updated.
 * Tweak - PRICE LABELS - **Custom Price Labels** - Hide custom price labels if the Dashboard or the administration panel is displayed. Suggested by Jean-Marc.
-* Tweak - ORDERS - **Order Numbers** - Moved to separate module.
+* Tweak - ORDERS - **Bulk Price Changer** - Moved to separate module.
 * Tweak - CART - **Add to Cart** - "Only *local* URLs are accepted" info updated in *Add to cart redirect*.
 
 = 1.9.1 - 13/11/2014 =
@@ -144,7 +152,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Feature Upgraded - **Sorting** - Sorting products by stock quantity, added. Idea by Fred.
 * Feature Upgraded - **PDF Invoices** - Emailing PDF as attachment for selected payment methods only option added. Idea by Jen.
 * Feature Upgraded - **PDF Invoices** - Option to add shipping address to the invoice, added. Idea by Justine.
-* Feature Upgraded - **Orders** - Order Numbers - Custom order number suffix added. Idea by Patryk.
+* Feature Upgraded - **Orders** - Bulk Price Changer - Custom order number suffix added. Idea by Patryk.
 * Feature Upgraded - **Add to Cart** - Changing *add to cart* button text for products with zero and/or empty price (suggested by Patryk) option added.
   Products with *zero price* are covered for archive (category) and single views.
   Products with *empty price* only for archives (single view does not contain add to cart button at all, so nothing to cover).
@@ -357,7 +365,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Feature - PDF Invoices - PDF invoices for store owners and for customers.
 
 = 1.0.5 - 18/06/2014 =
-* Feature - Order Numbers - Sequential order numbering, custom order number prefix and number width.
+* Feature - Bulk Price Changer - Sequential order numbering, custom order number prefix and number width.
 
 = 1.0.4 - 15/06/2014 =
 * Fix - Add to cart text - on archives now calling the right function.
