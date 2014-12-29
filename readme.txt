@@ -33,6 +33,8 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
+* Bulk Price Converter tool.
+* Prices and Currencies by Country.
 * Another custom CSS tool, if you need one.
 
 = Feedback =
