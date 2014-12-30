@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.9.1
 Tested up to: 4.1
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,10 +31,12 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Product Info - Add more info to product on category or single pages. Change related products number.
 * Product Tabs - Add custom product tabs - globally, per category or per product. Customize or completely remove WooCommerce default product tabs.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
-* Add to Cart - Change text for add to cart buttons for each product type. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
+* Add to Cart - Change text for add to cart buttons for each product type, on per category or per product basis. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
 * Bulk Price Converter tool.
 * Prices and Currencies by Country.
+* Bulk SKUs generator tool.
+* Different Currency for External Products.
 * Another custom CSS tool, if you need one.
 
 = Feedback =
@@ -65,6 +67,9 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 1. Plugin admin area.
 
 == Changelog ==
+
+= 2.0.8 - 30/12/2014 =
+* Dev - PRODUCTS - **SKUs** - *Variable Products Variations SKUs* handling options added.
 
 = 2.0.7 - 28/12/2014 =
 * Dev - PRODUCTS - **Bulk Price Coverter** - Initial module release.
@@ -390,15 +395,6 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Initial Release.
 
 == Upgrade Notice ==
-
-= 1.7.7 =
-Bug in **Custom Price Labels** feature causing setting checkboxes back to *on*, fixed. Upgrade immediately.
-
-= 1.7.6 =
-Bug in **Custom Price Labels** feature causing setting all product's checkbox labels to *off*, fixed. Upgrade immediately.
-
-= 1.7.1 =
-Bug causing "PHP Parse error" (reported on servers running PHP 5.3) fixed. Upgrade immediately.
 
 = 1.0.0 =
 This is the first release of the plugin.
