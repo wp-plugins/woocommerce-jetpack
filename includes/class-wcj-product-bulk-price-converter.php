@@ -51,14 +51,16 @@ class WCJ_Bulk_Price_Converter {
 	 */	
 	public function change_price_by_type( $product_id, $multiply_price_by, $price_type, $is_preview ) {
 		$the_price = get_post_meta( $product_id, '_' . $price_type, true );
-		$precision = get_option( 'woocommerce_price_num_decimals', 2 );
-		$the_multiplied_price = round( $the_price * $multiply_price_by, $precision );
-		if ( ! $is_preview )
-			update_post_meta( $product_id, '_' . $price_type, $the_multiplied_price );
-
+		if ( '' != $the_price ) {
+			$precision = get_option( 'woocommerce_price_num_decimals', 2 );
+			$the_multiplied_price = round( $the_price * $multiply_price_by, $precision );
+			if ( ! $is_preview )
+				update_post_meta( $product_id, '_' . $price_type, $the_multiplied_price );
+		}
+		
 		echo '<tr>' . 
 				'<td>' . get_the_title( $product_id ) . '</td>' . 
-				'<td>' . $price_type . '</td>' . 
+				'<td><em>' . $price_type . '</em></td>' . 
 				'<td>' . $the_price . '</td>' . 
 				'<td>' . $the_multiplied_price . '</td>' . 
 			 '</tr>';		
@@ -107,8 +109,8 @@ class WCJ_Bulk_Price_Converter {
 		echo '<table class="widefat" style="width:50%; min-width: 300px;">';
 		echo '<tr>' . 
 				'<th>' . __( 'Product', 'woocommerce-jetpack' ) . '</th>' . 
+				'<th>' . __( 'Price Type', 'woocommerce-jetpack' ) . '</th>' . 				
 				'<th>' . __( 'Price', 'woocommerce-jetpack' ) . '</th>' . 
-				'<th>' . __( 'Price Type', 'woocommerce-jetpack' ) . '</th>' . 
 				'<th>' . __( 'Modified Price', 'woocommerce-jetpack' ) . '</th>' . 
 			 '</tr>';			
 		while ( $loop->have_posts() ) : $loop->the_post();		
