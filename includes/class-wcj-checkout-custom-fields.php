@@ -213,7 +213,7 @@ class WCJ_Checkout_Custom_Fields {
 						'placeholder'   	=> get_option( 'wcj_checkout_custom_field_placeholder_' . $i ),
 						'required'  		=> ( 'yes' === get_option( 'wcj_checkout_custom_field_required_' . $i ) ) ? true : false,
 						'custom_attributes'	=> $custom_attributes,
-						'clear'     		=> true,
+						'clear'     		=> ( 'yes' === get_option( 'wcj_checkout_custom_field_clear_' . $i ) ) ? true : false,
 						'class'				=> array( get_option( 'wcj_checkout_custom_field_class_' . $i ), ),
 					);
 			}
@@ -381,6 +381,14 @@ class WCJ_Checkout_Custom_Fields {
 							'form-row-last' 	=> __( 'Last', 'woocommerce-jetpack' ),
 						),
 						'css'       => 'width:200px;',
+					),
+
+					array(
+						'title'    	=> '',
+						'desc'    	=> __( 'clear', 'woocommerce-jetpack' ),
+						'id'       	=> 'wcj_checkout_custom_field_clear_' . $i,
+						'default'  	=> 'yes',
+						'type'		=> 'checkbox',
 					),				
 
 					/**

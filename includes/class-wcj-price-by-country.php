@@ -24,7 +24,7 @@ class WCJ_Price_By_Country {
 		$this->customer_country = null;
 		$this->customer_country_group_id = null;
 
-		$this->current_db_file_version = 3;
+		$this->current_db_file_version = 4;
 		
 		//$this->currency_symbols = include( 'currencies/wcj-currency-symbols.php' );
 		/*$currencies = include( 'currencies/wcj-currencies.php' );
@@ -67,7 +67,7 @@ class WCJ_Price_By_Country {
         add_filter( 'wcj_settings_sections', 								array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_price_by_country', 						array( $this, 'get_settings' ), 						100 );
         add_filter( 'wcj_features_status', 									array( $this, 'add_enabled_option' ), 					100 );
-    }	
+    }
 
 	public function reinstall_ip_db() {
 		if ( isset( $_GET['wcj-install-ip-db'] ) && '1' == $_GET['wcj-install-ip-db'] ) {
@@ -211,6 +211,17 @@ class WCJ_Price_By_Country {
 	}	
 
 	/**
+	 * get_country_by_ip_mysql.
+	 */
+	public function get_country_by_ip_mysql( $ip ) {
+		global $wpdb;
+		$results = $wpdb->get_results( "SELECT `country_code` FROM `wp_woojetpack_country_ip` WHERE `ip_from` <= $ip AND `ip_to` >= $ip", OBJECT );
+		if ( 1 !== count( $results ) )
+			return null;
+		return $results[0]->country_code;
+	}
+	
+	/**
 	 * check_and_update_database.
 	 */
 	public function update_database() {
@@ -222,8 +233,83 @@ class WCJ_Price_By_Country {
 		
 		// Get IPs from file
 		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
+		//$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
 		$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
-		if ( ! empty ($csv) ) {
+		if ( ! empty ( $csv ) ) {		
+//		$the_values = file_get_contents( plugin_dir_path( __FILE__ ) . 'lib/ipdb.sql' );
+//		if ( ! empty ( $the_values ) ) {
+		
+			global $wpdb;
+		
+			$charset_collate = $wpdb->get_charset_collate();
+		
+			$table_name = $wpdb->prefix . 'woojetpack_country_ip';
+			
+			//echo ( false === $wpdb->query( "DROP TABLE $table_name;" ) ) ? 'truncate-false' : 'truncate-true';
+			$wpdb->query( "DROP TABLE $table_name;" );
+
+			/*$sql = "CREATE TABLE $table_name (
+				ip_from BIGINT NOT NULL,
+				ip_to BIGINT NOT NULL,
+				country_code text NOT NULL,
+				UNIQUE KEY ip_from (ip_from)
+			) $charset_collate;";*/
+
+			$sql = "CREATE TABLE $table_name (
+				ip_from BIGINT NOT NULL,
+				ip_to BIGINT NOT NULL,
+				country_code VARCHAR(2) NOT NULL,
+				UNIQUE KEY ip_from (ip_from)
+			) $charset_collate;";
+			//echo ( false === $wpdb->query( $sql ) ) ? 'false' : 'true';
+			$wpdb->query( $sql );
+			
+			//print_r( $wpdb->get_results("SELECT * FROM $table_name;") );
+
+			//require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			//dbDelta( $sql );
+
+			$i = 0;
+			$the_values = '';
+			$max_insert_size = 10000;
+			$the_size = count( $csv );
+			//echo $the_size;
+			foreach ( $csv as $key => $data ) {
+				$the_values .=  "('$data[0]', '$data[1]', '$data[2]'), ";
+				//$the_values .= "('" . implode( "', '", $data ) . "'), ";
+				$i++;
+				if ( $i >= $max_insert_size ) {
+					$the_values = rtrim( $the_values, ', ' );
+					$wpdb->query( "INSERT INTO $table_name (`ip_from`, `ip_to`, `country_code`) VALUES $the_values;" );
+					$i = 0;
+					$the_values = '';
+				}
+			}
+			if ( '' != $the_values ) {
+				$the_values = rtrim( $the_values, ', ' );
+				$wpdb->query( "INSERT INTO $table_name (`ip_from`, `ip_to`, `country_code`) VALUES $the_values;" );			
+			}
+			
+			$count_db_table = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name;" );
+			//print_r( $count_db_table );
+				
+			if ( $the_size != $count_db_table ) {
+				// Something went wrong
+				update_option( 'wcj_geoipcountry_db_version', -2 );							
+			}
+			else {
+				// Finished
+				update_option( 'wcj_geoipcountry_db_version', $this->current_db_file_version );				
+			}		
+
+
+			// Depreciated - cleaning
+			update_option( 'wcj_geoipcountry_db_from', array() );
+			update_option( 'wcj_geoipcountry_db_to', array() );
+			update_option( 'wcj_geoipcountry_db_country', array() );
+
+
+			
 		
 			/**
 			update_option( 'wcj_geoipcountry_db_from', array() );
@@ -273,7 +359,7 @@ class WCJ_Price_By_Country {
 			}
 			/**/
 
-			/**/
+			/**
 			// IPs from
 			foreach ( $csv as $key => $data )
 				$column[ $key ] = $data[0];
@@ -289,7 +375,7 @@ class WCJ_Price_By_Country {
 				$column[ $key ] = $data[2];
 			update_option( 'wcj_geoipcountry_db_country', $column );
 			/**/						
-			/**/
+			/**
 			$count_db_from = count( get_option( 'wcj_geoipcountry_db_from', array() ) );
 			$count_db_to = count( get_option( 'wcj_geoipcountry_db_to', array() ) );
 			$count_db_country = count( get_option( 'wcj_geoipcountry_db_country', array() ) );
@@ -307,6 +393,7 @@ class WCJ_Price_By_Country {
 				
 		$output_buffer = ob_get_contents();
 		ob_end_clean();
+		//echo $output_buffer;
 		update_option( 'wcj_geoipcountry_db_update_log', $output_buffer );	
 	}
 
@@ -425,6 +512,9 @@ class WCJ_Price_By_Country {
 		$this->check_and_update_database();
 
 		// Search for IP in DB
+		return $this->get_country_by_ip_mysql( $ip_as_int );
+		/*
+		// Search for IP in DB
 		$db = get_option( 'wcj_geoipcountry_db_from', array() );
 		$index = $this->search_for_nearest_below_value( $db, $ip_as_int );
 
@@ -438,8 +528,9 @@ class WCJ_Price_By_Country {
 				return $db[ $index ];
 			}
 		}
+		
 
-		return null;
+		return null;*/
 	}
 	
 	public function get_user_country_by_ip_external() {

@@ -154,11 +154,12 @@ class WCJ_Product_Info {
 			'before' 			=> '',
 			'after' 			=> '',
 			'visibility' 		=> '',
+			'id' 		        => 0,
 			'options' 			=> '',
 		), $atts, $shortcode );
 		if ( 'admin' === $atts['visibility'] && ! is_super_admin() )
 			return '';		
-		if ( '' != ( $result = $this->get_product_info_short_code( $shortcode, $atts['options'] ) ) )
+		if ( '' != ( $result = $this->get_product_info_short_code( $shortcode, $atts['id'], $atts['options'] ) ) )
 			return $atts['before'] . $result . $atts['after'];
 		return '';
 	}
@@ -376,11 +377,22 @@ class WCJ_Product_Info {
 	/**
 	 * get_product_info.
 	 */ 
-	public function get_product_info_short_code( $short_code, $options = null ) {	
+	public function get_product_info_short_code( $short_code, $id = 0, $options = null ) {	
 	
-		global $product;	
+	
+		if ( 0 != $id ) {
+			$product = wc_get_product( $id );
+		}
+		else {
+			if ( ! array_key_exists( 'product', $GLOBALS ) )
+				return '';
+			global $product;
+		}
 		
-		if ( ( '%list_attribute%' == $short_code ) && ( empty( $options ) || ! $product ) )
+		if ( ! $product )
+			return '';
+	
+		if ( '%list_attribute%' == $short_code && empty( $options ) )
 			return '';
 	
 		switch( $short_code ) {
@@ -701,7 +713,7 @@ class WCJ_Product_Info {
 			
 			array(
 				'title' 	=> __( 'Product Info', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Enable the Product Info feature', 'woocommerce-jetpack' ),
+				'desc' 		=> '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
 				'desc_tip'	=> __( 'Add additional info to product, change related products number.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_product_info_enabled',
 				'default'	=> 'yes',

@@ -89,7 +89,7 @@ class WCJ_Currencies {
 
 			array(
 				'title' 	=> __( 'Currencies', 'woocommerce-jetpack' ),
-				'desc' 		=> __( 'Enable the Currencies feature', 'woocommerce-jetpack' ),
+				'desc' 		=> '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
 				'desc_tip'	=> __( 'Add all world currencies, change currency symbol.', 'woocommerce-jetpack' ),
 				'id' 		=> 'wcj_currency_enabled',
 				'default'	=> 'yes',
@@ -148,7 +148,7 @@ class WCJ_Currencies {
 		if ( 'yes' === get_option( 'wcj_currency_hide_symbol' ) )
 			return '';
 	
-		return apply_filters( 'wcj_get_option_filter', $this->currencies_symbols[ $currency ], get_option( 'wcj_currency_' . $currency, $currency_symbol ) );
+		return apply_filters( 'wcj_get_option_filter', $this->currency_symbols[ $currency ], get_option( 'wcj_currency_' . $currency, $currency_symbol ) );
 	}
 	
 	/*public function check_wooallcurpro_fields($input) {
