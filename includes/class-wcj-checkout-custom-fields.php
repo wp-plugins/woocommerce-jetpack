@@ -31,6 +31,8 @@ class WCJ_Checkout_Custom_Fields {
 			add_action( 'woocommerce_admin_order_data_after_shipping_address', 	array( $this, 'add_custom_order_and_account_fields_to_admin_order_display' ), PHP_INT_MAX );			
 					
 			add_action( 'woocommerce_email_after_order_table',              	array( $this, 'add_custom_fields_to_emails' ), PHP_INT_MAX, 2 );
+			
+			add_filter( 'woo_ce_order_fields',                     				array( $this, 'add_custom_fields_to_store_exporter' ) );
 
 				
 			add_action( 'woocommerce_checkout_update_order_meta', 				array( $this, 'update_custom_checkout_fields_order_meta' ) );
@@ -60,11 +62,22 @@ class WCJ_Checkout_Custom_Fields {
 	}		
 	
 	/**
-	 * add_custom_fields_to_customer_emails.
+	 * add_custom_fields_to_store_exporter.
 	 */
-	public function add_custom_fields_to_customer_emails() {	
-		
+	public function add_custom_fields_to_store_exporter( $fields ) {	
+		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_checkout_custom_fields_total_number', 1 ) ); $i++ ) {
+			if ( 'yes' === get_option( 'wcj_checkout_custom_field_enabled_' . $i ) ) {
 
+				$the_section = get_option( 'wcj_checkout_custom_field_section_' . $i );
+				$the_key = 'wcj_checkout_field_' . $i;
+				
+				$fields[] = array(
+					'name' => $the_section . '_' . $the_key,
+					'label' => get_option( 'wcj_checkout_custom_field_label_' . $i ),
+				);				
+			}
+		}
+        return $fields;
 	}	
 	
 	/**

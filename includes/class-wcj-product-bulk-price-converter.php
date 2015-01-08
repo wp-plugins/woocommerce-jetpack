@@ -53,16 +53,18 @@ class WCJ_Bulk_Price_Converter {
 		$the_price = get_post_meta( $product_id, '_' . $price_type, true );
 		if ( '' != $the_price ) {
 			$precision = get_option( 'woocommerce_price_num_decimals', 2 );
-			$the_multiplied_price = round( $the_price * $multiply_price_by, $precision );
+			$the_modified_price = round( $the_price * $multiply_price_by, $precision );
+			/*if ( isset( $_POST['make_pretty_prices'] ) )
+				$the_modified_price = $this->make_pretty_price( $the_modified_price );*/
 			if ( ! $is_preview )
-				update_post_meta( $product_id, '_' . $price_type, $the_multiplied_price );
+				update_post_meta( $product_id, '_' . $price_type, $the_modified_price );
 		}
 		
 		echo '<tr>' . 
 				'<td>' . get_the_title( $product_id ) . '</td>' . 
 				'<td><em>' . $price_type . '</em></td>' . 
 				'<td>' . $the_price . '</td>' . 
-				'<td>' . $the_multiplied_price . '</td>' . 
+				'<td>' . $the_modified_price . '</td>' . 
 			 '</tr>';		
 	}
 	
@@ -152,11 +154,70 @@ class WCJ_Bulk_Price_Converter {
 				<?php echo __( 'Multiply all product prices by', 'woocommerce-jetpack' ); ?> <input class="" type="text" name="multiply_prices_by" id="multiply_prices_by" value="<?php echo $multiply_prices_by; ?>">
 				<input class="button-primary" type="submit" name="bulk_change_prices_preview" id="bulk_change_prices_preview" value="Preview Prices">
 				<input class="button-primary" type="submit" name="bulk_change_prices" id="bulk_change_prices" value="Change Prices">
+				<?php /*<input type="checkbox" name="make_pretty_prices" id="make_pretty_prices" value="">Make Pretty Prices*/ ?>
 			</form></p>
 			<?php if ( $is_preview ) echo $result_changing_prices; ?>
 		</div>
 		<?php
-	}	
+	}
+
+	
+	/**
+	 * make_pretty_price.
+	 *
+	function make_pretty_price( $price ) {
+	
+		if ( 0 == $price )
+			return $price;
+
+		$the_price = $price;
+		$the_multiplied_price = $price;
+		
+		if ( $the_price < 20 ) {
+		
+			
+			$mod_10_cents = ( $the_multiplied_price * 10 - floor( $the_multiplied_price * 10 ) ) / 10;
+			// E.g. 14.44 -> 14.39
+			if ( $mod_10_cents < 0.05 )
+				$the_multiplied_price = $the_multiplied_price - ( $mod_10_cents + 0.01 );			
+			// E.g. 14.45 -> 14.49
+			else if ( $mod_10_cents >= 0.05 )
+				$the_multiplied_price = $the_multiplied_price + ( 0.1 - ( $mod_10_cents + 0.01 ) );	
+					
+			$mod_100_cents = ( $the_multiplied_price - floor( $the_multiplied_price ) );
+			// E.g. 14.09 -> 13.99
+			if ( $mod_100_cents < 0.10 )
+				$the_multiplied_price = $the_multiplied_price - ( $mod_100_cents + 0.01 );
+		}
+
+	
+		if ( $the_price < 99 && $the_price >= 20 )
+			// E.g. 45.36 -> 44.99
+			// E.g. 45.60 -> 45.99
+			$the_multiplied_price = round( $the_multiplied_price ) - 0.01;
+				
+		if ( $the_price >= 100 ) {
+			
+			$the_multiplied_price = round( $the_multiplied_price );
+		
+			$mod_10 = $the_multiplied_price % 10;
+			if ( $mod_10 < 5 )
+			// E.g. 114.00 -> 109.00
+				$the_multiplied_price = $the_multiplied_price - ( $mod_10 + 1 );				
+			else if ( $mod_10 >= 5 )
+			// E.g. 115.00 -> 119.00
+				$the_multiplied_price = $the_multiplied_price + ( 10 - ( $mod_10 + 1 ) );		
+
+			if ( $the_price >= 200 ) {
+				$mod_100 = $the_multiplied_price % 100;
+				if ( $mod_100 < 10 )
+			// E.g. 209.00 -> 199.00
+					$the_multiplied_price = $the_multiplied_price - ( $mod_100 + 1 );
+			}
+		}	
+	
+		return $the_multiplied_price;
+	}		
 	
 	/**
 	 * add_bulk_price_converter_tool_info_to_tools_dashboard.

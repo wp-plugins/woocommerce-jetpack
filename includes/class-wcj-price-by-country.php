@@ -215,7 +215,7 @@ class WCJ_Price_By_Country {
 	 */
 	public function get_country_by_ip_mysql( $ip ) {
 		global $wpdb;
-		$results = $wpdb->get_results( "SELECT `country_code` FROM `wp_woojetpack_country_ip` WHERE `ip_from` <= $ip AND `ip_to` >= $ip", OBJECT );
+		$results = $wpdb->get_results( "SELECT `country_code` FROM `{$wpdb->prefix}woojetpack_country_ip` WHERE `ip_from` <= $ip AND `ip_to` >= $ip", OBJECT );
 		if ( 1 !== count( $results ) )
 			return null;
 		return $results[0]->country_code;

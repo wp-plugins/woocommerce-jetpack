@@ -109,7 +109,8 @@ class WCJ_PDF_Invoices {
 		$total_weight = 0;
 		$the_items = $the_order->get_items();
 		foreach( $the_items as $the_item ) {
-			$the_product = new WC_Product( $the_item['product_id'] );
+			//$the_product = new WC_Product( $the_item['product_id'] );
+			$the_product = wc_get_product( $the_item['product_id'] );
 			$total_weight += $the_item['qty'] * $the_product->get_weight();
 		}
 		return ( 0 == $total_weight ) ? '' : $total_weight;

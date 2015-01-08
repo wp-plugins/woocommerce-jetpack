@@ -52,6 +52,8 @@ class WCJ_Orders {
 				
 				add_filter( 'woocommerce_default_order_status',
 															array( $this, 'set_default_order_status' ), 							100 );
+															
+				add_filter( 'woocommerce_reports_get_order_report_data_args', array( $this, 'add_custom_order_statuses_to_reports' ),			PHP_INT_MAX );
 				
 			}
 			add_action( 	'wcj_tools_dashboard', 			array( $this, 'add_custom_statuses_tool_info_to_tools_dashboard' ), 	100 );
@@ -69,6 +71,25 @@ class WCJ_Orders {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//																				CUSTOM STATUSES																		  //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * add_custom_order_statuses_to_reports.
+	 */
+	public function add_custom_order_statuses_to_reports( $args ) {
+
+		if ( in_array( 'shop_order_refund', $args['order_types'] ) )
+			return $args;
+		if ( is_array( $args['order_status'] ) && 1 === count( $args['order_status'] ) && in_array( 'refunded', $args['order_status'] ) )
+			return $args;
+		
+		$custom_order_statuses = get_option( 'wcj_orders_custom_statuses_array' );
+		if ( ! empty( $custom_order_statuses ) && is_array( $custom_order_statuses ) ) {
+			foreach ( $custom_order_statuses as $slug => $label ) {			
+				$args['order_status'][] = substr( $slug, 3 );
+			}
+		}
+		return $args;
+	}
 	
 	/**
 	 * set_default_order_status.
@@ -163,9 +184,9 @@ class WCJ_Orders {
 		// Checking status
 		$statuses_updated = ( '' == get_option( 'wcj_orders_custom_statuses_array' ) ) ? array() : get_option( 'wcj_orders_custom_statuses_array' );
 		$new_key = 'wc-' . $_POST['new_status'];
-		if ( isset( $statuses_updated[$new_key] ) )
+		if ( isset( $statuses_updated[ $new_key ] ) )
 			return '<div class="error"><p>' . __( 'Duplicate slug. Status not added.', 'woocommerce-jetpack' ) . '</p></div>';
-		$statuses_updated[$new_key] = $_POST['new_status_label'];
+		$statuses_updated[ $new_key ] = $_POST['new_status_label'];
 
 		// Adding custom status
 		$result = update_option( 'wcj_orders_custom_statuses_array', $statuses_updated );

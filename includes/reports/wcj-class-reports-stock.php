@@ -104,7 +104,8 @@ class WCJ_Reports_Stock {
 			while ( $loop->have_posts() ) : $loop->the_post();
 
 				$the_ID = get_the_ID();
-				$the_product = new WC_Product( $the_ID );
+				//$the_product = new WC_Product( $the_ID );
+				$the_product = wc_get_product( $the_ID );
 				$the_price = $the_product->get_price();
 				$the_stock = $the_product->get_total_stock();
 				//if ( 0 == $the_stock )
