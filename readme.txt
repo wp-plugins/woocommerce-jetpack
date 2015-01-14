@@ -2,9 +2,9 @@
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
-Requires at least: 3.9.1
+Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -67,6 +67,11 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 1. Plugin admin area.
 
 == Changelog ==
+
+= 2.0.12 - 14/01/2015 =
+* Dev - **Reports** - WooJetpack Orders Reports: More Ranges.
+* Fix - CURRENCIES - **Prices and Currencies by Country** - Slicing the array in `update_database()`.
+* Fix - PRODUCTS - **SKU** - Fix in `set_product_sku` function. Bug caused SKU *not* autogenerating when adding new product. Reported by Gary.
 
 = 2.0.11 - 08/01/2015 =
 * Dev - CHECKOUT - **Custom Checkout Fields** - Filter for custom checkout fields for "WooCommerce - Store Exporter" plugin, added.
@@ -133,16 +138,16 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
   Currently only fields of `text` type are available.
 * Dev - PRODUCTS - **Product Info** - Wordpress shortcodes added for every WooJetpack shortcode.
   WooJetpack shortcodes are now depreciated and will be removed in future releases. See v.1.9.0 changelog for more details.
-  This covers Wordpress.org Support Forum thread by dudemcpek - https://wordpress.org/support/topic/not-displaying-shortcodes.  
+  This covers Wordpress.org Support Forum thread by dudemcpek - https://wordpress.org/support/topic/not-displaying-shortcodes.
 * Dev - CART - **Add to Cart per Category** - Add to cart button text on *per category* basis (single or category view). Idea by Craig.
 * Dev - CART - **Add to Cart per Product** - Custom add to cart button text on *per product* basis (single or category view). Idea by Craig.
 * Dev - CART - **Cart** - Option to change position of `Empty cart` button. Suggested by Patryk.
 * Dev - CART - **Cart** - Option to hide "Note: Shipping and taxes are estimated and ..." message on Cart page, added.
 * Dev - SHIPPING - **Shipping Calculator** - Customize shipping calculator on cart page. Idea by Xavier.
-* Dev - CURRENCIES - **Prices and Currencies by Country**, added. Idea by Illona.  
+* Dev - CURRENCIES - **Prices and Currencies by Country**, added. Idea by Illona.
 * Dev - CURRENCIES - **Different Currency for External Products**, added. Idea by Leon, Krishan.
 * Dev - CURRENCIES - **Currencies** - *Hide currency symbol* option, added.
-* Dev - CHECKOUT - **Custom Checkout Fields**, added. Idea by: Patryk, Tom, https://wordpress.org/support/topic/delivery-date-picker.  
+* Dev - CHECKOUT - **Custom Checkout Fields**, added. Idea by: Patryk, Tom, https://wordpress.org/support/topic/delivery-date-picker.
 * Dev - CHECKOUT - **Payment Gateways** - Payment fees - Maximum and/or minimum cart amount for adding fee option, added.
 * Dev - CHECKOUT - **Payment Gateways** - Option to set *default order status* for custom gateway, added.
 * Dev - ORDERS - **Custom Statuses** - *Default Order Status* option added. Idea by Patryk.

@@ -108,8 +108,9 @@ class WCJ_SKU {
 	 * set_product_sku.
 	 */
 	public function set_product_sku( $post_ID, $post, $update ) {
-		if ( 'product' !== $post->type )
+		if ( 'product' != $post->post_type ) {
 			return;
+		}
 		if ( false === $update ) {
 			$this->set_sku_with_variable( $post_ID, false );
 		}

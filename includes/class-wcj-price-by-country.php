@@ -24,7 +24,7 @@ class WCJ_Price_By_Country {
 		$this->customer_country = null;
 		$this->customer_country_group_id = null;
 
-		$this->current_db_file_version = 4;
+		$this->current_db_file_version = 5;
 		
 		//$this->currency_symbols = include( 'currencies/wcj-currency-symbols.php' );
 		/*$currencies = include( 'currencies/wcj-currencies.php' );
@@ -56,7 +56,7 @@ class WCJ_Price_By_Country {
 			add_filter( 'woocommerce_reports_get_order_report_data_args', 	array( $this, 'filter_reports'), 						PHP_INT_MAX, 		1 );			
 			add_filter( 'woocommerce_currency_symbol', 						array( $this, 'change_currency_symbol_reports'), 		PHP_INT_MAX, 		2 );
 			//add_filter( 'woocommerce_currency', 							array( $this, 'change_currency_code_reports'), 				PHP_INT_MAX, 		2 );
-			add_action( 'admin_bar_menu', 									array( $this, 'toolbar_link_to_mypage' ), 				999 );
+			add_action( 'admin_bar_menu', 									array( $this, 'add_reports_currency_to_admin_bar' ), 	PHP_INT_MAX );
 			
 			// Debug
 			add_action( 'woocommerce_after_add_to_cart_button',				array( $this, 'add_debug_info'), 						PHP_INT_MAX, 		0 );
@@ -89,7 +89,7 @@ class WCJ_Price_By_Country {
 		}
 	}
 	
-	public function toolbar_link_to_mypage( $wp_admin_bar ) {
+	public function add_reports_currency_to_admin_bar( $wp_admin_bar ) {
 	
 		//http://codex.wordpress.org/Function_Reference/add_node
 		
@@ -225,176 +225,65 @@ class WCJ_Price_By_Country {
 	 * check_and_update_database.
 	 */
 	public function update_database() {
-	
+		// Get IPs from file
+		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
+		
 		// Started
 		update_option( 'wcj_geoipcountry_db_version', -1 );
 		
-		ob_start();
+		global $wpdb;
+	
+		$charset_collate = $wpdb->get_charset_collate();	
+		$table_name = $wpdb->prefix . 'woojetpack_country_ip';
 		
-		// Get IPs from file
-		// This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
-		//$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
-		$csv = array_map( array( $this, 'parse_csv_line' ), file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' ) );
-		if ( ! empty ( $csv ) ) {		
-//		$the_values = file_get_contents( plugin_dir_path( __FILE__ ) . 'lib/ipdb.sql' );
-//		if ( ! empty ( $the_values ) ) {
+		$wpdb->query( "DROP TABLE $table_name;" );
+
+		$sql = "CREATE TABLE $table_name (
+			ip_from BIGINT NOT NULL,
+			ip_to BIGINT NOT NULL,
+			country_code VARCHAR(2) NOT NULL,
+			UNIQUE KEY ip_from (ip_from)
+		) $charset_collate;";
+		$wpdb->query( $sql );
 		
-			global $wpdb;
+		$the_values = '';
+		$max_insert_size = 10000;
+		$the_offset = 0;
+		$the_predifined_size = 104402;
 		
-			$charset_collate = $wpdb->get_charset_collate();
+		$the_array = file( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv' );		
 		
-			$table_name = $wpdb->prefix . 'woojetpack_country_ip';
-			
-			//echo ( false === $wpdb->query( "DROP TABLE $table_name;" ) ) ? 'truncate-false' : 'truncate-true';
-			$wpdb->query( "DROP TABLE $table_name;" );
-
-			/*$sql = "CREATE TABLE $table_name (
-				ip_from BIGINT NOT NULL,
-				ip_to BIGINT NOT NULL,
-				country_code text NOT NULL,
-				UNIQUE KEY ip_from (ip_from)
-			) $charset_collate;";*/
-
-			$sql = "CREATE TABLE $table_name (
-				ip_from BIGINT NOT NULL,
-				ip_to BIGINT NOT NULL,
-				country_code VARCHAR(2) NOT NULL,
-				UNIQUE KEY ip_from (ip_from)
-			) $charset_collate;";
-			//echo ( false === $wpdb->query( $sql ) ) ? 'false' : 'true';
-			$wpdb->query( $sql );
-			
-			//print_r( $wpdb->get_results("SELECT * FROM $table_name;") );
-
-			//require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-			//dbDelta( $sql );
-
-			$i = 0;
-			$the_values = '';
-			$max_insert_size = 10000;
-			$the_size = count( $csv );
-			//echo $the_size;
-			foreach ( $csv as $key => $data ) {
-				$the_values .=  "('$data[0]', '$data[1]', '$data[2]'), ";
-				//$the_values .= "('" . implode( "', '", $data ) . "'), ";
-				$i++;
-				if ( $i >= $max_insert_size ) {
-					$the_values = rtrim( $the_values, ', ' );
-					$wpdb->query( "INSERT INTO $table_name (`ip_from`, `ip_to`, `country_code`) VALUES $the_values;" );
-					$i = 0;
-					$the_values = '';
+		// Adding data to table
+		while ( $the_offset < $the_predifined_size ) {		
+			$the_array_slice = array_slice( $the_array, $the_offset, $max_insert_size, true );
+			$csv = array_map( array( $this, 'parse_csv_line' ), $the_array_slice );		
+			if ( ! empty ( $csv ) ) {
+				foreach ( $csv as $key => $data ) {
+					$the_values .=  "('$data[0]', '$data[1]', '$data[2]'), ";
+					//$the_values .= "('" . implode( "', '", $data ) . "'), ";
 				}
-			}
-			if ( '' != $the_values ) {
 				$the_values = rtrim( $the_values, ', ' );
-				$wpdb->query( "INSERT INTO $table_name (`ip_from`, `ip_to`, `country_code`) VALUES $the_values;" );			
-			}
-			
-			$count_db_table = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name;" );
-			//print_r( $count_db_table );
-				
-			if ( $the_size != $count_db_table ) {
-				// Something went wrong
-				update_option( 'wcj_geoipcountry_db_version', -2 );							
-			}
-			else {
-				// Finished
-				update_option( 'wcj_geoipcountry_db_version', $this->current_db_file_version );				
+				$wpdb->query( "INSERT INTO $table_name (`ip_from`, `ip_to`, `country_code`) VALUES $the_values;" );
+				$the_values = '';							
 			}		
-
-
-			// Depreciated - cleaning
-			update_option( 'wcj_geoipcountry_db_from', array() );
-			update_option( 'wcj_geoipcountry_db_to', array() );
-			update_option( 'wcj_geoipcountry_db_country', array() );
-
-
-			
-		
-			/**
-			update_option( 'wcj_geoipcountry_db_from', array() );
-			update_option( 'wcj_geoipcountry_db_to', array() );
-			update_option( 'wcj_geoipcountry_db_country', array() );		
-		
-			foreach ( $csv as $key => $data ) {
-				$column_ip_from[ $key ] = $data[0];		
-				$column_ip_to[ $key ] = $data[1];	
-				$column_ip_country[ $key ] = $data[2];	
-			}
-			
-			update_option( 'wcj_geoipcountry_db_from', $column_ip_from );
-			update_option( 'wcj_geoipcountry_db_to', $column_ip_to );
-			update_option( 'wcj_geoipcountry_db_country', $column_ip_country );
-			/**/
-			
-				
-			/**
-			global $wpdb;
-			
-			$sql = "CREATE TABLE {$wpdb->prefix}wcj_country_ip (
-						ip_from INT(10) UNSIGNED NOT NULL, 
-						ip_to INT(10) UNSIGNED NOT NULL, 
-						country_code VARCHAR(2) NOT NULL
-					)";			
-			$results = $wpdb->get_results( $sql );			
-				
-			if ( ( $handle = fopen( plugin_dir_path( __FILE__ ) . 'lib/ipdb.csv', "r" ) ) !== FALSE ) {
-				while ( ($data = fgetcsv( $handle, 100, "," ) ) !== FALSE ) {
-					
-					print_r( $wpdb->insert( 
-						'$wpdb->prefix' . 'wcj_country_ip', 
-						array( 
-							'ip_from' => $data[0], 
-							'ip_to' => $data[1] ,
-							'country_code' => $data[2],
-						), 
-						array( 
-							'%d', 
-							'%d',
-							'%s',
-						) 
-					) );
-				}
-				fclose( $handle );
-			}
-			/**/
-
-			/**
-			// IPs from
-			foreach ( $csv as $key => $data )
-				$column[ $key ] = $data[0];
-			update_option( 'wcj_geoipcountry_db_from', $column );
-
-			// IPs to
-			foreach ( $csv as $key => $data )
-				$column[ $key ] = $data[1];
-			update_option( 'wcj_geoipcountry_db_to', $column );
-
-			// Countries
-			foreach ( $csv as $key => $data )
-				$column[ $key ] = $data[2];
-			update_option( 'wcj_geoipcountry_db_country', $column );
-			/**/						
-			/**
-			$count_db_from = count( get_option( 'wcj_geoipcountry_db_from', array() ) );
-			$count_db_to = count( get_option( 'wcj_geoipcountry_db_to', array() ) );
-			$count_db_country = count( get_option( 'wcj_geoipcountry_db_country', array() ) );
-			
-			if ( 0 == $count_db_from || $count_db_from != $count_db_to || $count_db_from != $count_db_country ) {
-				// Something went wrong
-				update_option( 'wcj_geoipcountry_db_version', -2 );							
-			}
-			else {
-				// Finished
-				update_option( 'wcj_geoipcountry_db_version', $this->current_db_file_version );				
-			}
-			/**/
+			$the_offset += $max_insert_size;
 		}
-				
-		$output_buffer = ob_get_contents();
-		ob_end_clean();
-		//echo $output_buffer;
-		update_option( 'wcj_geoipcountry_db_update_log', $output_buffer );	
+		
+		// Checking if OK
+		$count_db_table = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name;" );
+		if ( $the_predifined_size != $count_db_table ) {
+			// Something went wrong
+			update_option( 'wcj_geoipcountry_db_version', -2 );							
+		}
+		else {
+			// Finished
+			update_option( 'wcj_geoipcountry_db_version', $this->current_db_file_version );				
+		}		
+
+		// Depreciated - cleaning
+		update_option( 'wcj_geoipcountry_db_from', array() );
+		update_option( 'wcj_geoipcountry_db_to', array() );
+		update_option( 'wcj_geoipcountry_db_country', array() );		
 	}
 
 	/**
