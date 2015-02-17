@@ -77,9 +77,9 @@ class WCJ_Orders {
 	 */
 	public function add_custom_order_statuses_to_reports( $args ) {
 
-		/*if ( in_array( 'shop_order_refund', $args['order_types'] ) )
-			return $args;*/
-		if ( is_array( $args['order_status'] ) && 1 === count( $args['order_status'] ) && in_array( 'refunded', $args['order_status'] ) )
+		if ( ! empty( $args['order_types'] ) && is_array( $args['order_types'] ) && in_array( 'shop_order_refund', $args['order_types'] ) )
+			return $args;
+		if (  ! empty( $args['order_status'] ) && is_array( $args['order_status'] ) && 1 === count( $args['order_status'] ) && in_array( 'refunded', $args['order_status'] ) )
 			return $args;
 		
 		$custom_order_statuses = get_option( 'wcj_orders_custom_statuses_array' );

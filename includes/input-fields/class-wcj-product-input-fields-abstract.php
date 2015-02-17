@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Product Input Fields abstract class.
  *
- * @class       WCJ_Product_Input_Fields
+ * @class       WCJ_Product_Input_Fields_Abstract
  * @version		1.0.0
  * @category	Class
  * @author 		Algoritmika Ltd.
@@ -12,9 +12,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
  
-if ( ! class_exists( 'WCJ_Product_Input_Fields' ) ) :
+if ( ! class_exists( 'WCJ_Product_Input_Fields_Abstract' ) ) :
  
-class WCJ_Product_Input_Fields {
+class WCJ_Product_Input_Fields_Abstract {
 
 	/** @var string scope. */
 	public $scope = '';
@@ -140,7 +140,7 @@ class WCJ_Product_Input_Fields {
 					case 'number':
 					case 'text':
 					case 'checkbox':
-						echo '<p>' . $title . '<input type="' . $type . '" name="wcj_product_input_fields_' . $this->scope . '_' . $i . '" value="' . $placeholder . '">' . '</p>';
+						echo '<p>' . $title . '<input type="' . $type . '" name="wcj_product_input_fields_' . $this->scope . '_' . $i . '" placeholder="' . $placeholder . '" value>' . '</p>';
 						break;
 				}				
 			}

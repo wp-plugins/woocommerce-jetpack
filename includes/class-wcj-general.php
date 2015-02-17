@@ -22,11 +22,13 @@ class WCJ_General {
     public function __construct() { 
         // Main hooks
         if ( 'yes' === get_option( 'wcj_general_enabled' ) ) {
+		
 			if ( '' != get_option( 'wcj_general_custom_css' ) )
-				add_action( 'wp_head', 		array( $this, 'hook_custom_css' ) );
+				add_action( 'wp_head', 		array( $this, 'hook_custom_css' ) );				
 			if ( '' != get_option( 'wcj_general_custom_admin_css' ) )
-				add_action( 'admin_head', 	array( $this, 'hook_custom_admin_css' ) );
-		}    
+				add_action( 'admin_head', 	array( $this, 'hook_custom_admin_css' ) );					
+		} 
+		
         // Settings hooks
         add_filter( 'wcj_settings_sections', 	array( $this, 'settings_section' ) );
         add_filter( 'wcj_settings_general', 	array( $this, 'get_settings' ), 		100 );
@@ -71,10 +73,10 @@ class WCJ_General {
             
             array(
                 'title'    => __( 'General', 'woocommerce-jetpack' ),
-                'desc'     => __( 'Enable the General feature', 'woocommerce-jetpack' ),
+                'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
                 'desc_tip' => __( 'Separate custom CSS for front and back end.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_general_enabled',
-                'default'  => 'yes',
+                'default'  => 'no',
                 'type'     => 'checkbox',
             ),
         
@@ -110,7 +112,7 @@ class WCJ_General {
     function settings_section( $sections ) {    
         $sections['general'] = __( 'General', 'woocommerce-jetpack' );        
         return $sections;
-    }    
+    } 
 }
  
 endif;

@@ -58,13 +58,13 @@ class WCJ_Call_For_Price {
 	 */	
 	public function on_empty_price( $price ) {	
 		if ( ( get_option('wcj_call_for_price_text') !== '' ) && is_single( get_the_ID() ) ) 
-			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text') );
+			return do_shortcode( apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text') ) );
 		if ( ( get_option('wcj_call_for_price_text_on_related') !== '' ) && ( is_single() ) && ( ! is_single( get_the_ID() ) ) ) 
-			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_related') );
+			return do_shortcode( apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_related') ) );
 		if ( ( get_option('wcj_call_for_price_text_on_archive') !== '' ) && is_archive() ) 
-			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_archive') );
+			return do_shortcode( apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_archive') ) );
 		if ( ( get_option('wcj_call_for_price_text_on_home') !== '' ) && is_front_page() ) 
-			return apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_home') );		
+			return do_shortcode( apply_filters( 'wcj_get_option_filter', $this->default_empty_price_text, get_option('wcj_call_for_price_text_on_home') ) );		
 		
 		// No changes
 		return $price;

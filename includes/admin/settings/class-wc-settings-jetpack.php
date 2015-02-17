@@ -38,7 +38,17 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			'products'	=>	array( 
 				'label'		=>	__( 'Products', 'woocommerce-jetpack' ), 
 				'default_cat_id'	=>	'product_listings', 
-				'all_cat_ids'	=>	array( 'product_listings', 'product_tabs', 'product_info', 'sorting', 'sku', 'product_input_fields_global', 'product_input_fields_local', 'bulk_price_converter', ),
+				'all_cat_ids'	=>	array( 
+					'product_listings', 
+					'product_tabs', 
+					'product_info',
+					'related_products',					
+					'sorting', 
+					'sku', 
+					'product_input_fields', 
+					//'product_input_fields_global', 
+					//'product_input_fields_local', 
+					'bulk_price_converter', ),
 			),
 			'cart'	=>	array( 
 				'label'		=>	__( 'Cart', 'woocommerce-jetpack' ), 
@@ -60,10 +70,34 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 				'default_cat_id'	=>	'orders',
 				'all_cat_ids'	=>	array( 'orders', 'order_numbers', ),
 			),
+			'pdf_invoicing'	=>	array( 
+				//'label'		=>	__( 'PDF Invoicing & Packing Slips', 'woocommerce-jetpack' ) . ' (v2)', 
+				'label'		=>	__( 'PDF Invoices', 'woocommerce-jetpack' ) . ' (v2)', 
+				'default_cat_id'	=>	'pdf_invoicing',
+				'all_cat_ids'	=>	array( 
+					//'pdf_invoices', 
+					'pdf_invoicing', 
+					//'pdf_invoices_by_settings', 
+					//'pdf_invoices_by_shortcodes', 
+					//'pdf_invoices_proforma', 
+					//'pdf_invoices_packing', 
+					'pdf_invoicing_numbering', 
+					'pdf_invoicing_templates', 					
+					'pdf_invoicing_header', 
+					'pdf_invoicing_footer', 
+					'pdf_invoicing_styling', 
+					'pdf_invoicing_page', 
+					'pdf_invoicing_emails', 
+					'pdf_invoicing_display', 
+					//'pdf_invoicing_general', 
+				),
+			),		
 			'pdf_invoices'	=>	array( 
-				'label'		=>	__( 'PDF Invoices', 'woocommerce-jetpack' ), 
+				'label'		=>	__( 'PDF Invoices', 'woocommerce-jetpack' ) . ' (v1)', 
 				'default_cat_id'	=>	'pdf_invoices',
-				'all_cat_ids'	=>	array( 'pdf_invoices', ),
+				'all_cat_ids'	=>	array( 
+					'pdf_invoices', 
+				),
 			),			
 			'emails'	=>	array( 
 				'label'		=>	__( 'Emails', 'woocommerce-jetpack' ), 
@@ -78,7 +112,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			'misc'	=>	array( 
 				'label'		=>	__( 'Misc.', 'woocommerce-jetpack' ), 
 				'default_cat_id'	=>	'general',
-				'all_cat_ids'	=>	array( 'general', 'old_slugs', 'reports', ),
+				'all_cat_ids'	=>	array( 'general', 'old_slugs', 'reports', 'admin_tools', ),
 			),			
 		);		
 		

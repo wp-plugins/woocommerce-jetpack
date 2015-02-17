@@ -78,11 +78,7 @@ class WCJ_Product_Info {
 			$this->add_product_info_filters( 'archive' );
 			$this->add_product_info_filters( 'single' );
 			
-			// Related products
-			if ( 'yes' === get_option( 'wcj_product_info_related_products_enable' ) ) {
-				add_filter( 'woocommerce_related_products_args', 		array( $this, 'related_products_limit' ), 100 );
-				add_filter( 'woocommerce_output_related_products_args', array( $this, 'related_products_limit_args' ), 100 );
-			}	
+	
 			
 			// Shortcodes
 			add_shortcode( 'wcj_sku', 									array( $this, 'shortcode_product_info_sku' ) );	
@@ -118,7 +114,10 @@ class WCJ_Product_Info {
 			add_shortcode( 'wcj_list_attribute', 						array( $this, 'shortcode_product_info_list_attribute' ) );		
 
 			// Depreciated
-			add_shortcode( 'wcjp_list_attribute', 						array( $this, 'shortcode_wcjp_list_attribute' ) );			
+			add_shortcode( 'wcjp_list_attribute', 						array( $this, 'shortcode_wcjp_list_attribute' ) );		
+
+			// Single Product Images
+			add_filter( 'woocommerce_product_thumbnails_columns',       array( $this, 'change_product_thumbnails_columns_number' ) );
 		}
 		
 		// Settings hooks
@@ -127,6 +126,13 @@ class WCJ_Product_Info {
 		add_filter( 'wcj_features_status', 								array( $this, 'add_enabled_option' ), 100 );
 	}
 
+	/**
+	 * change_product_thumbnails_columns.
+	 */	
+	public function change_product_thumbnails_columns_number( $columns_number ) {
+		return ( 'yes' === get_option( 'wcj_product_images_enabled', 'no' ) ) ? get_option( 'wcj_product_images_thumbnails_columns', 3 ) : $columns_number;
+	}
+	
 	/**
 	 * shortcode_wcjp_list_attribute.
 	 */	
@@ -289,7 +295,7 @@ class WCJ_Product_Info {
 	}	
 	
 	/**
-	 * add_product_info_filters.
+	 * list_short_codes.
 	 */	
 	public function list_short_codes() {
 		//return __( 'Available shortcodes are:', 'woocommerce-jetpack' ) . ' ' . implode( ", ", $this->product_info_shortcodes_array );
@@ -307,8 +313,9 @@ class WCJ_Product_Info {
 			 ( '' != get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) ) )
 				add_action( get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'product_info' ), get_option( 'wcj_product_info_on_' . $single_or_archive . '_filter_priority' ) );
 		// More product Info
-		if ( 'yes' === get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_enabled' ) )
+		if ( 'yes' === get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_enabled' ) ) {		
 				add_action( get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter' ), array( $this, 'more_product_info' ), get_option( 'wcj_more_product_info_on_' . $single_or_archive . '_filter_priority' ) );						
+		}
 	}
 	
 	/**
@@ -353,8 +360,19 @@ class WCJ_Product_Info {
 	 * apply_product_info_short_codes.
 	 */
 	public function apply_product_info_short_codes( $the_product_info, $remove_on_empty ) {
+	
+		$product_ids_to_exclude = get_option( 'wcj_product_info_products_to_exclude', '' );
+		if ( '' != $product_ids_to_exclude ) {
+			$product_ids_to_exclude = str_replace( ' ', '', $product_ids_to_exclude );
+			$product_ids_to_exclude = explode( ',', $product_ids_to_exclude );
+			$product_id = get_the_ID();
+			if ( ! empty( $product_ids_to_exclude ) && is_array( $product_ids_to_exclude ) && in_array( $product_id, $product_ids_to_exclude ) )
+				return;
+		}
+		
 		if ( '' == $the_product_info )
 			return;					
+			
 		foreach ( $this->product_info_shortcodes_array as $product_info_short_code ) {									
 			if ( false !== strpos( $the_product_info, $product_info_short_code ) ) {
 				// We found short code in the text
@@ -371,6 +389,7 @@ class WCJ_Product_Info {
 				}
 			}
 		}
+		
 		echo apply_filters( 'the_content', $the_product_info );
 	}		
 	
@@ -591,27 +610,7 @@ class WCJ_Product_Info {
 		return false;			
 	}	
 	
-	// RELATED PRODUCTS //
-	
-	/**
-	 * Change number of related products on product page.
-	 */ 
-	function related_products_limit_args( $args ) {			
-		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
-		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-		$args['columns'] = get_option( 'wcj_product_info_related_products_columns' );				
-		return $args;
-	}	
-	
-	/**
-	 * Change number of related products on product page.
-	 */ 
-	function related_products_limit( $args ) {			
-		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
-		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-		if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) $args['order'] = get_option( 'wcj_product_info_related_products_order' );				
-		return $args;
-	}
+
 	
 	// ADMIN //
 	
@@ -814,59 +813,36 @@ class WCJ_Product_Info {
 				'id'       => 'wcj_product_info_on_single_filter_priority',
 				'default'  => 10,
 				'type'     => 'number',
+			),	
+
+			array(
+				'title'    => __( 'Product IDs to exclude', 'woocommerce-jetpack' ),
+				'desc_tip' => __( 'Comma separated list of product IDs to exclude from product info.', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_info_products_to_exclude',
+				'default'  => '',
+				'type'     => 'text',
+				'css'      => 'min-width:300px;',
 			),			
 			
-			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_additional_options' ),				
-		
-			// Related Products Options
-			array( 'title' 	=> __( 'Related Products Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => 'This section lets you change related products number.', 'id' => 'wcj_product_info_related_products_options' ),
-		
-			array(
-				'title' 	=> __( 'Enable', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_product_info_related_products_enable',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox',
-			),
+			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_additional_options' ),	
+
+			array( 'title' 	=> __( 'Product Images', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_product_images_options' ),
 			
 			array(
-				'title'    => __( 'Related Products Number', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_related_products_num',
+				'title'    => __( 'Enable', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_images_enabled',
+				'default'  => 'no',
+				'type'     => 'checkbox',
+			),			
+			
+			array(
+				'title'    => __( 'Single Product Thumbnails Columns', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_product_images_thumbnails_columns',
 				'default'  => 3,
 				'type'     => 'number',
-			),
+			),				
 			
-			array(
-				'title'    => __( 'Related Products Columns', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_related_products_columns',
-				'default'  => 3,
-				'type'     => 'number',
-			),			
-			
-			array(
-				'title'    => __( 'Order by', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_related_products_orderby',
-				'default'  => 'rand',
-				'type'     => 'select',
-				'options'  => array(
-						'rand'  => __( 'Random', 'woocommerce-jetpack' ),
-						'date'	=> __( 'Date', 'woocommerce-jetpack' ),
-						'title' => __( 'Title', 'woocommerce-jetpack' ),
-					),
-			),			
-			
-			array(
-				'title'    => __( 'Order', 'woocommerce-jetpack' ),
-				'desc_tip' => __( 'Ignored if order by "Random" is selected above.', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_info_related_products_order',
-				'default'  => 'desc',
-				'type'     => 'select',
-				'options'  => array(
-						'asc'   => __( 'Ascending', 'woocommerce-jetpack' ),
-						'desc'	=> __( 'Descending', 'woocommerce-jetpack' ),
-					),
-			),					
-		
-			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_info_related_products_options' ),			
+			array( 'type' 	=> 'sectionend', 'id' => 'wcj_product_images_options' ),		
 
 		) );
 		

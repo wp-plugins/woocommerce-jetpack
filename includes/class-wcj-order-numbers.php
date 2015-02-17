@@ -23,7 +23,8 @@ class WCJ_Order_Numbers {
  
         // Main hooks
 		if ( 'yes' === get_option( 'wcj_order_numbers_enabled' ) ) {
-			add_action( 'woocommerce_new_order', 		array( $this, 'add_order_number_meta' ), 								100 );
+			//add_action( 'woocommerce_new_order', 		array( $this, 'add_new_order_number' ), 								100 );
+			add_action( 'wp_insert_post',				array( $this, 'add_new_order_number' ), 								100 );
 			add_filter( 'woocommerce_order_number', 	array( $this, 'display_order_number' ), 								100, 	2 );
 			add_filter( 'wcj_tools_tabs', 				array( $this, 'add_renumerate_orders_tool_tab' ), 						100 );
 			add_action( 'wcj_tools_renumerate_orders', 	array( $this, 'create_renumerate_orders_tool' ), 						100 );
@@ -99,16 +100,24 @@ class WCJ_Order_Numbers {
 			</form>
 		</div><?php
 	}
+	
+	public function add_new_order_number( $order_id ) {
+		$this->add_order_number_meta( $order_id, false );
+	}
 
     /**
      * Add/update order_number meta to order.
      */
-    public function add_order_number_meta( $order_id ) {
+    public function add_order_number_meta( $order_id, $do_overwrite ) {
+	
+		if ( 'shop_order' !== get_post_type( $order_id ) )
+			return;
 
-		$current_order_number = get_option( 'wcj_order_number_counter' );
-		//echo $current_order_number;
-		update_option( 'wcj_order_number_counter', ( $current_order_number + 1 ) );
-		update_post_meta( $order_id, '_wcj_order_number', $current_order_number );
+		if ( true === $do_overwrite || 0 == get_post_meta( $order_id, '_wcj_order_number', true ) ) {
+			$current_order_number = get_option( 'wcj_order_number_counter' );
+			update_option( 'wcj_order_number_counter', ( $current_order_number + 1 ) );
+			update_post_meta( $order_id, '_wcj_order_number', $current_order_number );
+		}
 	}
 
     /**
@@ -129,7 +138,7 @@ class WCJ_Order_Numbers {
 		while ( $loop->have_posts() ) : $loop->the_post();
 
 			$order_id = $loop->post->ID;
-			$this->add_order_number_meta( $order_id );
+			$this->add_order_number_meta( $order_id, true );
 
 		endwhile;
 	}		
@@ -154,7 +163,7 @@ class WCJ_Order_Numbers {
 
             array(
                 'title'    => __( 'Order Numbers', 'woocommerce-jetpack' ),
-                'desc'     => '<strong>' . __( 'Enable Order Numbers WooJetpack Module', 'woocommerce-jetpack' ) . '</strong>',
+                'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
 				'desc_tip' => __( 'Sequential order numbering, custom order number prefix, suffix and number width.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_order_numbers_enabled',
                 'default'  => 'no',

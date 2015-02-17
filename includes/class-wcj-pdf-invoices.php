@@ -31,11 +31,11 @@ class WCJ_PDF_Invoices {
      */
     public function __construct() {	
 	
-		add_shortcode( 'wcj_order_date', 									array( $this, 'shortcode_pdf_invoices_order_date' ) );	
-		add_shortcode( 'wcj_order_billing_address',							array( $this, 'shortcode_pdf_invoices_billing_address' ) );	
-		add_shortcode( 'wcj_items_total_weight',							array( $this, 'shortcode_pdf_invoices_items_total_weight' ) );	
-		add_shortcode( 'wcj_items_total_quantity',							array( $this, 'shortcode_pdf_invoices_items_total_quantity' ) );	
-		add_shortcode( 'wcj_items_total_number',							array( $this, 'shortcode_pdf_invoices_items_total_number' ) );	
+		//add_shortcode( 'wcj_order_date', 									array( $this, 'shortcode_pdf_invoices_order_date' ) );	
+		//add_shortcode( 'wcj_order_billing_address',							array( $this, 'shortcode_pdf_invoices_billing_address' ) );	
+		//add_shortcode( 'wcj_items_total_weight',							array( $this, 'shortcode_pdf_invoices_items_total_weight' ) );	
+		//add_shortcode( 'wcj_items_total_quantity',							array( $this, 'shortcode_pdf_invoices_items_total_quantity' ) );	
+		//add_shortcode( 'wcj_items_total_number',							array( $this, 'shortcode_pdf_invoices_items_total_number' ) );	
 
         // Main hooks
         if ( get_option( 'wcj_pdf_invoices_enabled' ) == 'yes' ) {
@@ -202,19 +202,18 @@ class WCJ_PDF_Invoices {
     public function generate_pdf( $get_by_order_id = 0 ) {
 
 		if ( ! isset( $_GET['pdf_invoice'] ) && 0 == $get_by_order_id ) return;
+		
+		$order_id = ( 0 == $get_by_order_id ) ? $_GET['pdf_invoice'] : $get_by_order_id;
 
 		if ( ! is_user_logged_in() && 0 == $get_by_order_id ) return;
 		
 		if ( ( ! current_user_can( 'administrator' ) ) && ( get_current_user_id() != intval( get_post_meta( $order_id, '_customer_user', true ) ) ) && ( 0 == $get_by_order_id ) ) return;
 		
-		if ( 0 == $get_by_order_id )
-			$order_id = $_GET['pdf_invoice'];
-		else
-			$order_id = $get_by_order_id;		
+	
 
 		// Include the main TCPDF library (search for installation path).
 		//require_once('tcpdf_include.php');
-		require_once( 'tcpdf_min/tcpdf.php' );
+		require_once( 'lib/tcpdf_min/tcpdf.php' );
 
 		// create new PDF document
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -384,8 +383,8 @@ class WCJ_PDF_Invoices {
 	
 		$post_meta = get_post_meta( $order_id );
 		foreach( $post_meta as $key => $values ) {
-			$value = unserialize( $values[0] );
-			if ( $section === $value['section'] ) {			
+			$value = maybe_unserialize( $values[0] );
+			if ( isset( $value['section'] ) && $section === $value['section'] ) {			
 				if ( '' != $value['value']  ) {
 					$the_label = $value['label'];
 					if ( '' != $the_label )
@@ -417,6 +416,7 @@ class WCJ_PDF_Invoices {
 		$order_total_discount		= $the_order->get_total_discount();
 		
 		$order_tax_percent = 0;
+		$order_total_discount_tax = 0;
 		$order_total_before_discount = $order_total + $order_total_discount;
 		if ( 0 != $order_total_before_discount )
 			$order_tax_percent = $order_total_tax / $order_total_before_discount;
@@ -506,6 +506,7 @@ class WCJ_PDF_Invoices {
 				'css'		=> 'width:36%;',
 				'required'	=> true,
 				'value_var'	=> 'item_name',
+				'td_css'	=> '',
 			),
 			array(
 				'title'		=> get_option( 'wcj_pdf_invoices_column_qty_text' ),
@@ -798,7 +799,7 @@ class WCJ_PDF_Invoices {
 
             array(
                 'title'    => __( 'PDF Invoices', 'woocommerce-jetpack' ),
-                'desc'     => __( 'Enable the PDF Invoices feature', 'woocommerce-jetpack' ),
+                'desc'     => '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
                 'desc_tip' => __( 'Add PDF invoices for the store owners and for the customers.', 'woocommerce-jetpack' ),
                 'id'       => 'wcj_pdf_invoices_enabled',
                 'default'  => 'yes',

@@ -258,7 +258,7 @@ function init_wc_gateway_wcj_custom_class() {
 		 */
 		public function thankyou_page() {
 			if ( $this->instructions )
-				echo wpautop( wptexturize( $this->instructions ) );
+				echo do_shortcode( wpautop( wptexturize( $this->instructions ) ) );
 		}	
 
 		/**
@@ -270,9 +270,8 @@ function init_wc_gateway_wcj_custom_class() {
 		 * @param bool $plain_text
 		 */
 		public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
-//			if ( $this->instructions_in_email && ! $sent_to_admin && 'jetpack_custom_gateway' === $order->payment_method && 'on-hold' === $order->status ) {
 			if ( $this->instructions_in_email && ! $sent_to_admin && $this->id === $order->payment_method && 'on-hold' === $order->status ) {
-				echo wpautop( wptexturize( $this->instructions_in_email ) ) . PHP_EOL;
+				echo do_shortcode( wpautop( wptexturize( $this->instructions_in_email ) ) . PHP_EOL );
 			}
 		}
 

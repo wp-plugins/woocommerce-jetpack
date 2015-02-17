@@ -78,6 +78,7 @@
 		array( 'code' => 'KGS', 'name' => __( 'Kyrgyzstani som' ), 'symbol' => 'KGS', ),
 		array( 'code' => 'KWD', 'name' => __( 'Kuwaiti dinar' ), 'symbol' => 'KWD', ),
 		array( 'code' => 'LAK', 'name' => __( 'Lao kip' ), 'symbol' => 'LAK', ),
+		//array( 'code' => 'KIP', 'name' => __( 'Lao kip' ), 'symbol' => 'KIP', ),
 		array( 'code' => 'LVL', 'name' => __( 'Latvian lats' ), 'symbol' => 'LVL', ),
 		array( 'code' => 'LBP', 'name' => __( 'Lebanese lira' ), 'symbol' => 'LBP', ),
 		array( 'code' => 'LSL', 'name' => __( 'Lesotho loti' ), 'symbol' => 'LSL', ),

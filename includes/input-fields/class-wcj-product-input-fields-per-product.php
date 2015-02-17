@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  
 if ( ! class_exists( 'WCJ_Product_Input_Fields_Per_Product' ) ) :
  
-class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields {
+class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields_Abstract {
     
     /**
      * Constructor.
@@ -49,12 +49,14 @@ class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields {
 			// Make nicer name for product input fields in order at backend (shop manager)
 			add_action( 'woocommerce_before_order_itemmeta', 		array( $this, 'start_making_nicer_name_for_product_input_fields' ), 100, 3 );        
 			add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'finish_making_nicer_name_for_product_input_fields' ), 100, 3 );        
+			
+
         }        
     
         // Settings hooks
-        add_filter( 'wcj_settings_sections', 						array( $this, 'settings_section' ) );
-        add_filter( 'wcj_settings_product_input_fields_local',		array( $this, 'get_settings' ), 100 );
-        add_filter( 'wcj_features_status', 							array( $this, 'add_enabled_option' ), 100 );
+        //add_filter( 'wcj_settings_sections', 						array( $this, 'settings_section' ) );
+        //add_filter( 'wcj_settings_product_input_fields_local',		array( $this, 'get_settings' ), 100 );
+        //add_filter( 'wcj_features_status', 							array( $this, 'add_enabled_option' ), 100 );
     }
 	
 	/**
@@ -174,68 +176,7 @@ class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields {
 		// Output
 		echo $html;		
 	}
-    
-    /**
-     * add_enabled_option.
-     */
-    public function add_enabled_option( $settings ) {    
-        $all_settings = $this->get_settings();
-        $settings[] = $all_settings[1];        
-        return $settings;
-    }
-    
-    /**
-     * get_settings.
-     */    
-    function get_settings() {
- 
-        $settings = array(
- 
-            array( 
-				'title'    => __( 'Product Input Fields per Product Options', 'woocommerce-jetpack' ), 
-				'type'     => 'title', 
-				'desc'     => __( 'Add custom input fields to product\'s single page for customer to fill before adding product to cart.', 'woocommerce-jetpack' )
-				              . ' ' 
-							  . __( 'When enabled this module will add "Product Input Fields" tab to product\'s "Edit" page.', 'woocommerce-jetpack' ),
-				'id'       => 'wcj_product_input_fields_local_options', 
-			),			
-            
-            array(
-                'title'    => __( 'Product Input Fields - per Product', 'woocommerce-jetpack' ),
-                'desc'     => '<strong>' . __( 'Enable', 'woocommerce-jetpack' ) . '</strong>',
-                'desc_tip' => __( 'Add custom input field on per product basis.', 'woocommerce-jetpack' ),
-                'id'       => 'wcj_product_input_fields_local_enabled',
-                'default'  => 'no',
-                'type'     => 'checkbox',
-            ),
-			
-            array(
-                'title'    => __( 'Default Number of Product Input Fields per Product', 'woocommerce-jetpack' ),
-                'id'       => 'wcj_product_input_fields_local_total_number_default',
-				'desc_tip' => __( 'You will be able to change this number later as well as define the fields, for each product individually, in product\'s "Edit".', 'woocommerce-jetpack' ),				
-                'default'  => 1,
-                'type'     => 'number',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'	
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),					
-            ),		
-        
-            array( 
-				'type'     => 'sectionend', 
-				'id'       => 'wcj_product_input_fields_local_options',
-			),
-        );
-        
-        return $settings;
-    }
- 
-    /**
-     * settings_section.
-     */
-    function settings_section( $sections ) {    
-        $sections['product_input_fields_local'] = __( 'Product Input Fields - per Product', 'woocommerce-jetpack' );        
-        return $sections;
-    }    
+  
 }
  
 endif;

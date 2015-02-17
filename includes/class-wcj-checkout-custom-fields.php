@@ -185,9 +185,10 @@ class WCJ_Checkout_Custom_Fields {
 		$post_meta = get_post_meta( $order->id );//, $post_meta_name, false );
 		//print_r( $post_meta );
 		foreach( $post_meta as $key => $values ) {
-			$value = unserialize( $values[0] );
+//			$value = unserialize( $values[0] );
+			$value = maybe_unserialize( $values[0] );
 			//foreach( $values as $value ) {
-				if ( $section === $value['section'] ) {			
+				if ( isset( $value['section'] ) && $section === $value['section'] ) {			
 					//print_r( $value );				
 					if ( '' != $value['value']  ) {
 						$the_label = $value['label'];

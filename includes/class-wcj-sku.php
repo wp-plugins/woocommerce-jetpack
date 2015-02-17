@@ -19,13 +19,14 @@ class WCJ_SKU {
     /**
      * Constructor.
      */
-    public function __construct() {
- 
+    function __construct() {
+	
 		$the_priority = 100;
         // Main hooks
         if ( 'yes' === get_option( 'wcj_sku_enabled' ) ) {
 			add_filter( 'wcj_tools_tabs', 				array( $this, 'add_sku_tool_tab' ), $the_priority );
 			add_action( 'wcj_tools_sku', 	            array( $this, 'create_sku_tool' ), $the_priority );
+			
 			add_action( 'wp_insert_post', 	        	array( $this, 'set_product_sku' ), $the_priority, 3 );
         }
 		add_action( 'wcj_tools_dashboard', 			    array( $this, 'add_sku_tool_info_to_tools_dashboard' ), $the_priority );
@@ -39,8 +40,10 @@ class WCJ_SKU {
 	/**
 	 * set_sku_with_variable.
 	 */
-	public function set_sku_with_variable( $product_id, $is_preview ) {
-		$this->set_sku( $product_id, $product_id, '', $is_preview );	
+	function set_sku_with_variable( $product_id, $is_preview ) {
+	
+		$this->set_sku( $product_id, $product_id, '', $is_preview );
+		
 		// Handling variable products
 		$variation_handling = apply_filters( 'wcj_get_option_filter', 'as_variable', get_option( 'wcj_sku_variations_handling', 'as_variable' ) );
 		$product = wc_get_product( $product_id );
@@ -71,7 +74,8 @@ class WCJ_SKU {
 	/**
 	 * set_sku.
 	 */
-	public function set_sku( $product_id, $sku_number, $variation_suffix, $is_preview ) {
+	function set_sku( $product_id, $sku_number, $variation_suffix, $is_preview ) {
+	
 		$the_sku = sprintf( '%s%0' . get_option( 'wcj_sku_minimum_number_length', 0 ) . 'd%s%s',
 			get_option( 'wcj_sku_prefix', '' ), 
 			$sku_number, 
@@ -80,37 +84,52 @@ class WCJ_SKU {
 			
 		if ( $is_preview ) {
 			echo '<tr>' . 
+				'<td>' . $this->product_counter++ . '</td>' . 
 				'<td>' . get_the_title( $product_id ) . '</td>' . 
 				'<td>' . $the_sku . '</td>' . 
 			 '</tr>';
 		}
 		else
-			update_post_meta( $product_id, '_' . 'sku', $the_sku );		
+			update_post_meta( $product_id, '_' . 'sku', $the_sku );
 	}	
 	
 	/**
 	 * set_all_sku.
 	 */
-	public function set_all_sku( $is_preview ) {
-		$args = array(
-			'post_type'			=> 'product',
-			'post_status' 		=> 'any',
-			'posts_per_page' 	=> -1,
-		);
-		$loop = new WP_Query( $args );
-		while ( $loop->have_posts() ) : $loop->the_post();
-			$this->set_sku_with_variable( $loop->post->ID, $is_preview );
-					
-		endwhile;
+	function set_all_sku( $is_preview ) {	
+	
+		$limit = 1000;
+		$offset = 0;
+		
+		while ( TRUE ) {
+			$posts = new WP_Query( array(
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'post_type'      => 'product',
+				'post_status' 	 => 'any',
+			));
+
+			if ( ! $posts->have_posts() ) break;
+
+			while ( $posts->have_posts() ) {
+					$posts->the_post();
+
+					$this->set_sku_with_variable( $posts->post->ID, $is_preview );
+			}
+
+			$offset += $limit;
+		} 
 	}	
 		
 	/**
 	 * set_product_sku.
 	 */
-	public function set_product_sku( $post_ID, $post, $update ) {
+	function set_product_sku( $post_ID, $post, $update ) {
+		
 		if ( 'product' != $post->post_type ) {
 			return;
 		}
+		
 		if ( false === $update ) {
 			$this->set_sku_with_variable( $post_ID, false );
 		}
@@ -119,7 +138,7 @@ class WCJ_SKU {
 	/**
 	 * add_sku_tool_tab.
 	 */
-	public function add_sku_tool_tab( $tabs ) {
+	function add_sku_tool_tab( $tabs ) {
 		$tabs[] = array(
 			'id'		=> 'sku',
 			'title'		=> __( 'Autogenerate SKUs', 'woocommerce-jetpack' ),
@@ -130,20 +149,23 @@ class WCJ_SKU {
     /**
      * create_sku_tool
      */
-	public function create_sku_tool() {
+	function create_sku_tool() {
 		$result_message = '';
-		if ( isset( $_POST['set_sku'] ) || isset( $_POST['preview_sku'] ) ) {
-			$is_preview = ( isset( $_POST['preview_sku'] ) ) ? true : false;
+		$is_preview = ( isset( $_POST['preview_sku'] ) ) ? true : false;
+		
+		if ( isset( $_POST['set_sku'] ) || isset( $_POST['preview_sku'] ) ) {	
 			
+			$this->product_counter = 1;
 			$preview_html = '<table class="widefat" style="width:50%; min-width: 300px;">';
 			$preview_html .= '<tr>' . 
+								'<th></th>' . 
 								'<th>' . __( 'Product', 'woocommerce-jetpack' ) . '</th>' . 
 								'<th>' . __( 'SKU', 'woocommerce-jetpack' ) . '</th>' . 
 							 '</tr>';
 			ob_start();							 
 			$this->set_all_sku( $is_preview );
 			$preview_html .= ob_get_clean();
-			$preview_html .= '<table>';
+			$preview_html .= '</table>';
 			$result_message = '<p><div class="updated"><p><strong>' . __( 'SKUs generated and set successfully!', 'woocommerce-jetpack' ) . '</strong></p></div></p>';
 		}
 		?><div>
@@ -161,7 +183,7 @@ class WCJ_SKU {
 	/**
 	 * add_sku_tool_info_to_tools_dashboard.
 	 */
-	public function add_sku_tool_info_to_tools_dashboard() {
+	function add_sku_tool_info_to_tools_dashboard() {
 		echo '<tr>';
 		if ( 'yes' === get_option( 'wcj_sku_enabled') )		
 			$is_enabled = '<span style="color:green;font-style:italic;">' . __( 'enabled', 'woocommerce-jetpack' ) . '</span>';
@@ -176,7 +198,7 @@ class WCJ_SKU {
     /**
      * add_enabled_option.
      */
-    public function add_enabled_option( $settings ) {    
+    function add_enabled_option( $settings ) {    
         $all_settings = $this->get_settings();
         $settings[] = $all_settings[1];        
         return $settings;
@@ -237,7 +259,7 @@ class WCJ_SKU {
 				'options'  => array(
 								'as_variable'             => __( 'SKU same as parent\'s product', 'woocommerce-jetpack' ),
 								'as_variation'            => __( 'Generate different SKU for each variation', 'woocommerce-jetpack' ),
-								'as_variable_with_suffix' => __( 'SKU same as parent\'s product + variation suffix', 'woocommerce-jetpack' ),
+								'as_variable_with_suffix' => __( 'SKU same as parent\'s product + variation letter suffix', 'woocommerce-jetpack' ),
 							  ),											
 				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'

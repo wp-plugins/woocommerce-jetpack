@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 2.0.13
+Stable tag: 2.1.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,7 +18,9 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Custom Price Labels - Create any custom price label for any product.
 * Call for Price - Create any custom price label, like *Call for price*, for all products with empty price.
 * Currencies - Add all world currencies, change currency symbol.
-* PDF Invoices - Add PDF invoices for store owners and for customers. Automatically email PDF invoices to customers (and limit attaching invoice to selected payment gateways only).
+* PDF Invoicing and Packing Slips - Add PDF invoices for store owners and for customers. Automatically email PDF invoices to customers (and limit attaching invoice to selected payment gateways only).
+  Module includes proforma invoices, proforma slips, with separate numbering for each document type.
+  Extended templates (and shortcodes), styling, page, header and footer, filename, emailing etc. customization options.
 * Orders - Sequential order numbering, custom order number prefix, date prefix, suffix and number width. Set minimum order amount.
 * More Sorting Options - Add more sorting options or remove sorting at all (including WooCommerce default).
 * Payment Gateways - Change icons (images) for all default (COD - Cash on Delivery, Cheque, BACS, Mijireh Checkout, PayPal) WooCommerce payment gateways.
@@ -28,13 +30,13 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Shipping - Hide shipping when free is available.
 * Emails - Add another email recipient(s) to all WooCommerce emails.
 * Product Listings - Change display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
-* Product Info - Add more info to product on category or single pages. Change related products number.
+* Product Info - Add more info to product on category or single pages. Change related products number, select to relate by tag and/or by category.
 * Product Tabs - Add custom product tabs - globally, per category or per product. Customize or completely remove WooCommerce default product tabs.
 * Cart - Add "Empty Cart" button to cart page, automatically add product to cart on visit.
 * Add to Cart - Change text for add to cart buttons for each product type, on per category or per product basis. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
 * Bulk Price Converter tool.
-* Prices and Currencies by Country.
+* Prices and Currencies by Country - Change product’s price and currency by customer’s country - globally or per product. Customer’s country is detected automatically by IP. Automatic currency exchange rates updates.
 * Bulk SKUs generator tool.
 * Different Currency for External Products.
 * Another custom CSS tool, if you need one.
@@ -68,8 +70,33 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 2.1.0 - 17/02/2015 =
+* Dev - **PDF Invoicing and Packing Slips** - Module added.
+  Module includes proforma invoices, proforma slips, with separate numbering (and invoices renumerate tool) for each document type.
+  Extended templates (and shortcodes), styling, page, header and footer, filename, emailing etc. customization options.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Prices and currencies by country *per product* functionality added.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Major code refactoring.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Admin debugging functionality added.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Empty price functionality added.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Automatic currency exchange rates (i.e. wp cron job) updates, added.
+* Dev - CURRENCIES - **Prices and Currencies by Country** - Internal DB since WooCommerce 2.3, added.
+* Dev - PRODUCTS - **Product Info** - Option to list product IDs to exclude from product info, added.
+* Dev - PRODUCTS - **Product Info** - Option to change single product's thumbnails columns number, added.
+* Dev - PRODUCTS - **Product Input Fields** - Hiding placeholder on focus, added.
+* Dev - PRODUCTS - **Product Input Fields** - Global and local modules merged into single module.
+* Dev - PRICE LABELS - **Call for Price** - Added `do_shortcode` on all empty price outputs.
+* Dev - CHECKOUT - **Payment Gateways** - Added `do_shortcode` in payment gateway's "thank you" page and email instructions.
+* Dev - MISC. - **General** - *Admin Tools* (logging) added.
+* Dev - PRODUCTS - **Related Products** - Moved to new module. *Relate by tag and/or category* options (idea by Alexys) added.
+* Fix - ORDERS - "Extended fix" in `add_custom_order_statuses_to_reports()` for WooCommerce v.2.3 compatibility.
+* Fix - ORDERS - **Order Numbers** - Now generating number when creating order from admin backend.
+* Fix - **PDF Invoices** - Bug in `generate_pdf()` (`order_id` not defined when first checking), fixed.
+* Fix - **PDF Invoices** - `maybe_unserialize` instead of `serialize` in `add_custom_checkout_fields_to_pdf()`.
+* Fix - PRODUCTS - **SKU** - Fix in *Autogenerate SKUs* tool: now SKUs are properly generated for larger (e.g. more that two thousand) quantity of products.
+* Fix - CURRENCIES - "Undefined index: KIP" notice bug fixed.
+
 = 2.0.13 - 12/02/2015 =
-* Fix - ORDERS - Quick fix for WooCommerce v.2.3 compatibility.
+* Fix - ORDERS - Quick fix in `add_custom_order_statuses_to_reports()` for WooCommerce v.2.3 compatibility.
 
 = 2.0.12 - 14/01/2015 =
 * Dev - **Reports** - WooJetpack Orders Reports: More Ranges.
@@ -211,7 +238,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
   %stock_availability% (by https://wordpress.org/support/topic/custom-tabs-1),
   %time_since_last_sale%, %weight%, %list_attributes% etc.
   For full list of short codes, please visit http://woojetpack.com/features/product-info/
-* Feature Upgraded - Product Listings - Option to change default WooCommece behavior on displaying all products if none categories are dispalyed.
+* Feature Upgraded - Product Listings - Option to change default WooCommerce behavior on displaying all products if none categories are dispalyed.
   Now it's possible to disable displaying the products. Suggested by Xavier.
 * Feature Upgraded - PDF Invoices - Order date and time added. Suggested by https://wordpress.org/support/topic/order-time
 

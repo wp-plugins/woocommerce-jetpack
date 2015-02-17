@@ -88,7 +88,7 @@ class WCJ_Reports_Customers {
 			$html .= '<td>' . $country_code . '</td>';
 			$html .= '<td>' . $counter . '</td>';
 			$html .= ( 0 != $total_customers ) ? '<td>' . number_format( ( $counter / $total_customers ) * 100, 2 ) . '%' . '</td>' : '<td></td>';
-			$html .= ( 2 == strlen( $country_code ) ) ? '<td>' . '<img src="' . plugins_url() . '/' . 'woocommerce-jetpack' . '/assets/images/flag-icons/' . strtolower( $country_code ) . '.png">' . '</td>' : '<td></td>';
+			$html .= ( 2 == strlen( $country_code ) ) ? '<td>' . '<img src="' . plugins_url() . '/' . 'woocommerce-jetpack' . '/assets/images/flag-icons/' . strtolower( $country_code ) . '.png" title="' . wcj_get_country_name_by_code( $country_code ) . '">' . ' ' . wcj_get_country_name_by_code( $country_code ) . '</td>' : '<td></td>';
 			//$html .= ( 2 == strlen( $country_code ) ) ? '<td>' . '<img src="' . plugin_dir_url ( __FILE__ ) . 'assets/images/flag-icons/' . strtolower( $country_code ) . '.png' . '">' . '</td>' : '<td></td>';
 			$html .= '</tr>';
 		}
