@@ -1,12 +1,28 @@
 <?php
 
 /**
+ * validate_VAT.
+ *
+ * @return mixed: bool on successful checking (can be true or false), null otherwise
+ */
+if ( ! function_exists( 'validate_VAT' ) ) {
+	function validate_VAT( $country_code, $vat_number ) {
+		$client = new SoapClient( 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl' );
+		$result = $client->checkVat( array(
+			'countryCode' => $country_code,
+			'vatNumber'   => $vat_number,
+		) );
+		return ( isset( $result->valid ) ) ? $result->valid : null;
+	}
+}
+
+/**
  * convert_number_to_words.
  *
  * @return string
  */
 if ( ! function_exists( 'convert_number_to_words' ) ) {
-	function convert_number_to_words($number) {
+	function convert_number_to_words( $number ) {
 		$hyphen      = '-';
 		$conjunction = ' and ';
 		$separator   = ', ';
@@ -203,7 +219,7 @@ if ( ! function_exists( 'wcj_get_shortcodes_atts_list' ) ) {
  */
 if ( ! function_exists( 'wcj_get_shortcodes_list' ) ) {
 	function wcj_get_shortcodes_list() {
-		$the_array = apply_filters( 'wcj_shortcodes_list', array() );		
+		$the_array = apply_filters( 'wcj_shortcodes_list', array() );
 		return implode( ', ', $the_array );
 		//return implode( PHP_EOL, $the_array );
 	}

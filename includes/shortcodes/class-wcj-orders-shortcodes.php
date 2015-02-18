@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders Shortcodes class.
  *
  * @class    WCJ_Orders_Shortcodes
- * @version  1.0.0
+ * @version  2.1.1
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -53,7 +53,8 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
      */
 	function add_extra_atts( $atts ) {		
 		$modified_atts = array_merge( array(
-			'order_id'      => ( isset( $_GET['order_id'] ) ) ? $_GET['order_id'] : get_the_ID(),
+			//'order_id'      => ( isset( $_GET['order_id'] ) ) ? $_GET['order_id'] : get_the_ID(),
+			'order_id'      => 0,
 			'hide_currency' => 'no',
 			'excl_tax'      => 'no',
 			'date_format'   => get_option( 'date_format' ),			
@@ -71,6 +72,12 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
 	
 		// Atts
 		$atts['excl_tax'] = ( 'yes' === $atts['excl_tax'] ) ? true : false;
+		
+		if ( 0 == $atts['order_id'] ) $atts['order_id'] = ( isset( $_GET['order_id'] ) ) ? $_GET['order_id'] : get_the_ID();
+		if ( 0 == $atts['order_id'] ) $atts['order_id'] = ( isset( $_GET['pdf_invoice'] ) ) ? $_GET['pdf_invoice'] : 0;
+		//if ( 0 == $atts['order_id'] ) $atts['order_id'] = get_the_ID();
+		if ( 0 == $atts['order_id'] ) return false;
+		//if ( 'shop_order' !== get_post_type( $atts['order_id'] ) ) return false;		
 	
 		// Class properties
 		$this->the_order = ( 'shop_order' === get_post_type( $atts['order_id'] ) ) ? wc_get_order( $atts['order_id'] ) : null;
@@ -111,7 +118,7 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
 			$the_product = wc_get_product( $the_item['product_id'] );
 			$total_weight += $the_item['qty'] * $the_product->get_weight();
 		}
-		return ( 0 == $total_weight ) ? '' : $total_weight;
+		return ( 0 == $total_weight && 'yes' === $atts['hide_if_zero'] ) ? '' : $total_weight;
 	}
 
     /**
@@ -123,7 +130,7 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
 		foreach( $the_items as $the_item ) {
 			$total_quantity += $the_item['qty'];
 		}
-		return ( 0 == $total_quantity ) ? '' : $total_quantity;
+		return ( 0 == $total_quantity && 'yes' === $atts['hide_if_zero'] ) ? '' : $total_quantity;
 	}
 
     /**
@@ -131,7 +138,7 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
      */
 	function wcj_order_items_total_number( $atts ) {
 		$total_number = count( $this->the_order->get_items() );
-		return ( 0 == $total_number ) ? '' : $total_number;
+		return ( 0 == $total_number && 'yes' === $atts['hide_if_zero'] ) ? '' : $total_number;
 	}
 
     /**

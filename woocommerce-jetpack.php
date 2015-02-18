@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 2.1.0
+Version: 2.1.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -282,7 +282,6 @@ final class WC_Jetpack {
 				foreach ( $section->get_settings() as $value ) {
 					if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
 						$autoload = isset( $value['autoload'] ) ? (bool) $value['autoload'] : true;
-						//delete_option( $value['id'] );
 						add_option( $value['id'], $value['default'], '', ( $autoload ? 'yes' : 'no' ) );
 					}
 				}
