@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoice class.
  *
  * @class    WCJ_PDF_Invoice
- * @version  1.0.0
+ * @version  2.1.2
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -31,7 +31,15 @@ class WCJ_PDF_Invoice extends WCJ_Invoice {
 		require_once( WCJ()->plugin_path() . '/includes/lib/tcpdf_min/tcpdf.php' );
 
 		// Create new PDF document
-		$pdf = new TCPDF( get_option( 'wcj_invoicing_' . $invoice_type . '_page_orientation', 'P' ), PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
+		$pdf = new TCPDF( 
+			get_option( 'wcj_invoicing_' . $invoice_type . '_page_orientation', 'P' ), 
+			PDF_UNIT, 
+			//PDF_PAGE_FORMAT, 
+			get_option( 'wcj_invoicing_' . $invoice_type . '_page_format', 'A4' ), 
+			true, 
+			'UTF-8', 
+			false 
+		);
 
 		// Set document information
 		$pdf->SetCreator( PDF_CREATOR );

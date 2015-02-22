@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Products Shortcodes class.
  *
  * @class    WCJ_Products_Shortcodes
- * @version  1.0.0
+ * @version  2.1.2
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -27,9 +27,10 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 		);
 
 		$this->the_atts = array(
-			'product_id'  => 0,
-			'image_size'  => 'shop_thumbnail',
-			'multiply_by' => '',
+			'product_id'    => 0,
+			'image_size'    => 'shop_thumbnail',
+			'multiply_by'   => '',
+			'hide_currency' => 'no',
 		);
 
 		parent::__construct();
@@ -53,12 +54,35 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 	}
 
     /**
-     * wcj_product_price.
+     * Returns product (modified) price.
+	 *
+	 * @todo Variable products: not range and price by country.
+	 *
+	 * @return string The product (modified) price
      */
 	function wcj_product_price( $atts ) {
-		return ( '' !== $atts['multiply_by'] && is_numeric( $atts['multiply_by'] ) ) ? $this->the_product->get_price() * $atts['multiply_by'] : $this->the_product->get_price();
+		// Variable
+		if ( $this->the_product->is_type( 'variable' ) ) {
+			$min = $this->the_product->get_variation_price( 'min', false );
+			$max = $this->the_product->get_variation_price( 'max', false );
+			if ( '' !== $atts['multiply_by'] && is_numeric( $atts['multiply_by'] ) ) {
+				$min = $min * $atts['multiply_by'];
+				$max = $max * $atts['multiply_by'];
+			}
+			if ( 'yes' !== $atts['hide_currency'] ) {
+				$min = wc_price( $min );
+				$max = wc_price( $max );
+			}
+			return sprintf( '%s-%s', $min, $max );
+		}
+		// Simple etc.
+		else {
+			$the_price = $this->the_product->get_price();
+			if ( '' !== $atts['multiply_by'] && is_numeric( $atts['multiply_by'] ) ) $the_price = $the_price * $atts['multiply_by'];
+			return ( 'yes' === $atts['hide_currency'] ) ? $the_price : wc_price( $the_price );
+		}
 	}
-	
+
     /**
      * wcj_product_image.
      */
@@ -70,4 +94,3 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 endif;
 
 return new WCJ_Products_Shortcodes();
-

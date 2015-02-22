@@ -74,7 +74,7 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
 		$atts['excl_tax'] = ( 'yes' === $atts['excl_tax'] ) ? true : false;
 		
 		if ( 0 == $atts['order_id'] ) $atts['order_id'] = ( isset( $_GET['order_id'] ) ) ? $_GET['order_id'] : get_the_ID();
-		if ( 0 == $atts['order_id'] ) $atts['order_id'] = ( isset( $_GET['pdf_invoice'] ) ) ? $_GET['pdf_invoice'] : 0;
+		if ( 0 == $atts['order_id'] ) $atts['order_id'] = ( isset( $_GET['pdf_invoice'] ) ) ? $_GET['pdf_invoice'] : 0; // PDF Invoices V1 compatibility
 		//if ( 0 == $atts['order_id'] ) $atts['order_id'] = get_the_ID();
 		if ( 0 == $atts['order_id'] ) return false;
 		//if ( 'shop_order' !== get_post_type( $atts['order_id'] ) ) return false;		

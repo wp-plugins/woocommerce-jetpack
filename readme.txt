@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -36,7 +36,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * Add to Cart - Change text for add to cart buttons for each product type, on per category or per product basis. Display "Product already in cart" instead of "Add to cart" button. Redirect add to cart button to any url (e.g. checkout page).
 * Old Slugs - Remove old product slugs.
 * Bulk Price Converter tool.
-* Prices and Currencies by Country - Change product’s price and currency by customer’s country - globally or per product. Customer’s country is detected automatically by IP. Automatic currency exchange rates updates.
+* Prices and Currencies by Country - Change product price and currency by customer’s country - globally or per product. Customer’s country is detected automatically by IP. Automatic currency exchange rates updates.
 * Bulk SKUs generator tool.
 * Different Currency for External Products.
 * Another custom CSS tool, if you need one.
@@ -70,9 +70,16 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 2.1.2 - 22/02/2015 =
+* Fix - PDF Invoicing - `on_create` bug fixed. This caused creating all document on new order only.
+* Dev - PDF Invoicing - Page format (paper size) option added to *Page Settings* submodule.
+* Dev - Products Shortcodes - Attribute `hide_currency` added to Products Shortcodes (`[wcj_product_price]`).
+* Dev - Products Shortcodes - `[wcj_product_price]` - variable product handling (as price range), added.
+* Dev - Custom Checkout Fields - *label* and *placeholder* can now contain HTML tags (text changed to textarea in settings).
+
 = 2.1.1 - 18/02/2015 =
-* Orders Shortcodes - Shortcodes compatibility with PDF Invoices v1 module.
-* Orders Shortcodes - Added `hide_if_zero` checking for `_order_item_total_` shortcodes.
+* Fix - Orders Shortcodes - Shortcodes compatibility with PDF Invoices v1 module.
+* Dev - Orders Shortcodes - Added `hide_if_zero` checking for `_order_item_total_` shortcodes.
 
 = 2.1.0 - 17/02/2015 =
 * Dev - **PDF Invoicing and Packing Slips** - Module added.

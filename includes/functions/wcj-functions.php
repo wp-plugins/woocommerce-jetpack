@@ -1,4 +1,12 @@
 <?php
+/**
+ * WooCommerce Jetpack Functions
+ *
+ * The WooCommerce Jetpack Functions.
+ *
+ * @version  2.1.2
+ * @author   Algoritmika Ltd.
+ */
 
 /**
  * validate_VAT.
@@ -7,20 +15,32 @@
  */
 if ( ! function_exists( 'validate_VAT' ) ) {
 	function validate_VAT( $country_code, $vat_number ) {
-		$client = new SoapClient( 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl' );
-		$result = $client->checkVat( array(
-			'countryCode' => $country_code,
-			'vatNumber'   => $vat_number,
-		) );
-		return ( isset( $result->valid ) ) ? $result->valid : null;
+		try {
+			$client = new SoapClient( 
+				'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl',
+				array( 'exceptions' => true )
+			);
+			
+			$result = $client->checkVat( array(
+				'countryCode' => $country_code,
+				'vatNumber'   => $vat_number,
+			) );
+			
+			return ( isset( $result->valid ) ) ? $result->valid : null;				
+			
+		} catch( Exception $exception ) {
+			return null;
+		}	
 	}
 }
+
 
 /**
  * convert_number_to_words.
  *
  * @return string
  */
+
 if ( ! function_exists( 'convert_number_to_words' ) ) {
 	function convert_number_to_words( $number ) {
 		$hyphen      = '-';

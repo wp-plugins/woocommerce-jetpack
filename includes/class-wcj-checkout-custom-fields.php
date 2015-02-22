@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Checkout Custom Fields class.
  *
  * @class		WCJ_Checkout_Custom_Fields
- * @version		1.0.0
+ * @version		2.1.2
  * @category	Class
  * @author		Algoritmika Ltd.
  */
@@ -342,7 +342,7 @@ class WCJ_Checkout_Custom_Fields {
 						'desc'		=> __( 'label', 'woocommerce-jetpack' ),
 						'id' 		=> 'wcj_checkout_custom_field_label_' . $i,
 						'default'	=> '',
-						'type' 		=> 'text',
+						'type' 		=> 'textarea',
 						'css'       => 'width:200px;',
 					),
 					/*array(
@@ -364,7 +364,7 @@ class WCJ_Checkout_Custom_Fields {
 						'desc'		=> __( 'placeholder', 'woocommerce-jetpack' ),
 						'id' 		=> 'wcj_checkout_custom_field_placeholder_' . $i,
 						'default'	=> '',
-						'type' 		=> 'text',
+						'type' 		=> 'textarea',
 						'css'       => 'width:200px;',
 					),
 
