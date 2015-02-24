@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 2.1.2
+Version: 2.1.3
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.

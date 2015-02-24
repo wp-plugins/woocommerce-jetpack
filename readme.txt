@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,14 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 1. Plugin admin area.
 
 == Changelog ==
+
+= 2.1.3 - 24/02/2015 =
+* Dev/Fix - Empty cart - new position hook added and div style field unlocked.
+* Dev - Price by Country - Using `internal_wc` only.
+* Dev - Orders Shortcodes - `after_discount` attribute added to `[wcj_order_subtotal]` shortcode (also `[wcj_order_subtotal_after_discount]` shortcode).
+* Dev - Products Shortcodes - Shortcodes added: `[wcj_product_sku]`, `[wcj_product_title]`, `[wcj_product_weight]`.
+* Fix - PDF Invoicing - Bug causing `font_family` and `font_size` settings wrongly taken from PDF Invoices V1 instead of V2, fixed.
+* Fix - Custom Order Statuses - Bug in reports, fixed.
 
 = 2.1.2 - 22/02/2015 =
 * Fix - PDF Invoicing - `on_create` bug fixed. This caused creating all document on new order only.

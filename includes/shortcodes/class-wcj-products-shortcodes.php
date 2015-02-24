@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Products Shortcodes class.
  *
  * @class    WCJ_Products_Shortcodes
- * @version  2.1.2
+ * @version  2.1.3
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -24,6 +24,9 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 		$this->the_shortcodes = array(
 			'wcj_product_image',
 			'wcj_product_price',
+			'wcj_product_sku',
+			'wcj_product_title',
+			'wcj_product_weight',
 		);
 
 		$this->the_atts = array(
@@ -37,7 +40,11 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
     }
 
     /**
-     * init_atts.
+     * Inits shortcode atts and properties.
+	 *
+	 * @param array $atts Shortcode atts.
+	 *
+	 * @return array The (modified) shortcode atts.
      */
 	function init_atts( $atts ) {
 
@@ -83,7 +90,36 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 		}
 	}
 
-    /**
+	/**
+	 * Get SKU (Stock-keeping unit) - product unique ID.
+	 *
+	 * @return string
+	 */
+	function wcj_product_sku( $atts ) {
+		return $this->the_product->get_sku();
+	} 
+	
+	/**
+	 * Get the title of the product.
+	 *
+	 * @return string
+	 */
+	function wcj_product_title( $atts ) {
+		return $this->the_product->get_title();
+	}
+	
+	/**
+	 * Get the product's weight.
+	 *
+	 * @return string
+	 */
+	function wcj_product_weight( $atts ) {
+		return $this->the_product->get_weight();
+	}    
+	
+	
+	
+	/**
      * wcj_product_image.
      */
 	function wcj_product_image( $atts ) {

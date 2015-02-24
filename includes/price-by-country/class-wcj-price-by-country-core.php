@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price by Country Core class.
  *
  * @class    WCJ_Price_by_Country_Core
- * @version  1.0.0
+ * @version  2.1.3
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -21,7 +21,7 @@ class WCJ_Price_by_Country_Core {
      */
     public function __construct() {
 	
-		$this->country_by_ip = include_once( 'class-wcj-country-by-ip.php' );
+		//$this->country_by_ip = include_once( 'class-wcj-country-by-ip.php' );
 		$this->customer_country_group_id = null;
 	
 		add_action( 'woocommerce_loaded', array( $this, 'add_hooks' ) );
@@ -118,30 +118,20 @@ class WCJ_Price_by_Country_Core {
 		// We've already tried - no country was detected, no need to try again
 		if ( -1 === $this->customer_country_group_id )
 			return null;
-		
-		// Get the country by IP
-		//wcj_log( WCJ() );
-		
-		//$does_exist = ( method_exists( WCJ()->country_by_ip, 'get_user_country_by_ip' ) ) ? 'true' : 'false';
-		//wcj_log (  WC() );
-		
-		//if ( null == $this->country_by_ip ) $this->country_by_ip = include_once( 'class-wcj-country-by-ip.php' );
-		
-		
-		/**/
-		switch( get_option( 'wcj_price_by_country_by_ip_detection_type', 'internal' ) ) {
-			case 'internal':
-				$country = $this->country_by_ip->get_user_country_by_ip( 'internal' );
-				break;		
-			case 'internal_wc':
-				$country = $this->country_by_ip->get_user_country_by_ip( 'internal_wc' );
-				break;
-			case 'hostip_info':
-				$country = $this->country_by_ip->get_user_country_by_ip( 'external' );
-				break;
-		}
-		/**/
-		
+			
+			
+		if ( isset( $_GET['country'] ) && '' != $_GET['country'] && is_super_admin() ) {		
+			$country = $_GET['country'];			
+		} else {				
+			// Get the country by IP
+			$location = WC_Geolocation::geolocate_ip();
+			// Base fallback
+			if ( empty( $location['country'] ) ) {
+				$location = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', get_option( 'woocommerce_default_country' ) ) );
+			}
+			//wcj_log( $location );			
+			$country = ( isset( $location['country'] ) ) ? $location['country'] : null; 
+		}		
 		
 		if ( null === $country ) {
 			$this->customer_country_group_id = -1;

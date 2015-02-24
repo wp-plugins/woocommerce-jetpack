@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Price by Country class.
  *
  * @class       WCJ_Price_By_Country
- * @version		1.0.0
+ * @version		2.1.3
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -63,13 +63,13 @@ class WCJ_Price_By_Country {
 				'title' => __( 'Price by Country Options', 'woocommerce-jetpack' ),
 				'type' => 'title',
 				'desc' => __( 'Change product\'s price and currency by customer\'s country. Customer\'s country is detected automatically by IP.', 'woocommerce-jetpack' )
-						  . '<br>'
+						  /*. '<br>'
 						  . '<span style="color:gray;font-size:smaller;">'
 						  //. wcj_get_ip_db_status_html()
 						  . apply_filters( 'wcj_get_ip_db_status_html', '' )
 						  . '<br>'
 						  . ( ( ini_get( 'allow_url_fopen' ) ) ? 'allow_url_fopen: enabled' : 'allow_url_fopen: disabled' )
-						  . '</span>',
+						  . '</span>'*/,
 				'id' => 'wcj_price_by_country_options' ),
 
             array(
@@ -80,7 +80,7 @@ class WCJ_Price_By_Country {
                 'default'  => 'no',
                 'type'     => 'checkbox',
             ),
-
+/*
             array(
                 'title'    => __( 'Country by IP Method', 'woocommerce-jetpack' ),
                 'desc'     => __( 'Select which method to use for detecting customers country by IP.', 'woocommerce-jetpack' ),
@@ -93,7 +93,7 @@ class WCJ_Price_By_Country {
 								'hostip_info' => __( 'External server:', 'woocommerce-jetpack' ) . ' '  . 'api.hostip.info',
 				),
             ),
-
+*/
             array(
                 'title'    => __( 'Price Rounding', 'woocommerce-jetpack' ),
                 'desc'     => __( 'If you choose to multiply price, set rounding options here.', 'woocommerce-jetpack' ),

@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders class.
  *
  * @class		WCJ_Orders
- * @version		1.7.0
+ * @version		2.1.3
  * @category	Class
  * @author 		Algoritmika Ltd.
  */
@@ -76,10 +76,11 @@ class WCJ_Orders {
 	 * add_custom_order_statuses_to_reports.
 	 */
 	public function add_custom_order_statuses_to_reports( $args ) {
-
-		if ( ! empty( $args['order_types'] ) && is_array( $args['order_types'] ) && in_array( 'shop_order_refund', $args['order_types'] ) )
-			return $args;
-		if (  ! empty( $args['order_status'] ) && is_array( $args['order_status'] ) && 1 === count( $args['order_status'] ) && in_array( 'refunded', $args['order_status'] ) )
+	
+		/*if ( ! empty( $args['order_types'] ) && is_array( $args['order_types'] ) && in_array( 'shop_order_refund', $args['order_types'] ) )
+			return $args;*/
+		if ( isset( $args['order_status'] ) && $args['order_status'] === array( 'refunded' ) )
+		//if (  ! empty( $args['order_status'] ) && is_array( $args['order_status'] ) && 1 === count( $args['order_status'] ) && in_array( 'refunded', $args['order_status'] ) )
 			return $args;
 		
 		$custom_order_statuses = get_option( 'wcj_orders_custom_statuses_array' );
@@ -88,6 +89,7 @@ class WCJ_Orders {
 				$args['order_status'][] = substr( $slug, 3 );
 			}
 		}
+
 		return $args;
 	}
 	

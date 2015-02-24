@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Cart class.
  *
  * @class		WCJ_Cart
- * @version		1.0.1
+ * @version		2.1.3
  * @category	Class
  * @author 		Algoritmika Ltd. 
  */
@@ -183,9 +183,9 @@ class WCJ_Cart {
 				'id'       => 'wcj_empty_cart_div_style',
 				'default'  => 'float: right;',
 				'type'     => 'text',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				/*'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'	
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),						   
+						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),*/						   
 			),			
 			
 			array(
@@ -194,9 +194,10 @@ class WCJ_Cart {
 				'default'  => 'woocommerce_after_cart',
 				'type'     => 'select',
 				'options'  => array(					
-					'woocommerce_after_cart' 			=> __( 'After Cart', 'woocommerce-jetpack' ),
-					'woocommerce_before_cart' 			=> __( 'Before Cart', 'woocommerce-jetpack' ),
-					'woocommerce_proceed_to_checkout' 	=> __( 'After Proceed to Checkout button', 'woocommerce-jetpack' ),
+					'woocommerce_after_cart'          => __( 'After Cart', 'woocommerce-jetpack' ),
+					'woocommerce_before_cart'         => __( 'Before Cart', 'woocommerce-jetpack' ),
+					'woocommerce_proceed_to_checkout' => __( 'After Proceed to Checkout button', 'woocommerce-jetpack' ),
+					'woocommerce_after_cart_totals'   => __( 'After Cart Totals', 'woocommerce-jetpack' ),
 				),
 				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'	

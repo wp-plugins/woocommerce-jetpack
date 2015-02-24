@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack Orders Shortcodes class.
  *
  * @class    WCJ_Orders_Shortcodes
- * @version  2.1.1
+ * @version  2.1.3
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -29,6 +29,7 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
 			'wcj_order_billing_address',
 			'wcj_order_shipping_address',
 			'wcj_order_subtotal',
+			'wcj_order_subtotal_after_discount',
 			'wcj_order_total_discount',
 			'wcj_order_shipping_tax',
 			'wcj_order_total_tax',
@@ -234,7 +235,19 @@ class WCJ_Orders_Shortcodes extends WCJ_Shortcodes {
      * wcj_order_subtotal.
      */
 	function wcj_order_subtotal( $atts ) {
-		return $this->wcj_price_shortcode( $this->the_order->get_subtotal(), $atts );
+		$the_subtotal = $this->the_order->get_subtotal();
+		if ( isset( $atts['after_discount'] ) && 'yes' === $atts['after_discount'] ) $the_subtotal -= $this->the_order->get_total_discount( true );
+		return $this->wcj_price_shortcode( $the_subtotal, $atts );
+	}    
+	
+	/**
+     * wcj_order_subtotal_after_discount.
+     */
+	function wcj_order_subtotal_after_discount( $atts ) {
+		$atts['after_discount'] = 'yes';
+		wcj_order_subtotal( $atts );
+		//$the_subtotal = $this->the_order->get_subtotal() - $this->the_order->get_total_discount( true );
+		//return $this->wcj_price_shortcode( $the_subtotal, $atts );			
 	}
 	
     /**

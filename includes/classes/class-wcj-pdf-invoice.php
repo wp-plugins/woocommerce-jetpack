@@ -5,7 +5,7 @@
  * The WooCommerce Jetpack PDF Invoice class.
  *
  * @class    WCJ_PDF_Invoice
- * @version  2.1.2
+ * @version  2.1.3
  * @category Class
  * @author   Algoritmika Ltd.
  */
@@ -110,9 +110,9 @@ class WCJ_PDF_Invoice extends WCJ_Invoice {
 		// Set font
 		// dejavusans is a UTF-8 Unicode font, if you only need to print standard ASCII chars, you can use core fonts like  helvetica or times to reduce file size.
 		$pdf->SetFont(
-			apply_filters( 'wcj_get_option_filter', 'dejavusans', get_option( 'wcj_pdf_invoices_general_font_family', 'dejavusans' ) ),
+			apply_filters( 'wcj_get_option_filter', 'dejavusans', get_option( 'wcj_invoicing_' . $invoice_type . '_general_font_family', 'dejavusans' ) ),
 			'',
-			apply_filters( 'wcj_get_option_filter', 8, get_option( 'wcj_pdf_invoices_general_font_size' ) ),
+			apply_filters( 'wcj_get_option_filter', 8, get_option( 'wcj_invoicing_' . $invoice_type . '_general_font_size', 8 ) ),
 			'',
 			true );
 
