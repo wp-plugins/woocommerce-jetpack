@@ -5,8 +5,7 @@
  * The WooCommerce Jetpack General Shortcodes class.
  *
  * @class    WCJ_General_Shortcodes
- * @version  1.0.0
- * @category Class
+ * @version  2.2.0
  * @author   Algoritmika Ltd.
  */
 
@@ -24,6 +23,8 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
 		$this->the_shortcodes = array(
 			'wcj_current_date',
 			//'wcj_image',
+			'wcj_cart_items_total_weight',
+			'wcj_wpml',
 		);
 
 		$this->the_atts = array(
@@ -32,6 +33,7 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
 			'class'       => '',
 			'width'       => '',
 			'height'      => '',*/
+			'lang'        => '',
 		);
 
 		parent::__construct();
@@ -39,15 +41,38 @@ class WCJ_General_Shortcodes extends WCJ_Shortcodes {
     }
 
     /**
+     * wcj_wpml.
+     */
+	function wcj_wpml( $atts, $content ) {
+		if ( '' == $atts['lang'] || ( defined( 'ICL_LANGUAGE_CODE' ) && ICL_LANGUAGE_CODE === $atts['lang'] ) ) return do_shortcode( $content );
+		else return '';
+	}
+
+    /**
+     * wcj_wpml_translate.
+     */
+	function wcj_wpml_translate( $atts, $content ) {
+		return $this->wcj_wpml( $atts, $content );
+	}
+
+	/**
+     * wcj_cart_items_total_weight.
+     */
+	function wcj_cart_items_total_weight( $atts ) {
+		$the_cart = WC()->cart;
+		return $the_cart->cart_contents_weight;
+	}
+
+    /**
      * wcj_current_date.
-     */	
+     */
 	function wcj_current_date( $atts ) {
 		return date_i18n( $atts['date_format'] );
 	}
 
     /**
      * wcj_image.
-     */	
+     */
 	/*function wcj_image( $atts ) {
 		return '<img src="' . $atts['url'] . '" class="' . $atts['class'] . '" width="' . $atts['width'] . '" height="' . $atts['height'] . '">';
 	}*/

@@ -24,16 +24,16 @@ class WCJ_PDF_Invoicing_Renumerate_Tool {
 		add_action( 'wcj_tools_renumerate_invoices', array( $this, 'create_renumerate_invoices_tool' ), 						100 );
 		add_action( 'wcj_tools_dashboard', 			 array( $this, 'add_renumerate_invoices_tool_info_to_tools_dashboard' ), 	100 );
 
-		add_action( 'admin_enqueue_scripts',         array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_head',				     array( $this, 'add_datepicker_script' ) );
+		//add_action( 'admin_enqueue_scripts',         array( $this, 'enqueue_scripts' ) );
+		//add_action( 'admin_head',				     array( $this, 'add_datepicker_script' ) );
     }
 
 	/**
 	 * enqueue_scripts.
-	 */
+	 *
 	public function enqueue_scripts() {
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_style( 'jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+		wp_enqueue_style( 'jquery-ui-css', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
 	}
 
 	public function add_datepicker_script() {
@@ -59,7 +59,7 @@ class WCJ_PDF_Invoicing_Renumerate_Tool {
 			$is_enabled = '<span style="color:gray;font-style:italic;">' . __( 'disabled', 'woocommerce-jetpack' ) . '</span>';
 		echo '<td>' . __( 'Invoices Renumerate', 'woocommerce-jetpack' ) . '</td>';
 		echo '<td>' . $is_enabled . '</td>';
-		echo '<td>' . __( 'Tool renumerates all invoices, proforma invoices and packing slips.', 'woocommerce-jetpack' ) . '</td>';
+		echo '<td>' . __( 'Tool renumerates all invoices, proforma invoices, credit notes and packing slips.', 'woocommerce-jetpack' ) . '</td>';
 		echo '</tr>';
 	}
 
