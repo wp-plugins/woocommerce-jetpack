@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Wholesale Price class.
  *
- * @version 2.2.0
+ * @version 2.2.1
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -15,57 +15,57 @@ if ( ! class_exists( 'WCJ_Wholesale_Price' ) ) :
 
 class WCJ_Wholesale_Price extends WCJ_Module {
 
-    /**
-     * Constructor.
-     */
-    function __construct() {
+	/**
+	 * Constructor.
+	 */
+	function __construct() {
 
 		$this->id         = 'wholesale_price';
 		$this->short_desc = __( 'Wholesale Price', 'woocommerce-jetpack' );
 		$this->desc       = __( 'Set WooCommerce wholesale pricing depending on product quantity in cart (buy more pay less).', 'woocommerce-jetpack' );
 		parent::__construct();
 
-        if ( $this->is_enabled() ) {
+		if ( $this->is_enabled() ) {
 			add_filter( 'woocommerce_get_price',         array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
 			add_filter( 'woocommerce_get_sale_price',    array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
 			add_filter( 'woocommerce_get_regular_price', array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
-        }
-    }
+		}
+	}
 
-    /**
-     * get_discount_percent_by_quantity.
-     */
-    private function get_discount_percent_by_quantity( $quantity ) {
-		
+	/**
+	 * get_discount_percent_by_quantity.
+	 */
+	private function get_discount_percent_by_quantity( $quantity ) {
+
 		$max_qty_level = 1;
 		$discount_percent = 0;
-		
+
 		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_wholesale_price_levels_number', 1 ) ); $i++ ) {
 
 			$level_qty = get_option( 'wcj_wholesale_price_level_min_qty_' . $i, PHP_INT_MAX );
 			if ( $quantity >= $level_qty && $level_qty >= $max_qty_level ) {
 				$max_qty_level = $level_qty;
 				$discount_percent = get_option( 'wcj_wholesale_price_level_discount_percent_' . $i, 0 );
-			}		
-		}		
-		
+			}
+		}
+
 		return $discount_percent;
 	}
-	
-    /**
-     * get_wholesale_price.
-     */
-    private function get_wholesale_price( $price, $quantity ) {
+
+	/**
+	 * get_wholesale_price.
+	 */
+	private function get_wholesale_price( $price, $quantity ) {
 		$discount_percent = $this->get_discount_percent_by_quantity( $quantity );
 		$discount_koef = 1.0 - ( $discount_percent / 100.0 );
-		return $price * $discount_koef; 
+		return $price * $discount_koef;
 	}
 
-    /**
-     * wholesale_price.
-     */
-    function wholesale_price( $price, $product ) {
-		
+	/**
+	 * wholesale_price.
+	 */
+	function wholesale_price( $price, $product ) {
+
 		if ( ! wcj_is_product_wholesale_enabled( $product->id ) ) return $price;
 
 		// Show only on checkout and cart pages
@@ -91,21 +91,21 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 			}
 		}
 		return $price;
-    }
+	}
 
-    /**
-     * get_settings.
-     */
-    function get_settings() {
-		
+	/**
+	 * get_settings.
+	 */
+	function get_settings() {
+
 		$products = apply_filters( 'wcj_get_products_filter', array() );
 
-        $settings = array(
+		$settings = array(
 
 			array(
 				'title' => __( 'Wholesale Price Levels Options', 'woocommerce-jetpack' ),
 				'type'  => 'title',
-				'desc'  => __( 'Wholesale Price Levels Options.', 'woocommerce-jetpack' ),
+				'desc'  => __( 'Wholesale Price Levels Options. If you want to display prices table on frontend, use [wcj_product_wholesale_price_table] shortcode.', 'woocommerce-jetpack' ),
 				'id'    => 'wcj_wholesale_price_level_options'
 			),
 
@@ -118,8 +118,8 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 				'class'     => 'chosen_select',
 				'css'       => 'width: 450px;',
 				'options'   => $products,
-			),			
-			
+			),
+
 			array(
 				'title'    => __( 'Levels Number', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_wholesale_price_levels_number',
@@ -136,21 +136,23 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_wholesale_price_levels_number', 1 ) ); $i++ ) {
 
 			$settings[] = array(
-                'title'   => __( 'Min Quantity', 'woocommerce-jetpack' ) . ' #' . $i,
+				'title'   => __( 'Min Quantity', 'woocommerce-jetpack' ) . ' #' . $i,
 				'desc'    => __( 'Min quantity to apply discount', 'woocommerce-jetpack' ),
-                'id'      => 'wcj_wholesale_price_level_min_qty_' . $i,
-                'default' => 0,
-                'type'    => 'number',
+				'id'      => 'wcj_wholesale_price_level_min_qty_' . $i,
+				'default' => 0,
+				'type'    => 'number',
 				//'css'     => 'width:50%;min-width:300px;height:100px;',
-            );
+				'custom_attributes' => array('step' => '1', 'min' => '0', ),
+			);
 			$settings[] = array(
-                'title'   => __( 'Discount (%)', 'woocommerce-jetpack' ) . ' #' . $i,
+				'title'   => __( 'Discount (%)', 'woocommerce-jetpack' ) . ' #' . $i,
 				'desc'    => __( 'Discount (%)', 'woocommerce-jetpack' ),
-                'id'      => 'wcj_wholesale_price_level_discount_percent_' . $i,
-                'default' => 0,
-                'type'    => 'number',
+				'id'      => 'wcj_wholesale_price_level_discount_percent_' . $i,
+				'default' => 0,
+				'type'    => 'number',
 				//'css'     => 'width:50%;min-width:300px;height:100px;',
-            );
+				'custom_attributes' => array('step' => '0.0001', 'min' => '0', ),
+			);
 		}
 
 		$settings[] = array(
@@ -158,8 +160,8 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 			'id'   => 'wcj_wholesale_price_level_options'
 		);
 
-        return $this->add_enable_module_setting( $settings );
-    }
+		return $this->add_enable_module_setting( $settings );
+	}
 }
 
 endif;

@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,62 +18,62 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 **Prices & Currencies**
 
-* Bulk Price Converter - Multiply all WooCommerce products prices by set value.
-* Currencies - Add all world currencies to your WooCommerce store; change currency symbol.
-* Currency for External Products - Set different currency for external WooCommerce products.
-* Prices and Currencies by Country - Change WooCommerce product price and currency automatically by customer's country.
-* Wholesale Price - Set WooCommerce wholesale pricing depending on product quantity in cart (buy more pay less).
+* *Bulk Price Converter* - Multiply all WooCommerce products prices by set value.
+* *Currencies* - Add all world currencies to your WooCommerce store; change currency symbol.
+* *Currency for External Products* - Set different currency for external WooCommerce products.
+* *Prices and Currencies by Country* - Change WooCommerce product price and currency automatically by customer's country.
+* *Wholesale Price* - Set WooCommerce wholesale pricing depending on product quantity in cart (buy more pay less).
 
 **Price & Button Labels**
 
-* Add to Cart Labels - Change text for Add to Cart button by WooCommerce product type, by product category or for individual products.
-* Call for Price - Create any custom price label for all WooCommerce products with empty price.
-* Custom Price Labels - Create any custom price label for any WooCommerce product.
-* More Button Labels - Set WooCommerce "Place order" button label.
+* *Add to Cart Labels* - Change text for Add to Cart button by WooCommerce product type, by product category or for individual products.
+* *Call for Price* - Create any custom price label for all WooCommerce products with empty price.
+* *Custom Price Labels* - Create any custom price label for any WooCommerce product.
+* *More Button Labels* - Set WooCommerce "Place order" button label.
 
 **Products**
 
-* Product Add to Cart - Set any local url to redirect to on WooCommerce Add to Cart. Automatically add to cart on product visit.
-* Product Images - Customize WooCommerce products images, thumbnails and sale flashes.
-* Product Info - Add additional info to WooCommerce category and single product pages.
-* Product Input Fields - WooCommerce product input fields.
-* Product Listings - Change WooCommerce display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
-* Product Purchase Costs Data - Save WooCommerce product purchase costs data for admin reports.
-* Product Tabs - Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs.
-* Related Products - Change displayed WooCommerce related products number, columns, order, relate by tag and/or category.
-* SKU - Generate WooCommerce SKUs automatically.
-* Sorting - Add more WooCommerce sorting options or remove all sorting including default.
+* *Product Add to Cart* - Set any local url to redirect to on WooCommerce Add to Cart. Automatically add to cart on product visit.
+* *Product Cost Price* - Save WooCommerce product purchase costs data for admin reports.
+* *Product Images* - Customize WooCommerce products images, thumbnails and sale flashes.
+* *Product Info* - Add additional info to WooCommerce category and single product pages.
+* *Product Input Fields* - WooCommerce product input fields.
+* *Product Listings* - Change WooCommerce display options for shop and category pages: show/hide categories count, exclude categories, show/hide empty categories.
+* *Product Tabs* - Add custom product tabs - globally or per product. Customize or completely remove WooCommerce default product tabs.
+* *Related Products* - Change displayed WooCommerce related products number, columns, order, relate by tag and/or category, or hide related products completely.
+* *SKU* - Generate WooCommerce SKUs automatically.
+* *Sorting* - Add more WooCommerce sorting options or remove all sorting including default.
 
 **Cart & Checkout**
 
-* Cart - Add custom info to WooCommerce cart page. Add empty cart button.
-* Checkout Core Fields - Customize WooCommerce core checkout fields. Disable/enable fields, set required, change labels and/or placeholders.
-* Checkout Custom Fields - Add custom fields to WooCommerce checkout page.
-* Checkout Custom Info - Add custom info to WooCommerce checkout page.
-* Mini Cart - Customize WooCommerce mini cart widget.
-* Payment Gateways - Add custom payment gateway, change icons (images) for all default WooCommerce payment gateways.
+* *Cart* - Add custom info to WooCommerce cart page. Add empty cart button.
+* *Checkout Core Fields* - Customize WooCommerce core checkout fields. Disable/enable fields, set required, change labels and/or placeholders.
+* *Checkout Custom Fields* - Add custom fields to WooCommerce checkout page.
+* *Checkout Custom Info* - Add custom info to WooCommerce checkout page.
+* *Mini Cart* - Customize WooCommerce mini cart widget.
+* *Payment Gateways* - Add custom payment gateway, change icons (images) for all default WooCommerce payment gateways.
 
 **Shipping & Orders**
 
-* Address Formats - Set address format in WooCommerce orders on per country basis. Force base country display.
-* Order Custom Statuses - Custom statuses for WooCommerce orders.
-* Order Numbers - WooCommerce sequential order numbering, custom order number prefix, suffix and number width.
-* Orders - Minimum WooCommerce order amount; orders auto-complete.
-* Shipping - Hide WooCommerce shipping when free is available.
-* Shipping Calculator - Customize WooCommerce shipping calculator on cart page.
+* *Address Formats* - Set address format in WooCommerce orders on per country basis. Force base country display.
+* *Order Custom Statuses* - Custom statuses for WooCommerce orders.
+* *Order Numbers* - WooCommerce sequential order numbering, custom order number prefix, suffix and number width.
+* *Orders* - Minimum WooCommerce order amount; orders auto-complete.
+* *Shipping* - Hide WooCommerce shipping when free is available.
+* *Shipping Calculator* - Customize WooCommerce shipping calculator on cart page.
 
 **PDF Invoicing & Packing Slips**
 
-* PDF Invoicing - WooCommerce Invoices, Proforma Invoices, Credit Notes and Packing Slips.
+* *PDF Invoicing* - WooCommerce Invoices, Proforma Invoices, Credit Notes and Packing Slips.
 
 **Emails & Misc.**
 
-* Admin Tools - Debug and log tools for WooCommerce Jetpack.
-* Emails - Add another email recipient(s) to all WooCommerce emails.
-* General - Separate custom CSS for front and back end.
-* Old Slugs - Remove old WooCommerce products slugs.
-* Reports - WooCommerce stock, sales, customers etc. reports.
-* WPML - Basic WPML support for WooCommerce Jetpack.
+* *Admin Tools* - Debug and log tools for WooCommerce Jetpack.
+* *Emails* - Add another email recipient(s) to all WooCommerce emails.
+* *General* - Separate custom CSS for front and back end.
+* *Old Slugs* - Remove old WooCommerce products slugs.
+* *Reports* - WooCommerce stock, sales, customers etc. reports.
+* *WPML* - Basic WPML support for WooCommerce Jetpack.
 
 = Feedback =
 * We are open to your suggestions and feedback - thank you for using or trying out one of our plugins!
@@ -104,7 +104,23 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 2.2.1 - 04/07/2015 =
+* Dev - Shortcodes - `location`, `site_visibility`, `wpml_language` attributes added to all shortcodes.
+* Dev - PRICES & CURRENCIES - Price by Country - "by user selection" option added. `[wcj_country_select_drop_down_list]` shortcode added.
+* Fix - PRICES & CURRENCIES - Wholesale Price - decimal point in discount percent, fixed.
+* Dev - PRODUCTS - Related Products - Separate option for hiding the related products added.
+* Dev - CART & CHECKOUT - Empty Cart Button - "Confirmation by pop up box" option added.
+* Dev - CART & CHECKOUT - Empty Cart Button - Initial module release.
+* Dev - CART & CHECKOUT - Cart - Code refactoring.
+* Dev - PDF Invoicing - Invoice report tool added.
+* Dev - PDF Invoicing - PDF invoices Header and Footer font set as "general font" set in "Styling" section.
+* Dev - PDF Invoicing - Renumerate Invoices Tool - `date_query` added (fix for "memory exhausted" message, on large number of total shop orders).
+* Fix - EMAILS & MISC. - WPML - `wcj_wpml_translate` added to General Shortcodes list.
+* Dev - EMAILS & MISC. - General - "Enable shortcodes in WordPress text widgets" option added.
+* Dev - EMAILS & MISC. - General - Code refactoring.
+
 = 2.2.0 - 13/06/2015 =
+* Dev - readme.txt features description updated.
 * Dev - All modules set to "off" on initial install.
 * Dev - Admin options reset option added. Only by arg.
 * Dev - Readme generator `woojetpack_readme`.

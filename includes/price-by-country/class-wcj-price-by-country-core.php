@@ -4,8 +4,8 @@
  *
  * The WooCommerce Jetpack Price by Country Core class.
  *
- * @version  2.2.0
- * @author   Algoritmika Ltd.
+ * @version 2.2.1
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -14,18 +14,29 @@ if ( ! class_exists( 'WCJ_Price_by_Country_Core' ) ) :
 
 class WCJ_Price_by_Country_Core {
 
-    /**
-     * Constructor.
-     */
-    public function __construct() {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
 		$this->customer_country_group_id = null;
 		add_action( 'init', array( $this, 'add_hooks' ) );
-    }
+	}
 
 	/**
 	 * add_hooks.
 	 */
 	function add_hooks() {
+
+		if ( 'by_user_selection' === get_option( 'wcj_price_by_country_customer_country_detection_method', 'by_ip' ) ) {
+
+			if ( ! session_id() ) {
+				session_start();
+			}
+
+			if ( isset( $_REQUEST[ 'wcj-country' ] ) ) {
+				$_SESSION[ 'wcj-country' ] = $_REQUEST[ 'wcj-country' ];
+			}
+		}
 
 		// Price hooks
 		add_filter( 'woocommerce_get_price', 				array( $this, 'change_price_by_country' ),				PHP_INT_MAX, 2 );
@@ -39,10 +50,48 @@ class WCJ_Price_by_Country_Core {
 		add_filter( 'woocommerce_currency', 				array( $this, 'change_currency_code' ),					PHP_INT_MAX, 1 );
 
 		// Shipping
-		add_filter( 'woocommerce_package_rates',            array( $this, 'change_shipping_price_by_country' ),     PHP_INT_MAX, 2 );
+		add_filter( 'woocommerce_package_rates',			array( $this, 'change_shipping_price_by_country' ),     PHP_INT_MAX, 2 );
+
+		// Country selection box
+		/* if ( 'by_user_selection' === get_option( 'wcj_price_by_country_customer_country_detection_method', 'by_ip' ) ) {
+			add_filter( 'woocommerce_get_price_html', array( $this, 'add_country_selection_box' ), PHP_INT_MAX, 2 );
+		} */
 
 		// Debug
 //		add_shortcode( 'wcj_debug_price_by_country', 		array( $this, 'get_debug_info' ) );
+	}
+
+	/**
+	 * add_country_selection_box.
+	 *
+	function add_country_selection_box( $price_html, $_product ) {
+		$html = '';
+
+		$form_method  = get_option( 'wcj_price_by_country_country_selection_box_method', 'get' );
+		$select_class = get_option( 'wcj_price_by_country_country_selection_box_class', '' );
+		$select_style = get_option( 'wcj_price_by_country_country_selection_box_style', '' );
+
+		$html .= '<form action="" method="' . $form_method . '">';
+
+		$html .= '<select name="wcj-country" id="wcj-country" style="' . $select_style . '" class="' . $select_class . '" onchange="this.form.submit()">';
+		$countries = wcj_get_countries();
+
+		/* if ( 'get' == $form_method ) {
+			$selected_country = ( isset( $_GET[ 'wcj-country' ] ) ) ? $_GET[ 'wcj-country' ] : '';
+		} else {
+			$selected_country = ( isset( $_POST[ 'wcj-country' ] ) ) ? $_POST[ 'wcj-country' ] : '';
+		} *//*
+		$selected_country = ( isset( $_REQUEST[ 'wcj-country' ] ) ) ? $_REQUEST[ 'wcj-country' ] : '';
+
+		foreach ( $countries as $country_code => $country_name ) {
+
+			$html .= '<option value="' . $country_code . '" ' . selected( $country_code, $selected_country, false ) . '>' . $country_name . '</option>';
+		}
+		$html .= '</select>';
+
+		$html .= '</form>';
+
+		return $price_html . $html;
 	}
 
 	/**
@@ -135,13 +184,32 @@ class WCJ_Price_by_Country_Core {
 		if ( isset( $_GET['country'] ) && '' != $_GET['country'] && is_super_admin() ) {
 			$country = $_GET['country'];
 		} else {
-			// Get the country by IP
-			$location = WC_Geolocation::geolocate_ip();
-			// Base fallback
-			if ( empty( $location['country'] ) ) {
-				$location = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', get_option( 'woocommerce_default_country' ) ) );
+
+			if ( 'by_ip' === get_option( 'wcj_price_by_country_customer_country_detection_method', 'by_ip' ) ) {
+
+				// Get the country by IP
+				$location = WC_Geolocation::geolocate_ip();
+				// Base fallback
+				if ( empty( $location['country'] ) ) {
+					$location = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', get_option( 'woocommerce_default_country' ) ) );
+				}
+				$country = ( isset( $location['country'] ) ) ? $location['country'] : null;
+
+			} elseif ( 'by_user_selection' === get_option( 'wcj_price_by_country_customer_country_detection_method', 'by_ip' ) ) {
+
+				/* $form_method  = get_option( 'wcj_price_by_country_country_selection_box_method', 'get' );
+				if ( 'get' == $form_method ) {
+					$country = ( isset( $_GET[ 'wcj-country' ] ) ) ? $_GET[ 'wcj-country' ] : null;
+				} else {
+					$country = ( isset( $_POST[ 'wcj-country' ] ) ) ? $_POST[ 'wcj-country' ] : null;
+				} */
+				$country = ( isset( $_SESSION[ 'wcj-country' ] ) ) ? $_SESSION[ 'wcj-country' ] : null;
+
+			} elseif ( 'by_wpml' === get_option( 'wcj_price_by_country_customer_country_detection_method', 'by_ip' ) ) {
+
+				$country = ( defined( 'ICL_LANGUAGE_CODE' ) ) ? ICL_LANGUAGE_CODE : null;
+
 			}
-			$country = ( isset( $location['country'] ) ) ? $location['country'] : null;
 		}
 
 		if ( null === $country ) {

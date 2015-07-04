@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 2.2.0
+Version: 2.2.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -65,33 +65,38 @@ final class WC_Jetpack {
 	 */
 	public function __construct() {
 
+		/* echo 'Constructor Start: memory_get_usage( false )' . number_format( memory_get_usage( false ), 0, '.', ',' );
+		echo 'Constructor Start: memory_get_usage( true )' . number_format( memory_get_usage( true ), 0, '.', ',' ); */
+
 		// Include required files
 		$this->includes();
 
-		// HOOKS
 		//register_activation_hook( __FILE__, array( $this, 'install' ) );
 		//add_action( 'admin_init', array( $this, 'install' ) );
 		add_action( 'init', array( $this, 'init' ), 0 );
 
 		// Settings
 		if ( is_admin() ) {
-			add_filter( 'woocommerce_get_settings_pages', 						array( $this, 'add_wcj_settings_tab' ) );
-			add_filter( 'get_wc_jetpack_plus_message', 							array( $this, 'get_wcj_plus_message' ), 100, 2 );
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 	array( $this, 'action_links' ) );
-			add_action( 'admin_menu', 											array( $this, 'jetpack_menu' ), 100 );
-			//add_filter( 'admin_footer_text',                                    array( $this, 'admin_footer_text' ), 2 );
+			add_filter( 'woocommerce_get_settings_pages',                     array( $this, 'add_wcj_settings_tab' ) );
+			add_filter( 'get_wc_jetpack_plus_message',                        array( $this, 'get_wcj_plus_message' ), 100, 2 );
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
+			add_action( 'admin_menu',                                         array( $this, 'jetpack_menu' ), 100 );
+//			add_filter( 'admin_footer_text',                                  array( $this, 'admin_footer_text' ), 2 );
 		}
 
 		// Scripts
 		if ( is_admin() ) {
 			if ( 'yes' === get_option( 'wcj_purchase_data_enabled' ) || 'yes' === get_option( 'wcj_pdf_invoicing_enabled' ) ) {
-				add_action( 'admin_enqueue_scripts',         array( $this, 'enqueue_scripts' ) );
-				add_action( 'admin_head',                    array( $this, 'add_datepicker_script' ) );
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+				add_action( 'admin_head',			array( $this, 'add_datepicker_script' ) );
 			}
 		}
 
 		// Loaded action
 		do_action( 'wcj_loaded' );
+
+		/* echo 'Constructor End: memory_get_usage( false )' . number_format( memory_get_usage( false ), 0, '.', ',' );
+		echo 'Constructor End: memory_get_usage( true )' . number_format( memory_get_usage( true ), 0, '.', ',' ); */
 	}
 
 	/**
@@ -269,6 +274,7 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-more-button-labels.php' );
 
 		$settings[] = include_once( 'includes/class-wcj-cart.php' );
+		$settings[] = include_once( 'includes/class-wcj-empty-cart-button.php' );
 		$settings[] = include_once( 'includes/class-wcj-mini-cart.php' );
 		$settings[] = include_once( 'includes/class-wcj-checkout-core-fields.php' );
 		$settings[] = include_once( 'includes/class-wcj-checkout-custom-fields.php' );

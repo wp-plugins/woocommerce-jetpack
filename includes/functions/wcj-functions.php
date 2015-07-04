@@ -317,8 +317,7 @@ if ( ! function_exists( 'wcj_get_shortcodes_atts_list' ) ) {
 if ( ! function_exists( 'wcj_get_shortcodes_list' ) ) {
 	function wcj_get_shortcodes_list() {
 		$the_array = apply_filters( 'wcj_shortcodes_list', array() );
-		return implode( ', ', $the_array );
-		//return implode( PHP_EOL, $the_array );
+		return implode( ', ', $the_array )/*  . ' (' . count( $the_array ) . ')' */;
 	}
 }
 

@@ -4,9 +4,9 @@
  *
  * The WooCommerce Modules Array.
  *
- * @version  2.2.0
- * @since    2.2.0
- * @author   Algoritmika Ltd.
+ * @version 2.2.1
+ * @since   2.2.0
+ * @author  Algoritmika Ltd.
  */
 
 return array(
@@ -34,7 +34,7 @@ return array(
 	),
 
 	'labels' => array(
-		'label'          => __( 'Price & Button Labels', 'woocommerce-jetpack' ),
+		'label'          => __( 'Button & Price Labels', 'woocommerce-jetpack' ),
 		'default_cat_id' => 'price_labels',
 		'all_cat_ids'    => array(
 			'price_labels',
@@ -66,6 +66,7 @@ return array(
 		'default_cat_id' => 'cart',
 		'all_cat_ids'    => array(
 			'cart',
+			'empty_cart',
 			'mini_cart',
 			'checkout_core_fields',
 			'checkout_custom_fields',

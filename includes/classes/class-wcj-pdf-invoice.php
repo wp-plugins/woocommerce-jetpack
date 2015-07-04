@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack PDF Invoice class.
  *
- * @version 2.2.0
+ * @version 2.2.1
  * @author  Algoritmika Ltd.
  */
 
@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 if ( ! class_exists( 'WCJ_TCPDF' ) ) :
 
 // Include the main TCPDF library
-//require_once( WCJ()->plugin_path() . '/includes/lib/tcpdf_min/tcpdf.php' );
 require_once( wcj_plugin_path() . '/includes/lib/tcpdf_min/tcpdf.php' );
 
 class WCJ_TCPDF extends TCPDF {
@@ -22,27 +21,27 @@ class WCJ_TCPDF extends TCPDF {
 		 $this->invoice_type = $invoice_type;
 	}
 
-    /* //Page header
-    public function Header() {
-        // Logo
-        $image_file = K_PATH_IMAGES.'logo_example.jpg';
-        $this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        // Set font
-        $this->SetFont('helvetica', 'B', 20);
-        // Title
-        $this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-    } */
+	/* //Page header
+	public function Header() {
+		// Logo
+		$image_file = K_PATH_IMAGES.'logo_example.jpg';
+		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+		// Set font
+		$this->SetFont('helvetica', 'B', 20);
+		// Title
+		$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+	} */
 
-    /**/ // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        //$this->SetY(-15);
-        // Set font
-        //$this->SetFont('helvetica', 'I', 8);
+	/**/ // Page footer
+	public function Footer() {
+		// Position at 15 mm from bottom
+		//$this->SetY(-15);
+		// Set font
+		//$this->SetFont('helvetica', 'I', 8);
 
 		$invoice_type = $this->invoice_type;
 		$footer_text = apply_filters( 'wcj_get_option_filter', 'Page %page_number% / %total_pages%', get_option( 'wcj_invoicing_' . $invoice_type . '_footer_text' ) );
-        //$this->Cell( 0, 0, do_shortcode( $footer_text ), 0, false, 'L', 0, '', 0, false, 'T', 'M' );
+		//$this->Cell( 0, 0, do_shortcode( $footer_text ), 0, false, 'L', 0, '', 0, false, 'T', 'M' );
 		$footer_text = str_replace( '%page_number%', $this->getAliasNumPage(), $footer_text );
 		$footer_text = str_replace( '%total_pages%', $this->getAliasNbPages(), $footer_text );
 		$border_desc = array(
@@ -53,8 +52,8 @@ class WCJ_TCPDF extends TCPDF {
 		);
 		$footer_text_color_rgb = wcj_hex2rgb( get_option( 'wcj_invoicing_' . $invoice_type . '_footer_text_color' ) );
 		$this->SetTextColor( $footer_text_color_rgb[0], $footer_text_color_rgb[1], $footer_text_color_rgb[2] );
-        $this->writeHTMLCell( 0, 0, '', '', do_shortcode( $footer_text ), $border_desc, 1, 0, true, '', true );
-    } /**/
+		$this->writeHTMLCell( 0, 0, '', '', do_shortcode( $footer_text ), $border_desc, 1, 0, true, '', true );
+	} /**/
 }
 
 endif;
@@ -63,13 +62,13 @@ if ( ! class_exists( 'WCJ_PDF_Invoice' ) ) :
 
 class WCJ_PDF_Invoice extends WCJ_Invoice {
 
-    /**
-     * Constructor.
-     */
-    public function __construct( $order_id, $invoice_type ) {
+	/**
+	 * Constructor.
+	 */
+	public function __construct( $order_id, $invoice_type ) {
 
 		parent::__construct( $order_id, $invoice_type );
-    }
+	}
 
 	function prepare_pdf() {
 
@@ -126,8 +125,8 @@ class WCJ_PDF_Invoice extends WCJ_Invoice {
 		}
 
 		// Set Header and Footer fonts
-		$pdf->setHeaderFont( Array( PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN ) );
-		$pdf->setFooterFont( Array( PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA ) );
+		$pdf->setHeaderFont( Array( /* PDF_FONT_NAME_MAIN */get_option( 'wcj_invoicing_' . $invoice_type . '_general_font_family', 'dejavusans' ), '', PDF_FONT_SIZE_MAIN ) );
+		$pdf->setFooterFont( Array( /* PDF_FONT_NAME_DATA */get_option( 'wcj_invoicing_' . $invoice_type . '_general_font_family', 'dejavusans' ), '', PDF_FONT_SIZE_DATA ) );
 
 		// Set default monospaced font
 		$pdf->SetDefaultMonospacedFont( PDF_FONT_MONOSPACED );
@@ -176,10 +175,10 @@ class WCJ_PDF_Invoice extends WCJ_Invoice {
 		return $pdf;
 	}
 
-    /**
-     * get_pdf.
-     */
-    //function get_pdf( $get_by_order_id = 0 ) {
+	/**
+	 * get_pdf.
+	 */
+	//function get_pdf( $get_by_order_id = 0 ) {
 	//function get_pdf( $order_id, $invoice_type, $name, $dest ) {
 	function get_pdf( $dest ) {
 

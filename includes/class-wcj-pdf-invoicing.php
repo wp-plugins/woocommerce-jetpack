@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack PDF Invoicing class.
  *
- * @version 2.2.0
+ * @version 2.2.1
  * @author  Algoritmika Ltd.
  */
 
@@ -22,6 +22,7 @@ class WCJ_PDF_Invoicing {
         if ( get_option( 'wcj_pdf_invoicing_enabled' ) == 'yes' ) {
 
 			include_once( 'pdf-invoices/class-wcj-pdf-invoicing-renumerate-tool.php' );
+			include_once( 'pdf-invoices/class-wcj-pdf-invoicing-report-tool.php' );
 
 			add_action( 'init', array( $this, 'catch_args' ) );
 			add_action( 'init', array( $this, 'generate_pdf_on_init' ) );

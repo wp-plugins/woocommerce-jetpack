@@ -61,7 +61,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 		$custom_attributes = ( is_array( $value['custom_attributes'] ) ) ? $value['custom_attributes'] : array();
 		$description = ' <span class="description">' . $value['desc'] . '</span>';
 		$save_button = apply_filters( 'wcj_get_option_filter', '', ' <input name="save" class="button-primary" type="submit" value="' . __( 'Save changes', 'woocommerce' ) . '">' );
-		
+
 		?><tr valign="top">
 			<th scope="row" class="titledesc">
 				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
@@ -247,7 +247,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			foreach ( $this->cats as $cat_id => $cat_label_info ) {
 				if ( 'dashboard' === $cat_id ) continue;
 				echo '<h4>' . $cat_label_info['label'] . '</h4>';
-				$readme_html .= '**' . $cat_label_info['label'] . '**' . PHP_EOL;
+				$readme_html .= PHP_EOL . '**' . $cat_label_info['label'] . '**' . PHP_EOL . PHP_EOL;
 				$readme_html .= $this->output_dashboard_modules( $the_settings, $cat_id );
 			}
 		}
@@ -330,7 +330,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 
 					$html .= '</tr>';
 
-					$readme_html .= '* ' . $the_feature['title'] . ' - ' . $the_feature['desc_tip'] . PHP_EOL;
+					$readme_html .= '* *' . $the_feature['title'] . '* - ' . $the_feature['desc_tip'] . PHP_EOL;
 				}
 				echo $html;
 			?></tbody>
