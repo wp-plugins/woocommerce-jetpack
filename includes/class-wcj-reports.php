@@ -4,10 +4,8 @@
  *
  * The WooCommerce Jetpack Reports class.
  *
- * @class 		WCJ_Reports
- * @version		2.0.0
- * @category	Class
- * @author 		Algoritmika Ltd.
+ * @version 2.2.2
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -186,6 +184,13 @@ class WCJ_Reports {
 			'callback'    => array( $this, 'get_report_stock' ),
 		);
 
+		$reports['stock']['reports']['overstocked'] = array(
+			'title'       => __( 'WooJetpack: Overstocked', 'woocommerce-jetpack' ),
+			'description' => '',
+			'hide_title'  => true,
+			'callback'    => array( $this, 'get_report_stock' ),
+		);
+
 		return $reports;
 	}
 
@@ -251,6 +256,8 @@ class WCJ_Reports {
 							   . __( 'WooJetpack: All in Stock with sales data. Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' )
 							   . '</p><p>'
 							   . __( 'WooJetpack: Understocked products (calculated by sales data). Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' )
+							   . '</p><p>'
+							   . __( 'WooJetpack: Overstocked products (calculated by sales data). Available in WooCommerce > Reports > Stock.', 'woocommerce-jetpack' )
 							   . '</p>',
 				'id' 		=> 'wcj_reports_more_options'
 			),

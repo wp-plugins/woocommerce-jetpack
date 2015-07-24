@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack PDF Invoicing Emails class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @author  Algoritmika Ltd.
  */
 
@@ -14,10 +14,10 @@ if ( ! class_exists( 'WCJ_PDF_Invoicing_Emails' ) ) :
 
 class WCJ_PDF_Invoicing_Emails extends WCJ_Module {
 
-    /**
-     * Constructor.
-     */
-    function __construct() {
+	/**
+	 * Constructor.
+	 */
+	function __construct() {
 
 		$this->id         = 'pdf_invoicing_emails';
 		$this->parent_id  = 'pdf_invoicing';
@@ -25,17 +25,27 @@ class WCJ_PDF_Invoicing_Emails extends WCJ_Module {
 		$this->desc       = '';
 		parent::__construct( 'submodule' );
 
-		//if ( 'yes' === get_option( 'wcj_pdf_invoicing_enabled' ) ) {
+		add_filter( 'init',  array( $this, 'add_hooks' ) );
+
 		if ( $this->is_enabled() ) {
 			add_filter( 'woocommerce_email_attachments', array( $this, 'add_pdf_invoice_email_attachment' ), PHP_INT_MAX, 3 );
 		}
-    }
+	}
+
+	/**
+	 * add_hooks.
+	 */
+	function add_hooks() {
+		add_filter( 'wcj_pdf_invoicing_emails_settings', array( $this, 'add_payment_gateways_pdf_invoicing_emails_settings' ), PHP_INT_MAX, 2 );
+	}
 
 	/**
 	 * do_attach_for_payment_method.
-	 *
-	function do_attach_for_payment_method( $payment_method ) {
-		return ( 'no' === get_option( 'wcj_gateways_attach_invoice_' . $payment_method, 'yes' ) ) ? false : true;
+	 */
+	function do_attach_for_payment_method( $invoice_type_id, $payment_method ) {
+		$included_gateways = get_option( 'wcj_invoicing_' . $invoice_type_id . '_payment_gateways', array() );
+		if ( empty ( $included_gateways ) ) return true; // include all
+		return ( in_array( $payment_method, $included_gateways ) ) ? true : false;
 	}
 
 	/**
@@ -44,26 +54,50 @@ class WCJ_PDF_Invoicing_Emails extends WCJ_Module {
 	function add_pdf_invoice_email_attachment( $attachments, $status, $order ) {
 		$invoice_types_ids = wcj_get_enabled_invoice_types_ids();
 		foreach ( $invoice_types_ids as $invoice_type_id ) {
-			//if ( 'yes' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_invoicing_' . $invoice_type_id . '_attach_to_email_enabled' ) ) ) {
-				//if ( isset( $status ) && 'customer_completed_order' === $status && isset( $order ) && true === $this->do_attach_for_payment_method( $order->payment_method ) ) {
-				//if ( 'customer_completed_order' === $status ) {
-				$send_on_statuses = get_option( 'wcj_invoicing_' . $invoice_type_id . '_attach_to_emails', array() );
-				if ( '' == $send_on_statuses ) $send_on_statuses = array();
-				if ( in_array( $status, $send_on_statuses ) ) {
-					$the_invoice = wcj_get_pdf_invoice( $order->id, $invoice_type_id );
-					$file_name = $the_invoice->get_pdf( 'F' );
-					if ( '' != $file_name ) {
-						$attachments[] = $file_name;
-					}
+			if ( false === $this->do_attach_for_payment_method( $invoice_type_id, $order->payment_method ) ) {
+				continue;
+			}
+			$send_on_statuses = get_option( 'wcj_invoicing_' . $invoice_type_id . '_attach_to_emails', array() );
+			if ( '' == $send_on_statuses ) $send_on_statuses = array();
+			if ( in_array( $status, $send_on_statuses ) ) {
+				$the_invoice = wcj_get_pdf_invoice( $order->id, $invoice_type_id );
+				$file_name = $the_invoice->get_pdf( 'F' );
+				if ( '' != $file_name ) {
+					$attachments[] = $file_name;
 				}
+			}
 		}
 		return $attachments;
 	}
 
-    /**
-     * get_settings.
-     */
-    function get_settings() {
+	/**
+	 * add_payment_gateways_pdf_invoicing_emails_settings.
+	 */
+	function add_payment_gateways_pdf_invoicing_emails_settings( $settings, $invoice_type_id ) {
+			global $woocommerce;
+			$available_gateways = $woocommerce->payment_gateways->payment_gateways();
+			foreach ( $available_gateways as $key => $gateway ) {
+				$available_gateways_options_array[ $key ] = $gateway->title;
+			}
+			$settings[] = array(
+				'title'             => __( 'Payment gateways to include', 'woocommerce' ),
+				'id'                => 'wcj_invoicing_' . $invoice_type_id . '_payment_gateways',
+				'type'              => 'multiselect',
+				'class'             => 'chosen_select',
+				'css'               => 'width: 450px;',
+				'default'           => '',
+				'options'           => $available_gateways_options_array,
+				'custom_attributes' => array(
+					'data-placeholder' => __( 'Select some gateways. Leave blank to include all.', 'woocommerce-jetpack' )
+				)
+			);
+			return $settings;
+	}
+
+	/**
+	 * get_settings.
+	 */
+	function get_settings() {
 
 		$settings = array();
 		$invoice_types = wcj_get_invoice_types();
@@ -93,11 +127,13 @@ class WCJ_PDF_Invoicing_Emails extends WCJ_Module {
 				)
 			);
 
+			$settings = apply_filters( 'wcj_pdf_invoicing_emails_settings', $settings, $invoice_type['id'] );
+
 			$settings[] = array( 'type'  => 'sectionend', 'id' => 'wcj_invoicing_' . $invoice_type['id'] . '_emails_options' );
 		}
 
-        return $settings;
-    }
+		return $settings;
+	}
 }
 
 endif;

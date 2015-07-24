@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Module class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -31,7 +31,7 @@ class WCJ_Module {
 		$this->type = $type;
 		if ( 'module' === $this->type ) {
 			$this->parent_id = '';
-			add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
+			//add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
 		}
 	}
 
@@ -46,7 +46,7 @@ class WCJ_Module {
 	/**
 	 * add_enabled_option.
 	 * only for `module`
-	 */
+	 *
 	public function add_enabled_option( $settings ) {
 		$all_settings = $this->get_settings();
 		$settings[] = $all_settings[1];

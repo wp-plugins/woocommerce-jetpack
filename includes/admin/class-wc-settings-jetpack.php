@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Settings class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -362,14 +362,22 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 		else {
 			$settings[] = array(
 				'title' => __( 'WooCommerce Jetpack Dashboard', 'woocommerce-jetpack' ),
-				'type' => 'title',
-				'desc' => __( 'This dashboard lets you enable/disable any WooCommerce Jetpack module. Each checkbox comes with short module\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'woocommerce-jetpack' ),
-				'id' => 'wcj_options'
+				'type'  => 'title',
+				'desc'  => __( 'This dashboard lets you enable/disable any WooCommerce Jetpack module. Each checkbox comes with short module\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'woocommerce-jetpack' ),
+				'id'    => 'wcj_options'
 			);
-			$settings = apply_filters( 'wcj_features_status', $settings );
+			//$settings = apply_filters( 'wcj_features_status', $settings );
+			$settings = array_merge( $settings, $this->module_statuses );
 			$settings[] = array( 'type' => 'sectionend', 'id' => 'wcj_options', 'title' => '', 'desc' => '', );
 			return $settings;
 		}
+	}
+
+	/**
+	 * add_module_statuses
+	 */
+	function add_module_statuses( $statuses ) {
+		$this->module_statuses = $statuses;
 	}
 }
 

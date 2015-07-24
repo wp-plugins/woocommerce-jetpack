@@ -33,18 +33,18 @@
 		<key name="wcj_product_info_product_tabs_reviews_title" />
 		<key name="wcj_product_input_fields_type_checkbox_yes_global_1" />
 		<key name="wcj_product_input_fields_type_checkbox_no_global_1" />
+		<key name="wcj_product_input_fields_type_file_accept_global_1" />
 		<key name="wcj_product_input_fields_title_global_1" />
 		<key name="wcj_product_input_fields_placeholder_global_1" />
 		<key name="wcj_product_input_fields_required_message_global_1" />
 		<key name="wcj_product_input_fields_type_checkbox_yes_global_2" />
 		<key name="wcj_product_input_fields_type_checkbox_no_global_2" />
+		<key name="wcj_product_input_fields_type_file_accept_global_2" />
 		<key name="wcj_product_input_fields_title_global_2" />
 		<key name="wcj_product_input_fields_placeholder_global_2" />
 		<key name="wcj_product_input_fields_required_message_global_2" />
 		<key name="wcj_add_to_cart_per_category_text_single_group_1" />
 		<key name="wcj_add_to_cart_per_category_text_archive_group_1" />
-		<key name="wcj_add_to_cart_per_category_text_single_group_2" />
-		<key name="wcj_add_to_cart_per_category_text_archive_group_2" />
 		<key name="wcj_add_to_cart_text_on_single_simple" />
 		<key name="wcj_add_to_cart_text_on_archives_simple" />
 		<key name="wcj_add_to_cart_text_on_single_zero_price_simple" />
@@ -78,7 +78,6 @@
 		<key name="wcj_checkout_place_order_button_text" />
 		<key name="wcj_cart_custom_info_content_1" />
 		<key name="wcj_mini_cart_custom_info_content_1" />
-		<key name="wcj_mini_cart_custom_info_content_2" />
 		<key name="wcj_checkout_fields_billing_country_label" />
 		<key name="wcj_checkout_fields_billing_country_placeholder" />
 		<key name="wcj_checkout_fields_billing_first_name_label" />
@@ -125,8 +124,6 @@
 		<key name="wcj_checkout_fields_order_comments_placeholder" />
 		<key name="wcj_checkout_custom_field_label_1" />
 		<key name="wcj_checkout_custom_field_placeholder_1" />
-		<key name="wcj_checkout_custom_field_label_2" />
-		<key name="wcj_checkout_custom_field_placeholder_2" />
 		<key name="wcj_checkout_custom_info_content_1" />
 		<key name="wcj_order_minimum_amount_error_message" />
 		<key name="wcj_order_minimum_amount_cart_notice_message" />

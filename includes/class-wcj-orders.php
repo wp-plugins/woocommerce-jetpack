@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Orders class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @author  Algoritmika Ltd.
  */
 
@@ -190,6 +190,10 @@ class WCJ_Orders extends WCJ_Module {
                 'id'       => 'wcj_order_minimum_amount',
                 'default'  => 0,
                 'type'     => 'number',
+				'custom_attributes' => array(
+					'step' => '0.0001',
+					'min'  => '0',
+				),
             ),
 
             array(
@@ -246,7 +250,7 @@ class WCJ_Orders extends WCJ_Module {
             ),
 
 			array( 'type'  => 'sectionend', 'id' => 'wcj_order_auto_complete_options' ),
-			
+
 			array(
 				'title' => __( 'Orders List Custom Columns', 'woocommerce-jetpack' ),
 				'type'  => 'title',
@@ -265,7 +269,7 @@ class WCJ_Orders extends WCJ_Module {
 			array(
 				'type'  => 'sectionend',
 				'id' => 'wcj_orders_list_custom_columns_options',
-			),			
+			),
 
         );
 

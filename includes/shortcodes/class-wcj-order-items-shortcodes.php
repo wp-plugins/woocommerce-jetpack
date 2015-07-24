@@ -103,8 +103,6 @@ class WCJ_Order_Items_Shortcodes extends WCJ_Shortcodes {
 			/* $order_total_incl_tax = $this->the_order->get_total();
 			$order_total_tax      = $this->the_order->get_total_tax(); */
 
-
-
 			$order_total_incl_tax = 0;
 			$order_total_tax = 0;
 			$items = $this->the_order->get_items();
@@ -113,24 +111,10 @@ class WCJ_Order_Items_Shortcodes extends WCJ_Shortcodes {
 				$order_total_tax += $item['line_tax'];
 			}
 
-
-
-
-
 			if ( 0 != $order_total_incl_tax ) {
 
-//				$order_tax_rate = $order_total_tax / ( $order_total_incl_tax - $order_total_tax );
 				$order_tax_rate = $order_total_tax / $order_total_incl_tax;
-				//$order_tax_rate = round( $order_tax_rate, 4 );
-
-				$the_tax = $the_cart_discount * $order_tax_rate;//$the_cart_discount * $order_tax_rate;
-
-				/* wcj_log( $order_total_incl_tax );
-				wcj_log( $order_total_tax );
-				wcj_log( $order_tax_rate );
-				wcj_log( $the_tax );
-				wcj_log( $the_tax / ( $the_cart_discount - $the_tax) );
-				wcj_log( $order_total_tax / ( $order_total_incl_tax - $order_total_tax ) ); */
+				$the_tax = $the_cart_discount * $order_tax_rate;
 
 				return $the_tax;
 			}

@@ -357,7 +357,10 @@ class TCPDF_FONTS {
 			if ($fmetric['type'] != 'cidfont0') {
 				if ($link) {
 					// creates a symbolic link to the existing font
-					symlink($fontfile, $outpath.$fmetric['file']);
+					// WooJetpack modification v.2.2.2
+					$func_name = 'symlink';
+					$func_name($fontfile, $outpath.$fmetric['file']);
+					// WooJetpack modification ends here
 				} else {
 					// store compressed font
 					$fmetric['file'] .= '.z';

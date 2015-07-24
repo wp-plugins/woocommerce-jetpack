@@ -4,7 +4,7 @@ Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -24,7 +24,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * *Prices and Currencies by Country* - Change WooCommerce product price and currency automatically by customer's country.
 * *Wholesale Price* - Set WooCommerce wholesale pricing depending on product quantity in cart (buy more pay less).
 
-**Price & Button Labels**
+**Button & Price Labels**
 
 * *Add to Cart Labels* - Change text for Add to Cart button by WooCommerce product type, by product category or for individual products.
 * *Call for Price* - Create any custom price label for all WooCommerce products with empty price.
@@ -50,8 +50,12 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 * *Checkout Core Fields* - Customize WooCommerce core checkout fields. Disable/enable fields, set required, change labels and/or placeholders.
 * *Checkout Custom Fields* - Add custom fields to WooCommerce checkout page.
 * *Checkout Custom Info* - Add custom info to WooCommerce checkout page.
+* *Custom Payment Gateways* - Add any number of custom payment gateways to WooCommerce.
+* *Empty Cart Button* - Add and customize "Empty Cart" button to cart page.
 * *Mini Cart* - Customize WooCommerce mini cart widget.
-* *Payment Gateways* - Add custom payment gateway, change icons (images) for all default WooCommerce payment gateways.
+* *Payment Gateways Fees* - Enable extra fees for WooCommerce payment gateways.
+* *Payment Gateways Icons* - Change icons (images) for all default WooCommerce payment gateways.
+* *Payment Gateways per Category* - Show gateway only if there is product of selected category in WooCommerce cart.
 
 **Shipping & Orders**
 
@@ -70,7 +74,7 @@ WooCommerce Jetpack is a WordPress plugin that supercharges your site with aweso
 
 * *Admin Tools* - Debug and log tools for WooCommerce Jetpack.
 * *Emails* - Add another email recipient(s) to all WooCommerce emails.
-* *General* - Separate custom CSS for front and back end.
+* *General* - Separate custom CSS for front and back end. Shortcodes in Wordpress text widgets.
 * *Old Slugs* - Remove old WooCommerce products slugs.
 * *Reports* - WooCommerce stock, sales, customers etc. reports.
 * *WPML* - Basic WPML support for WooCommerce Jetpack.
@@ -104,6 +108,27 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 
 == Changelog ==
 
+= 2.2.2 - 24/07/2015 =
+* Fix - DASHBOARD - White screen on dashboard issue, fixed. `wcj_features_status` filter depreciated.
+* Fix - PRICES & CURRENCIES - Price by Country - Variable onsale old price bug fixed.
+* Dev - PRICES & CURRENCIES - Wholesale Price Table Shortcode (`[wcj_product_wholesale_price_table]`) - Discount percent row added to the table.
+* Dev - PRICES & CURRENCIES - Wholesale Price - "Show discount info on cart page" and "Discount info on cart page format" options added.
+* Dev - PRICES & CURRENCIES - Wholesale Price - "Use total cart quantity instead of product quantity" option added.
+* Dev - PRODUCTS - Product Input Fields - "File upload" field type added.
+* Dev - CART & CHECKOUT - Custom Payment Gateways - Limit raised from 10 to unlimited custom gateways.
+* Dev - CART & CHECKOUT - Payment Gateways Fees - "Is taxable" and "Tax class" options addded.
+* Dev - CART & CHECKOUT - Payment Gateways - Code refactoring, new modules created:
+  Custom Payment Gateways, Payment Gateways Icons, Payment Gateways Fees, Payment Gateways per Category.
+  Attaching PDF Invoice V1 to emails - code moved to PDF Invoice V1 module.
+  All settings (except depreciated "attaching PDF Invoice V1") moved from WooCommerce Checkout settings to module's settings.
+* Fix - SHIPPING & ORDERS - Orders - Step in min order amount changed.
+* Fix - PDF Invoicing - Numbering - `[wcj_invoice_date]` in invoice number bug fixed.
+* Fix - PDF Invoicing - In TCPDF lib, `symlink` call changed to calling with variable function name to prevent autodeleting tcpdf_fonts.php file from some servers bug.
+* Dev - PDF Invoicing - Display - "save as" changed to yes by default (same for PDF Invoices V1).
+* Dev - PDF Invoicing - Emails - "Include Payment Gateway" option added.
+* Dev - EMAILS & MISC. - Reports - Stock reports: "Total stock price" column added.
+* Dev - EMAILS & MISC. - Reports - Stock reports: "Overstocked" report added.
+
 = 2.2.1 - 04/07/2015 =
 * Dev - Shortcodes - `location`, `site_visibility`, `wpml_language` attributes added to all shortcodes.
 * Dev - PRICES & CURRENCIES - Price by Country - "by user selection" option added. `[wcj_country_select_drop_down_list]` shortcode added.
@@ -115,7 +140,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Dev - PDF Invoicing - Invoice report tool added.
 * Dev - PDF Invoicing - PDF invoices Header and Footer font set as "general font" set in "Styling" section.
 * Dev - PDF Invoicing - Renumerate Invoices Tool - `date_query` added (fix for "memory exhausted" message, on large number of total shop orders).
-* Fix - EMAILS & MISC. - WPML - `wcj_wpml_translate` added to General Shortcodes list.
+* Fix - EMAILS & MISC. - WPML - `[wcj_wpml_translate]` added to General Shortcodes list.
 * Dev - EMAILS & MISC. - General - "Enable shortcodes in WordPress text widgets" option added.
 * Dev - EMAILS & MISC. - General - Code refactoring.
 
@@ -141,7 +166,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
 * Dev - DASHBOARD - Tweak: Categories menu modified (merged categories).
 * Fix - PRICES & CURRENCIES - Price by Country - `woocommerce_loaded` hook changed to `init` in `WCJ_Price_by_Country_Core`.
 * Dev - PRICES & CURRENCIES - Price by Country - Exchange Rates: "Grab" button tweak.
-* Dev - PRICES & CURRENCIES - Price by Country - Now shipping cost also calsulated by country (`change_shipping_price_by_country` function added). Suggested by Fabian.
+* Dev - PRICES & CURRENCIES - Price by Country - Now shipping cost also calculated by country (`change_shipping_price_by_country` function added). Suggested by Fabian.
 * Dev - PRICES & CURRENCIES - Price by Country - Reporting: currency `merge` option added; and currency symbol fixed.
 * Dev - PRICES & CURRENCIES - Wholesale Price (buy more pay less) - Initial module release. `[wcj_product_wholesale_price_table]` shortcode added to "Products Shortcodes".
 * Dev - PRICE & BUTTON LABELS - Add to Cart Labels - Add to Cart module code refactoring: per category, per product and per product type merged to single module.

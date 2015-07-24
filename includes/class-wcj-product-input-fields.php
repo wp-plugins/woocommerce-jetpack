@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Product Input Fields class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @author  Algoritmika Ltd.
  */
 
@@ -14,15 +14,20 @@ if ( ! class_exists( 'WCJ_Product_Input_Fields' ) ) :
 
 class WCJ_Product_Input_Fields {
 
-    /**
-     * Constructor.
-     */
+	/**
+	 * Constructor.
+	 * @version 2.2.2
+	 */
     public function __construct() {
 
 		include_once( 'input-fields/class-wcj-product-input-fields-abstract.php' );
 
         // Main hooks
         if ( 'yes' === get_option( 'wcj_product_input_fields_enabled' ) ) {
+
+			add_action( 'woocommerce_delete_order_items', array( $this, 'delete_file_uploads' ) );
+
+			add_action( 'init', array( $this, 'handle_downloads' ) );
 
 			include_once( 'input-fields/class-wcj-product-input-fields-global.php' );
 			include_once( 'input-fields/class-wcj-product-input-fields-per-product.php' );
@@ -39,7 +44,48 @@ class WCJ_Product_Input_Fields {
         add_filter( 'wcj_features_status',               array( $this, 'add_enabled_option' ), 100 );
     }
 
-    /**
+	/**
+	 * delete_file_uploads.
+	 * @version 2.2.2
+	 * @since 2.2.2
+	 */
+    public function delete_file_uploads( $postid ) {
+		$the_order = wc_get_order( $postid );
+		$the_items = $the_order->get_items();
+		foreach ( $the_items as $item ) {
+			foreach ( $item as $item_field ) {
+				$item_field = maybe_unserialize( $item_field );
+				if ( is_array( $item_field ) && isset( $item_field['wcj_type'] ) && 'file' === $item_field['wcj_type'] ) {
+					unlink( $item_field['tmp_name'] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * handle_downloads.
+	 * @version 2.2.2
+	 * @since 2.2.2
+	 */
+    public function handle_downloads() {
+		if ( isset ( $_GET['wcj_download_file'] ) ) {
+			$file_name = $_GET['wcj_download_file'];
+			$upload_dir = wcj_get_wcj_uploads_dir( 'input_fields_uploads' );
+			$file_path = $upload_dir . '/' . $file_name;
+			if ( is_super_admin() || is_shop_manager() ) {
+				header( "Expires: 0" );
+				header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
+				header( "Cache-Control: private", false );
+				header( 'Content-disposition: attachment; filename=' . $file_name );
+				header( "Content-Transfer-Encoding: binary" );
+				header( "Content-Length: ". filesize( $file_path ) );
+				readfile( $file_path );
+				exit();
+			}
+		}
+	}
+
+	/**
      * register_script.
      */
     public function register_scripts() {

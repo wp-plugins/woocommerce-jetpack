@@ -4,10 +4,8 @@
  *
  * The WooCommerce Jetpack Product Input Fields abstract class.
  *
- * @class     WCJ_Product_Input_Fields_Abstract
- * @version   2.2.0
- * @category  Class
- * @author    Algoritmika Ltd.
+ * @version 2.2.2
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -47,6 +45,7 @@ class WCJ_Product_Input_Fields_Abstract {
 										'textarea' => __( 'Textarea', 'woocommerce-jetpack' ),
 										'number'   => __( 'Number', 'woocommerce-jetpack' ),
 										'checkbox' => __( 'Checkbox', 'woocommerce-jetpack' ),
+										'file'     => __( 'File', 'woocommerce-jetpack' ),
 				                    ),
 			),
 
@@ -73,6 +72,15 @@ class WCJ_Product_Input_Fields_Abstract {
 				'short_title'		=> __( 'Checkbox: OFF', 'woocommerce-jetpack' ),
 				'type'				=> 'text',
 				'default'			=> __( 'No', 'woocommerce-jetpack' ),
+			),
+
+			// TODO: http://www.w3schools.com/tags/att_input_accept.asp
+			array(
+				'id'				=> 'wcj_product_input_fields_type_file_accept_' . $this->scope . '_',
+				'title'				=> __( 'If file is selected, set accepted file types here. E.g.: ".jpg,.jpeg,.png". Leave blank to accept all files', 'woocommerce-jetpack' ),
+				'short_title'		=> __( 'File: Accepted types', 'woocommerce-jetpack' ),
+				'type'				=> 'text',
+				'default'			=> __( '.jpg,.jpeg,.png', 'woocommerce-jetpack' ),
 			),
 
 			array(
@@ -134,6 +142,22 @@ class WCJ_Product_Input_Fields_Abstract {
 			if ( '' == $the_nice_name ) $the_nice_name = __( 'Product Input Field', 'woocommerce-jetpack' ) . ' (' . $this->scope . ') #' . $i;
 
 			$the_value = isset( $item[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] ) ? $item[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] : '';
+
+			$type = $this->get_value( 'wcj_product_input_fields_type_' . $this->scope . '_' . $i, $_product->id, '' );
+			if ( 'file' === $type ) {
+				/* $file_name = $the_value;
+				$upload_dir = wp_upload_dir();
+				$upload_url = $upload_dir['baseurl'];
+				$the_value = $upload_url . '/woocommerce_uploads/' . $file_name;
+				//$the_value = $upload_url . '/' . $the_value;
+				//$the_value = '<img style="width:50px;" src="' . $the_value . '">'; */
+				$the_value = maybe_unserialize( $the_value );
+				$the_value = '<a href="' . add_query_arg( 'wcj_download_file', $item_id . '.' . pathinfo( $the_value['name'], PATHINFO_EXTENSION ) ) . '">' . $the_value['name'] . '</a>';
+			} else {
+				if ( 'no' === get_option( 'wcj_product_input_fields_make_nicer_name_enabled' ) ) {
+					continue;
+				}
+			}
 
 			if ( '' != $the_value ) {
 				echo '<tr><th>' . $the_nice_name . ':</th><td>' . $the_value . '</td></tr>';
@@ -249,21 +273,44 @@ class WCJ_Product_Input_Fields_Abstract {
 			}
 
 			$type = $this->get_value( 'wcj_product_input_fields_type_' . $this->scope . '_' . $i, $product_id, '' );
+			$field_name = 'wcj_product_input_fields_' . $this->scope . '_' . $i;
 
-			if ( 'checkbox' === $type && ! isset( $_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] ) ) {
-				$_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] = 'off';
+			if ( 'checkbox' === $type && ! isset( $_POST[ $field_name ] ) ) {
+				$_POST[ $field_name ] = 'off';
 			}
 
 			$is_required = $this->get_value( 'wcj_product_input_fields_required_' . $this->scope . '_' . $i, $product_id, 'no' );
-			if ( ( 'on' === $is_required  || 'yes' === $is_required )
-				&& isset( $_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] )
-				&& ( '' == $_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] || ( 'checkbox' === $type && 'off' === $_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] ) )
-			) {
-				$passed = false;
-				//__( 'Fill text box before adding to cart.', 'woocommerce-jetpack' )
-				wc_add_notice( $this->get_value( 'wcj_product_input_fields_required_message_' . $this->scope . '_' . $i, $product_id, '' ), 'error' );
+			if ( 'on' === $is_required  || 'yes' === $is_required ) {
+				if ( 'file' === $type ) {
+					$field_value = ( isset( $_FILES[ $field_name ]['name'] ) ) ? $_FILES[ $field_name ]['name'] : '';
+				} else {
+					$field_value = ( isset( $_POST[ $field_name ] ) ) ? $_POST[ $field_name ] : '';
+					if ( 'checkbox' === $type && 'off' === $field_value ) {
+						$field_value = '';
+					}
+				}
+				if ( '' == $field_value ) {
+					$passed = false;
+					wc_add_notice( $this->get_value( 'wcj_product_input_fields_required_message_' . $this->scope . '_' . $i, $product_id, '' ), 'error' );
+				}
+			}
+
+
+			if ( 'file' === $type && '' != $_FILES[ $field_name ]['name'] ) {
+				// Validate file type
+				$file_accept = $this->get_value( 'wcj_product_input_fields_type_file_accept_' . $this->scope . '_' . $i, $product_id, '' );
+				$file_accept = explode( ',', $file_accept );
+				if ( is_array( $file_accept ) && ! empty( $file_accept ) ) {
+					$file_type = '.' . pathinfo( $_FILES[ $field_name ]['name'], PATHINFO_EXTENSION );
+					if ( ! in_array( $file_type, $file_accept ) ) {
+						$passed = false;
+						wc_add_notice( __( 'Wrong file type!', 'woocommerce-jetpack' ), 'error' );
+						//wc_add_notice( $this->get_value( 'wcj_product_input_fields_wrong_file_type_msg_' . $this->scope . '_' . $i, $product_id, '' ), 'error' );
+					}
+				}
 			}
 		}
+
 		return $passed;
 	}
 
@@ -284,15 +331,20 @@ class WCJ_Product_Input_Fields_Abstract {
 			$title       = $this->get_value( 'wcj_product_input_fields_title_' .       $this->scope . '_' . $i, $product->id, '' );
 			$placeholder = $this->get_value( 'wcj_product_input_fields_placeholder_' . $this->scope . '_' . $i, $product->id, '' );
 
+			$file_accept = $this->get_value( 'wcj_product_input_fields_type_file_accept_' . $this->scope . '_' . $i, $product->id, '' );
+			$custom_attributes = ( 'file' === $type ) ? ' accept="' . $file_accept . '"' : '';
+			$field_name = 'wcj_product_input_fields_' . $this->scope . '_' . $i;
+
 			if ( 'on' === $is_enabled || 'yes' === $is_enabled ) {
 				switch ( $type ) {
 					case 'number':
 					case 'text':
 					case 'checkbox':
-						echo '<p>' . $title . '<input type="' . $type . '" name="wcj_product_input_fields_' . $this->scope . '_' . $i . '" placeholder="' . $placeholder . '">' . '</p>';
+					case 'file':
+						echo '<p>' . $title . '<input type="' . $type . '" name="' . $field_name . '" placeholder="' . $placeholder . '"' . $custom_attributes . '>' . '</p>';
 						break;
 					case 'textarea':
-						echo '<p>' . $title . '<textarea name="wcj_product_input_fields_' . $this->scope . '_' . $i . '" placeholder="' . $placeholder . '">' . '</textarea>' . '</p>';
+						echo '<p>' . $title . '<textarea name="' . $field_name . '" placeholder="' . $placeholder . '">' . '</textarea>' . '</p>';
 						break;
 				}
 			}
@@ -306,8 +358,20 @@ class WCJ_Product_Input_Fields_Abstract {
 	public function add_product_input_fields_to_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 		$total_number = apply_filters( 'wcj_get_option_filter', 1, $this->get_value( 'wcj_' . 'product_input_fields' . '_' . $this->scope . '_total_number', $product_id, 1 ) );
 		for ( $i = 1; $i <= $total_number; $i++ ) {
-			if ( isset( $_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] ) )
-				$cart_item_data[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] = $_POST[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ];
+			$type = $this->get_value( 'wcj_product_input_fields_type_' . $this->scope . '_' . $i, $product_id, '' );
+			$value_name = 'wcj_product_input_fields_' . $this->scope . '_' . $i;
+			if ( 'file' === $type ) {
+				if ( isset( $_FILES[ $value_name ] ) ) {
+					$cart_item_data[ $value_name ] = $_FILES[ $value_name ];
+					$tmp_dest_file = tempnam( sys_get_temp_dir(), 'wcj' );
+					move_uploaded_file( $cart_item_data[ $value_name ]['tmp_name'], $tmp_dest_file );
+					$cart_item_data[ $value_name ]['tmp_name'] = $tmp_dest_file;
+				}
+			} else {
+				if ( isset( $_POST[ $value_name ] ) ) {
+					$cart_item_data[ $value_name ] = $_POST[ $value_name ];
+				}
+			}
 		}
 		return $cart_item_data;
 	}
@@ -359,6 +423,11 @@ class WCJ_Product_Input_Fields_Abstract {
 					$value = ( 'on' === $value ) ? $yes_value : $no_value;
 				}
 
+				if ( 'file' === $type ) {
+					$value = maybe_unserialize( $value );
+					$value = $value['name'];
+				}
+
 				$name .= '<dt>'
 					  . $title
 					  . '</dt>'
@@ -385,8 +454,35 @@ class WCJ_Product_Input_Fields_Abstract {
 	public function add_product_input_fields_to_order_item_meta(  $item_id, $values, $cart_item_key  ) {
 		$total_number = apply_filters( 'wcj_get_option_filter', 1, $this->get_value( 'wcj_' . 'product_input_fields' . '_' . $this->scope . '_total_number', $values['product_id'], 1 ) );
 		for ( $i = 1; $i <= $total_number; $i++ ) {
-			if ( array_key_exists( 'wcj_product_input_fields_' . $this->scope . '_' . $i , $values ) )
-				wc_add_order_item_meta( $item_id, '_wcj_product_input_fields_' . $this->scope . '_' . $i, $values[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ] );
+			if ( array_key_exists( 'wcj_product_input_fields_' . $this->scope . '_' . $i , $values ) ) {
+				$type = $this->get_value( 'wcj_product_input_fields_type_' . $this->scope . '_' . $i, $values['product_id'], '' );
+				$input_field_value = $values[ 'wcj_product_input_fields_' . $this->scope . '_' . $i ];
+
+				if ( 'file' === $type ) {
+					$tmp_name = $input_field_value['tmp_name'];
+					$ext = pathinfo( $input_field_value['name'], PATHINFO_EXTENSION );
+					$name = $item_id . '.' . $ext;//$input_field_value['name'];
+					$upload_dir = wcj_get_wcj_uploads_dir( 'input_fields_uploads' );
+					if ( ! file_exists( $upload_dir ) ) {
+						mkdir( $upload_dir, 0755, true );
+					}
+					//$upload_dir = ( wp_mkdir_p( $upload_dir['path'] ) ) ? $upload_dir['path'] : $upload_dir['basedir'];
+					$upload_dir_and_name = $upload_dir . '/' . $name;
+					//move_uploaded_file( $tmp_name, $upload_dir_and_name );
+					$file_data = file_get_contents( $tmp_name );
+					file_put_contents( $upload_dir_and_name, $file_data );
+					unlink( $tmp_name );
+					//unset( $input_field_value['tmp_name'] );
+					$input_field_value['tmp_name'] = $upload_dir_and_name;
+					$input_field_value['wcj_type'] = 'file';
+					//$orig_file_name = $input_field_value['name'];
+					//wc_add_order_item_meta( $item_id, '_wcj_product_input_fields_' . $this->scope . '_' . $i . '_orig_file_name', $orig_file_name );
+					//$input_field_value = '<a href="' . add_query_arg( 'wcj_download_file', $name ) . '">' . $orig_file_name . '</a>';
+					//$input_field_value = $orig_file_name;
+				}
+
+				wc_add_order_item_meta( $item_id, '_wcj_product_input_fields_' . $this->scope . '_' . $i, $input_field_value );
+			}
 		}
 	}
 }

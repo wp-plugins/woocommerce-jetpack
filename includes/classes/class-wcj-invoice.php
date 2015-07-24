@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Invoice class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @author  Algoritmika Ltd.
  */
 
@@ -37,7 +37,7 @@ class WCJ_Invoice {
      */
 	function delete() {
 		update_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_number_id', 0 );
-		update_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_number', 0 );
+		//update_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_number', 0 );
 		update_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_date', '' );
 	}
 
@@ -56,7 +56,7 @@ class WCJ_Invoice {
 			}
 			$the_date = ( '' == $date ) ? time() : $date;
 			update_post_meta( $order_id, '_wcj_invoicing_' . $invoice_type . '_number_id', $the_invoice_number );
-			update_post_meta( $order_id, '_wcj_invoicing_' . $invoice_type . '_number', $this->get_invoice_full_number( $the_invoice_number ) );
+			//update_post_meta( $order_id, '_wcj_invoicing_' . $invoice_type . '_number', $this->get_invoice_full_number( $the_invoice_number ) );
 			update_post_meta( $order_id, '_wcj_invoicing_' . $invoice_type . '_date', $the_date );
 		//}
 	}
@@ -83,14 +83,21 @@ class WCJ_Invoice {
      * get_invoice_number.
      */
 	function get_invoice_number() {
-		$the_number = get_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_number', true );
-		//$the_number = $this->order_id;
+		//$the_number = get_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_number', true );
+		$the_number_id = get_post_meta( $this->order_id, '_wcj_invoicing_' . $this->invoice_type . '_number_id', true );
+		//$the_number = $this->get_invoice_full_number( $the_number_id );
+		$the_prefix = get_option( 'wcj_invoicing_' . $this->invoice_type . '_numbering_prefix' );
+		$the_suffix = get_option( 'wcj_invoicing_' . $this->invoice_type . '_numbering_suffix' );
+		$the_number = do_shortcode( sprintf( '%s%0' . get_option( 'wcj_invoicing_' . $this->invoice_type . '_numbering_counter_width', 0 ). 'd%s',
+			$the_prefix,
+			$the_number_id,
+			$the_suffix ) );
 		return apply_filters( 'wcj_get_' . $this->invoice_type . '_number', $the_number, $this->order_id );
 	}
 
     /**
      * get_invoice_full_number.
-     */
+     *
 	private function get_invoice_full_number( $the_number ) {
 		$the_prefix = get_option( 'wcj_invoicing_' . $this->invoice_type . '_numbering_prefix' );
 		$the_suffix = get_option( 'wcj_invoicing_' . $this->invoice_type . '_numbering_suffix' );
@@ -99,6 +106,7 @@ class WCJ_Invoice {
 			$the_number,
 			$the_suffix ) );
 	}
+	/**/
 }
 
 endif;

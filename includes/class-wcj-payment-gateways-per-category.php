@@ -4,9 +4,8 @@
  *
  * The WooCommerce Jetpack Payment Gateways per Category class.
  *
- * @class   WCJ_Payment_Gateways_Per_Category
+ * @version 2.2.2
  * @since   2.2.0
- * @version 2.2.0
  * @author  Algoritmika Ltd.
  */
 
@@ -14,27 +13,42 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'WCJ_Payment_Gateways_Per_Category' ) ) :
 
-class WCJ_Payment_Gateways_Per_Category {
+class WCJ_Payment_Gateways_Per_Category extends WCJ_Module {
 
     /**
      * Constructor.
      */
-    public function __construct() {
+    function __construct() {
+
+		$this->id         = 'payment_gateways_per_category';
+		$this->short_desc = __( 'Payment Gateways per Category', 'woocommerce-jetpack' );
+		$this->desc       = __( 'Show gateway only if there is product of selected category in WooCommerce cart.', 'woocommerce-jetpack' );
+		parent::__construct();
 
 		add_filter( 'init',  array( $this, 'add_hooks' ) );
 
-		// Payment Gateways per Category
-		if ( 'yes' === get_option( 'wcj_payment_gateways_per_category_enabled' ) ) {
-			add_filter( 'woocommerce_payment_gateways_settings',  array( $this, 'add_per_category_settings' ), 100 );
+		if ( $this->is_enabled() ) {
+			//add_filter( 'woocommerce_payment_gateways_settings',  array( $this, 'add_per_category_settings' ), 100 );
 			add_filter( 'woocommerce_available_payment_gateways', array( $this, 'filter_available_payment_gateways_per_category' ), 100 );
 		}
+	}
+
+	/**
+	 * get_settings.
+	 */
+	function get_settings() {
+		$settings = array();
+
+		$settings = apply_filters( 'wcj_payment_gateways_per_category_settings', $settings );
+
+		return $this->add_enable_module_setting( $settings );
 	}
 
     /**
      * add_hooks.
      */
     function add_hooks() {
-		add_filter( 'wcj_payment_gateways_settings',  array( $this, 'add_per_category_settings' ) );
+		add_filter( 'wcj_payment_gateways_per_category_settings',  array( $this, 'add_per_category_settings' ) );
 	}
 
     /**

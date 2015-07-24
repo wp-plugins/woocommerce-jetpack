@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Products Shortcodes class.
  *
- * @version  2.2.0
+ * @version  2.2.2
  * @author   Algoritmika Ltd.
  */
 
@@ -35,15 +35,16 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 		);
 
 		$this->the_atts = array(
-			'product_id'     => 0,
-			'image_size'     => 'shop_thumbnail',
-			'multiply_by'    => '',
-			'hide_currency'  => 'no',
-			'excerpt_length' => 0,
-			'name'           => '',
-			'heading_format' => 'from %level_qty% pcs.',
-			'sep'            => ', ',
-			'add_links'      => 'yes',
+			'product_id'      => 0,
+			'image_size'      => 'shop_thumbnail',
+			'multiply_by'     => '',
+			'hide_currency'   => 'no',
+			'excerpt_length'  => 0,
+			'name'            => '',
+			'heading_format'  => 'from %level_qty% pcs.',
+			'sep'             => ', ',
+			'add_links'       => 'yes',
+			'add_percent_row' => 'no',
 		);
 
 		parent::__construct();
@@ -77,7 +78,7 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 	 */
 	function wcj_product_purchase_price( $atts ) {
 		$purchase_price = wc_get_product_purchase_price( $the_product->id );
-		return wc_price( $purchase_price ); 
+		return wc_price( $purchase_price );
 		//return get_post_meta( $the_product->id, '_' . 'wcj_purchase_price', true );
 	}
 
@@ -185,14 +186,14 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 
 		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_wholesale_price_levels_number', 1 ) ); $i++ ) {
 			$level_qty        = get_option( 'wcj_wholesale_price_level_min_qty_' . $i, PHP_INT_MAX );
-			$discount_percent = get_option( 'wcj_wholesale_price_level_discount_percent_' . $i, 0 );			
-			$discount_koef = 1.0 - ( $discount_percent / 100.0 );
-			$wholesale_price_levels[] = array( 'quantity' => $level_qty, 'koef' => $discount_koef, );
+			$discount_percent = get_option( 'wcj_wholesale_price_level_discount_percent_' . $i, 0 );
+			$discount_koef    = 1.0 - ( $discount_percent / 100.0 );
+			$wholesale_price_levels[] = array( 'quantity' => $level_qty, 'koef' => $discount_koef, 'discount_percent' => $discount_percent, );
 		}
-		
+
 		$data_qty = array();
 		$data_price = array();
-		
+
 		foreach ( $wholesale_price_levels as $wholesale_price_level ) {
 
 			$the_price = '';
@@ -214,7 +215,6 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 			// Simple etc.
 			else {
 				//$the_price = wc_price( round( $this->the_product->get_price() * $wholesale_price_level['koef'], $precision ) );
-
 				$the_price = $this->the_product->get_price();
 				if ( '' !== $wholesale_price_level['koef'] && is_numeric( $wholesale_price_level['koef'] ) ) {
 					$the_price = $the_price * $wholesale_price_level['koef'];
@@ -222,17 +222,21 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 				if ( 'yes' !== $atts['hide_currency'] ) {
 					$the_price = wc_price( $the_price );
 				}
-
 			}
 
-			$data_qty[] = str_replace( '%level_qty%', $wholesale_price_level['quantity'], $atts['heading_format'] ) ;
-			$data_price[] = $the_price;
+			$data_qty[]              = str_replace( '%level_qty%', $wholesale_price_level['quantity'], $atts['heading_format'] ) ;
+			$data_price[]            = $the_price;
+			if ( 'yes' === $atts['add_percent_row'] ) {
+				$data_discount_percent[] = '-' . $wholesale_price_level['discount_percent'] . '%';
+			}
 		}
 
-		return wcj_get_table_html(
-			array( $data_qty, $data_price ),
-			array( 'columns_styles' => array( 'text-align: center;', 'text-align: center;', 'text-align: center;', ), )
-		);
+		$table_rows = array( $data_qty, $data_price, );
+		if ( 'yes' === $atts['add_percent_row'] ) {
+			$table_rows[] = $data_discount_percent;
+		}
+		$table_styles = array( 'columns_styles' => array( 'text-align: center;', 'text-align: center;', 'text-align: center;', ), );
+		return wcj_get_table_html( $table_rows, $table_styles );
 	}
 
 	/**

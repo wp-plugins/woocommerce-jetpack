@@ -4,10 +4,8 @@
  *
  * The WooCommerce Jetpack Orders Shortcodes class.
  *
- * @class    WCJ_Orders_Shortcodes
- * @version  2.2.0
- * @category Class
- * @author   Algoritmika Ltd.
+ * @version 2.2.0
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;

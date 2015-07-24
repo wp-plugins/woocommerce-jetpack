@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Jetpack
 Plugin URI: http://woojetpack.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 2.2.1
+Version: 2.2.2
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -280,6 +280,9 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-checkout-custom-fields.php' );
 		$settings[] = include_once( 'includes/class-wcj-checkout-custom-info.php' );
 		$settings[] = include_once( 'includes/class-wcj-payment-gateways.php' );
+		$settings[] = include_once( 'includes/class-wcj-payment-gateways-icons.php' );
+		$settings[] = include_once( 'includes/class-wcj-payment-gateways-fees.php' );
+		$settings[] = include_once( 'includes/class-wcj-payment-gateways-per-category.php' );
 
 		$settings[] = include_once( 'includes/class-wcj-shipping.php' );
 		$settings[] = include_once( 'includes/class-wcj-shipping-calculator.php' );
@@ -303,8 +306,6 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/pdf-invoices/settings/class-wcj-pdf-invoicing-display.php' );
 		//$settings[] = include_once( 'includes/pdf-invoices/settings/class-wcj-pdf-invoicing-general.php' );
 
-		//$settings[] = include_once( 'includes/pdf-invoices/class-wcj-pdf-invoices-by-settings.php' );
-
 		$settings[] = include_once( 'includes/class-wcj-emails.php' );
 
 		$settings[] = include_once( 'includes/class-wcj-currencies.php' );
@@ -317,14 +318,28 @@ final class WC_Jetpack {
 		$settings[] = include_once( 'includes/class-wcj-admin-tools.php' );
 		$settings[] = include_once( 'includes/class-wcj-wpml.php' );
 
-		//include_once( 'includes/class-wcj-shortcodes.php' );
-
 //		do_action( 'woojetpack_modules', $settings );
 
 		// Add options
 		if ( is_admin() ) {
 			foreach ( $settings as $section ) {
-				foreach ( $section->get_settings() as $value ) {
+
+				$values = $section->get_settings();
+				$submodules_classes = array(
+					'WCJ_PDF_Invoicing_Display',
+					'WCJ_PDF_Invoicing_Emails',
+					'WCJ_PDF_Invoicing_Footer',
+					'WCJ_PDF_Invoicing_Header',
+					'WCJ_PDF_Invoicing_Numbering',
+					'WCJ_PDF_Invoicing_Page',
+					'WCJ_PDF_Invoicing_Styling',
+					'WCJ_PDF_Invoicing_Templates',
+				);
+				if ( ! in_array( get_class( $section ), $submodules_classes ) ) {
+					$this->module_statuses[] = $values[1];
+				}
+
+				foreach ( $values as $value ) {
 					if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
 
 						if ( isset ( $_GET['woojetpack_admin_options_reset'] ) ) {
@@ -350,7 +365,9 @@ final class WC_Jetpack {
 	 * Add Jetpack settings tab to WooCommerce settings.
 	 */
 	public function add_wcj_settings_tab( $settings ) {
-		$settings[] = include( 'includes/admin/class-wc-settings-jetpack.php' );
+		$the_settings = include( 'includes/admin/class-wc-settings-jetpack.php' );
+		$the_settings->add_module_statuses( $this->module_statuses );
+		$settings[] = $the_settings;
 		return $settings;
 	}
 

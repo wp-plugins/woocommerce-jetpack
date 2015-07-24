@@ -4,10 +4,8 @@
  *
  * The WooCommerce Jetpack Product Input Fields Global class.
  *
- * @class       WCJ_Product_Input_Fields_Global
- * @version		1.0.0
- * @category	Class
- * @author 		Algoritmika Ltd.
+ * @version 2.2.2
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -46,8 +44,9 @@ class WCJ_Product_Input_Fields_Global extends WCJ_Product_Input_Fields_Abstract 
 			//add_action( 'woocommerce_before_order_itemmeta', 		array( $this, 'start_making_nicer_name_for_product_input_fields' ), 100, 3 );
 			//add_action( 'woocommerce_before_order_itemmeta', 		'ob_start' );
 			//add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'finish_making_nicer_name_for_product_input_fields' ), 100, 3 );
+			add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'output_custom_input_fields_in_admin_order' ), 100, 3 );
 			if ( 'yes' === get_option( 'wcj_product_input_fields_make_nicer_name_enabled' ) ) {
-				add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'output_custom_input_fields_in_admin_order' ), 100, 3 );
+
 				add_filter( 'woocommerce_hidden_order_itemmeta', 		array( $this, 'hide_custom_input_fields_default_output_in_admin_order' ), 100 );
 			}
 			//add_filter( 'woocommerce_attribute_label',              array( $this, 'change_woocommerce_attribute_label' ), PHP_INT_MAX, 2  );

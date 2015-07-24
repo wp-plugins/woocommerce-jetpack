@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack PDF Invoices class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @author  Algoritmika Ltd.
  */
 
@@ -49,6 +49,8 @@ class WCJ_PDF_Invoices {
 
 			if ( 'yes' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_pdf_invoices_attach_to_email_enabled' ) ) )
 				add_filter( 'woocommerce_email_attachments', array( $this, 'add_pdf_invoice_email_attachment' ), 100, 3 );
+
+			add_filter( 'woocommerce_payment_gateways_settings', array( $this, 'add_attach_invoice_settings' ), 100 );
         }
 
         // Settings hooks
@@ -56,6 +58,35 @@ class WCJ_PDF_Invoices {
         add_filter( 'wcj_settings_pdf_invoices', array( $this, 'get_settings' ), 100 );
         add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
     }
+
+    /**
+     * add_attach_invoice_settings.
+     */
+	function add_attach_invoice_settings( $settings ) {
+        $settings[] = array( 'title' => __( 'Payment Gateways Attach PDF Invoice V1 Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you choose when to attach PDF invoice to customers emails.', 'woocommerce-jetpack' ), 'id' => 'wcj_gateways_attach_invoice_options' );
+		global $woocommerce;
+		$available_gateways = $woocommerce->payment_gateways->payment_gateways();
+		foreach ( $available_gateways as $key => $gateway ) {
+
+			$settings = array_merge( $settings, array(
+
+				array(
+					'title'		=> $gateway->title,
+					//'desc'		=> __( 'Attach PDF invoice to customers emails.', 'woocommerce-jetpack' ),
+					'desc'		=> __( 'Attach PDF invoice.', 'woocommerce-jetpack' ),
+					'id'       	=> 'wcj_gateways_attach_invoice_' . $key,
+					'default'  	=> 'yes',
+					'type'		=> 'checkbox',
+				),
+
+
+			) );
+        }
+
+        $settings[] = array( 'type'  => 'sectionend', 'id' => 'wcj_gateways_attach_invoice_options' );
+
+		return $settings;
+	}
 
 	/**
 	 * Shortcodes.
@@ -1387,7 +1418,7 @@ class WCJ_PDF_Invoices {
                 'desc'     => __( 'Enable save as pdf instead of view pdf', 'woocommerce-jetpack' ),
 				//'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
                 'id'       => 'wcj_pdf_invoices_save_as_enabled',
-                'default'  => 'no',
+                'default'  => 'yes',
                 'type'     => 'checkbox',
 				//'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
             ),

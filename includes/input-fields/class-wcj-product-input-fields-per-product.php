@@ -4,10 +4,8 @@
  *
  * The WooCommerce Jetpack Product Input Fields per Product class.
  *
- * @class       WCJ_Product_Input_Fields_Per_Product
- * @version		1.0.0
- * @category	Class
- * @author 		Algoritmika Ltd.
+ * @version 2.2.2
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -50,8 +48,9 @@ class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields_Abst
 			//add_action( 'woocommerce_before_order_itemmeta', 		array( $this, 'start_making_nicer_name_for_product_input_fields' ), 100, 3 );
 			//add_action( 'woocommerce_before_order_itemmeta', 		'ob_start' );
 			//add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'finish_making_nicer_name_for_product_input_fields' ), 100, 3 );
+			add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'output_custom_input_fields_in_admin_order' ), 100, 3 );
 			if ( 'yes' === get_option( 'wcj_product_input_fields_make_nicer_name_enabled' ) ) {
-				add_action( 'woocommerce_after_order_itemmeta', 		array( $this, 'output_custom_input_fields_in_admin_order' ), 100, 3 );
+
 				add_filter( 'woocommerce_hidden_order_itemmeta', 		array( $this, 'hide_custom_input_fields_default_output_in_admin_order' ), 100 );
 			}
 			//add_filter( 'woocommerce_attribute_label',              array( $this, 'change_woocommerce_attribute_label' ), PHP_INT_MAX, 2 );
@@ -150,7 +149,7 @@ class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields_Abst
 			foreach ( $options as $option ) {
 				$option_id = $option['id'] . $i;
 				$option_value = get_post_meta( $current_post_id, '_' . $option_id, true );
-				
+
 				if ( ! metadata_exists( 'post', $current_post_id, '_' . $option_id ) ) {
 					$option_value = $option['default'];
 				}
@@ -158,7 +157,7 @@ class WCJ_Product_Input_Fields_Per_Product extends WCJ_Product_Input_Fields_Abst
 				$html .= '<th>';
 				$html .= ( isset( $option['short_title'] ) ) ? $option['short_title'] : $option['title'];
 				$html .= '</th>';
-				
+
 				if ( 'textarea' === $option['type'] )
 					$html .= '<td style="width:20%;">';
 				else

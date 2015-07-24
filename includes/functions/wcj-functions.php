@@ -4,9 +4,22 @@
  *
  * The WooCommerce Jetpack Functions.
  *
- * @version  2.2.0
- * @author   Algoritmika Ltd.
+ * @version 2.2.2
+ * @author  Algoritmika Ltd.
  */
+
+/**
+ * wcj_get_wcj_uploads_dir.
+ */
+if ( ! function_exists( 'wcj_get_wcj_uploads_dir' ) ) {
+	function wcj_get_wcj_uploads_dir( $subdir = '' ) {
+		$upload_dir = wp_upload_dir();
+		$upload_dir = $upload_dir['basedir'];
+		$upload_dir = $upload_dir . '/woocommerce_uploads/wcj_uploads';
+		if ( '' != $subdir ) $upload_dir = $upload_dir . '/' . $subdir;
+		return $upload_dir;
+	}
+ }
 
 /**
  * wcj_is_product_wholesale_enabled.

@@ -4,7 +4,7 @@
  *
  * The WooCommerce Modules Array.
  *
- * @version 2.2.1
+ * @version 2.2.2
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -72,6 +72,9 @@ return array(
 			'checkout_custom_fields',
 			'checkout_custom_info',
 			'payment_gateways',
+			'payment_gateways_icons',
+			'payment_gateways_fees',
+			'payment_gateways_per_category',
 		),
 	),
 

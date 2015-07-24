@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack PDF Invoicing Display class.
  *
- * @version 2.2.0
+ * @version 2.2.2
  * @author  Algoritmika Ltd.
  */
 
@@ -69,7 +69,6 @@ class WCJ_PDF_Invoicing_Display {
 			return;
 
 		$the_invoice = wcj_get_invoice( $order_id, $invoice_type_id );
-		//$the_number = $the_invoice->get_invoice_full_number();
 		$the_number = $the_invoice->get_invoice_number();
 		//$the_url = $the_invoice->get_invoice_url();
 		//$the_link = $the_invoice->get_invoice_link();
@@ -179,7 +178,7 @@ class WCJ_PDF_Invoicing_Display {
 					'desc_tip'     => __( 'Enable "save as" pdf instead of view pdf in browser', 'woocommerce-jetpack' ),
 					//'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 					'id'       => 'wcj_invoicing_' . $invoice_type['id'] . '_save_as_enabled',
-					'default'  => 'no',
+					'default'  => 'yes',
 					'type'     => 'checkbox',
 					//'custom_attributes'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
 				),
