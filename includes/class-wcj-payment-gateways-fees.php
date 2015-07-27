@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Payment Gateways Fees class.
  *
- * @version 2.2.2
+ * @version 2.2.3
  * @since   2.2.2
  * @author  Algoritmika Ltd.
  */
@@ -71,11 +71,19 @@ class WCJ_Payment_Gateways_Fees extends WCJ_Module {
 	/**
 	 * gateways_fees.
 	 *
-	 * @version 2.2.2
+	 * @version 2.2.3
 	 */
 	function gateways_fees() {
 		global $woocommerce;
 		$current_gateway = $woocommerce->session->chosen_payment_method;
+		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		if ( ! array_key_exists( $current_gateway, $available_gateways ) ) {
+			$current_gateway = get_option( 'woocommerce_default_gateway', '' );
+			if ( '' == $current_gateway ) {
+				$current_gateway = current( $available_gateways );
+				$current_gateway = isset( $current_gateway->id ) ? $current_gateway->id : '';
+			}
+		}
 		if ( '' != $current_gateway ) {
 			$fee_text  = get_option( 'wcj_gateways_fees_text_' . $current_gateway );
 			$min_cart_amount = get_option( 'wcj_gateways_fees_min_cart_amount_' . $current_gateway );
@@ -86,7 +94,9 @@ class WCJ_Payment_Gateways_Fees extends WCJ_Module {
 				$fee_type  = apply_filters( 'wcj_get_option_filter', 'fixed', get_option( 'wcj_gateways_fees_type_' . $current_gateway ) );
 				$final_fee_to_add = 0;
 				switch ( $fee_type ) {
-					case 'fixed': 	$final_fee_to_add = $fee_value; break;
+					case 'fixed':
+						$final_fee_to_add = $fee_value;
+						break;
 					case 'percent':
 						$final_fee_to_add = ( $fee_value / 100 ) * $total_in_cart;
 						if ( 'yes' === get_option( 'wcj_gateways_fees_round_' . $current_gateway ) ) {
@@ -96,8 +106,13 @@ class WCJ_Payment_Gateways_Fees extends WCJ_Module {
 				}
 				if ( '' != $fee_text && 0 != $final_fee_to_add ) {
 					$taxable = ( 'yes' === get_option( 'wcj_gateways_fees_is_taxable_' . $current_gateway ) ) ? true : false;
-					$tax_class = ( true === $taxable ) ? apply_filters( 'wcj_get_option_filter', 'standard', get_option( 'wcj_gateways_fees_tax_class_' . $current_gateway, 'standard' ) ) : '';
-					$woocommerce->cart->add_fee( $fee_text, $final_fee_to_add, $taxable, $tax_class );
+					$tax_class_name = '';
+					if ( $taxable ) {
+						$tax_class_id = apply_filters( 'wcj_get_option_filter', 0, get_option( 'wcj_gateways_fees_tax_class_id_' . $current_gateway, 0 ) );
+						$tax_class_names = array_merge( array( '', ), WC_Tax::get_tax_classes() );
+						$tax_class_name = $tax_class_names[ $tax_class_id ];
+					}
+					$woocommerce->cart->add_fee( $fee_text, $final_fee_to_add, $taxable, $tax_class_name );
 				}
 			}
 		}
@@ -225,15 +240,15 @@ class WCJ_Payment_Gateways_Fees extends WCJ_Module {
 				),
 
 				array(
-					'title'    	=> '',
-					'desc'    	=> __( 'Tax Class (only if Taxable selected).', 'woocommerce-jetpack' ),
-					'desc_tip'	=> apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_no_link' ),
-					'id'       	=> 'wcj_gateways_fees_tax_class_' . $key,
-					'default'  	=> 'standard',
-					'type'		=> 'select',
-					'options'   => array_merge( array( 'standard' => __( 'Standard Rate', 'woocommerce-jetpack' ) ), WC_Tax::get_tax_classes() ),
+					'title'     => '',
+					'desc'      => __( 'Tax Class (only if Taxable selected).', 'woocommerce-jetpack' ),
+					'desc_tip'  => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc_no_link' ),
+					'id'        => 'wcj_gateways_fees_tax_class_id_' . $key,
+					'default'   => '',
+					'type'      => 'select',
+					'options'   => array_merge( array( __( 'Standard Rate', 'woocommerce-jetpack' ) ), WC_Tax::get_tax_classes() ),
 					'custom_attributes'
-								=> apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
+					            => apply_filters( 'get_wc_jetpack_plus_message', '', 'disabled' ),
 				),
 
 			) );

@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Payment Gateways class.
  *
- * @version 2.2.2
+ * @version 2.2.3
  * @author  Algoritmika Ltd.
  */
 
@@ -48,7 +48,7 @@ class WCJ_Payment_Gateways extends WCJ_Module {
 				'type'     => 'number',
 				'custom_attributes' => array_merge(
 					is_array( apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ) ) ? apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ) : array(),
-					array( 'step' => '1', 'min' => '1', )
+					array( 'step' => '1', 'min' => '1', 'max' => '10', )
 				),
 			),
 
