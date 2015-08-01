@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Reports class.
  *
- * @version 2.2.2
+ * @version 2.2.4
  * @author  Algoritmika Ltd.
  */
 
@@ -39,6 +39,7 @@ class WCJ_Reports {
 				include_once( 'reports/wcj-class-reports-stock.php' );
 
 				add_action( 'admin_bar_menu', 					array( $this, 'add_custom_order_reports_ranges_to_admin_bar' ), PHP_INT_MAX );
+				add_action( 'admin_bar_menu', 					array( $this, 'add_custom_order_reports_ranges_by_month_to_admin_bar' ), PHP_INT_MAX );
 			}
 		}
 
@@ -48,6 +49,44 @@ class WCJ_Reports {
 		add_filter( 'wcj_features_status', 						array( $this, 'add_enabled_option' ), 100 );	// Add Enable option to Jetpack Settings Dashboard
 	}
 
+	/**
+	 * add_custom_order_reports_ranges_by_month_to_admin_bar.
+	 *
+	 * @version 2.2.4
+	 * @since   2.2.4
+	 */
+	public function add_custom_order_reports_ranges_by_month_to_admin_bar( $wp_admin_bar ) {
+		$is_reports = ( isset( $_GET['page'] ) && 'wc-reports' === $_GET['page'] ) ? true : false;
+		$is_orders_reports = ( isset( $_GET['tab'] ) && 'orders' === $_GET['tab'] || ! isset( $_GET['tab'] ) ) ? true : false;
+		if ( $is_reports && $is_orders_reports ) {
+
+			$parent = 'reports_orders_more_ranges_months';
+			$args = array(
+				'parent' => false,
+				'id' => $parent,
+				'title' => __( 'WooJetpack: More Ranges - Months', 'woocommerce-jetpack' ),
+				'href'  => false,
+				'meta' => array( 'title' => __( 'Select Range', 'woocommerce-jetpack' ), ),
+			);
+			$wp_admin_bar->add_node( $args );
+
+			for ( $i = 1; $i <= 12; $i++ ) {
+				$month_start_date = date( 'Y-m-01' ) . "-$i months";
+				$month_num  = date( 'm',      strtotime( $month_start_date ) );
+				$month_name = date( 'Y F',    strtotime( $month_start_date ) );
+				$start_date = date( 'Y-m-01', strtotime( $month_start_date ) );
+				$end_date   = date( 'Y-m-t',  strtotime( $month_start_date ) );
+				$node = array(
+					'parent' => $parent,
+					'id'     => $parent . '_' . $month_num,
+					'title'  => $month_name,
+					'href'   => add_query_arg( array( 'range' => 'custom', 'start_date' => $start_date, 'end_date' => $end_date ) ),
+					'meta'   => array( 'title' => $month_name ),
+				);
+				$wp_admin_bar->add_node( $node );
+			}
+		}
+	}
 	/**
 	 * add_custom_order_reports_ranges_to_admin_bar.
 	 */

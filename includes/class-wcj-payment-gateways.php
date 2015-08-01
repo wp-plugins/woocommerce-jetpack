@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Payment Gateways class.
  *
- * @version 2.2.3
+ * @version 2.2.4
  * @author  Algoritmika Ltd.
  */
 
@@ -16,12 +16,14 @@ class WCJ_Payment_Gateways extends WCJ_Module {
 
 	/**
 	 * Constructor.
+	 *
+	 * @version 2.2.4
 	 */
 	public function __construct() {
 
 		$this->id         = 'payment_gateways';
 		$this->short_desc = __( 'Custom Payment Gateways', 'woocommerce-jetpack' );
-		$this->desc       = __( 'Add any number of custom payment gateways to WooCommerce.', 'woocommerce-jetpack' );
+		$this->desc       = __( 'Add multiple custom payment gateways to WooCommerce.', 'woocommerce-jetpack' );
 		parent::__construct();
 
 		if ( $this->is_enabled() ) {

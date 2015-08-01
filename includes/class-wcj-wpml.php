@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack WPML class.
  *
- * @version 2.2.0
+ * @version 2.2.4
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -22,7 +22,7 @@ class WCJ_WPML extends WCJ_Module {
 
 		$this->id         = 'wpml';
 		$this->short_desc = __( 'WPML', 'woocommerce-jetpack' );
-		$this->desc       = __( 'Basic WPML support for WooCommerce Jetpack.', 'woocommerce-jetpack' );
+		$this->desc       = __( 'Booster for WooCommerce basic WPML support.', 'woocommerce-jetpack' );
 		parent::__construct();
 
         if ( $this->is_enabled() ) {

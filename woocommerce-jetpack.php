@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WooCommerce Jetpack
-Plugin URI: http://woojetpack.com
+Plugin Name: Booster for WooCommerce
+Plugin URI: http://BoostWoo.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 2.2.3
+Version: 2.2.4
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -77,18 +77,19 @@ final class WC_Jetpack {
 
 		// Settings
 		if ( is_admin() ) {
-			add_filter( 'woocommerce_get_settings_pages',                     array( $this, 'add_wcj_settings_tab' ) );
+			add_filter( 'woocommerce_get_settings_pages',                     array( $this, 'add_wcj_settings_tab' ), PHP_INT_MAX );
 			add_filter( 'get_wc_jetpack_plus_message',                        array( $this, 'get_wcj_plus_message' ), 100, 2 );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
 			add_action( 'admin_menu',                                         array( $this, 'jetpack_menu' ), 100 );
 //			add_filter( 'admin_footer_text',                                  array( $this, 'admin_footer_text' ), 2 );
+			add_action( 'admin_notices',                                      array( $this, 'name_changed_notice' ) );
 		}
 
 		// Scripts
 		if ( is_admin() ) {
 			if ( 'yes' === get_option( 'wcj_purchase_data_enabled' ) || 'yes' === get_option( 'wcj_pdf_invoicing_enabled' ) ) {
 				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-				add_action( 'admin_head',			array( $this, 'add_datepicker_script' ) );
+				add_action( 'admin_head',            array( $this, 'add_datepicker_script' ) );
 			}
 		}
 
@@ -97,6 +98,44 @@ final class WC_Jetpack {
 
 		/* echo 'Constructor End: memory_get_usage( false )' . number_format( memory_get_usage( false ), 0, '.', ',' );
 		echo 'Constructor End: memory_get_usage( true )' . number_format( memory_get_usage( true ), 0, '.', ',' ); */
+	}
+
+	/**
+	 * name_changed_notice.
+	 *
+	 * @version 2.2.4
+	 * @since   2.2.4
+	 */
+	public function name_changed_notice() {
+
+		if ( ! is_admin() ) return;
+
+		//require_once( ABSPATH . 'wp-includes/pluggable.php' );
+		if ( ! is_super_admin() ) return;
+
+		$user_id = get_current_user_id();
+
+		// Reset
+//		update_option( 'wcj_rename_message_hidden', 'no' );
+//		update_user_meta( $user_id, 'wcj_rename_message_hidden', 'no' );
+
+		if ( isset( $_GET['wcj_rename_message_hide'] ) ) {
+			// Hide message for current user
+			update_user_meta( $user_id, 'wcj_rename_message_hidden', 'yes' );
+//			update_option( 'wcj_rename_message_hidden', 'yes' );
+		} else {
+			$is_message_hidden = get_user_meta( $user_id, 'wcj_rename_message_hidden', true );
+//			$is_message_hidden = get_option( 'wcj_rename_message_hidden', 'no' );
+			if ( 'yes' != $is_message_hidden ) {
+				// Show message
+				$class = 'update-nag';
+				$message = __( '<strong>WooCommerce Jetpack</strong> plugin changed its name to <strong>Booster for WooCommerce</strong>.', 'woocommerce-jetpack' );
+				$button = '<a href="' . add_query_arg( 'wcj_rename_message_hide', '1' ) . '">'
+							. '<button>' . __( 'Got it! Hide this message', 'woocommerce-jetpack' ) . '</button>'
+							. '</a>';
+				echo '<div class="' . $class . '"><p>' . $message . '</p><p>' . $button . '</p></div>';
+			}
+		}
 	}
 
 	/**
@@ -135,9 +174,11 @@ final class WC_Jetpack {
 
 	/**
 	 * Add menu item
+	 *
+	 * @version 2.2.4
 	 */
 	public function jetpack_menu() {
-		add_submenu_page( 'woocommerce', __( 'WooCommerce Jetpack', 'woocommerce' ),  __( 'Jetpack Settings', 'woocommerce' ) , 'manage_woocommerce', 'admin.php?page=wc-settings&tab=jetpack' );
+		add_submenu_page( 'woocommerce', __( 'Booster for WooCommerce', 'woocommerce' ),  __( 'Booster Settings', 'woocommerce' ) , 'manage_woocommerce', 'admin.php?page=wc-settings&tab=jetpack' );
 	}
 
 	/**
@@ -149,8 +190,8 @@ final class WC_Jetpack {
 	public function action_links( $links ) {
 		return array_merge( array(
 			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=jetpack' ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>',
-			'<a href="' . esc_url( apply_filters( 'woocommerce_docs_url', 'http://woojetpack.com/', 'woocommerce' ) ) . '">' . __( 'Docs', 'woocommerce' ) . '</a>',
-			'<a href="' . esc_url( apply_filters( 'woocommerce_support_url', 'http://woojetpack.com/plus/' ) ) . '">' . __( 'Unlock all', 'woocommerce' ) . '</a>',
+			'<a href="' . esc_url( apply_filters( 'woocommerce_docs_url', 'http://BoostWoo.com/', 'woocommerce' ) ) . '">' . __( 'Docs', 'woocommerce' ) . '</a>',
+			'<a href="' . esc_url( apply_filters( 'woocommerce_support_url', 'http://BoostWoo.com/plus/' ) ) . '">' . __( 'Unlock all', 'woocommerce' ) . '</a>',
 		), $links );
 	}
 
@@ -163,22 +204,22 @@ final class WC_Jetpack {
 
 			case 'global':
 				return	'<div class="updated">
-								<p class="main"><strong>' . __( 'Install WooCommerce Jetpack Plus to unlock all features', 'woocommerce-jetpack' ) . '</strong></p>
-								<span>' . sprintf( __('Some settings fields are locked and you will need %s to modify all locked fields.', 'woocommerce-jetpack'), '<a href="http://woojetpack.com/plus/">WooCommerce Jetpack Plus</a>' ) . '</span>
-								<p><a href="http://woojetpack.com/plus/" target="_blank" class="button button-primary">' . __( 'Buy now', 'woocommerce-jetpack' ) . '</a> <a href="http://woojetpack.com" target="_blank" class="button">'. sprintf( __( 'Visit %s', 'woocommerce-jetpack' ), 'WooJetpack.com' ) . '</a></p>
+								<p class="main"><strong>' . __( 'Install Booster for WooCommerce Plus to unlock all features', 'woocommerce-jetpack' ) . '</strong></p>
+								<span>' . sprintf( __('Some settings fields are locked and you will need %s to modify all locked fields.', 'woocommerce-jetpack'), '<a href="http://BoostWoo.com/plus/">Booster for WooCommerce Plus</a>' ) . '</span>
+								<p><a href="http://BoostWoo.com/plus/" target="_blank" class="button button-primary">' . __( 'Buy now', 'woocommerce-jetpack' ) . '</a> <a href="http://BoostWoo.com" target="_blank" class="button">'. sprintf( __( 'Visit %s', 'woocommerce-jetpack' ), 'BoostWoo.com' ) . '</a></p>
 						</div>';
 
 			case 'desc':
-				return __( 'Get <a href="http://woojetpack.com/plus/" target="_blank">WooCommerce Jetpack Plus</a> to change value.', 'woocommerce-jetpack' );
+				return __( 'Get <a href="http://BoostWoo.com/plus/" target="_blank">Booster for WooCommerce Plus</a> to change value.', 'woocommerce-jetpack' );
 
 			case 'desc_below':
-				return __( 'Get <a href="http://woojetpack.com/plus/" target="_blank">WooCommerce Jetpack Plus</a> to change values below.', 'woocommerce-jetpack' );
+				return __( 'Get <a href="http://BoostWoo.com/plus/" target="_blank">Booster for WooCommerce Plus</a> to change values below.', 'woocommerce-jetpack' );
 
 			case 'desc_above':
-				return __( 'Get <a href="http://woojetpack.com/plus/" target="_blank">WooCommerce Jetpack Plus</a> to change values above.', 'woocommerce-jetpack' );
+				return __( 'Get <a href="http://BoostWoo.com/plus/" target="_blank">Booster for WooCommerce Plus</a> to change values above.', 'woocommerce-jetpack' );
 
 			case 'desc_no_link':
-				return __( 'Get WooCommerce Jetpack Plus to change value.', 'woocommerce-jetpack' );
+				return __( 'Get Booster for WooCommerce Plus to change value.', 'woocommerce-jetpack' );
 
 			case 'readonly':
 				return array( 'readonly' => 'readonly' );

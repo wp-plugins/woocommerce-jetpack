@@ -4,9 +4,9 @@
  *
  * The WooCommerce Jetpack Purchase Data class.
  *
- * @version  2.2.0
- * @since    2.2.0
- * @author   Algoritmika Ltd.
+ * @version 2.2.4
+ * @since   2.2.0
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -17,6 +17,8 @@ class WCJ_Purchase_Data extends WCJ_Module {
 
     /**
      * Constructor.
+	 *
+	 * @version 2.2.4
      */
     public function __construct() {
 
@@ -33,8 +35,57 @@ class WCJ_Purchase_Data extends WCJ_Module {
 			//}
 
 			//add_action( 'init', array( $this, 'calculate_all_products_profit' ) );
+
+			if ( 'yes' === get_option( 'wcj_purchase_data_custom_columns_profit', 'no' ) ) {
+				add_filter( 'manage_edit-shop_order_columns',        array( $this, 'add_order_columns' ),     PHP_INT_MAX );
+				add_action( 'manage_shop_order_posts_custom_column', array( $this, 'render_order_columns' ), PHP_INT_MAX );
+			}
         }
     }
+
+    /**
+     * add_order_columns.
+	 *
+	 * @since 2.2.4
+     */
+	function add_order_columns( $columns ) {
+		$columns['profit'] = __( 'Profit', 'woocommerce-jetpack' );
+		return $columns;
+	}
+
+	/**
+	 * Output custom columns for orders
+	 * @param  string $column
+	 *
+	 * @since 2.2.4
+	 */
+	public function render_order_columns( $column ) {
+
+		if ( 'profit' === $column ) {
+			$total_profit = 0;
+			$the_order = wc_get_order( get_the_ID() );
+			if ( 'completed' === $the_order->get_status() ) {
+				$is_forecasted = false;
+				foreach ( $the_order->get_items() as $item_id => $item ) {
+//					$product = $this->get_product_from_item( $item );
+					if ( 0 != ( $purchase_price = wc_get_product_purchase_price( $item['product_id'] ) ) ) {
+						$the_profit = ( $item['line_total'] + $item['line_tax'] ) - $purchase_price * $item['qty'];
+//						$total_profit += $the_profit;
+//						echo $item['line_total'] . ' ~ ' . $purchase_price . ' ~ ' . $item['qty'];
+					} else {
+						//$the_profit = ( $item['line_total'] + $item['line_tax'] ) * 0.2;
+						$is_forecasted = true;
+					}
+					$total_profit += $the_profit;
+				}
+			}
+			if ( 0 != $total_profit ) {
+				if ( ! $is_forecasted ) echo '<span style="color:green;">';
+				echo wc_price( $total_profit );
+				if ( ! $is_forecasted ) echo '</span>';
+			}
+		}
+	}
 
 	/**
 	 * get_options.
@@ -252,13 +303,33 @@ class WCJ_Purchase_Data extends WCJ_Module {
 		//die();
 	}
 
-    /**
-     * get_settings.
-     */
-    function get_settings() {
-		$settings = array();
+	/**
+	 * get_settings.
+	 *
+	 * @version 2.2.4
+	 */
+	function get_settings() {
+		$settings = array(
+			array(
+				'title'     => __( 'Orders List Custom Columns', 'woocommerce-jetpack' ),
+				'type'      => 'title',
+				'desc'      => __( 'This section lets you add custom columns to WooCommerce orders list.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_purchase_data_custom_columns_options',
+			),
+			array(
+				'title'     => __( 'Profit', 'woocommerce-jetpack' ),
+				'desc'      => __( 'Add', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_purchase_data_custom_columns_profit',
+				'default'   => 'yes',
+				'type'      => 'checkbox',
+			),
+			array(
+				'type'      => 'sectionend',
+				'id'        => 'wcj_purchase_data_custom_columns_options',
+			),
+		);
 		return $this->add_enable_module_setting( $settings );
-    }
+	}
 }
 
 endif;

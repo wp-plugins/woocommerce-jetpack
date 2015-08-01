@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Checkout Core Fields class.
  *
- * @version 2.2.0
+ * @version 2.2.4
  * @author  Algoritmika Ltd.
  */
 
@@ -54,6 +54,8 @@ class WCJ_Checkout_Core_Fields {
 
     /**
      * Constructor.
+	 *
+	 * @version 2.2.4
      */
     public function __construct() {
 
@@ -62,6 +64,7 @@ class WCJ_Checkout_Core_Fields {
         // Main hooks
         if ( 'yes' === get_option( 'wcj_checkout_core_fields_enabled' ) ) {
 			add_filter( 'woocommerce_checkout_fields' , array( $this, 'custom_override_checkout_fields' ) );
+			add_filter( 'woocommerce_default_address_fields', array( $this, 'fix_required_by_default' ) );
         }
 
         // Settings hooks
@@ -70,14 +73,39 @@ class WCJ_Checkout_Core_Fields {
         add_filter( 'wcj_features_status',       array( $this, 'add_enabled_option' ), 100 );
     }
 
-    /**
-     * add_enabled_option.
-     */
-    public function add_enabled_option( $settings ) {
-        $all_settings = $this->get_settings();
-        $settings[] = $all_settings[1];
-        return $settings;
-    }
+	/**
+	 * add_enabled_option.
+	 */
+	public function add_enabled_option( $settings ) {
+		$all_settings = $this->get_settings();
+		$settings[] = $all_settings[1];
+		return $settings;
+	}
+
+	/**
+	 * fix_required_by_default.
+	 *
+	 * @since 2.2.4
+	 */
+	function fix_required_by_default( $address_fields ) {
+		$fields_required_by_default = array(
+			'country',
+			'first_name',
+			'last_name',
+			'address_1',
+			'city',
+			'state',
+			'postcode',
+		);
+		foreach ( $fields_required_by_default as $field ) {
+			$billing_value  = get_option( 'wcj_checkout_fields_' . 'billing_'  . $field . '_required' );
+			$shipping_value = get_option( 'wcj_checkout_fields_' . 'shipping_' . $field . '_required' );
+			if ( 'no' === $billing_value && 'no' === $shipping_value ) {
+				$address_fields[ $field ]['required'] = false;
+			}
+		}
+		return $address_fields;
+	}
 
 	function custom_override_checkout_fields( $checkout_fields ) {
 
@@ -104,7 +132,12 @@ class WCJ_Checkout_Core_Fields {
 						if ( $sub_item_key == 'required' ) {
 
 							if ( $the_option == 'yes' ) $the_option = true;
-							else $the_option = false;
+							else {
+								$the_option = false;
+								/* $checkout_fields[$field_parts[0]][$item_key]['validate'] = array();
+								$checkout_fields[$field_parts[0]][$item_key]['class'] = array( 'woocommerce-validated' );
+								$checkout_fields[$field_parts[0]][$item_key]['custom_attributes'] = array(); */
+							}
 						}
 
 						$checkout_fields[$field_parts[0]][$item_key][$sub_item_key] = $the_option;

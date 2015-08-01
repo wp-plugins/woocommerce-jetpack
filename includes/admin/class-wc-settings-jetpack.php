@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Settings class.
  *
- * @version 2.2.3
+ * @version 2.2.4
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -17,11 +17,13 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 
 	/**
 	 * Constructor.
+	 *
+	 * @version 2.2.4
 	 */
 	function __construct() {
 
 		$this->id    = 'jetpack';
-		$this->label = __( 'Jetpack', 'woocommerce-jetpack' );
+		$this->label = __( 'Booster', 'woocommerce-jetpack' );
 
 		$this->cats  = include( 'wcj-modules-cats.php' );
 
@@ -199,6 +201,8 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 
 	/**
 	 * Output the settings.
+	 *
+	 * @version 2.2.4
 	 */
 	function output() {
 
@@ -216,7 +220,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			$breadcrumbs_html .= ' > ';
 			$breadcrumbs_html .= __( 'Settings', 'woocommerce-jetpack' );
 			$breadcrumbs_html .= ' > ';
-			$breadcrumbs_html .= __( 'Jetpack', 'woocommerce-jetpack' );
+			$breadcrumbs_html .= __( 'Booster', 'woocommerce-jetpack' );
 			$breadcrumbs_html .= ' > ';
 			foreach ( $this->cats as $id => $label_info ) {
 				if ( $this->get_cat_by_section( $current_section ) === $id ) {
@@ -372,7 +376,8 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	/**
 	 * Get settings array
 	 *
-	 * @return array
+	 * @version 2.2.4
+	 * @return  array
 	 */
 	function get_settings( $current_section = '' ) {
 		if ( '' != $current_section && 'alphabetically' != $current_section && 'by_category' != $current_section && 'active' != $current_section ) {
@@ -380,9 +385,9 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 		}
 		else {
 			$settings[] = array(
-				'title' => __( 'WooCommerce Jetpack Dashboard', 'woocommerce-jetpack' ),
+				'title' => __( 'Booster for WooCommerce - Dashboard', 'woocommerce-jetpack' ),
 				'type'  => 'title',
-				'desc'  => __( 'This dashboard lets you enable/disable any WooCommerce Jetpack module. Each checkbox comes with short module\'s description. Please visit <a href="http://woojetpack.com" target="_blank">WooJetpack.com</a> for detailed info on each feature.', 'woocommerce-jetpack' ),
+				'desc'  => __( 'This dashboard lets you enable/disable any Booster\'s module. Each checkbox comes with short module\'s description. Please visit <a href="http://BoostWooCommerce.com" target="_blank">BoostWooCommerce.com</a> for detailed info on each feature.', 'woocommerce-jetpack' ),
 				'id'    => 'wcj_options'
 			);
 			//$settings = apply_filters( 'wcj_features_status', $settings );

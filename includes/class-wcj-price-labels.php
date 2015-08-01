@@ -531,103 +531,108 @@ class WCJ_Price_Labels {
 			array(	'title' => __( 'Custom Price Labels Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => '', 'id' => 'wcj_price_labels_options' ),
 
 			array(
-				'title' 	=> __( 'Custom Price Labels', 'woocommerce-jetpack' ),
+				'title'     => __( 'Custom Price Labels', 'woocommerce-jetpack' ),
 				'desc' 		=> '<strong>' . __( 'Enable Module', 'woocommerce-jetpack' ) . '</strong>',
 				'desc_tip'	=> __( 'Create any custom price label for any WooCommerce product.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_price_labels_enabled',
+				'id'        => 'wcj_price_labels_enabled',
 				'default'	=> 'no',
-				'type' 		=> 'checkbox',
+				'type'      => 'checkbox',
 			),
 
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_price_labels_options' ),
 
-			array(	'title' => __( 'Global Custom Price Labels', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you set price labels for all products globally.', 'woocommerce-jetpack' ), 'id' => 'wcj_global_price_labels_options' ),
-
 			array(
-				'title' 	=> __( 'Add before the price', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Enter text to add before all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_global_price_labels_add_before_text',
-				'default'	=> '',
-				'type' 		=> 'textarea',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
-				'css'	   => 'width:30%;min-width:300px;',
+				'title'     => __( 'Global Custom Price Labels', 'woocommerce-jetpack' ),
+				'type'      => 'title',
+				'desc'      => __( 'This section lets you set price labels for all products globally.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_options',
 			),
 
 			array(
-				'title' 	=> __( 'Add after the price', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Enter text to add after all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_global_price_labels_add_after_text',
-				'default'	=> '',
-				'type' 		=> 'textarea',
-				/*'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'title'     => __( 'Add before the price', 'woocommerce-jetpack' ),
+				'desc_tip'  => __( 'Enter text to add before all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_add_before_text',
+				'default'   => '',
+				'type'      => 'textarea',
+				'desc'      => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),*/
-				'css'	   => 'width:30%;min-width:300px;',
+				            => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'       => 'width:30%;min-width:300px;',
 			),
 
 			array(
-				'title' 	=> __( 'Add between regular and sale prices', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Enter text to add between regular and sale prices. Leave blank to disable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_global_price_labels_between_regular_and_sale_text',
-				'default'	=> '',
-				'type' 		=> 'textarea',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'title'     => __( 'Add after the price', 'woocommerce-jetpack' ),
+				'desc_tip'  => __( 'Enter text to add after all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_add_after_text',
+				'default'   => '',
+				'type'      => 'textarea',
+/*				'desc'      => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
-				'css'	   => 'width:30%;min-width:300px;',
-			),
-
-
-
-
-			array(
-				'title' 	=> __( 'Remove from price', 'woocommerce-jetpack' ),
-				//'desc' 		=> __( 'Enable the Custom Price Labels feature', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Enter text to remove from all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_global_price_labels_remove_text',
-				'default'	=> '',
-				'type' 		=> 'textarea',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
-				'custom_attributes'
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
-				'css'	   => 'width:30%;min-width:300px;',
+				            => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),*/
+				'css'       => 'width:30%;min-width:300px;',
 			),
 
 			array(
-				'title' 	=> __( 'Replace in price', 'woocommerce-jetpack' ),
-				'desc_tip'	=> __( 'Enter text to replace in all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_global_price_labels_replace_text',
-				'default'	=> '',
-				'type' 		=> 'textarea',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'title'     => __( 'Add between regular and sale prices', 'woocommerce-jetpack' ),
+				'desc_tip'  => __( 'Enter text to add between regular and sale prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_between_regular_and_sale_text',
+				'default'   => '',
+				'type'      => 'textarea',
+				'desc'      => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
-				'css'	   => 'width:30%;min-width:300px;',
+				            => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'       => 'width:30%;min-width:300px;',
 			),
 
 			array(
-				'title' 	=> '',
-				'desc_tip'	=> __( 'Enter text to replace with. Leave blank to disable.', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_global_price_labels_replace_with_text',
-				'default'	=> '',
-				'type' 		=> 'textarea',
-				'desc' 	   => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'title'     => __( 'Remove from price', 'woocommerce-jetpack' ),
+//				'desc'      => __( 'Enable the Custom Price Labels feature', 'woocommerce-jetpack' ),
+				'desc_tip'  => __( 'Enter text to remove from all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_remove_text',
+				'default'   => '',
+				'type'      => 'textarea',
+				'desc'      => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
 				'custom_attributes'
-						   => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
-				'css'	   => 'width:30%;min-width:300px;',
+				            => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'       => 'width:30%;min-width:300px;',
 			),
 
-			array( 'type' 	=> 'sectionend', 'id' => 'wcj_global_price_labels_options' ),
+			array(
+				'title'     => __( 'Replace in price', 'woocommerce-jetpack' ),
+				'desc_tip'  => __( 'Enter text to replace in all products prices. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_replace_text',
+				'default'   => '',
+				'type'      => 'textarea',
+				'desc'      => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'
+				            => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'       => 'width:30%;min-width:300px;',
+			),
+
+			array(
+				'title'     => '',
+				'desc_tip'  => __( 'Enter text to replace with. Leave blank to disable.', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_global_price_labels_replace_with_text',
+				'default'   => '',
+				'type'      => 'textarea',
+				'desc'      => apply_filters( 'get_wc_jetpack_plus_message', '', 'desc' ),
+				'custom_attributes'
+				            => apply_filters( 'get_wc_jetpack_plus_message', '', 'readonly' ),
+				'css'       => 'width:30%;min-width:300px;',
+			),
+
+			array(
+				'type'      => 'sectionend',
+				'id'        => 'wcj_global_price_labels_options',
+			),
 
 			array(	'title' => __( 'Migrate from Custom Price Labels (Pro) Options', 'woocommerce-jetpack' ), 'type' => 'title', 'desc' => __( 'This section lets you enable "Migrate from Custom Price Labels (Pro)" tool.', 'woocommerce-jetpack' ), 'id' => 'wcj_migrate_from_custom_price_labels_options' ),
 
 			array(
-				'title' 	=> __( 'Enable', 'woocommerce-jetpack' ),
-				'id' 		=> 'wcj_migrate_from_custom_price_labels_enabled',
-				'default'	=> 'no',
-				'type' 		=> 'checkbox',
+				'title'     => __( 'Enable', 'woocommerce-jetpack' ),
+				'id'        => 'wcj_migrate_from_custom_price_labels_enabled',
+				'default'   => 'no',
+				'type'      => 'checkbox',
 			),
 
 			array( 'type' 	=> 'sectionend', 'id' => 'wcj_migrate_from_custom_price_labels_options' ),

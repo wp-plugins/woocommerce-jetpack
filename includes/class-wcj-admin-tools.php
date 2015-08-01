@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Admin Tools class.
  *
- * @version 2.2.3
+ * @version 2.2.4
  * @author  Algoritmika Ltd.
  */
 
@@ -17,13 +17,13 @@ class WCJ_Admin_Tools extends WCJ_Module {
 	/**
 	 * Constructor.
 	 *
-	 * @version 2.2.3
+	 * @version 2.2.4
 	 */
 	public function __construct() {
 
 		$this->id         = 'admin_tools';
 		$this->short_desc = __( 'Admin Tools', 'woocommerce-jetpack' );
-		$this->desc       = __( 'Debug and log tools for WooCommerce Jetpack.', 'woocommerce-jetpack' );
+		$this->desc       = __( 'Booster for WooCommerce debug and log tools.', 'woocommerce-jetpack' );
 		parent::__construct();
 
 		$this->add_tools( array( 'admin_tools' => __( 'Admin Tools', 'woocommerce-jetpack' ), ) );

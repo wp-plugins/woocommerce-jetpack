@@ -4,6 +4,7 @@
  *
  * The WooCommerce Jetpack Tools class.
  *
+ * @version 2.2.4
  * @author  Algoritmika Ltd.
  */
 
@@ -13,17 +14,30 @@ if ( ! class_exists( 'WCJ_Tools' ) ) :
 
 class WCJ_Tools {
 
-	public function __construct() {
+	/**
+	 * __construct.
+	 */
+	function __construct() {
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array($this, 'add_wcj_tools'), 100 );
 		}
 	}
 
-	public function add_wcj_tools() {
-		add_submenu_page( 'woocommerce', 'WooCommerce Jetpack Tools', 'Jetpack Tools', 'manage_options', 'wcj-tools', array( $this, 'create_tools_page' ) );
+	/**
+	 * add_wcj_tools.
+	 *
+	 * @version 2.2.4
+	 */
+	function add_wcj_tools() {
+		add_submenu_page( 'woocommerce', __( 'Booster for WooCommerce Tools', 'woocommerce-jetpack' ), __( 'Booster Tools', 'woocommerce-jetpack' ), 'manage_options', 'wcj-tools', array( $this, 'create_tools_page' ) );
 	}
 
-	public function create_tools_page() {
+	/**
+	 * create_tools_page.
+	 *
+	 * @version 2.2.4
+	 */
+	function create_tools_page() {
 
 		$tabs = array(
 			array(
@@ -57,8 +71,8 @@ class WCJ_Tools {
 		echo $html;
 
 		if ( 'dashboard' === $active_tab ) {
-			echo '<h3>' . __( 'WooCommerce Jetpack Tools Dashboard', 'woocommerce-jetpack' ) . '</h3>';
-			echo '<p>' . __( 'This dashboard lets you check statuses and short descriptions of all available WooCommerce Jetpack tools. Tools can be enabled through WooCommerce > Settings > Jetpack. Enabled tools will appear in the tabs menu above.', 'woocommerce-jetpack' ) . '</p>';
+			echo '<h3>' . __( 'Booster for WooCommerce Tools - Dashboard', 'woocommerce-jetpack' ) . '</h3>';
+			echo '<p>' . __( 'This dashboard lets you check statuses and short descriptions of all available Booster for WooCommerce tools. Tools can be enabled through WooCommerce > Settings > Booster. Enabled tools will appear in the tabs menu above.', 'woocommerce-jetpack' ) . '</p>';
 			echo '<table class="widefat" style="width:90%;">';
 			echo '<tr>';
 			echo '<th style="width:25%;">' . __( 'Tool', 'woocommerce-jetpack' ) . '</th>';
