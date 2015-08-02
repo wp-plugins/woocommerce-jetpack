@@ -3,7 +3,7 @@
 Plugin Name: Booster for WooCommerce
 Plugin URI: http://BoostWoo.com
 Description: Supercharge your WooCommerce site with these awesome powerful features.
-Version: 2.2.4
+Version: 2.2.5
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -61,6 +61,8 @@ final class WC_Jetpack {
 
 	/**
 	 * WC_Jetpack Constructor.
+	 *
+	 * @version 2.2.5
 	 * @access public
 	 */
 	public function __construct() {
@@ -89,7 +91,7 @@ final class WC_Jetpack {
 		if ( is_admin() ) {
 			if ( 'yes' === get_option( 'wcj_purchase_data_enabled' ) || 'yes' === get_option( 'wcj_pdf_invoicing_enabled' ) ) {
 				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-				add_action( 'admin_head',            array( $this, 'add_datepicker_script' ) );
+				//add_action( 'admin_head',            array( $this, 'add_datepicker_script' ) );
 			}
 		}
 
@@ -140,13 +142,16 @@ final class WC_Jetpack {
 
 	/**
 	 * enqueue_scripts.
+	 *
+	 * @version 2.2.5
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'wcj-datepicker', $this->plugin_url() . '/includes/js/wcj-datepicker.js' );
 		wp_enqueue_style( 'jquery-ui-css', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
 	}
 
-	public function add_datepicker_script() {
+	/* public function add_datepicker_script() {
 		?>
 		<script>
 		jQuery(document).ready(function() {
@@ -156,7 +161,7 @@ final class WC_Jetpack {
 		});
 		</script>
 		<?php
-	}
+	} */
 
 	/**
 	 * admin_footer_text

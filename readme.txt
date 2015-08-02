@@ -1,10 +1,10 @@
 === Booster for WooCommerce ===
 Contributors: algoritmika
 Donate link: http://algoritmika.com/donate/
-Tags: woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
+Tags: woocommerce,booster for woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -72,20 +72,20 @@ Booster for WooCommerce is a WordPress plugin that supercharges your site with a
 
 **Emails & Misc.**
 
-* *Admin Tools* - Debug and log tools for WooCommerce Jetpack.
+* *Admin Tools* - Booster for WooCommerce debug and log tools.
 * *Emails* - Add another email recipient(s) to all WooCommerce emails.
 * *General* - Separate custom CSS for front and back end. Shortcodes in Wordpress text widgets.
 * *Old Slugs* - Remove old WooCommerce products slugs.
 * *Reports* - WooCommerce stock, sales, customers etc. reports.
-* *WPML* - Basic WPML support for WooCommerce Jetpack.
+* *WPML* - Booster for WooCommerce basic WPML support.
 
 = Feedback =
 * We are open to your suggestions and feedback - thank you for using or trying out one of our plugins!
-* If you have any ideas how to upgrade the plugin to make it better, or if you have ideas about the features that are missing from our plugin, please [fill the form](http://woojetpack.com/submit-idea/).
-* For support visit the [contact page](http://woojetpack.com/contact-us/).
+* If you have any ideas how to upgrade the plugin to make it better, or if you have ideas about the features that are missing from our plugin, please [fill the form](http://boostwoo.com/submit-idea/).
+* For support visit the [contact page](http://boostwoo.com/contact-us/).
 
 = More =
-* Visit the [WooCommerce Jetpack plugin page](http://woojetpack.com/)
+* Visit the [Booster for WooCommerce plugin page](http://boostwoo.com/)
 
 = Available Translations =
 * `FR_fr` by Jean-Marc Schreiber.
@@ -100,13 +100,17 @@ Booster for WooCommerce is a WordPress plugin that supercharges your site with a
 
 = How to unlock those some features settings that are locked? =
 
-To unlock all WooCommerce Jetpack features, please install additional <a href="http://woojetpack.com/plus/">WooCommerce Jetpack Plus</a> plugin.
+To unlock all Booster for WooCommerce features, please install additional <a href="http://boostwoo.com/plus/">Booster for WooCommerce Plus</a> plugin.
 
 == Screenshots ==
 
 1. Plugin admin area.
 
 == Changelog ==
+
+= 2.2.5 - 02/08/2015 =
+* Fix - datepicker js script - issue with bazar theme (Add Shortcodes on page edit) fixed.
+* Dev - Plugin renaming continued.
 
 = 2.2.4 - 01/08/2015 =
 * Dev - Plugin renamed from "WooCommerce Jetpack" to "Booster for WooCommerce" (`name_changed_notice` added).
@@ -414,7 +418,7 @@ To unlock all WooCommerce Jetpack features, please install additional <a href="h
   %price%, %price_excluding_tax% (suggested by Josh),
   %stock_availability% (by https://wordpress.org/support/topic/custom-tabs-1),
   %time_since_last_sale%, %weight%, %list_attributes% etc.
-  For full list of short codes, please visit http://woojetpack.com/features/product-info/
+  For full list of short codes, please visit http://boostwoo.com/features/product-info/
 * Feature Upgraded - Product Listings - Option to change default WooCommerce behavior on displaying all products if none categories are dispalyed.
   Now it's possible to disable displaying the products. Suggested by Xavier.
 * Feature Upgraded - PDF Invoices - Order date and time added. Suggested by https://wordpress.org/support/topic/order-time

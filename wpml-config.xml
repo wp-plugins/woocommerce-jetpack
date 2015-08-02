@@ -37,6 +37,12 @@
 		<key name="wcj_product_input_fields_title_global_1" />
 		<key name="wcj_product_input_fields_placeholder_global_1" />
 		<key name="wcj_product_input_fields_required_message_global_1" />
+		<key name="wcj_product_input_fields_type_checkbox_yes_global_2" />
+		<key name="wcj_product_input_fields_type_checkbox_no_global_2" />
+		<key name="wcj_product_input_fields_type_file_accept_global_2" />
+		<key name="wcj_product_input_fields_title_global_2" />
+		<key name="wcj_product_input_fields_placeholder_global_2" />
+		<key name="wcj_product_input_fields_required_message_global_2" />
 		<key name="wcj_add_to_cart_per_category_text_single_group_1" />
 		<key name="wcj_add_to_cart_per_category_text_archive_group_1" />
 		<key name="wcj_add_to_cart_text_on_single_simple" />
