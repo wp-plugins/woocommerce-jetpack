@@ -4,9 +4,21 @@
  *
  * The WooCommerce Jetpack Functions.
  *
- * @version 2.2.2
+ * @version 2.2.6
  * @author  Algoritmika Ltd.
  */
+
+/*
+ * is_frontend()
+ *
+ * @since  2.2.6
+ * @return boolean
+ */
+if ( ! function_exists( 'wcj_is_frontend' ) ) {
+	function wcj_is_frontend() {
+	   return ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) ? true : false;
+	}
+}
 
 /**
  * wcj_get_wcj_uploads_dir.

@@ -127,33 +127,33 @@ class WCJ_Sorting extends WCJ_Module {
 
 		switch ( $orderby ) :
 			case 'title_asc':
-				$args['orderby'] = 'title';
-				$args['order'] = 'asc';
+				$args['orderby']  = 'title';
+				$args['order']    = 'asc';
 				$args['meta_key'] = '';
 			break;
 			case 'title_desc':
-				$args['orderby'] = 'title';
-				$args['order'] = 'desc';
+				$args['orderby']  = 'title';
+				$args['order']    = 'desc';
 				$args['meta_key'] = '';
 			break;
 			case 'sku_asc':
-				$args['orderby'] = ( 'no' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_sorting_by_sku_num_enabled', 'no' ) ) ) ? 'meta_value' : 'meta_value_num';
-				$args['order'] = 'asc';
+				$args['orderby']  = ( 'no' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_sorting_by_sku_num_enabled', 'no' ) ) ) ? 'meta_value' : 'meta_value_num';
+				$args['order']    = 'asc';
 				$args['meta_key'] = '_sku';
 			break;
 			case 'sku_desc':
-				$args['orderby'] = ( 'no' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_sorting_by_sku_num_enabled', 'no' ) ) ) ? 'meta_value' : 'meta_value_num';
-				$args['order'] = 'desc';
+				$args['orderby']  = ( 'no' === apply_filters( 'wcj_get_option_filter', 'no', get_option( 'wcj_sorting_by_sku_num_enabled', 'no' ) ) ) ? 'meta_value' : 'meta_value_num';
+				$args['order']    = 'desc';
 				$args['meta_key'] = '_sku';
 			break;
 			case 'stock_quantity_asc':
-				$args['orderby'] = 'meta_value_num';
-				$args['order'] = 'asc';
+				$args['orderby']  = 'meta_value_num';
+				$args['order']    = 'asc';
 				$args['meta_key'] = '_stock';
 			break;
 			case 'stock_quantity_desc':
-				$args['orderby'] = 'meta_value_num';
-				$args['order'] = 'desc';
+				$args['orderby']  = 'meta_value_num';
+				$args['order']    = 'desc';
 				$args['meta_key'] = '_stock';
 			break;
 		endswitch;

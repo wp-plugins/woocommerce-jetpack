@@ -4,10 +4,8 @@
  *
  * The WooCommerce Jetpack Product Info class.
  *
- * @class 		WCJ_Product_Info
- * @version		2.2.0
- * @category	Class
- * @author 		Algoritmika Ltd.
+ * @version 2.2.6
+ * @author  Algoritmika Ltd.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -567,6 +565,8 @@ class WCJ_Product_Info {
 
 	/**
 	 * get_time_since_last_sale.
+	 *
+	 * @version 2.2.6
 	 */
 	public function get_time_since_last_sale() {
 		// Constants
@@ -577,7 +577,7 @@ class WCJ_Product_Info {
 		// Create args for new query
 		$args = array(
 			'post_type'			=> 'shop_order',
-			'post_status' 		=> ( true === $do_use_only_completed_orders ? 'completed' : 'any' ),
+			'post_status' 		=> ( true === $do_use_only_completed_orders ? 'wc-completed' : 'any' ),
 			'posts_per_page' 	=> -1,
 			'orderby'			=> 'date',
 			'order'				=> 'DESC',
@@ -594,12 +594,14 @@ class WCJ_Product_Info {
 				if ( $item['product_id'] == $the_ID ) {
 					// Found sale!
 					$result = sprintf( __( '%s ago', 'woocommerce-jetpack' ), human_time_diff( get_the_time('U'), current_time('timestamp') ) );
-					wp_reset_query();
+					//wp_reset_query();
+					wp_reset_postdata();
 					return $result;
 				}
 			}
 		endwhile;
-		wp_reset_query();
+		//wp_reset_query();
+		wp_reset_postdata();
 		// No sales found
 		return false;
 	}

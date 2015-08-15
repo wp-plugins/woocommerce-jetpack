@@ -4,7 +4,7 @@
  *
  * The WooCommerce Modules Array.
  *
- * @version 2.2.2
+ * @version 2.2.6
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -57,6 +57,7 @@ return array(
 			'product_input_fields',
 			'product_add_to_cart',
 			'purchase_data',
+			'crowdfunding',
 			'product_images',
 		),
 	),

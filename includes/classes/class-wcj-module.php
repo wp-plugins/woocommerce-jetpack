@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Module class.
  *
- * @version 2.2.3
+ * @version 2.2.6
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -33,6 +33,84 @@ class WCJ_Module {
 			$this->parent_id = '';
 			//add_filter( 'wcj_features_status', array( $this, 'add_enabled_option' ), 100 );
 		}
+	}
+
+	/**
+	 * get_settings.
+	 *
+	 * @since 2.2.6
+	 */
+	function get_settings() {
+		$settings = array();
+		return $this->add_enable_module_setting( $settings );
+	}
+
+	/**
+	 * save_meta_box.
+	 *
+	 * @since 2.2.6
+	 */
+	function save_meta_box( $post_id, $post ) {
+		// Check that we are saving with current metabox displayed.
+		if ( ! isset( $_POST[ 'woojetpack_' . $this->id . '_save_post' ] ) ) return;
+		// Save options
+		foreach ( $this->get_meta_box_options() as $option ) {
+			$option_value = isset( $_POST[ $option['name'] ] ) ? $_POST[ $option['name'] ] : $option['default'];
+			update_post_meta( $post_id, '_' . $option['name'], $option_value );
+		}
+	}
+
+	/**
+	 * add_meta_box.
+	 *
+	 * @since 2.2.6
+	 */
+	function add_meta_box() {
+		add_meta_box(
+			'wc-jetpack-' . $this->id,
+			__( 'WooCommerce Jetpack', 'woocommerce-jetpack' ) . ': ' . $this->short_desc,
+			array( $this, 'create_meta_box' ),
+			'product',
+			'normal',
+			'high' );
+	}
+
+	/**
+	 * create_meta_box.
+	 *
+	 * @since 2.2.6
+	 */
+	function create_meta_box() {
+		$current_post_id = get_the_ID();
+		$html = '';
+		//$html .= '<div style="width:40%;">';
+		$html .= '<table>';
+		foreach ( $this->get_meta_box_options() as $option ) {
+			$option_value = get_post_meta( $current_post_id, '_' . $option['name'], true );
+			$input_ending = ' id="' . $option['name'] . '" name="' . $option['name'] . '" value="' . $option_value . '">';
+			switch ( $option['type'] ) {
+				case 'number':
+					$field_html = '<input class="short" type="number"' . $input_ending;
+					break;
+				case 'price':
+					$field_html = '<input class="short wc_input_price" type="number" step="0.0001"' . $input_ending;
+					break;
+				case 'date':
+					$field_html = '<input class="input-text" display="date" type="text"' . $input_ending;
+					break;
+				case 'textarea':
+					$field_html = '<textarea style="min-width:300px;"' . ' id="' . $option['name'] . '" name="' . $option['name'] . '">' . $option_value . '</textarea>';
+					break;
+			}
+			$html .= '<tr>';
+			$html .= '<th style="text-align:left;">' . $option['title'] . '</th>';
+			$html .= '<td>' . $field_html . '</td>';
+			$html .= '</tr>';
+		}
+		$html .= '</table>';
+		$html .= '<input type="hidden" name="woojetpack_' . $this->id . '_save_post" value="woojetpack_' . $this->id . '_save_post">';
+		//$html .= '</div>';
+		echo $html;
 	}
 
 	/**
@@ -70,9 +148,9 @@ class WCJ_Module {
 	function get_cat_by_section( $section ) {
 		$cats = include( wcj_plugin_path() . '/includes/admin/' . 'wcj-modules-cats.php' );
 		foreach ( $cats as $id => $label_info ) {
-			if ( ( ! empty( $label_info['all_cat_ids'] ) ) && 
-				 ( is_array( $label_info['all_cat_ids'] ) ) && 
-				 ( in_array( $section, $label_info['all_cat_ids'] ) ) 
+			if ( ( ! empty( $label_info['all_cat_ids'] ) ) &&
+				 ( is_array( $label_info['all_cat_ids'] ) ) &&
+				 ( in_array( $section, $label_info['all_cat_ids'] ) )
 				) {
 					return $id;
 				}

@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Price by Country class.
  *
- * @version 2.2.1
+ * @version 2.2.6
  * @author  Algoritmika Ltd.
  */
 
@@ -53,6 +53,8 @@ class WCJ_Price_By_Country {
 
 	/**
 	 * get_settings.
+	 *
+	 * @version 2.2.6
 	 */
 	function get_settings() {
 
@@ -84,6 +86,14 @@ class WCJ_Price_By_Country {
 					'by_user_selection' => __( 'by user selection', 'woocommerce-jetpack' ),
 					//'by_wpml'           => __( 'by WPML', 'woocommerce-jetpack' ),
 				),
+			),
+
+			array(
+				'title'    => __( 'Override Country on Checkout with Billing Country', 'woocommerce-jetpack' ),
+				'id'       => 'wcj_price_by_country_override_on_checkout_with_billing_country',
+				'desc'     => __( 'Enable.', 'woocommerce-jetpack' ),
+				'default'  => 'no',
+				'type'     => 'checkbox',
 			),
 
 			array(
@@ -130,7 +140,7 @@ class WCJ_Price_By_Country {
 
 			$settings[] = array(
 				'title'    => __( 'Group', 'woocommerce-jetpack' ) . ' #' . $i,
-				'desc'	   => __( 'Countries. List of comma separated country codes.<br>For country codes and predifined sets visit <a href="http://woojetpack.com/features/prices-and-currencies-by-customers-country">WooJetpack.com</a>', 'woocommerce-jetpack' ),
+				'desc'	   => __( 'Countries. List of comma separated country codes.<br>For country codes and predifined sets visit <a href="http://boostwoo.com/features/prices-and-currencies-by-customers-country">BoostWoo.com</a>', 'woocommerce-jetpack' ),
 				'id'       => 'wcj_price_by_country_exchange_rate_countries_group_' . $i,
 				'default'  => '',
 				'type'     => 'textarea',

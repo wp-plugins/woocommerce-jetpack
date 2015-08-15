@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Settings class.
  *
- * @version 2.2.5
+ * @version 2.2.6
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -18,7 +18,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 	/**
 	 * Constructor.
 	 *
-	 * @version 2.2.4
+	 * @version 2.2.6
 	 */
 	function __construct() {
 
@@ -27,16 +27,16 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 
 		$this->cats  = include( 'wcj-modules-cats.php' );
 
-		add_filter( 'woocommerce_settings_tabs_array',        array( $this, 'add_settings_page' ), 20 );
-		add_action( 'woocommerce_settings_' . $this->id,      array( $this, 'output' ) );
-		add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
-		add_action( 'woocommerce_sections_' . $this->id,      array( $this, 'output_cats_submenu' ) );
-		add_action( 'woocommerce_sections_' . $this->id,      array( $this, 'output_sections_submenu' ) );
+		add_filter( 'woocommerce_settings_tabs_array',         array( $this, 'add_settings_page' ), 20 );
+		add_action( 'woocommerce_settings_' . $this->id,       array( $this, 'output' ) );
+		add_action( 'woocommerce_settings_save_' . $this->id,  array( $this, 'save' ) );
+		add_action( 'woocommerce_sections_' . $this->id,       array( $this, 'output_cats_submenu' ) );
+		add_action( 'woocommerce_sections_' . $this->id,       array( $this, 'output_sections_submenu' ) );
 
-//		add_action( 'woocommerce_admin_field_save_button',    array( $this, 'output_save_settings_button' ) );
-		add_action( 'woocommerce_admin_field_custom_number',  array( $this, 'output_custom_number' ) );
-
-		add_action( 'woocommerce_admin_field_module_tools',   array( $this, 'output_module_tools' ) );
+//		add_action( 'woocommerce_admin_field_save_button',     array( $this, 'output_save_settings_button' ) );
+		add_action( 'woocommerce_admin_field_custom_number',   array( $this, 'output_custom_number' ) );
+		add_action( 'woocommerce_admin_field_module_tools',    array( $this, 'output_module_tools' ) );
+		add_action( 'woocommerce_admin_field_custom_textarea', array( $this, 'output_custom_textarea' ) );
 	}
 
     /**
@@ -52,6 +52,41 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			</td>
 		</tr>
 		<?php
+	}
+
+	/**
+	 * output_custom_textarea.
+	 *
+	 * @version 2.2.6
+	 * @since   2.2.6
+	 */
+	function output_custom_textarea( $value ) {
+		$option_value = get_option( $value['id'], $value['default'] );
+
+		$custom_attributes = ( isset( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) ? $value['custom_attributes'] : array();
+		$description = ' <p class="description">' . $value['desc'] . '</p>';
+		$tooltip_html = '';//' <p class="description">' . $value['desc_tip'] . '</p>';
+//		$tooltip_html = $value['desc_tip'];
+//		$tooltip_html = '<img class="help_tip" data-tip="' . esc_attr( $tooltip_html ) . '" src="' . WC()->plugin_url() . '/assets/images/help.png" height="16" width="16" />';
+
+		?><tr valign="top">
+			<th scope="row" class="titledesc">
+				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label>
+				<?php echo $tooltip_html; ?>
+			</th>
+			<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+				<?php echo $description; ?>
+
+				<textarea
+					name="<?php echo esc_attr( $value['id'] ); ?>"
+					id="<?php echo esc_attr( $value['id'] ); ?>"
+					style="<?php echo esc_attr( $value['css'] ); ?>"
+					class="<?php echo esc_attr( $value['class'] ); ?>"
+					placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
+					<?php echo implode( ' ', $custom_attributes ); ?>
+					><?php echo esc_textarea( $option_value );  ?></textarea>
+			</td>
+		</tr><?php
 	}
 
 	/**
@@ -105,6 +140,8 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 
 	/**
 	 * Output sections (modules) sub menu
+	 *
+	 * @version 2.2.6
 	 */
 	function output_sections_submenu() {
 
@@ -133,6 +170,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			return;
 		}
 
+		echo '<p>';
 		echo '<ul class="subsubsub">';
 
 		//$array_keys = array_keys( $sections );
@@ -143,7 +181,7 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 			echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&wcj-cat=' . $current_cat . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $this->cats[ $current_cat ]['all_cat_ids'] ) == $id ? '' : '|' ) . ' </li>';
 		}
 
-		echo '</ul><br class="clear" />';
+		echo '</ul></p><br class="clear" />';
 	}
 
 	/**
@@ -364,13 +402,15 @@ class WC_Settings_Jetpack extends WC_Settings_Page {
 
 	/**
 	 * Save settings
+	 *
+	 * @version 2.2.6
 	 */
 	function save() {
 		global $current_section;
 		$settings = $this->get_settings( $current_section );
 		WC_Admin_Settings::save_fields( $settings );
 		echo apply_filters('get_wc_jetpack_plus_message', '', 'global' );
-		do_action( 'woojetpack_after_settings_save', $this->get_sections() );
+		do_action( 'woojetpack_after_settings_save', $this->get_sections(), $current_section );
 	}
 
 	/**

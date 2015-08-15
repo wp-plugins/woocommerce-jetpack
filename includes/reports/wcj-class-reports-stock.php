@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Stock Reports class.
  *
- * @version 2.2.2
+ * @version 2.2.6
  * @author  Algoritmika Ltd.
  */
 
@@ -152,12 +152,14 @@ class WCJ_Reports_Stock {
 
 	/*
 	 * gather_orders_data.
+	 *
+	 * @version 2.2.6
 	 */
-	public function gather_orders_data( &$products_info ) {
+	function gather_orders_data( &$products_info ) {
 
 		$args_orders = array(
 			'post_type'			=> 'shop_order',
-			'post_status' 		=> 'completed',
+			'post_status' 		=> 'wc-completed',
 			'posts_per_page' 	=> -1,
 			'orderby'			=> 'date',
 			'order'				=> 'DESC',

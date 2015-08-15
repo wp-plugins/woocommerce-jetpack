@@ -1,10 +1,10 @@
 === Booster for WooCommerce ===
-Contributors: algoritmika
+Contributors: algoritmika,valentinas-solovjovas
 Donate link: http://algoritmika.com/donate/
 Tags: woocommerce,booster for woocommerce,woocommerce jetpack,custom price labels,call for price,currency symbol,remove sorting,remove old product slugs,add to cart text,order number,sequential order numbering,email pdf invoice,pdf invoice,pdf invoices,already in cart,empty cart,redirect to checkout,minimum order amount,customize checkout fields,checkout fields,email,customize product tabs,product tabs,related products number,empty cart,redirect add to cart,redirect to checkout,product already in cart,custom payment gateway,payment gateway icon,auto-complete all orders,custom order statuses,custom order status,remove text from price,custom css,hide categories count,hide subcategories count,hide category count,hide subcategory count,display total sales,custom product tabs,remove product tab,payment gateway fee,
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 2.2.5
+Stable tag: 2.2.6
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,6 +33,7 @@ Booster for WooCommerce is a WordPress plugin that supercharges your site with a
 
 **Products**
 
+* *Crowdfunding* - Add crowdfunding products to WooCommerce.
 * *Product Add to Cart* - Set any local url to redirect to on WooCommerce Add to Cart. Automatically add to cart on product visit.
 * *Product Cost Price* - Save WooCommerce product purchase costs data for admin reports.
 * *Product Images* - Customize WooCommerce products images, thumbnails and sale flashes.
@@ -88,13 +89,14 @@ Booster for WooCommerce is a WordPress plugin that supercharges your site with a
 * Visit the [Booster for WooCommerce plugin page](http://boostwoo.com/)
 
 = Available Translations =
-* `FR_fr` by Jean-Marc Schreiber.
+* French - `fr_FR` by Jean-Marc Schreiber.
+* Dutch - `nl_NL`.
 
 == Installation ==
 
 1. Upload the entire `woocommerce-jetpack` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to WooCommerce > Settings > Jetpack
+3. Go to WooCommerce > Settings > Booster
 
 == Frequently Asked Questions ==
 
@@ -107,6 +109,32 @@ To unlock all Booster for WooCommerce features, please install additional <a hre
 1. Plugin admin area.
 
 == Changelog ==
+
+= 2.2.6 - 15/08/2015 =
+* Fix - Shortcodes - `[wcj_order_checkout_field]` bug fixed.
+* Dev - Shortcodes - Products - `[wcj_product_total_sales]` added.
+* Dev - Code refactoring - Meta box support added to `WCJ_Module`.
+* Dev - Code refactoring - `get_settings()` added to `WCJ_Module`.
+* Dev - Dutch translation added.
+* Dev - POT file updated added.
+* Dev - PRICES & CURRENCIES - Price by Country - "WooJetpack" to "BoostWoo" in country group fields descriptions.
+* Dev - PRICES & CURRENCIES - Price by Country - "Override Country on Checkout with Billing Country" option added. "No country was detected" routine disabled.
+* Dev - PRICES & CURRENCIES - Wholesale Price - Option to set *fixed* discount value (not percent).
+* Dev - PRICES & CURRENCIES - Wholesale Price - "Apply wholesale discount only if no other cart discounts were applied" option added.
+* Dev - PRICES & CURRENCIES - Wholesale Price - `old_price_html` in `add_discount_info_to_cart_page()` modified.
+* Fix - BUTTON & PRICE LABELS - Add to Cart Labels - per Product Category - bug fixed.
+* Fix - PRODUCTS - Product Info - `wp_reset_query` to `wp_reset_postdata`.
+* Fix - PRODUCTS - Product Info - `completed` to `wc-completed` in orders WP_Query.
+* Dev - PRODUCTS - Product Images - Replace image with HTML (globally and locally) added (`custom_textarea` custom settings field added).
+* Dev - PRODUCTS - Related Products - `delete_product_transients` added on settings save (now no need to Clear transients manually from WooCommerce Status > Tools).
+* Fix - PRODUCTS - Related Products - Relate by category/tag bug fixed.
+* Dev - PRODUCTS - Crowdfunding - Initial module release.
+  Shortcodes added: `[wcj_product_total_orders]`, `[wcj_product_total_orders_sum]`,
+  `[wcj_product_crowdfunding_goal]`, `[wcj_product_crowdfunding_goal_remaining]`,
+  `[wcj_product_crowdfunding_startdate]`, `[wcj_product_crowdfunding_deadline]`, `[wcj_product_crowdfunding_time_remaining]`.
+* Fix - PRODUCTS - Product Cost Price - Profit column bug fixed.
+* Dev - CART & CHECKOUT - Payment Gateways Fees - Discounts (negative fee value) added. Module renamed to "Payment Gateways Fees and Discounts".
+* Fix - EMAILS & MISC. - Reports - `completed` to `wc-completed` in orders WP_Query.
 
 = 2.2.5 - 02/08/2015 =
 * Fix - datepicker js script - issue with bazar theme (Add Shortcodes on page edit) fixed.

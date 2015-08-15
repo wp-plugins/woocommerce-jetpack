@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Related Products class.
  *
- * @version 2.2.1
+ * @version 2.2.6
  * @author  Algoritmika Ltd.
  */
 
@@ -16,6 +16,8 @@ class WCJ_Related_Products extends WCJ_Module {
 
 	/**
 	 * Constructor.
+	 *
+	 * @version 2.2.6
 	 */
 	public function __construct() {
 
@@ -26,38 +28,61 @@ class WCJ_Related_Products extends WCJ_Module {
 
 		if ( $this->is_enabled() ) {
 
-			add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_limit' ), PHP_INT_MAX );
-
-			add_filter( 'woocommerce_output_related_products_args', array( $this, 'related_products_limit_args' ), PHP_INT_MAX );
+			add_filter( 'woocommerce_related_products_args', array( $this, 'related_products_args' ), PHP_INT_MAX );
+			add_filter( 'woocommerce_output_related_products_args', array( $this, 'output_related_products_args' ), PHP_INT_MAX );
 
 			if ( 'no' === get_option( 'wcj_product_info_related_products_relate_by_category' ) ) {
-				apply_filters( 'woocommerce_product_related_posts_relate_by_category', false );
+				add_filter( 'woocommerce_product_related_posts_relate_by_category', '__return_false', PHP_INT_MAX );
+			} else {
+				add_filter( 'woocommerce_product_related_posts_relate_by_category', '__return_true',  PHP_INT_MAX );
 			}
 
 			if ( 'no' === get_option( 'wcj_product_info_related_products_relate_by_tag' ) ) {
-				apply_filters( 'woocommerce_product_related_posts_relate_by_tag', false );
+				add_filter( 'woocommerce_product_related_posts_relate_by_tag', '__return_false', PHP_INT_MAX );
+			} else {
+				add_filter( 'woocommerce_product_related_posts_relate_by_tag', '__return_true',  PHP_INT_MAX );
 			}
+
+			add_action( 'woojetpack_after_settings_save', array( $this, 'delete_product_transients' ), PHP_INT_MAX, 2 );
+		}
+	}
+
+	/**
+	 * delete_product_transients.
+	 *
+	 * @since 2.2.6
+	 */
+	function delete_product_transients( $sections, $current_section ) {
+		if ( 'related_products' === $current_section ) {
+			wc_delete_product_transients();
 		}
 	}
 
 	/**
 	 * Change number of related products on product page.
+	 *
+	 * @version 2.2.6
 	 */
-	function related_products_limit_args( $args ) {
+	function related_products_args( $args ) {
+		if ( 'yes' === get_option( 'wcj_product_info_related_products_hide' ) ) {
+			return array();
+		}
 		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
 		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-		$args['columns'] = get_option( 'wcj_product_info_related_products_columns' );
+		if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) {
+			$args['order'] = get_option( 'wcj_product_info_related_products_order' );
+		}
 		return $args;
 	}
 
 	/**
 	 * Change number of related products on product page.
+	 *
+	 * @version 2.2.6
 	 */
-	function related_products_limit( $args ) {
-		$args['posts_per_page'] = get_option( 'wcj_product_info_related_products_num' );
-		if ( 'yes' == get_option( 'wcj_product_info_related_products_hide' ) ) $args['post_type'] = '';
-		$args['orderby'] = get_option( 'wcj_product_info_related_products_orderby' );
-		if ( get_option( 'wcj_product_info_related_products_orderby' ) != 'rand' ) $args['order'] = get_option( 'wcj_product_info_related_products_order' );
+	function output_related_products_args( $args ) {
+		$args['columns'] = get_option( 'wcj_product_info_related_products_columns' );
+		$args = $this->related_products_args( $args );
 		return $args;
 	}
 

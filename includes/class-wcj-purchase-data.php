@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Purchase Data class.
  *
- * @version 2.2.4
+ * @version 2.2.6
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -15,24 +15,22 @@ if ( ! class_exists( 'WCJ_Purchase_Data' ) ) :
 
 class WCJ_Purchase_Data extends WCJ_Module {
 
-    /**
-     * Constructor.
+	/**
+	 * Constructor.
 	 *
 	 * @version 2.2.4
-     */
-    public function __construct() {
+	 */
+	public function __construct() {
 
 		$this->id         = 'purchase_data';
 		$this->short_desc = __( 'Product Cost Price', 'woocommerce-jetpack' );
 		$this->desc       = __( 'Save WooCommerce product purchase costs data for admin reports.', 'woocommerce-jetpack' );
 		parent::__construct();
 
-        if ( $this->is_enabled() ) {
+		if ( $this->is_enabled() ) {
 
-			//if ( 'yes' === get_option( 'wcj_purchase_price_local_enabled' ) ) {
-				add_action( 'add_meta_boxes',    array( $this, 'add_purchase_price_meta_box' ) );
-				add_action( 'save_post_product', array( $this, 'save_purchase_price_meta_box' ), PHP_INT_MAX, 2 );
-			//}
+			add_action( 'add_meta_boxes',    array( $this, 'add_purchase_price_meta_box' ) );
+			add_action( 'save_post_product', array( $this, 'save_purchase_price_meta_box' ), PHP_INT_MAX, 2 );
 
 			//add_action( 'init', array( $this, 'calculate_all_products_profit' ) );
 
@@ -40,14 +38,14 @@ class WCJ_Purchase_Data extends WCJ_Module {
 				add_filter( 'manage_edit-shop_order_columns',        array( $this, 'add_order_columns' ),     PHP_INT_MAX );
 				add_action( 'manage_shop_order_posts_custom_column', array( $this, 'render_order_columns' ), PHP_INT_MAX );
 			}
-        }
-    }
+		}
+	}
 
-    /**
-     * add_order_columns.
+	/**
+	 * add_order_columns.
 	 *
 	 * @since 2.2.4
-     */
+	 */
 	function add_order_columns( $columns ) {
 		$columns['profit'] = __( 'Profit', 'woocommerce-jetpack' );
 		return $columns;
@@ -55,9 +53,10 @@ class WCJ_Purchase_Data extends WCJ_Module {
 
 	/**
 	 * Output custom columns for orders
-	 * @param  string $column
 	 *
-	 * @since 2.2.4
+	 * @param   string $column
+	 * @version 2.2.6
+	 * @since   2.2.4
 	 */
 	public function render_order_columns( $column ) {
 
@@ -68,6 +67,7 @@ class WCJ_Purchase_Data extends WCJ_Module {
 				$is_forecasted = false;
 				foreach ( $the_order->get_items() as $item_id => $item ) {
 //					$product = $this->get_product_from_item( $item );
+					$the_profit = 0;
 					if ( 0 != ( $purchase_price = wc_get_product_purchase_price( $item['product_id'] ) ) ) {
 						$the_profit = ( $item['line_total'] + $item['line_tax'] ) - $purchase_price * $item['qty'];
 //						$total_profit += $the_profit;
@@ -261,9 +261,9 @@ class WCJ_Purchase_Data extends WCJ_Module {
 		}
 	}
 
-    /**
-     * calculate_all_products_profit.
-     *
+	/**
+	 * calculate_all_products_profit.
+	 *
 	function calculate_all_products_profit() {
 		$args = array(
 			'post_type'			=> 'product',

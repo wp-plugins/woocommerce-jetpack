@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Price by Country Core class.
  *
- * @version 2.2.2
+ * @version 2.2.6
  * @author  Algoritmika Ltd.
  */
 
@@ -173,6 +173,8 @@ class WCJ_Price_by_Country_Core {
 
 	/**
 	 * get_customer_country_group_id.
+	 *
+	 * @version 2.2.6
 	 */
 	public function get_customer_country_group_id() {
 
@@ -181,11 +183,20 @@ class WCJ_Price_by_Country_Core {
 //			return $this->customer_country_group_id;
 
 		// We've already tried - no country was detected, no need to try again
-		if ( -1 === $this->customer_country_group_id )
-			return null;
+		/* if ( -1 === $this->customer_country_group_id )
+			return null; */
 
 		if ( isset( $_GET['country'] ) && '' != $_GET['country'] && is_super_admin() ) {
+
 			$country = $_GET['country'];
+
+		} elseif ( 'yes' === get_option( 'wcj_price_by_country_override_on_checkout_with_billing_country', 'no' )
+			&& is_checkout()
+			&& '' != WC()->customer->get_country()
+		) {
+
+			$country = WC()->customer->get_country();
+
 		} else {
 
 			if ( 'by_ip' === get_option( 'wcj_price_by_country_customer_country_detection_method', 'by_ip' ) ) {
@@ -214,6 +225,7 @@ class WCJ_Price_by_Country_Core {
 
 			}
 		}
+
 
 		if ( null === $country ) {
 			$this->customer_country_group_id = -1;

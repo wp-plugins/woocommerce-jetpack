@@ -4,7 +4,7 @@
  *
  * The WooCommerce Jetpack Wholesale Price class.
  *
- * @version 2.2.2
+ * @version 2.2.6
  * @since   2.2.0
  * @author  Algoritmika Ltd.
  */
@@ -17,6 +17,8 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 
 	/**
 	 * Constructor.
+	 *
+	 * @version 2.2.6
 	 */
 	function __construct() {
 
@@ -27,9 +29,12 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 
 		if ( $this->is_enabled() ) {
 
+			/* add_action( 'add_meta_boxes',    array( $this, 'add_meta_box' ) );
+			add_action( 'save_post_product', array( $this, 'save_meta_box' ), PHP_INT_MAX, 2 ); */
+
 			add_filter( 'woocommerce_get_price',         array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
-			add_filter( 'woocommerce_get_sale_price',    array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
-			add_filter( 'woocommerce_get_regular_price', array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
+			//add_filter( 'woocommerce_get_sale_price',    array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
+			//add_filter( 'woocommerce_get_regular_price', array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
 
 			if ( 'yes' === get_option( 'wcj_wholesale_price_show_info_on_cart', 'no' ) ) {
 				add_filter( 'woocommerce_cart_item_price',   array( $this, 'add_discount_info_to_cart_page' ), PHP_INT_MAX, 3 );
@@ -38,25 +43,48 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 	}
 
 	/**
+	 * get_meta_box_options.
+	 *
+	 * @since 2.2.6
+	 *
+	function get_meta_box_options() {
+		return array(
+			array(
+				'name'    => 'wcj_local_wholesale_price_levels_number',
+				'default' => 0,
+				'type'    => 'number',
+				'title'   => __( 'Number', 'woocommerce-jetpack' ),
+			),
+		);
+	}
+
+	/**
 	 * add_discount_info_to_cart_page.
+	 *
+	 * @version 2.2.6
 	 */
 	function add_discount_info_to_cart_page( $price_html, $cart_item, $cart_item_key ) {
 
 		$_product = wc_get_product( $cart_item['product_id'] );
 
 		remove_filter( 'woocommerce_get_price', array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
-		$old_price_html = $_product->get_price_html();
+		//$old_price_html = $_product->get_price_html();
+		$old_price_html = wc_price( $_product->get_price() );
 		add_filter( 'woocommerce_get_price',    array( $this, 'wholesale_price' ), PHP_INT_MAX, 2 );
 
 		if ( $old_price_html != $price_html ) {
 
 			$the_quantity = $this->get_wholesale_quantity( $_product );
-			$discount_percent = $this->get_discount_percent_by_quantity( $the_quantity );
+
+			$discount = $this->get_discount_by_quantity( $the_quantity );
+
+			if ( 'fixed' === get_option( 'wcj_wholesale_price_discount_type' ) ) $discount = wc_price( $discount );
 
 			$wholesale_price_html = get_option( 'wcj_wholesale_price_show_info_on_cart_format' );
 			$wholesale_price_html = str_replace( '%old_price%',        $old_price_html,   $wholesale_price_html );
 			$wholesale_price_html = str_replace( '%price%',            $price_html,       $wholesale_price_html );
-			$wholesale_price_html = str_replace( '%discount_percent%', $discount_percent, $wholesale_price_html );
+			$wholesale_price_html = str_replace( '%discount_percent%', $discount,         $wholesale_price_html ); //depreciated
+			$wholesale_price_html = str_replace( '%discount_value%',   $discount,         $wholesale_price_html );
 
 			return $wholesale_price_html;
 		}
@@ -65,32 +93,38 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 	}
 
 	/**
-	 * get_discount_percent_by_quantity.
+	 * get_discount_by_quantity.
 	 */
-	private function get_discount_percent_by_quantity( $quantity ) {
+	private function get_discount_by_quantity( $quantity ) {
 
 		$max_qty_level = 1;
-		$discount_percent = 0;
+		$discount = 0;
 
 		for ( $i = 1; $i <= apply_filters( 'wcj_get_option_filter', 1, get_option( 'wcj_wholesale_price_levels_number', 1 ) ); $i++ ) {
 
 			$level_qty = get_option( 'wcj_wholesale_price_level_min_qty_' . $i, PHP_INT_MAX );
 			if ( $quantity >= $level_qty && $level_qty >= $max_qty_level ) {
 				$max_qty_level = $level_qty;
-				$discount_percent = get_option( 'wcj_wholesale_price_level_discount_percent_' . $i, 0 );
+				$discount = get_option( 'wcj_wholesale_price_level_discount_percent_' . $i, 0 );
 			}
 		}
 
-		return $discount_percent;
+		return $discount;
 	}
 
 	/**
 	 * get_wholesale_price.
+	 *
+	 * @version 2.2.6
 	 */
 	private function get_wholesale_price( $price, $quantity ) {
-		$discount_percent = $this->get_discount_percent_by_quantity( $quantity );
-		$discount_koef = 1.0 - ( $discount_percent / 100.0 );
-		return $price * $discount_koef;
+		$discount = $this->get_discount_by_quantity( $quantity );
+		if ( 'percent' === get_option( 'wcj_wholesale_price_discount_type' ) ) {
+			$discount_koef = 1.0 - ( $discount / 100.0 );
+			return $price * $discount_koef;
+		} else {
+			return ( $price - $discount );
+		}
 	}
 
 	/**
@@ -114,14 +148,21 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 
 	/**
 	 * wholesale_price.
+	 *
+	 * @version 2.2.6
 	 */
 	function wholesale_price( $price, $_product ) {
 
 		if ( ! wcj_is_product_wholesale_enabled( $_product->id ) ) return $price;
 
 		// Show only on checkout and cart pages
-		$is_ajax = ( is_admin() && ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) ? true : false;
-		if ( ! ( is_checkout() || is_cart() || $is_ajax ) ) return $price;
+		//$is_ajax = ( is_admin() && ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) ? true : false;
+		if ( ! ( is_checkout() || is_cart() /* || $is_ajax */ ) ) return $price;
+
+		// If other discount was applied in cart...
+		if ( 'yes' === get_option( 'wcj_wholesale_price_apply_only_if_no_other_discounts', 'no' ) ) {
+			if ( WC()->cart->get_total_discount() > 0 || sizeof( WC()->cart->applied_coupons ) > 0 ) return $price;
+		}
 
 		// Maybe set wholesale price
 		$the_quantity = $this->get_wholesale_quantity( $_product );
@@ -163,6 +204,14 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 			),
 
 			array(
+				'title'   => __( 'Apply wholesale discount only if no other cart discounts were applied', 'woocommerce-jetpack' ),
+				'desc'    => __( 'Enable', 'woocommerce-jetpack' ),
+				'id'      => 'wcj_wholesale_price_apply_only_if_no_other_discounts',
+				'default' => 'no',
+				'type'    => 'checkbox',
+			),
+
+			array(
 				'title'   => __( 'Show discount info on cart page', 'woocommerce-jetpack' ),
 				'desc'    => __( 'Show', 'woocommerce-jetpack' ),
 				'id'      => 'wcj_wholesale_price_show_info_on_cart',
@@ -173,9 +222,20 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 			array(
 				'title'   => __( 'If show discount info on cart page is enabled, set format here', 'woocommerce-jetpack' ),
 				'id'      => 'wcj_wholesale_price_show_info_on_cart_format',
-				'default' => '<del>%old_price%</del> %price%<br>You save: <span style="color:red;">%discount_percent%%</span>',
+				'default' => '<del>%old_price%</del> %price%<br>You save: <span style="color:red;">%discount_value%%</span>',
 				'type'    => 'textarea',
 				'css'     => 'width: 450px;',
+			),
+
+			array(
+				'title'   => __( 'Discount Type', 'woocommerce-jetpack' ),
+				'id'      => 'wcj_wholesale_price_discount_type',
+				'default' => 'percent',
+				'type'    => 'select',
+				'options' => array(
+					'percent' => __( 'Percent', 'woocommerce-jetpack' ),
+					'fixed'   => __( 'Fixed', 'woocommerce-jetpack' ),
+				),
 			),
 
 			array(
@@ -214,14 +274,23 @@ class WCJ_Wholesale_Price extends WCJ_Module {
 				'custom_attributes' => array('step' => '1', 'min' => '0', ),
 			);
 			$settings[] = array(
-				'title'   => __( 'Discount (%)', 'woocommerce-jetpack' ) . ' #' . $i,
-				'desc'    => __( 'Discount (%)', 'woocommerce-jetpack' ),
+				'title'   => __( 'Discount', 'woocommerce-jetpack' ) . ' #' . $i,
+				'desc'    => __( 'Discount', 'woocommerce-jetpack' ),
 				'id'      => 'wcj_wholesale_price_level_discount_percent_' . $i,
 				'default' => 0,
 				'type'    => 'number',
 				//'css'     => 'width:50%;min-width:300px;height:100px;',
 				'custom_attributes' => array('step' => '0.0001', 'min' => '0', ),
 			);
+			/* $settings[] = array(
+				'title'   => __( 'Discount (fixed)', 'woocommerce-jetpack' ) . ' #' . $i,
+				'desc'    => __( 'Discount (fixed)', 'woocommerce-jetpack' ),
+				'id'      => 'wcj_wholesale_price_level_discount_fixed_' . $i,
+				'default' => 0,
+				'type'    => 'number',
+				//'css'     => 'width:50%;min-width:300px;height:100px;',
+				'custom_attributes' => array('step' => '0.0001', 'min' => '0', ),
+			); */
 		}
 
 		$settings[] = array(
