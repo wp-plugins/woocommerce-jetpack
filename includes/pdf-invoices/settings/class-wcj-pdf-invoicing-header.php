@@ -51,7 +51,7 @@ class WCJ_PDF_Invoicing_Header {
 					'default'  => '',
 					'type'     => 'text',
 					'css'      => 'width:33%;min-width:300px;',
-					'desc'     => __( 'Enter a URL to an image you want to show in the invoice\'s header. Upload your image using the <a href="/wp-admin/media-new.php">media uploader</a>.', 'woocommerce-jetpack' ),
+					'desc'     => sprintf( __( 'Enter a URL to an image you want to show in the email\'s header. Upload your image using the <a href="%s">media uploader</a>.', 'woocommerce-jetpack' ), admin_url( 'media-new.php' ) ),
 					'desc_tip' => __( 'Leave blank to disable', 'woocommerce-jetpack' ),								
 				),	
 

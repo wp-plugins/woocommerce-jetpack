@@ -254,7 +254,7 @@ class WCJ_PDF_Invoice extends WCJ_Invoice {
 		// Close and output PDF document
 		$result_pdf = $pdf->Output( '', 'S' );
 		$file_name = $this->get_file_name();
-		$file_path = sys_get_temp_dir() . '/' . $file_name;
+		$file_path = get_temp_dir() . '/' . $file_name;
 		if ( ! file_put_contents( $file_path, $result_pdf ) )
 			return null;
 
